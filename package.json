@@ -1,0 +1,30 @@
+{
+    "name": "Roomies Prototype",
+    "private": true,
+    "version": "0.0.1",
+    "description": "Architecture prototype for Roomies, Bachelor's thesis demo application.",
+    "dependencies": {
+        "sails": "0.8.88"
+    },
+    "scripts": {
+        "start": "node .app.js",
+        "debug": "node debug .app.js"
+    },
+    "contributors": [
+        {
+            "name": "Manuel Alabor",
+            "email": "malabor@hsr.ch"
+        },
+        {
+            "name": "Alexandre Joly",
+            "email": "ajoly@hsr.ch"
+        },
+        {
+            "name": "Michael Weibel",
+            "email": "mweibel@hsr.ch"
+        }
+    ],
+    "main": ".app.js",
+    "repository": "",
+    "license": "MIT"
+}
