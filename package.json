@@ -1,14 +1,18 @@
 {
-    "name": "Roomies Prototype",
+    "name": "roomies-prototype",
     "private": true,
     "version": "0.0.1",
     "description": "Architecture prototype for Roomies, Bachelor's thesis demo application.",
     "dependencies": {
-        "sails": "0.8.88"
+        "sails": "0.8.88",
+        "supertest": "*",
+        "mocha": "*",
+        "should": "*"
     },
     "scripts": {
         "start": "node .app.js",
-        "debug": "node debug .app.js"
+        "debug": "node debug .app.js",
+		"test": "make test"
     },
     "contributors": [
         {
