@@ -1,0 +1,23 @@
+<div id="task-display">
+	<h1>Task: <%= task.name %></h1>
+	<ul>
+		<li>Points: <%= task.points %></li>
+		<li>Created At: <%= task.createdAt %></li>
+	</ul>
+	<h2>User: <%= user.name %></h2>
+	<ul>
+		<li>Created At: <%= user.createdAt %></li>
+	</ul>
+</div>
+<a href="#" id="reload">Reload!</a>
+<script>
+	$('#reload').on('click', function() {
+		$.ajax('/task/get/?id=<%= task.id %>&partial=true', {
+			success: function(response) {
+				var $response = $('<div class="body-mock">' + response + '</div>');
+				html = $response.find('#task-display');
+				$('#task-display').replaceWith(html);
+			}
+		});
+	});
+</script>
