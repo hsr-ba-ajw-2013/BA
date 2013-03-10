@@ -11,16 +11,16 @@ test: test-unit test-integration
 test-live: test-unit-live test-integration-live
 
 test-unit:
-	@$(TEST_CMD) test/unit
+	@$(TEST_CMD) test/unit/*
 
 test-integration:
-	@$(TEST_CMD) test/integration
+	@$(TEST_CMD) test/integration/*
 
 test-unit-live:
-	@$(TEST_LIVE_CMD) test/unit
+	@$(TEST_LIVE_CMD) test/unit/*
 
 test-integration-live:
-	@$(TEST_LIVE_CMD) test/integration
+	@$(TEST_LIVE_CMD) test/integration/*
 
 
 .PHONY: test testlive
