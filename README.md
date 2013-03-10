@@ -1,4 +1,10 @@
-BA
-==
+# BA
 
-Bachelorarbeit
+## Prerequisites
+Node.js installed.
+
+## Install
+`npm install`
+
+## Start
+`npm start`

@@ -1,0 +1,46 @@
+{
+	"name": "roomies-prototype-express"
+	, "version": "0.0.1"
+	, "private": true
+	, "scripts": {
+		"start": "node app"
+	}
+	, "dependencies": {
+		"express": "latest"
+		, "ejs": "latest"
+		, "node-sass": "latest"
+		, "express-resource": "latest"
+
+		, "jugglingdb": "latest"
+		, "jugglingdb-postgres": "latest"
+		, "resource-juggling": "latest"
+
+		, "winston": "latest"
+	}
+
+	, "devDependencies": {
+		"jugglingdb-sqlite3": "latest"
+
+		, "supertest": "latest"
+		, "mocha": "latest"
+		, "should": "latest"
+	}
+
+    ,"contributors": [
+        {
+            "name": "Manuel Alabor",
+            "email": "malabor@hsr.ch"
+        },
+        {
+            "name": "Alexandre Joly",
+            "email": "ajoly@hsr.ch"
+        },
+        {
+            "name": "Michael Weibel",
+            "email": "mweibel@hsr.ch"
+        }
+    ]
+
+    , "repository": "https://github.com/mweibel/BA"
+    , "license": "MIT"
+}
