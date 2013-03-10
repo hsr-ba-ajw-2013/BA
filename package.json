@@ -16,6 +16,7 @@
 		, "resource-juggling": "latest"
 
 		, "winston": "latest"
+		, "express-livereload": "latest"
 	}
 
 	, "devDependencies": {
@@ -26,21 +27,21 @@
 		, "should": "latest"
 	}
 
-    ,"contributors": [
-        {
-            "name": "Manuel Alabor",
-            "email": "malabor@hsr.ch"
-        },
-        {
-            "name": "Alexandre Joly",
-            "email": "ajoly@hsr.ch"
-        },
-        {
-            "name": "Michael Weibel",
-            "email": "mweibel@hsr.ch"
-        }
-    ]
+	,"contributors": [
+		{
+			"name": "Manuel Alabor",
+			"email": "malabor@hsr.ch"
+		},
+		{
+			"name": "Alexandre Joly",
+			"email": "ajoly@hsr.ch"
+		},
+		{
+			"name": "Michael Weibel",
+			"email": "mweibel@hsr.ch"
+		}
+	]
 
-    , "repository": "https://github.com/mweibel/BA"
-    , "license": "MIT"
+	, "repository": "https://github.com/mweibel/BA"
+	, "license": "MIT"
 }

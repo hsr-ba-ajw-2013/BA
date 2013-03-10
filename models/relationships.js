@@ -1,20 +1,19 @@
+"use strict";
+
 /**
  * Define relationships here to prevent cyclic dependencies
  */
+module.exports = function init(Community, User, Task) {
 
-var Task = require('./task')
-	, User = require('./user')
-	, Community = require('./community');
+	// Task < * --- 1 > Community
+	Task.belongsTo(Community, {as: 'community', foreignKey: 'communityId'});
+	Community.hasMany(Task, {as: 'tasks', foreignKey: 'communityId'});
 
-// User < 1 --- * > Task
-User.hasMany(Task, {as: 'tasks', foreignKey: 'userId'});
-Task.belongsTo(User, {as: 'creator', foreignKey: 'userId'});
-Task.belongsTo(User, {as: 'fulfiller', foreignKey: 'userId'});
+	// User < * --- 1 > Community
+	User.belongsTo(Community, {as: 'community', foreignKey: 'communityId'});
+	Community.hasMany(User, {as: 'users', foreignKey: 'communityId'});
 
-// Task < * --- 1 > Community
-Community.hasMany(Task, {as: 'tasks', foreignKey: 'communityId'});
-Task.belongsTo(Community, {as: 'belongsTo', foreignKey: 'communityId'});
-
-// User < * --- 1 > Community
-Community.hasMany(User, {as: 'users', foreignKey: 'communityId'});
-User.belongsTo(User, {as: 'belongsTo', foreignKey: 'communityId'});
+	// User < 1 --- * > Task
+	Task.belongsTo(User, {as: 'creator', foreignKey: 'userId'});
+	User.hasMany(Task, {as: 'createdTasks', foreignKey: 'userId'});
+};
