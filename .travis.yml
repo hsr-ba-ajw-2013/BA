@@ -1,3 +1,10 @@
+#
+# .travis.yml
+#
+
+before_install:
+	- ./travis/before_install.sh
+
 language: node_js
 node_js:
   - 0.8
