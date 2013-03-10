@@ -8,3 +8,6 @@ Node.js installed.
 
 ## Start
 `npm start`
+
+## Testing
+`npm test` or `make test`
