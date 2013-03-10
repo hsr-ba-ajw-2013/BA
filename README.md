@@ -1,5 +1,7 @@
 # BA
 
+[![Build Status](https://travis-ci.org/mweibel/BA.png)](https://travis-ci.org/mweibel/BA)
+
 ## Prerequisites
 Node.js installed.
 
