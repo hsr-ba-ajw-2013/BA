@@ -12,23 +12,23 @@ module.exports = function init(app, config) {
 
 	require('./relationships')(Community, Task, User);
 
-	schema.automigrate(function() {
+	schema.autoupdate(function() {
 		console.log('Schema autoupdate done');
 	});
 
-	app.resource('community', resourceJuggling.getResource({
+	app.resource('api/community', resourceJuggling.getResource({
 		schema: schema
 		, name: 'Community'
 		, model: Community
 		, base: '/api/'
 	}));
-	app.resource('task', resourceJuggling.getResource({
+	app.resource('api/task', resourceJuggling.getResource({
 		schema: schema
 		, name: 'Task'
 		, model: Task
 		, base: '/api/'
 	}));
-	app.resource('user', resourceJuggling.getResource({
+	app.resource('api/user', resourceJuggling.getResource({
 		schema: schema
 		, name: 'User'
 		, model: User

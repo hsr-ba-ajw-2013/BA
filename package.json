@@ -16,6 +16,9 @@
 		, "jugglingdb-postgres": "latest"
 		, "resource-juggling": "latest"
 
+		, "passport": "latest"
+		, "passport-facebook": "latest"
+
 		, "winston": "latest"
 		, "express-livereload": "latest"
 	}
