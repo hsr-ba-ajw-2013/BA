@@ -87,6 +87,12 @@ app.configure('development', function(){
 	});
 });
 
+app.configure('test', function() {
+	schema.automigrate(function() {
+		console.log('Schema automigrate done');
+	});
+})
+
 
 controllers(app, {verbose: !module.parent});
 
