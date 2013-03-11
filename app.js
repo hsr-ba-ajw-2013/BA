@@ -9,6 +9,8 @@ var express = require('express')
 	, http = require('http')
 	, path = require('path')
 
+	, controllers = require('./lib/controllers')
+
 	, passport = require('passport')
 	, FacebookStrategy = require('passport-facebook').Strategy
 
@@ -65,7 +67,7 @@ app.configure('development', function(){
 });
 
 
-
+controllers(app, {verbose: !module.parent});
 
 app.get('/', routes.index);
 app.get('/login', routes.index);
