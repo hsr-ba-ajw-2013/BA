@@ -53,11 +53,23 @@ app.configure('development', function(){
 	app.use(express.errorHandler());
 });
 
+
 /**
  * DB
  * FIXME: This is ugly :)
  */
 var schema = db(app, config);
+
+app.configure('test', function() {
+	schema.automigrate(function() {
+		console.log('Schema automigrate done');
+	});
+})
+
+schema.autoupdate(function() {
+	console.log('Schema autoupdate done');
+});
+
 
 
 app.get('/', routes.index);

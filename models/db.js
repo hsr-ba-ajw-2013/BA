@@ -12,10 +12,6 @@ module.exports = function init(app, config) {
 
 	require('./relationships')(Community, Task, User);
 
-	schema.autoupdate(function() {
-		console.log('Schema autoupdate done');
-	});
-
 	app.resource('community', resourceJuggling.getResource({
 		schema: schema
 		, name: 'Community'
