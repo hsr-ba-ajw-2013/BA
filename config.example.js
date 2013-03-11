@@ -4,7 +4,7 @@ module.exports = {
 	db: {
 		type: 'sqlite3'
 		, options: {
-			database: ':memory:'
+			database: './roomies.db'
 		}
 	}
 
