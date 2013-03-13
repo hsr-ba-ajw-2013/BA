@@ -2,10 +2,13 @@
  * Community Controller
  */
 
-var prefix = '/community';
+var PREFIX = '/community';
+
+var loginRequired = require('../policies/login-required');
 
 module.exports = function(app) {
-	app.get(prefix + '/', index);
+	app.all(PREFIX + '*', loginRequired);
+	app.get(PREFIX + '/', index);;
 }
 
 var index = function(req, res) {
