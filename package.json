@@ -24,9 +24,7 @@
 	}
 
 	, "devDependencies": {
-		"jugglingdb-sqlite3": "latest"
-
-		, "supertest": "latest"
+		"supertest": "latest"
 		, "mocha": "latest"
 		, "chai": "latest"
 	}

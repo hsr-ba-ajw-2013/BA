@@ -13,6 +13,5 @@ module.exports = {
 		, clientSecret: "EXAMPLE"
 	}
 
-	, cookieSecret: 'ahsdfk vap895uit$£CàXGé 45iogz89cioxöjklymräTGST'
-	, sessionSecret: "ajd 98xp£4ö5gjvcy$AàLéçT GJLéYX£SDLK ZH%ITéLkvcbmyäàWàç%"
+	, sessionSecret: "CHANGEME"
 }

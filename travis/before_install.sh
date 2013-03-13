@@ -1,3 +1,3 @@
 #!/bin/sh
 
-cp config.example.js config.js
+cp config.example.js config_test.js
