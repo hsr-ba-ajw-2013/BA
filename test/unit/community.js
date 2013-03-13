@@ -5,6 +5,7 @@ var should = require('chai').should
 	, db = require('../../models/db');
 
 	var schema = db(config);
+	schema.automigrate();
 
 	describe('Get all communities', function(){
 		// yes, I know - it doesn't make any sense this test. - POC
