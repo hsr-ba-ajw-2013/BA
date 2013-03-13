@@ -1,5 +1,5 @@
 {
-	"name": "roomies-prototype-express"
+	"name": "Roomies"
 	, "version": "0.0.1"
 	, "private": true
 	, "scripts": {
@@ -13,9 +13,8 @@
 		, "express-resource": "latest"
 		, "express-ejs-layouts": "latest"
 
-		, "jugglingdb": "latest"
-		, "jugglingdb-postgres": "latest"
-		, "resource-juggling": "latest"
+		, "sequelize": "latest"
+		, "pg": "latest"
 
 		, "passport": "latest"
 		, "passport-facebook": "latest"
@@ -25,7 +24,7 @@
 	}
 
 	, "devDependencies": {
-		"jugglingdb-sqlite3": "latest"
+		"sqlite3": "latest"
 		, "supertest": "latest"
 		, "mocha": "latest"
 		, "chai": "latest"

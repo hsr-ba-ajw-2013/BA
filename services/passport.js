@@ -2,7 +2,7 @@
  * Passport configuration
  */
 
-module.exports = function(config, schema) {
+module.exports = function(config, sequelize) {
 	var express = require('express')
 		, passport = require('passport')
 		, FacebookStrategy = require('passport-facebook').Strategy
@@ -17,25 +17,28 @@ module.exports = function(config, schema) {
 			, callbackURL: config.facebook.callbackURL
 		},
 		function findOrCreateUser(accessToken, refreshToken, profile, done) {
-			var User = schema.models.User;
-			User.findOne({where: {facebookId: profile.id, active: true}}, function(err, user) {
-				if(err !== null) {
-					return done(err);
-				}
-				if(user === null) {
-					var user = new User({
+			var User = sequelize.daoFactoryManager.getDAO('User');
+			User.find({where: {facebookId: profile.id}}).success(function(user) {
+				if (!user) {
+					User.create({
 						facebookId: profile.id,
 						name: profile.displayName
-					});
-					user.save(function(err, foobar) {
-						if (err !== null) {
-							return done(err);
-						}
-						done(null, user);
-					});
+					}).success(function(user) {
+						console.log('SUCCESS');
+						return done(null, user);
+					}).error(function(err) {
+						console.log('ERROR');
+						return done(err);
+					})
 				} else {
-					return done(null, user);
+					if (!user.disabled) {
+						console.log('foobar');
+						return done(null, user);
+					}
+					return done('User disabled');
 				}
+			}).error(function(err) {
+				return done(err);
 			});
 		}
 	));
@@ -45,9 +48,11 @@ module.exports = function(config, schema) {
 	});
 
 	passport.deserializeUser(function(id, done) {
-		var User = schema.models.User;
-		User.find(id, function(err, user) {
-			done(err, user);
+		var User = sequelize.daoFactoryManager.getDAO('User');
+		User.find(id).success(function(user) {
+			done(null, user);
+		}).error(function(err) {
+			done(err);
 		});
 	});
 

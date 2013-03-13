@@ -2,9 +2,13 @@
 
 module.exports = {
 	db: {
-		type: 'sqlite3'
+		database: 'roomies'
+		, username: 'roomies'
+		, password: '12345'
 		, options: {
-			database: ':memory:'
+			host: 'localhost'
+			, port: 5432
+			, dialect: 'postgres'
 		}
 	}
 

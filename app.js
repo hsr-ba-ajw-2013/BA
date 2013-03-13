@@ -9,7 +9,7 @@ var express = require('express')
 
 	, sass = require('node-sass')
 
-	, db = require('./models/db')
+	, db = require('./lib/db')
 	, livereload = require('express-livereload')
 	, expressLayouts = require('express-ejs-layouts')
 
@@ -24,8 +24,8 @@ var express = require('express')
  * DB
  * FIXME: This is ugly :)
  */
-var schema = db(config);
-app.set('dbschema', schema);
+var sequelize = db(config);
+app.set('db', sequelize);
 
 /**
  * Configure express
@@ -50,7 +50,7 @@ app.configure(function(){
 	app.use(express.cookieParser());
 	app.use(express.session({ secret: config.sessionSecret }));
 
-	app.use(require('./services/passport')(config, schema));
+	app.use(require('./services/passport')(config, sequelize));
 
 	app.use(sass.middleware({
 		src: path.join(__dirname, 'public', 'stylesheets', 'sass')
@@ -62,22 +62,10 @@ app.configure(function(){
 	app.use(app.router);
 });
 
-app.use(require('./services/api')(schema));
-
 
 app.configure('development', function(){
 	app.use(express.errorHandler());
-
-	schema.autoupdate(function() {
-		console.log('Schema autoupdate done');
-	});
 });
-
-app.configure('test', function() {
-	schema.automigrate(function() {
-		console.log('Schema automigrate done');
-	});
-})
 
 // livereload
 livereload(app, config={});

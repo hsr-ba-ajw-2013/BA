@@ -5,12 +5,10 @@ var request = require('supertest')
 	, expect = require('chai').expect
 	, assert = require('chai').assert;
 
-	describe('GET /api/community', function(){
-		it('should respond with json', function(done){
+	describe('GET /community', function(){
+		it('should respond with 401', function(done){
 			request(app)
-				.get('/api/community')
-				.set('Accept', 'application/json')
-				.expect('Content-Type', /json/)
-				.expect(200, done);
+				.get('/community')
+				.expect(401, done);
 		});
 	});
