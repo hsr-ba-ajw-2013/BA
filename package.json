@@ -31,6 +31,10 @@
 		, "chai": "latest"
 	}
 
+	, "engines": {
+		"node": ">=0.8 <= 0.10"
+	}
+
 	,"contributors": [
 		{
 			"name": "Manuel Alabor",
