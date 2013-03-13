@@ -1,7 +1,7 @@
 var should = require('chai').should
 	, expect = require('chai').expect
 	, assert = require('chai').assert
-	, config = require('../../config')
+	, config = require('../../config_test')
 	, db = require('../../models/db');
 
 	var schema = db(config);
