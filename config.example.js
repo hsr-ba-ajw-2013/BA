@@ -1,7 +1,7 @@
 "use strict";
 
 module.exports = {
-	db: {
+	/*db: {
 		database: 'roomies'
 		, username: 'roomies'
 		, password: '12345'
@@ -9,6 +9,12 @@ module.exports = {
 			host: 'localhost'
 			, port: 5432
 			, dialect: 'postgres'
+		}
+	}*/
+	db: {
+		database: 'roomies_test'
+		, options: {
+			dialect: 'sqlite'
 		}
 	}
 
