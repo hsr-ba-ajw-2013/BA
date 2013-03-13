@@ -2,9 +2,11 @@
  * Passport configuration
  */
 
-modules.exports = function(config, schema) {
-	var app = express(),
-		passport = require('passport');
+module.exports = function(config, schema) {
+	var express = require('express')
+		, passport = require('passport')
+		, FacebookStrategy = require('passport-facebook').Strategy
+		, app = express();
 
 	app.use(passport.initialize());
 	app.use(passport.session());

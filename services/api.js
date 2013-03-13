@@ -3,9 +3,10 @@
  */
 
 module.exports = function(schema) {
-	var resource = require('express-resource'),
-		resourceJuggling = require('resourceJuggling'),
-		app = express();
+	var express = require('express')
+		, resource = require('express-resource')
+		, resourceJuggling = require('resource-juggling')
+		, app = express();
 
 	app.resource('community', resourceJuggling.getResource({
 		schema: schema

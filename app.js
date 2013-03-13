@@ -7,8 +7,6 @@ var express = require('express')
 	, http = require('http')
 	, path = require('path')
 
-	, controllers = require('./lib/controllers')
-
 	, sass = require('node-sass')
 
 	, db = require('./models/db')
@@ -18,8 +16,8 @@ var express = require('express')
 	, app = express()
 
 	, configFileName = 'config' +
-		app.settings.env === 'test' ? '_test' : ''
-	, config = require(path.join(__dirname, configFileName))
+		(app.settings.env === 'test' ? '_test' : '')
+	, config = require(path.join(__dirname, configFileName));
 
 /**
  * DB
@@ -76,12 +74,12 @@ app.configure('test', function() {
 	});
 })
 
-
-controllers(app, {verbose: !module.parent});
-
-
 // livereload
-livereload(app, config={})
+livereload(app, config={});
+
+// TODO: outsource to own file (or maybe even dynamic);
+require('./controllers/home')(app);
+require('./controllers/community')(app);
 
 http.createServer(app).listen(app.get('port'), function(){
 	console.log("Express server listening on port " + app.get('port'));

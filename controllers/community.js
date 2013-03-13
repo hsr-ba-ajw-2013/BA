@@ -2,8 +2,12 @@
  * Community Controller
  */
 
-exports.prefix = '/community';
+var prefix = '/community';
 
-exports.index = function(req, res) {
+module.exports = function(app) {
+	app.get(prefix + '/', index);
+}
+
+var index = function(req, res) {
 	res.send(200);
 };

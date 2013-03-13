@@ -2,7 +2,10 @@
  * Home Controller
  */
 
+module.exports = function(app) {
+	app.get('/', index);
+}
 
-exports.index = function(req, res) {
+var index = function(req, res) {
 	res.render('index', { title: 'Express' });
 };
