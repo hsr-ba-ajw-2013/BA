@@ -11,6 +11,7 @@
 		, "ejs": "latest"
 		, "node-sass": "latest"
 		, "express-resource": "latest"
+		, "express-ejs-layouts": "latest"
 
 		, "jugglingdb": "latest"
 		, "jugglingdb-postgres": "latest"

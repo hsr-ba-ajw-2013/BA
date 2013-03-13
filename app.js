@@ -11,6 +11,7 @@ var express = require('express')
 
 	, db = require('./models/db')
 	, livereload = require('express-livereload')
+	, expressLayouts = require('express-ejs-layouts')
 
 
 	, app = express()
@@ -33,6 +34,10 @@ app.configure(function(){
 	app.set('port', process.env.PORT || 3000);
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
+	app.set('layout', 'layouts/default');
+
+	app.use(expressLayouts);
+
 	app.use(express.favicon(path.join(__dirname, 'public', 'images', 'favicon.ico'), {
 		// 30 days
 		maxAge: 2592000000
