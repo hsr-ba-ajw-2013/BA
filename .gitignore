@@ -6,3 +6,4 @@ config.development.js
 .DS_Store
 test-cov
 *-coverage.html
+.vagrant
