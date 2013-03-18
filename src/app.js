@@ -16,8 +16,7 @@ var express = require('express')
 
 	, app = express()
 
-	, configFileName = '../config' +
-		(app.settings.env === 'test' ? '_test' : '')
+	, configFileName = '../config.' + app.settings.env
 	, config = require(path.join(__dirname, configFileName));
 
 /**

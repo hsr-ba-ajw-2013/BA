@@ -1,12 +1,8 @@
-var chai = require('chai')
-	, expect = chai.expect
-	, config = require('../../config_test')
-	, db = require('../../src/lib/db');
-
-	chai.should();
+var db = require('../../src/lib/db');
 
 	var sequelize = db(config);
-	describe('Get all communities', function(){
+
+	describe('Community', function(){
 		// yes, I know - it doesn't make any sense this test. - POC
 		it('should not have any communities', function(done){
 			(function() {
