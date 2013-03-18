@@ -21,6 +21,7 @@
 
 		, "winston": "latest"
 		, "express-livereload": "latest"
+		, "i18n": "latest"
 	}
 
 	, "devDependencies": {

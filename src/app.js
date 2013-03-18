@@ -13,6 +13,7 @@ var express = require('express')
 	, livereload = require('express-livereload')
 	, expressLayouts = require('express-ejs-layouts')
 
+	, i18n = require('i18n')
 
 	, app = express()
 
@@ -36,6 +37,28 @@ app.configure(function(){
 	app.set('layout', 'layouts/default');
 	app.configure('development', function() {
 		app.use(express.logger('dev'));
+	});
+
+	/**
+	 * i18n
+	 */
+	i18n.configure({
+    	locales:['en', 'de']
+    	, directory: 'src/locales'
+    	, extension: '.js'
+    	, debug: true
+    });
+	app.use(i18n.init);
+	// binding template helpers to request (Credits to https://github.com/enyo #12)
+	app.use(function(req, res, next) {
+		res.locals.__ = res.__ = function() {
+			return i18n.__.apply(req, arguments);
+		};
+		res.locals.__n = res.__n = function() {
+			return i18n.__n.apply(req, arguments);
+		};
+		// do not forget this, otherwise your app will hang
+		next();
 	});
 
 	app.use(expressLayouts);
