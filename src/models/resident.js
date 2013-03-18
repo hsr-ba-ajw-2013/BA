@@ -14,7 +14,7 @@ module.exports = function init(sequelize, DataTypes) {
 		, disabled: {
 			type: DataTypes.BOOLEAN
 			, allowNull: false
-			, defaultValue: false
+			, defaultValue: true
 		}
 	});
 };
