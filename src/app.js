@@ -13,6 +13,8 @@ var express = require('express')
 	, livereload = require('express-livereload')
 	, expressLayouts = require('express-ejs-layouts')
 
+	, browserify = require('browserify-middleware')
+
 	, i18n = require('i18n')
 
 	, app = express()
@@ -64,6 +66,13 @@ app.configure(function(){
 	app.use(express.favicon(path.join(__dirname, 'public', 'images', 'favicon.ico'), {
 		// 30 days
 		maxAge: 2592000000
+	}));
+
+	app.use('/js', browserify('public/javascripts', {
+		require: {
+			jquery: 'public/javascripts/lib/jquery-1.9.1'
+			, underscore: '/js/lib/lodash.compat'
+		}
 	}));
 
 	app.use(express.bodyParser());

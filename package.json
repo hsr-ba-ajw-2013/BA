@@ -22,6 +22,9 @@
 		, "winston": "latest"
 		, "express-livereload": "latest"
 		, "i18n": "latest"
+
+		, "browserify-middleware": "latest"
+		, "underscore": "latest"
 	}
 
 	, "devDependencies": {
