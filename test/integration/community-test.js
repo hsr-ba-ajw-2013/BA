@@ -1,6 +1,6 @@
 var request = require('supertest')
 	, path = require('path')
-	, app = require(path.join(__dirname, '..', '..', 'app.js')).app
+	, app = require(path.join(__dirname, '..', '..', 'index.js')).app
 	, should = require('chai').should
 	, expect = require('chai').expect
 	, assert = require('chai').assert;

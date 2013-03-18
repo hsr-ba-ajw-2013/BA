@@ -1,7 +1,7 @@
 var chai = require('chai')
 	, expect = chai.expect
 	, config = require('../../config_test')
-	, db = require('../../lib/db');
+	, db = require('../../src/lib/db');
 
 	chai.should();
 

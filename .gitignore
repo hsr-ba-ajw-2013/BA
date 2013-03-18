@@ -3,3 +3,6 @@ npm-debug.log
 config.js
 config_test.js
 *.db
+.DS_Store
+test-cov
+*-coverage.html

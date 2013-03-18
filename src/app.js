@@ -16,7 +16,7 @@ var express = require('express')
 
 	, app = express()
 
-	, configFileName = 'config' +
+	, configFileName = '../config' +
 		(app.settings.env === 'test' ? '_test' : '')
 	, config = require(path.join(__dirname, configFileName));
 
@@ -35,6 +35,9 @@ app.configure(function(){
 	app.set('views', __dirname + '/views');
 	app.set('view engine', 'ejs');
 	app.set('layout', 'layouts/default');
+	app.configure('development', function() {
+		app.use(express.logger('dev'));
+	});
 
 	app.use(expressLayouts);
 
@@ -42,7 +45,6 @@ app.configure(function(){
 		// 30 days
 		maxAge: 2592000000
 	}));
-	app.use(express.logger('dev'));
 
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
@@ -75,7 +77,9 @@ require('./controllers/home')(app);
 require('./controllers/community')(app);
 
 http.createServer(app).listen(app.get('port'), function(){
-	console.log("Express server listening on port " + app.get('port'));
+	app.configure('development', function() {
+		console.log("Express server listening on port " + app.get('port'));
+	});
 });
 
 

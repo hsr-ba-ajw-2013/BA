@@ -3,7 +3,7 @@
 	, "version": "0.0.1"
 	, "private": true
 	, "scripts": {
-		"start": "node app",
+		"start": "node index",
 		"test": "make test"
 	}
 	, "dependencies": {
@@ -28,6 +28,7 @@
 		, "supertest": "latest"
 		, "mocha": "latest"
 		, "chai": "latest"
+		, "jscover": "latest"
 	}
 
 	, "engines": {
