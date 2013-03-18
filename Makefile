@@ -24,7 +24,7 @@ test-unit-live:
 test-integration-live:
 	@$(TEST_LIVE_CMD) $(REPORTER) test/integration/*
 
-test-coverage:
+test-coverage: test
 	@$(COVERAGE_CMD)
 	@COVERAGE=1 $(TEST_CMD) $(COVERAGE_REPORTER) test/unit/*  > unit-coverage.html
 	@COVERAGE=1 $(TEST_CMD) $(COVERAGE_REPORTER) test/integration/* > integration-coverage.html
