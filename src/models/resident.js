@@ -11,7 +11,7 @@ module.exports = function init(sequelize, DataTypes) {
 			, unique: true
 		}
 		, name: DataTypes.STRING
-		, disabled: {
+		, enabled: {
 			type: DataTypes.BOOLEAN
 			, allowNull: false
 			, defaultValue: true
