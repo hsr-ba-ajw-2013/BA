@@ -60,5 +60,11 @@ module.exports = function(config, sequelize) {
 		, failureFlash: true
 	}));
 
+	app.use(function(req, res, next) {
+		// assign user to the template
+		res.locals.user = req.user;
+		next();
+	});
+
 	return app;
 }
