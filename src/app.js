@@ -43,11 +43,9 @@ app.configure(function(){
 	 * i18n
 	 */
 	i18n.configure({
-    	locales:['en', 'de']
-    	, directory: 'src/locales'
-    	, extension: '.js'
-    	, debug: true
-    });
+		locales:['en', 'de']
+		, directory: 'src/locales'
+	});
 	app.use(i18n.init);
 	// binding template helpers to request (Credits to https://github.com/enyo #12)
 	app.use(function(req, res, next) {
