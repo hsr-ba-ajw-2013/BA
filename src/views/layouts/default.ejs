@@ -5,9 +5,13 @@
 		<link rel='stylesheet' href='/stylesheets/style.css' />
 
 		<script src="/js/roomies.js"></script>
+		<script>
+			Roomies.init(<%- JSON.stringify(config) %>, window);
+		</script>
 		<%- LRScript %>
 	</head>
 	<body>
 		<%- body %>
+		<div id="fb-root"></div>
 	</body>
 </html>

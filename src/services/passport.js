@@ -14,7 +14,7 @@ module.exports = function(config, sequelize) {
 	passport.use(new FacebookStrategy({
 			clientID: config.facebook.clientID
 			, clientSecret: config.facebook.clientSecret
-			, callbackURL: config.facebook.callbackURL
+			, callbackURL: config.facebook.callbackUrl
 		},
 		function findOrCreateResident(accessToken, refreshToken, profile, done) {
 			var Resident = sequelize.daoFactoryManager.getDAO('Resident');

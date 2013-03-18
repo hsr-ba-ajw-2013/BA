@@ -84,13 +84,24 @@ app.configure(function(){
 	app.use(require('./services/passport')(config, sequelize));
 
 	app.use(sass.middleware({
-		src: path.join(__dirname, 'public', 'stylesheets', 'sass')
-		, dest: path.join(__dirname, 'public', 'stylesheets')
+		src: __dirname
+		, dest: path.join(__dirname, 'public')
 		, debug: true
 	}));
 	app.use(express.static(path.join(__dirname, 'public')));
 
 	app.use(app.router);
+
+
+	app.locals.config = {
+		facebook: {
+			clientID: config.facebook.clientID
+			, channelUrl: config.facebook.channelUrl
+			, checkStatus: config.facebook.checkStatus
+			, useCookies: config.facebook.useCookies
+			, parseXfbml: config.facebook.parseXfbml
+		}
+	};
 });
 
 

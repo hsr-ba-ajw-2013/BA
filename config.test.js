@@ -12,6 +12,11 @@ module.exports = {
 	, facebook: {
 		clientID: 1245567890
 		, clientSecret: "EXAMPLE"
+		, callbackUrl: '/auth/facebook/callback'
+		, channelUrl: '/fbchannel'
+		, checkStatus: true
+		, useCookies: true
+		, parseXfbml: false
 	}
 
 	, sessionSecret: "CHANGEME"
