@@ -12,41 +12,43 @@ language: node_js
 node_js:
   - 0.8
 
+script: "make test-coverage"
+
 env:
-global:
-    # GH_OAUTH_TOKEN is the oauth token generated as described at
-    # https://help.github.com/articles/creating-an-oauth-token-for-command-line-use
-    #
-    # curl -u 'username' -d '{"scopes":["repo"],"note":"push to gh-pages from travis"}' https://api.github.com/authorizations
-    #
-    # It must be encrypted using the travis gem
-    # http://about.travis-ci.org/docs/user/build-configuration/#Secure-environment-variables
-    #
-    # travis encrypt GH_OAUTH_TOKEN=b2797fff05e7461c4c8174fae08fb006cbadba9f
-    #
-    # Copy the resulting "secure" property here:
-    - secure: "fSAI8TnuhNQVp4/LT7KvZLkzecHZVAArigPz7Kbfqjt3zkVajMhzkJpN3rXS\nzA2KdrX1mSK0AYqmEVSci9z5mqVaVJXh+sXorRgUxkvc9ejGyMNUNX5skr70\nVfdzbZEaNbBtqQuTktDTJt6JaP6QIb5QDQ2X6ePLReN3Octr9jE="
+    global:
+        # GH_OAUTH_TOKEN is the oauth token generated as described at
+        # https://help.github.com/articles/creating-an-oauth-token-for-command-line-use
+        #
+        # curl -u 'username' -d '{"scopes":["repo"],"note":"push to gh-pages from travis"}' https://api.github.com/authorizations
+        #
+        # It must be encrypted using the travis gem
+        # http://about.travis-ci.org/docs/user/build-configuration/#Secure-environment-variables
+        #
+        # travis encrypt GH_OAUTH_TOKEN=b2797fff05e7461c4c8174fae08fb006cbadba9f
+        #
+        # Copy the resulting "secure" property here:
+        - secure: "fSAI8TnuhNQVp4/LT7KvZLkzecHZVAArigPz7Kbfqjt3zkVajMhzkJpN3rXS\nzA2KdrX1mSK0AYqmEVSci9z5mqVaVJXh+sXorRgUxkvc9ejGyMNUNX5skr70\nVfdzbZEaNbBtqQuTktDTJt6JaP6QIb5QDQ2X6ePLReN3Octr9jE="
 
-    # GH_USER_NAME & GH_PROJECT_NAME
-    # The Github Account you created the OAuth token with and the repo you
-    # want to push the generated PDF to (gh-pages branch is used automatically)
-    - GH_USER_NAME: mweibel
-    - GH_PROJECT_NAME: BA
+        # GH_USER_NAME & GH_PROJECT_NAME
+        # The Github Account you created the OAuth token with and the repo you
+        # want to push the generated PDF to (gh-pages branch is used automatically)
+        - GH_USER_NAME: mweibel
+        - GH_PROJECT_NAME: BA
 
-    # GIT_AUTHOR_NAME & GIT_AUTHOR_EMAIL
-    # When pushing to the gh-pages branch, these informtion are used to
-    # perform the git commit
-    - GIT_AUTHOR_NAME: "Michael Weibel"
-    - GIT_AUTHOR_EMAIL: "michael.weibel@gmail.com"
+        # GIT_AUTHOR_NAME & GIT_AUTHOR_EMAIL
+        # When pushing to the gh-pages branch, these informtion are used to
+        # perform the git commit
+        - GIT_AUTHOR_NAME: "Michael Weibel"
+        - GIT_AUTHOR_EMAIL: "michael.weibel@gmail.com"
 
-    # CI_HOME
-    # A shortcut to the directory where travis cloned the actual git repo
-    - CI_HOME=`pwd`/$TRAVIS_REPO_SLUG
+        # CI_HOME
+        # A shortcut to the directory where travis cloned the actual git repo
+        - CI_HOME=`pwd`/$TRAVIS_REPO_SLUG
 
-    # RESULT_UNIT_COVERAGE_PATH
-    # A shortcut to the built unit-coverage.html
-    - RESULT_UNIT_COVERAGE_PATH=$CI_HOME/unit-coverage.html
+        # RESULT_UNIT_COVERAGE_PATH
+        # A shortcut to the built unit-coverage.html
+        - RESULT_UNIT_COVERAGE_PATH=$CI_HOME/unit-coverage.html
 
-    # RESULT_INTEGRATION_COVERAGE_PATH
-    # A shortcut to the built integration-coverage.html
-    - RESULT_INTEGRATION_COVERAGE_PATH=$CI_HOME/integration-coverage.html
+        # RESULT_INTEGRATION_COVERAGE_PATH
+        # A shortcut to the built integration-coverage.html
+        - RESULT_INTEGRATION_COVERAGE_PATH=$CI_HOME/integration-coverage.html
