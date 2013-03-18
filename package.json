@@ -13,7 +13,7 @@
 		, "express-resource": "latest"
 		, "express-ejs-layouts": "latest"
 
-		, "sequelize": "latest"
+		, "sequelize": "git://github.com/sequelize/sequelize.git#5788e91ab95849cb54bd85b92c8e733be32ec544"
 		, "pg": "latest"
 
 		, "passport": "latest"

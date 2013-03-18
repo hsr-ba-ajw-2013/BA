@@ -1,13 +1,13 @@
 "use strict";
 
 /**
- * User model
+ * Resident model
  */
 
 module.exports = function init(sequelize, DataTypes) {
-	return sequelize.define('User', {
+	return sequelize.define('Resident', {
 		facebookId: {
-			type: DataTypes.INTEGER
+			type: DataTypes.BIGINT
 			, unique: true
 		}
 		, name: DataTypes.STRING

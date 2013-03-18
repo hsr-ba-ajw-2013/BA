@@ -12,12 +12,12 @@ module.exports = function init(config) {
 		sequelize.import(path.join(modelPath, fileName));
 	});
 
-	var User = sequelize.daoFactoryManager.getDAO('User'),
+	var Resident = sequelize.daoFactoryManager.getDAO('Resident'),
 		Task = sequelize.daoFactoryManager.getDAO('Task'),
 		Community = sequelize.daoFactoryManager.getDAO('Community');
 
-	User.hasMany(Task, {as: 'creator', foreignKey: 'creator_id'});
-	User.hasMany(Task, {as: 'fulfillor', foreignKey: 'fulfillor_id'});
+	Resident.hasMany(Task, {as: 'creator', foreignKey: 'creatorId'});
+	Resident.hasMany(Task, {as: 'fulfillor', foreignKey: 'fulfillorId'});
 
 	Community.hasMany(Task);
 
