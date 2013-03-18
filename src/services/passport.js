@@ -16,24 +16,21 @@ module.exports = function(config, sequelize) {
 			, clientSecret: config.facebook.clientSecret
 			, callbackURL: config.facebook.callbackURL
 		},
-		function findOrCreateUser(accessToken, refreshToken, profile, done) {
-			var User = sequelize.daoFactoryManager.getDAO('User');
-			User.find({where: {facebookId: profile.id}}).success(function(user) {
-				if (!user) {
-					User.create({
+		function findOrCreateResident(accessToken, refreshToken, profile, done) {
+			var Resident = sequelize.daoFactoryManager.getDAO('Resident');
+			Resident.find({where: {facebookId: profile.id}}).success(function(resident) {
+				if (!resident) {
+					Resident.create({
 						facebookId: profile.id,
 						name: profile.displayName
-					}).success(function(user) {
-						console.log('SUCCESS');
-						return done(null, user);
+					}).success(function(resident) {
+						return done(null, resident);
 					}).error(function(err) {
-						console.log('ERROR');
 						return done(err);
 					})
 				} else {
-					if (!user.disabled) {
-						console.log('foobar');
-						return done(null, user);
+					if (resident.enabled) {
+						return done(null, resident);
 					}
 					return done('User disabled');
 				}
@@ -43,14 +40,14 @@ module.exports = function(config, sequelize) {
 		}
 	));
 
-	passport.serializeUser(function(user, done) {
-		done(null, user.id);
+	passport.serializeUser(function(resident, done) {
+		done(null, resident.id);
 	});
 
 	passport.deserializeUser(function(id, done) {
-		var User = sequelize.daoFactoryManager.getDAO('User');
-		User.find(id).success(function(user) {
-			done(null, user);
+		var Resident = sequelize.daoFactoryManager.getDAO('Resident');
+		Resident.find(id).success(function(resident) {
+			done(null, resident);
 		}).error(function(err) {
 			done(err);
 		});
