@@ -10,7 +10,8 @@
 # Following ports on your local machine will be forwarded to this box' applications:
 # * 2222 -> 22 (SSH)
 # * 9000 -> 80 (HTTP)
-# * 9001 -> 5432 (PostgreSQL)
+# * 9001 -> 3000 (Express.js Instance; the actual Roomies Application)
+# * 9002 -> 5432 (PostgreSQL)
 #
 # Modify your Vagrantfile if you need any specific port forwardings.
 #
