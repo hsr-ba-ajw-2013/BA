@@ -5,6 +5,7 @@ module.exports = {
 		database: 'roomies_test'
 		, options: {
 			dialect: 'sqlite'
+			, logging: false
 		}
 	}
 
