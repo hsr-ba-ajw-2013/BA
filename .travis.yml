@@ -2,9 +2,6 @@
 # .travis.yml
 #
 
-before_install:
-  - ./travis/before_install.sh
-
 after_success:
     - ./travis/after_success.sh
 
@@ -49,6 +46,6 @@ env:
         # A shortcut to the built unit-coverage.html
         - RESULT_UNIT_COVERAGE_PATH=$CI_HOME/unit-coverage.html
 
-        # RESULT_INTEGRATION_COVERAGE_PATH
+        # RESULT_FUNCTIIONAL_COVERAGE_PATH
         # A shortcut to the built integration-coverage.html
-        - RESULT_INTEGRATION_COVERAGE_PATH=$CI_HOME/integration-coverage.html
+        - RESULT_FUNCTIIONAL_COVERAGE_PATH=$CI_HOME/functional-coverage.html
