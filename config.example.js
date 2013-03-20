@@ -29,6 +29,10 @@ module.exports = {
 		, parseXfbml: false
 	}
 
+	, http: {
+		port: 3000
+	}
+
 	, logging: {
 		errorLogLevel: "info"
 		, requestLogLevel: "info"

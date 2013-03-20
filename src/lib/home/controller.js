@@ -10,7 +10,6 @@ module.exports = function(app) {
 }
 
 var index = function(req, res) {
-	console.log("homectrl", req.user, res.locals.user);
 	res.render('home/views/index', { title: 'Express' });
 };
 
