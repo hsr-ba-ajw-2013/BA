@@ -1,6 +1,7 @@
 /**
  * Home Controller
  */
+"use strict";
 
 module.exports = function(app) {
 	app.get('/', index);
@@ -9,9 +10,10 @@ module.exports = function(app) {
 }
 
 var index = function(req, res) {
-	res.render('index', { title: 'Express' });
+	console.log("homectrl", req.user, res.locals.user);
+	res.render('home/views/index', { title: 'Express' });
 };
 
 var fbchannel = function(req, res) {
-	res.render('fbchannel', {layout: false});
+	res.render('home/views/fbchannel', {layout: false});
 }

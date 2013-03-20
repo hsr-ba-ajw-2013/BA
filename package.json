@@ -20,6 +20,8 @@
 		, "passport-facebook": "latest"
 
 		, "winston": "latest"
+		, "express-winston": "latest"
+
 		, "express-livereload": "latest"
 		, "i18n": "latest"
 

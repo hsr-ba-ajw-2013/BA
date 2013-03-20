@@ -1,3 +1,5 @@
+"use strict";
+
 module.exports = (function(config, window) {
 	window.fbAsyncInit = function() {
 		// init the FB JS SDK

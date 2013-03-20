@@ -1,8 +1,7 @@
-"use strict";
-
 /**
  * Task model
  */
+"use strict";
 
 module.exports = function init(sequelize, DataTypes) {
 	return sequelize.define('Task', {
