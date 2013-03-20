@@ -24,10 +24,20 @@ function main(config) {
 	config.srcDir = __dirname;
 
 	middleware(app, config);
-	community(app, config);
+
 	home(app, config);
-	resident(app, config);
-	task(app, config);
+
+	// FIXME: Ugly
+	var communityRelationships = community(app, config)
+		, residentRelationships = resident(app, config)
+		, taskRelationships = task(app, config);
+
+	communityRelationships(app);
+	residentRelationships(app);
+	taskRelationships(app);
+
+	// sync db
+	app.get('db').sync();
 
 	return app;
 }

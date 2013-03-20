@@ -34,9 +34,16 @@ test-coverage: test
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) test/*-test.js > integration-coverage.html
 
 setup:
+	@echo "Removing dependencies"
 	@rm -Rf ./node_modules
+	@echo "Cleaning npm cache"
 	@npm cache clean
+	@echo "Installing dependencies"
 	@npm install
+	@echo "Copying configs"
+	@cp -v config.development.js config.development.old.js
+	@cp -v config.example.js config.development.js
+	@echo "Done. You should now be able to start using `npm start`."
 
 start:
 	@npm start

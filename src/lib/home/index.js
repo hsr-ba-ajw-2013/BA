@@ -5,4 +5,6 @@ var controller = require('./controller')
 
 module.exports = function(app, config) {
 	controller(app);
+
+	return;
 };

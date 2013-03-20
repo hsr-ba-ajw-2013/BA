@@ -1,20 +1,35 @@
-"use strict";
-
 /**
  * Resident model
  */
+ "use strict";
 
-module.exports = function init(sequelize, DataTypes) {
-	return sequelize.define('Resident', {
+var Sequelize = require('sequelize');
+
+module.exports = function init(app, config) {
+	var db = app.get('db');
+	db.define('Resident', {
 		facebookId: {
-			type: DataTypes.BIGINT
+			type: Sequelize.BIGINT
 			, unique: true
 		}
-		, name: DataTypes.STRING
+		, name: Sequelize.STRING
 		, enabled: {
-			type: DataTypes.BOOLEAN
+			type: Sequelize.BOOLEAN
 			, allowNull: false
 			, defaultValue: true
 		}
 	});
+
+	return createRelationships;
 };
+
+function createRelationships(app) {
+	var db = app.get('db')
+		, Resident = db.daoFactoryManager.getDAO('Resident')
+		, Task = db.daoFactoryManager.getDAO('Task')
+		, Community = db.daoFactoryManager.getDAO('Community');
+
+	Resident.hasMany(Task, {as: 'creator', foreignKey: 'creatorId'});
+	Resident.hasMany(Task, {as: 'fulfillor', foreignKey: 'fulfillorId'});
+	Resident.belongsTo(Community);
+}
