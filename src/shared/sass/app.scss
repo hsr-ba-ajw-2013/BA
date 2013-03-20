@@ -1,0 +1,30 @@
+/* Import Frameworks: */
+@import "vendor/foundation/normalize";
+@import "vendor/foundation/foundation";
+@import "vendor/font-awesome";
+
+/* Resources: */
+@import "colors";
+
+/* Roomies Styles: */
+@import "_navigation-bar";
+
+body {
+	margin-top: $navigation-bar-height + 20px;
+}
+
+.center {
+	text-align: center;
+}
+
+.facebook-button {
+	@include button-base;
+	@include button-size($button-tny, false, false);
+	@include button-style(#3e5c9f, true, false);
+	@include single-transition;
+	@include inset-shadow(true);
+
+	& [class*=" icon-"] {
+		padding-right: 8px;
+	}
+}

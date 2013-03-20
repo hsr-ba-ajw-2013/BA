@@ -1,0 +1,122 @@
+
+$navigation-bar-bg: $color-accent-1;
+$navigation-bar-item-bg: $color-accent-1;
+$navigation-bar-item-hover-bg: lighten($navigation-bar-bg, 5%);
+$navigation-bar-item-active-bg: darken($navigation-bar-bg, 3%);
+
+$navigation-bar-height: 53px;
+
+
+.fixed-navigation {
+	width: 100%;
+	#{$default-float}: 0;
+	position: fixed;
+	top: 0;
+	z-index: 99;
+}
+
+.navigation {
+	background-color: $navigation-bar-bg;
+	width: 100%;
+	height: $navigation-bar-height;
+	line-height: $navigation-bar-height;
+	box-shadow: 0 2px 5px #666;
+	margin-bottom: $navigation-bar-height + 15px;
+
+	@include clearfix;
+
+	.title-area {
+		float: left;
+
+		.banner {
+			display: block;
+			background-image: url('../images/banner.png');
+			background-repeat: no-repeat;
+			background-size: 166px 71px;
+			margin-left: -100px;
+			margin-top: -5px;
+			width: 166px;
+			height: 71px;
+		}
+	}
+
+	.nav-section {
+		#{$default-float}: 0;
+		position: relative;
+		width: auto;
+
+		ul {
+			width: auto;
+			height: auto;
+			display: inline;
+			margin: 0 10px;
+			list-style: none;
+			
+			li {
+				//display: block;
+				float: left; 
+
+				& > a {
+					display: inline-block;
+					color: white;
+					@include radius(5px);
+					width: 100%;
+
+					height: $navigation-bar-height - 14px;
+					margin-top: 7px;
+					padding: 7px 16px 7px 0;
+					width: 100%;
+
+					& [class*=" icon-"] {
+						width: $navigation-bar-height;
+						height: $navigation-bar-height;
+						text-align: center;
+					}
+
+					&:hover {
+						background-color: $navigation-bar-item-hover-bg;
+					}
+
+					&:active {
+						background-color: $navigation-bar-item-active-bg;
+					}
+				}
+
+				& span {
+					display: inline;
+					@extend .hide-for-small;
+				}
+
+				&.account {
+					.avatar {
+						@include radius(3px);
+						width: 25px;
+						height: 25px;
+						margin-left: 15px;
+						vertical-align: middle;
+					}
+
+					& > a {
+						padding: 7px 14px 7px 14px;
+					}
+				}
+			}	
+		}
+
+
+	}
+
+}
+
+@media only screen and (max-width: #{$small-screen}) {
+	.navigation {
+		.nav-section ul.left li > a {
+			padding-right: 0;
+		}
+
+		.nav-section ul.right li.account .avatar {
+			margin-right: 0;
+			margin-left: 1px;
+		}
+	}
+}

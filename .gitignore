@@ -1,9 +1,10 @@
 node_modules/
 npm-debug.log
 config.js
-config.development.js
+config.development*.js
 *.db
 .DS_Store
 test-cov
 *-coverage.html
 .vagrant
+.sass-cache/

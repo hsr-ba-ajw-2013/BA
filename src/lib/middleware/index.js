@@ -11,7 +11,6 @@ var browserify = require('./browserify')
 	, logger = require('./logger')
 	, passport = require('./passport')
 	, router = require('./router')
-	, sass = require('./sass')
 	, expressStatic = require('./static')
 	, view = require('./view');
 
@@ -25,8 +24,6 @@ module.exports = function(app, config) {
 	browserify(app, config);
 	http(app, config);
 	passport(app, config);
-
-	sass(app, config);
 
 	logger(app, config);
 	handler(app, config);
