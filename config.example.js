@@ -29,5 +29,12 @@ module.exports = {
 		, parseXfbml: false
 	}
 
+	, logging: {
+		errorLogLevel: "info"
+		, requestLogLevel: "info"
+		, disableErrorLog: false
+		, disableRequestLog: true
+	}
+
 	, sessionSecret: "CHANGEME"
 }

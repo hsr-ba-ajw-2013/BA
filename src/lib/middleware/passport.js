@@ -1,12 +1,14 @@
 /**
  * Passport configuration
  */
+"use strict";
 
-module.exports = function(config, sequelize) {
-	var express = require('express')
-		, passport = require('passport')
-		, FacebookStrategy = require('passport-facebook').Strategy
-		, app = express();
+var express = require('express')
+	, passport = require('passport')
+	, FacebookStrategy = require('passport-facebook').Strategy;
+
+module.exports = function(app, config) {
+	var db = app.get('db');
 
 	app.use(passport.initialize());
 	app.use(passport.session());
@@ -17,9 +19,10 @@ module.exports = function(config, sequelize) {
 			, callbackURL: config.facebook.callbackUrl
 		},
 		function findOrCreateResident(accessToken, refreshToken, profile, done) {
-			var Resident = sequelize.daoFactoryManager.getDAO('Resident');
+			var Resident = db.daoFactoryManager.getDAO('Resident');
 			Resident.find({where: {facebookId: profile.id}}).success(function(resident) {
 				if (!resident) {
+					console.log('create');
 					Resident.create({
 						facebookId: profile.id,
 						name: profile.displayName
@@ -29,6 +32,7 @@ module.exports = function(config, sequelize) {
 						return done(err);
 					})
 				} else {
+					console.log('ren', resident);
 					if (resident.enabled) {
 						return done(null, resident);
 					}
@@ -45,12 +49,18 @@ module.exports = function(config, sequelize) {
 	});
 
 	passport.deserializeUser(function(id, done) {
-		var Resident = sequelize.daoFactoryManager.getDAO('Resident');
+		var Resident = db.daoFactoryManager.getDAO('Resident');
 		Resident.find(id).success(function(resident) {
 			done(null, resident);
 		}).error(function(err) {
 			done(err);
 		});
+	});
+
+	app.use(function(req, res, next) {
+		// assign user to the template
+		res.locals.user = req.user;
+		next();
 	});
 
 	app.get('/auth/facebook', passport.authenticate('facebook'));
@@ -60,11 +70,8 @@ module.exports = function(config, sequelize) {
 		, failureFlash: true
 	}));
 
-	app.use(function(req, res, next) {
-		// assign user to the template
-		res.locals.user = req.user;
-		next();
-	});
+	app.set('passport', passport);
+
 
 	return app;
 }
