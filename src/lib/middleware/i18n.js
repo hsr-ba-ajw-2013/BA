@@ -9,7 +9,7 @@ module.exports = function(app, config) {
 	 */
 	i18n.configure({
 		locales:['en', 'de']
-		, directory: path.join(config.srcDir, 'locales')
+		, directory: path.join(config.srcDir, 'shared', 'locales')
 	});
 	app.use(i18n.init);
 
