@@ -66,7 +66,7 @@ precompile-sass:
 	@sass $(SCSS_PATH) $(CSS_PATH)
 
 precompile-sass-live:
-	@nodemon -w src/views/sass -e scss -x "make precompile-sass -f" Makefile
+	@nodemon -w src/shared/sass -e scss -x "make precompile-sass -f" Makefile
 
 
 .PHONY: test test-live test-unit test-integration test-unit-live test-integration-live test-coverage setup clean
