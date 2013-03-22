@@ -4,8 +4,7 @@
 "use strict";
 
 module.exports = function(req, res, next) {
-	console.log(req.user);
-	if (req.user !== undefined) {
+	if (req.isAuthenticated()) {
 		return next();
 	}
 	res.send(401);

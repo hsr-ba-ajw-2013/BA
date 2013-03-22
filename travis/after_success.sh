@@ -15,7 +15,7 @@ git checkout gh-pages
 
 echo '---- Copy latest coverage build ----'
 cp $RESULT_UNIT_COVERAGE_PATH ./
-cp $RESULT_INTEGRATION_COVERAGE_PATH ./
+cp $RESULT_FUNCTIIONAL_COVERAGE_PATH ./
 
 echo '---- Set git settings ----'
 git config --global user.name $GIT_AUTHOR_NAME

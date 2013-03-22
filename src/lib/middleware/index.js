@@ -30,12 +30,9 @@ module.exports = function(app, config) {
 
 	expressStatic(app, config);
 
-
-
 	router(app, config);
 
 	clientConfig(app, config);
-
 
 	livereload(app, config);
 };
