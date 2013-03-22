@@ -6,11 +6,11 @@ $include-html-button-classes: false;
 @import "vendor/font-awesome";
 
 /* Resources: */
-@import "colors";
+@import "_colors";
 
 /* Roomies Styles: */
 @import "_navigation-bar";
-
+@import "_buttons";
 
 
 body {
@@ -19,28 +19,4 @@ body {
 
 .center {
 	text-align: center;
-}
-
-.facebook-button {
-	@include button-base;
-	@include button-size($button-tny, false, false);
-	@include button-style(#3e5c9f, true, false);
-	@include single-transition;
-	@include inset-shadow(true);
-
-	& [class*=" icon-"] {
-		padding-right: 8px;
-	}
-}
-
-.button {
-	@include button-base;
-	@include button-size($button-sml, false, false);
-	@include button-style(lighten($color-accent-2, 5%), true, false);
-	@include single-transition;
-	@include inset-shadow(true);
-
-	& [class*=" icon-"] {
-		padding-right: 8px;
-	}
 }

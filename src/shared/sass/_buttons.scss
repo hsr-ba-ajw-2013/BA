@@ -1,0 +1,36 @@
+.button {
+	@include button-base;
+	@include button-size($button-tny, false, false);
+	@include button-style(lighten($color-accent-1, 1%), true, false);
+	@include single-transition;
+	@include inset-shadow(true);
+
+	& [class*=" icon-"] {
+		padding-right: 8px;
+	}
+}
+
+.facebook-button {
+	@include button-base;
+	@include button-size($button-tny, false, false);
+	@include button-style(#3e5c9f, true, false);
+	@include single-transition;
+	@include inset-shadow(true);
+
+	& [class^="icon-"], & [class*=" icon-"] {
+		padding-right: 3px;
+	}
+}
+
+.twitter-button {
+	@include button-base;
+	@include button-size($button-tny, false, false);
+	@include button-style(#eaeaea, true, false);
+	@include single-transition;
+	@include inset-shadow(true);
+
+	& [class^="icon-"], & [class*=" icon-"] {
+		color: #00aaf0;
+		padding-right: 5px;
+	}
+}
