@@ -11,7 +11,7 @@ var PREFIX = '/community'
 
 module.exports = function(app) {
 	app.all(PREFIX + '*', loginRequired);
-	app.get(PREFIX + '/', index);
+	app.get(PREFIX, index);
 	app.get(PREFIX + '/create', create);
 }
 
@@ -19,14 +19,13 @@ var index = function(req, res) {
 	var resident = req.user
 		, Resident = req.app.get('db').daoFactoryManager.getDAO('Resident')
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
-	console.log(resident);
 
 	resident.getCommunity().success(function(community) {
 		if (!community) {
-			return res.redirect('/community/create');
+			res.redirect('./create');
 		}
 	}).error(function(err) {
-		return res.redirect('/community/create');
+		res.redirect('./create');
 	});
 
 };

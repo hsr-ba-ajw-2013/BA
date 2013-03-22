@@ -65,8 +65,8 @@ module.exports = function(app, config) {
 
 	app.get('/auth/facebook', passport.authenticate('facebook'));
 	app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-		successRedirect: '/'
-		, failureRedirect: '/login'
+		successRedirect: '/community'
+		, failureRedirect: '/'
 		, failureFlash: true
 	}));
 

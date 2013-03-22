@@ -18,8 +18,10 @@ var express = require('express')
 
 
 
-function main(config) {
-	var app = express();
+function main() {
+	var app = express()
+		, configFileName = '../config.' + app.settings.env
+		, config = require(path.join(__dirname, configFileName));
 
 	config.srcDir = __dirname;
 
@@ -39,6 +41,11 @@ function main(config) {
 	// sync db
 	app.get('db').sync();
 
+	http.createServer(app).listen(config.http.port, function(){
+		console.log("Express server listening on port " + config.http.port);
+	});
+
+
 	return app;
 }
 
@@ -46,13 +53,6 @@ module.exports = main;
 
 if (module.parent === require.main) {
 	cluster(function() {
-		var env = process.env.NODE_ENV ? process.env.NODE_ENV : 'development'
-			, configFileName = '../config.' + env
-			, config = require(path.join(__dirname, configFileName));
-		var app = main(config);
-
-		http.createServer(app).listen(config.http.port, function(){
-			console.log("Express server listening on port " + config.http.port);
-		});
+		main();
 	});
 }
