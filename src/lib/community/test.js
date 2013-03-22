@@ -2,7 +2,7 @@ var request = require('supertest')
 	, superagent = require('superagent')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()
-	, passportMock = require(path.join(process.cwd, 'src', 'shared', 'test', 'passport-mock'));
+	, passportMock = require(path.join(process.cwd(), 'src', 'shared', 'test', 'passport-mock'));
 
 describe('GET /community unauthorized', function(){
 	it('should respond with 401', function(done){

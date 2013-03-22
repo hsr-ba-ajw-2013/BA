@@ -12,8 +12,6 @@ SCSS_PATH = src/shared/sass/app.scss
 CSS_PATH = src/public/stylesheets/app.css
 
 
-test: test-unit test-integration
-
 test: test-unit test-functional
 
 test-unit:
