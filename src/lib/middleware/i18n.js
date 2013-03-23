@@ -13,6 +13,8 @@ module.exports = function(app, config) {
 	});
 	app.use(i18n.init);
 
+	app.set('__', i18n.__);
+
 	// binding template helpers to request (Credits to https://github.com/enyo #12)
 	app.use(function(req, res, next) {
 		res.locals.__ = res.__ = function() {

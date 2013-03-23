@@ -9,6 +9,7 @@ var browserify = require('./browserify')
 	, layouts = require('./layouts')
 	, livereload = require('./livereload')
 	, logger = require('./logger')
+	, navigation = require('./navigation')
 	, passport = require('./passport')
 	, router = require('./router')
 	, expressStatic = require('./static')
@@ -24,6 +25,8 @@ module.exports = function(app, config) {
 	browserify(app, config);
 	http(app, config);
 	passport(app, config);
+
+	navigation(app, config);
 
 	logger(app, config);
 	handler(app, config);
