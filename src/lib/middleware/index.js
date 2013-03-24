@@ -13,7 +13,8 @@ var browserify = require('./browserify')
 	, passport = require('./passport')
 	, router = require('./router')
 	, expressStatic = require('./static')
-	, view = require('./view');
+	, view = require('./view')
+	, flash = require('./flash');
 
 module.exports = function(app, config) {
 	db(app, config);
@@ -24,6 +25,7 @@ module.exports = function(app, config) {
 	layouts(app, config);
 	browserify(app, config);
 	http(app, config);
+	flash(app, config);
 	passport(app, config);
 
 	navigation(app, config);
