@@ -8,10 +8,10 @@
 	}
 	, "dependencies": {
 		"express": "latest"
-		, "ejs": "latest"
 		, "node-sass": "latest"
 		, "express-resource": "latest"
-		, "express-ejs-layouts": "latest"
+
+		, "express-hbs": "latest"
 
 		, "sequelize": "git://github.com/sequelize/sequelize.git#5788e91ab95849cb54bd85b92c8e733be32ec544"
 		, "pg": "latest"
