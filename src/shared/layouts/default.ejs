@@ -1,17 +1,53 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title><%= __('Welcome') %> <%= title %></title>
-		<link rel='stylesheet' href='/stylesheets/style.css' />
+<head>
+	<meta charset="utf-8"/>
+	<title><%= title %> &middot; Roomies</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+	<meta name="viewport" content="width=320.1"/>
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="description" content=""/>
+	<meta name="author" content=""/>
 
-		<script src="/js/roomies.js"></script>
-		<script>
-			Roomies.init(<%- JSON.stringify(config) %>, window);
-		</script>
-		<%- LRScript %>
-	</head>
-	<body>
-		<%- body %>
-		<div id="fb-root"></div>
-	</body>
+	<link href="/stylesheets/app.css" rel="stylesheet"/>
+	<script src="/javascripts/custom.modernizr.js"></script>
+
+	<link rel="apple-touch-icon" sizes="144x144" href="/images/apple-touch-icon-144.png"/>
+	<link rel="apple-touch-icon" sizes="114x114" href="/images/apple-touch-icon-114.png"/>
+	<link rel="apple-touch-icon" sizes="72x72" href="/images/apple-touch-icon-72.png"/>
+	<link rel="apple-touch-icon" sizes="57x57" href="/images/apple-touch-icon-57.png"/>
+	<link rel="apple-touch-icon" href="/images/apple-touch-icon-57.png"/>
+	<link rel="apple-touch-startup-image" media="(device-width: 320px)" href="/images/apple-touch-startup-image-320x470.png"/>
+	<link rel="apple-touch-startup-image" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" href="/images/apple-touch-startup-image-640x920.png"/>
+	<link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" href="/images/apple-touch-startup-image-640x1096.png"/>
+	<script src="/js/roomies.js"></script>
+	<script>
+		Roomies.init(<%- JSON.stringify(config) %>, window);
+	</script>
+	<%- LRScript %>
+</head>
+
+<body>
+	<div class="fixed-navigation">
+		<nav class="navigation" role="navigation">
+			<ul class="title-area">
+				<li><a href="/" class="banner" title="Roomies">Roomies</a></li>
+			</ul>
+			<section class="nav-section">
+				<ul class="left">
+					<% navigation.forEach(function(li) { %>
+						<li><a href="<%= li.url %>" title="<%= li.title %>"><i class="icon-<%= li.icon %> icon-large"></i><span class="item-label"> <%= li.title %></span></a></li>
+					<% }) %>
+				</ul>
+
+				<ul class="right">
+					<li class="account"><a href="#"><span class="item-label">Manuel Alabor </span><img class="avatar" src="http://0.gravatar.com/avatar/c36915ec92a666d930c1e91e2c3ba6a4?s=50&d=mm&r=pg" width="25" height="25" /></a></li>
+				</ul>
+			</section>
+		</nav>
+	</div>
+
+	<%- body %>
+	<div id="fb-root"></div>
+</body>
 </html>
