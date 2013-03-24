@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>{{ title }} &middot; Roomies</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta name="viewport" content="width=320.1"/>
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="description" content=""/>
+		<meta name="author" content=""/>
+
+		<link href="/stylesheets/app.css" rel="stylesheet"/>
+		<script src="/javascripts/custom.modernizr.js"></script>
+
+		<link rel="apple-touch-icon" sizes="144x144" href="/images/apple-touch-icon-144.png"/>
+		<link rel="apple-touch-icon" sizes="114x114" href="/images/apple-touch-icon-114.png"/>
+		<link rel="apple-touch-icon" sizes="72x72" href="/images/apple-touch-icon-72.png"/>
+		<link rel="apple-touch-icon" sizes="57x57" href="/images/apple-touch-icon-57.png"/>
+		<link rel="apple-touch-icon" href="/images/apple-touch-icon-57.png"/>
+		<link rel="apple-touch-startup-image" media="(device-width: 320px)" href="/images/apple-touch-startup-image-320x470.png"/>
+		<link rel="apple-touch-startup-image" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" href="/images/apple-touch-startup-image-640x920.png"/>
+		<link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" href="/images/apple-touch-startup-image-640x1096.png"/>
+
+		<script src="/js/roomies.js"></script>
+		<script>
+			Roomies.init({{stringify config}}, window);
+		</script>
+		{{{block "headScripts"}}}
+
+		{{safestring LRScript }}
+	</head>
+
+	<body>
+		{{> navigation}}
+
+		{{{ body }}}
+		<div id="fb-root"></div>
+	</body>
+</html>

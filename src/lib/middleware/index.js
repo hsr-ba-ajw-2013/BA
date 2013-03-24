@@ -6,7 +6,6 @@ var browserify = require('./browserify')
 	, handler = require('./handler')
 	, http = require('./http')
 	, i18n = require('./i18n')
-	, layouts = require('./layouts')
 	, livereload = require('./livereload')
 	, logger = require('./logger')
 	, navigation = require('./navigation')
@@ -19,10 +18,7 @@ var browserify = require('./browserify')
 module.exports = function(app, config) {
 	db(app, config);
 
-
-	view(app, config);
 	i18n(app, config);
-	layouts(app, config);
 	browserify(app, config);
 	http(app, config);
 	flash(app, config);
@@ -33,6 +29,7 @@ module.exports = function(app, config) {
 	logger(app, config);
 	handler(app, config);
 
+	view(app, config);
 	expressStatic(app, config);
 
 	router(app, config);

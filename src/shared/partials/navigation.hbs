@@ -1,0 +1,23 @@
+<div class="fixed-navigation">
+	<nav class="navigation" role="navigation">
+		<ul class="title-area">
+			<li><a href="/" class="banner" title="Roomies">Roomies</a></li>
+		</ul>
+		<section class="nav-section">
+			<ul class="left">
+				{{#each navigation}}
+					<li>
+						<a href="{{ this.url }}" title="{{ this.title }}">
+							<i class="icon-{{ this.icon }} icon-large"></i>
+							<span class="item-label"> {{ this.title }}</span>
+						</a>
+					</li>
+				{{/each}}
+			</ul>
+
+			<ul class="right">
+				<li class="account"><a href="#"><span class="item-label">Manuel Alabor </span><img class="avatar" src="http://0.gravatar.com/avatar/c36915ec92a666d930c1e91e2c3ba6a4?s=50&d=mm&r=pg" width="25" height="25" /></a></li>
+			</ul>
+		</section>
+	</nav>
+</div>
