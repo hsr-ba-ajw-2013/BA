@@ -6,8 +6,9 @@ var express = require('express')
 
 function handler401(err, req, res, next) {
 	if (err instanceof Exception401) {
-		req.flash('error', res.__('Please login first.'));
-		return res.redirect('/');
+		return res.status(401).render('../shared/views/401', {
+			title: res.__('Login required')
+		});
 	}
 	next();
 }

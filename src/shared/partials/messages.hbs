@@ -1,4 +1,4 @@
-{{#if messages}}
+{{#hasProperties messages}}
 <ul class="flash-messages row center">
 	{{#each messages.error}}
 		<li class="error">{{this}}</li>
@@ -13,4 +13,4 @@
 		<li class="success">{{this}}</li>
 	{{/each}}
 </ul>
-{{/if}}
+{{/hasProperties}}

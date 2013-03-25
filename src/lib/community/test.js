@@ -8,7 +8,7 @@ var request = require('supertest')
 	);
 
 describe('GET /community unauthorized', function(){
-	it('should respond with 401', function(done){
+	it('should respond with a 401 exception', function(done){
 		request(app)
 			.get('/community')
 			.expect(401, done);
