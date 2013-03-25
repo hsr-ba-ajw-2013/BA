@@ -1,5 +1,3 @@
-"use strict";
-
 var passport = require('passport')
 	, util = require('util');
 
@@ -12,7 +10,7 @@ function StrategyMock(options, verify) {
 
 util.inherits(StrategyMock, passport.Strategy);
 
-StrategyMock.prototype.authenticate = function authenticate(req) {
+StrategyMock.prototype.authenticate = function authenticate() {
 	if (this.passAuthentication) {
 		var user = {
 				id: this.userId
@@ -28,6 +26,6 @@ StrategyMock.prototype.authenticate = function authenticate(req) {
 	} else {
 		this.fail('Unauthorized');
 	}
-}
+};
 
 module.exports = StrategyMock;
