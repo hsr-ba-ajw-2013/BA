@@ -1,21 +1,23 @@
-/* Import Frameworks: */
+/* Frameworks: */
+@import "compass";
 $include-html-button-classes: false;
+@import "foundation";
+@import "font-awesome";
 
-@import "vendor/foundation/normalize";
-@import "vendor/foundation/foundation";
-@import "vendor/font-awesome";
-
-/* Resources: */
+/* Roomies: */
 @import "_colors";
-
-/* Roomies Styles: */
 @import "_navigation-bar";
 @import "_buttons";
 @import "_flash-messages";
 
+
 body {
 	background: url('../images/noisy-texture.png');
 	margin-top: $navigation-bar-height + 20px;
+}
+
+h2 {
+	@extend .hide-for-small;
 }
 
 .center {

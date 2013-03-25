@@ -2,7 +2,8 @@
 $navigation-bar-bg: $color-accent-1;
 $navigation-bar-item-bg: $color-accent-1;
 $navigation-bar-item-hover-bg: lighten($navigation-bar-bg, 5%);
-$navigation-bar-item-active-bg: darken($navigation-bar-bg, 3%);
+$navigation-bar-item-selected-bg: darken($navigation-bar-bg, 3%);
+$navigation-bar-item-active-bg: $navigation-bar-item-hover-bg;
 
 $navigation-bar-height: 53px;
 
@@ -82,13 +83,19 @@ $navigation-bar-height: 53px;
 					}
 
 					&:active {
-						background-color: $navigation-bar-item-active-bg;
+						background-color: $navigation-bar-item-selected-bg;
 					}
 				}
 
 				& span {
 					display: inline;
 					@extend .hide-for-small;
+				}
+
+				&.active > a { 
+					background-color: $navigation-bar-item-active-bg;
+					text-shadow: 0 0 5px white;
+					box-shadow: 0 0 10px white;
 				}
 
 				&.account {
