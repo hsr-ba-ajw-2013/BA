@@ -21,5 +21,5 @@ function createRelationships(app) {
 		, Community = db.daoFactoryManager.getDAO('Community');
 
 	Community.hasMany(Task);
-	Community.hasOne(Resident);
+	Community.hasMany(Resident);
 }
