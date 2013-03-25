@@ -11,7 +11,7 @@ module.exports = function(app, config) {
 		, defaultLayout: path.join(config.srcDir, 'shared', 'layouts', 'default.hbs')
 	}));
 
-	registerHelpers();
+	registerHelpers(app);
 
 	app.set('view engine', 'hbs');
 	app.set('views', path.join(__dirname, '..'));
@@ -22,12 +22,17 @@ module.exports = function(app, config) {
 	}));
 };
 
-function registerHelpers() {
+function registerHelpers(app) {
 	hbs.registerHelper('stringify', function(item) {
 		return JSON.stringify(item);
 	});
 
 	hbs.registerHelper('safestring', function(str) {
 		return new hbs.SafeString(str);
+	});
+
+	hbs.registerHelper('trans', function(str, options) {
+		console.log(str, options);
+		return app.get('__')(str, options);
 	})
 }

@@ -1,5 +1,9 @@
 {
 	"Tasks": "Tasks",
 	"Rank": "Rank",
-	"Invite": "Invite"
+	"Invite": "Invite",
+	"Welcome at Roomies!": "Welcome at Roomies!",
+	"Please login with your Facebook account in order to use Roomies.": "Please login with your Facebook account in order to use Roomies.",
+	"Login with Facebook": "Login with Facebook",
+	"Hallo %s": "Hallo %s"
 }
