@@ -5,7 +5,5 @@ require('express-resource');
 
 module.exports = function(app) {
 
-	app.resource(controller, {
-		base: '/'
-	});
+	app.resource('fbchannel', controller);
 };

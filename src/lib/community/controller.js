@@ -2,39 +2,34 @@
  * Community Controller
  */
 
-var PREFIX = '/community'
-	, path = require('path')
-	, loginRequired = require(path.join(
-		'..', '..', 'shared', 'policies', 'login-required')
-	);
-
 var renderIndex = function(req, res, community) {
 	res.render('community/views/index', {
 		title: res.__('Your community %s', community.name)
 	});
 };
 
-var create = function(req, res) {
-	res.render('community/views/create', {
-		title: res.__('Create a community'), flash: req.flash()
-	});
-};
-
-var index = function(req, res) {
+exports.index = function(req, res) {
 	var resident = req.user;
 
 	resident.getCommunity().success(function(community) {
 		if (!community) {
-			return res.redirect('./create');
+			return res.redirect('./new');
 		}
 		return renderIndex(req, res, community);
 	}).error(function() {
-		return res.redirect('./create');
+		return res.redirect('./new');
 	});
 
 };
 
-var createPost = function(req, res) {
+exports.new = function(req, res) {
+	res.render('community/views/create', {
+		title: res.__('Create Community'),
+		flash: req.flash()
+	});
+};
+
+exports.create = function(req, res) {
 	var resident = req.user
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
 
@@ -42,7 +37,7 @@ var createPost = function(req, res) {
 
 	var communityData = {
 			name: req.body.cname
-		};
+	};
 
 	console.log(communityData);
 
@@ -61,6 +56,7 @@ var createPost = function(req, res) {
 							.success(function(result) {
 								console.log(result);
 								console.log("community has resident");
+								res.redirect('./');
 							});
 
 					}).error(function(errors) {
@@ -68,12 +64,4 @@ var createPost = function(req, res) {
 					});
 			}
 		});
-};
-
-module.exports = function(app) {
-	app.all(PREFIX + '*', loginRequired);
-	app.get(PREFIX, index);
-	//app.get(PREFIX + '/:id', showCommunity);
-	app.get(PREFIX + '/create', create);
-	app.post(PREFIX + '/create', createPost);
 };

@@ -19,13 +19,17 @@ function initMaster() {
 }
 
 module.exports = function balance(init) {
-	var initFunction;
 
-	if(cluster.isMaster) {
+	// FIXME: Because the session is stored currently in memory,
+	//        clustering is no good as every cluster has it's
+	//        own memory space.
+	var initFunction = init;
+
+	/*if(cluster.isMaster) {
 		initFunction = initMaster;
 	} else {
 		initFunction = init;
-	}
+	}*/
 
 	return initFunction();
 };

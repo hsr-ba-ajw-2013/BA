@@ -7,10 +7,7 @@ module.exports = function(app, options) {
 		function createResident(resident, done) {
 			var Resident = db.daoFactoryManager.getDAO('Resident');
 
-			Resident.create({
-				facebookId: resident.id,
-				name: 'TEST'
-			}).success(function(resident) {
+			Resident.create(resident).success(function(resident) {
 				return done(null, resident);
 			}).error(function(err) {
 				return done(err);

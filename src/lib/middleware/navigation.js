@@ -1,7 +1,6 @@
 module.exports = function(app) {
 
 	app.use(function(req, res, next) {
-
 		var navigation = [];
 
 		if (req.user) {

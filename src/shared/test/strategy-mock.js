@@ -4,7 +4,7 @@ var passport = require('passport')
 function StrategyMock(options, verify) {
 	this.name = 'mock';
 	this.passAuthentication = options.passAuthentication || true;
-	this.userId = options.userId || 1;
+	this.user = options.user || 1;
 	this.verify = verify;
 }
 
@@ -12,11 +12,8 @@ util.inherits(StrategyMock, passport.Strategy);
 
 StrategyMock.prototype.authenticate = function authenticate() {
 	if (this.passAuthentication) {
-		var user = {
-				id: this.userId
-			}
-			, self = this;
-		this.verify(user, function(err, resident) {
+		var self = this;
+		this.verify(this.user, function(err, resident) {
 			if(err) {
 				self.fail(err);
 			} else {

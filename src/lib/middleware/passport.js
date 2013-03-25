@@ -50,8 +50,12 @@ module.exports = function(app, config) {
 	passport.deserializeUser(function(id, done) {
 		var Resident = db.daoFactoryManager.getDAO('Resident');
 		Resident.find(id).success(function(resident) {
-			done(null, resident);
+			if(!resident) {
+				return done("Resident not found");
+			}
+			return done(null, resident);
 		}).error(function(err) {
+			console.log(err);
 			done(err);
 		});
 	});

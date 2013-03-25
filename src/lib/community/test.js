@@ -22,7 +22,10 @@ describe('GET /community authorized and without community for the user'
 	beforeEach(function(done) {
 		passportMock(app, {
 			passAuthentication: true,
-			userId: 1
+			user: {
+				name: 'CommunityTest'
+				, facebookId: Math.round(1000*(Math.random()+1))
+			}
 		});
 		request(app)
 			.get('/mock/login')

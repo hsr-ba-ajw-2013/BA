@@ -14,8 +14,8 @@ var express = require('express')
 	, community = require('./lib/community')
 	, home = require('./lib/home')
 	, resident = require('./lib/resident')
-	, task = require('./lib/task');
-
+	, task = require('./lib/task')
+	, facebookChannel = require('./lib/facebook-channel');
 
 
 function main() {
@@ -37,6 +37,9 @@ function main() {
 	communityRelationships(app);
 	residentRelationships(app);
 	taskRelationships(app);
+
+	facebookChannel(app, config);
+
 
 	// sync db
 	app.get('db').sync();
