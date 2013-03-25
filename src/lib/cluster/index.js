@@ -1,18 +1,14 @@
-/**
- * Author: https://github.com/hunterloftis
- * URL: https://github.com/hunterloftis/component-test/blob/master/lib/balance/index.js
+/** Component: Cluster
+ *
+ * Original Source:
+ *   - https://github.com/hunterloftis
  */
-"use strict";
 
 var cluster = require('cluster')
 	, os = require('os');
 
-module.exports = function balance(init) {
-	return cluster.isMaster? initMaster() : init();
-};
-
 function initMaster() {
-	cluster.on('death', function(worker) {
+	cluster.on('death', function() {
 		cluster.fork();
 	});
 
@@ -21,3 +17,16 @@ function initMaster() {
 		cluster.fork();
 	}
 }
+
+module.exports = function balance(init) {
+	var initFunction;
+
+	if(cluster.isMaster) {
+		initFunction = initMaster;
+	} else {
+		initFunction = init;
+	}
+
+	return initFunction();
+};
+

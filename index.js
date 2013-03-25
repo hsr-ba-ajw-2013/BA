@@ -6,6 +6,11 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 	spawn('make', ['precompile-sass']);
 }
 
-module.exports = process.env.COVERAGE
-	? require('./test-cov/app.js')
-	: require('./src/app.js');
+var app;
+if(process.env.COVERAGE) {
+	app = require('./test-cov/app.js');
+} else {
+	app = require('./src/app.js');
+}
+
+module.exports = app;
