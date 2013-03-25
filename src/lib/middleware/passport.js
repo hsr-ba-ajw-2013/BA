@@ -22,7 +22,6 @@ module.exports = function(app, config) {
 			var Resident = db.daoFactoryManager.getDAO('Resident');
 			Resident.find({where: {facebookId: profile.id}}).success(function(resident) {
 				if (!resident) {
-					console.log('create');
 					Resident.create({
 						facebookId: profile.id,
 						name: profile.displayName
@@ -32,7 +31,6 @@ module.exports = function(app, config) {
 						return done(err);
 					})
 				} else {
-					console.log('ren', resident);
 					if (resident.enabled) {
 						return done(null, resident);
 					}

@@ -10,7 +10,7 @@ module.exports = function(app) {
 }
 
 var index = function(req, res) {
-	res.render('home/views/index', { title: 'Express' });
+	res.render('home/views/index', { title: res.__('Welcome at Roomies!') });
 };
 
 var fbchannel = function(req, res) {

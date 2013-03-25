@@ -1,23 +1,30 @@
 "use strict";
 
 module.exports = function(app, config) {
-	var __ = app.get('__');
 
-	app.locals.navigation = [
-		{
-			url: '/task'
-			, icon: 'list'
-			, title: __('Tasks')
+	app.use(function(req, res, next) {
+
+		var navigation = [];
+
+		if (req.user) {
+			navigation.push({
+				url: '/task'
+				, icon: 'list'
+				, title: res.__('Tasks')
+			});
+			navigation.push({
+				url: '/rank'
+				, icon: 'trophy'
+				, title: res.__('Rank')
+			});
+			navigation.push({
+				url: '/invite'
+				, icon: 'share'
+				, title: res.__('Invite')
+			});
 		}
-		, {
-			url: '/rank'
-			, icon: 'trophy'
-			, title: __('Rank')
-		}
-		, {
-			url: '/invite'
-			, icon: 'share'
-			, title: __('Invite')
-		}
-	]
+
+		app.locals.navigation = navigation;
+		next();
+	});
 }
