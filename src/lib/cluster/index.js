@@ -4,7 +4,7 @@
  *   - https://github.com/hunterloftis
  */
 
-var cluster = require('cluster')
+/*var cluster = require('cluster')
 	, os = require('os');
 
 function initMaster() {
@@ -16,7 +16,7 @@ function initMaster() {
 	while(workerCount--) {
 		cluster.fork();
 	}
-}
+}*/
 
 module.exports = function balance(init) {
 

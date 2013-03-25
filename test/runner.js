@@ -12,5 +12,9 @@ config = require('../config.test.js');
  */
 if (config.db.options.dialect === 'sqlite'
 	&& config.db.options.storage && config.db.options.storage !== ':memory:') {
-	require('fs').unlinkSync(config.db.options.storage);
+	try {
+		require('fs').unlinkSync(config.db.options.storage);
+	} catch(e) {
+		// silent fail
+	}
 }

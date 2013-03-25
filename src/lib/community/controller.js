@@ -22,7 +22,7 @@ exports.index = function(req, res) {
 
 };
 
-exports.new = function(req, res) {
+exports['new'] = function(req, res) {
 	res.render('community/views/create', {
 		title: res.__('Create Community'),
 		flash: req.flash()
