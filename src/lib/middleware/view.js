@@ -14,6 +14,17 @@ function registerHelpers(app) {
 	hbs.registerHelper('trans', function(str, options) {
 		return app.get('__')(str, options);
 	});
+
+	hbs.registerHelper('hasProperties', function(obj, options) {
+		var self = this;
+		for(var prop in obj) {
+			if(obj.hasOwnProperty(prop)) {
+				return options.fn(self);
+			}
+			return;
+		}
+		return;
+	});
 }
 
 module.exports = function(app, config) {
