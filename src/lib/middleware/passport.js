@@ -1,10 +1,8 @@
 /**
  * Passport configuration
  */
-"use strict";
 
-var express = require('express')
-	, passport = require('passport')
+var passport = require('passport')
 	, FacebookStrategy = require('passport-facebook').Strategy;
 
 module.exports = function(app, config) {
@@ -18,29 +16,32 @@ module.exports = function(app, config) {
 			, clientSecret: config.facebook.clientSecret
 			, callbackURL: config.facebook.callbackUrl
 		},
-		function findOrCreateResident(accessToken, refreshToken, profile, done) {
+		function findOrCreate(accessToken, refreshToken, profile, done) {
 			var Resident = db.daoFactoryManager.getDAO('Resident');
-			Resident.find({where: {facebookId: profile.id}}).success(function(resident) {
-				if (!resident) {
-					Resident.create({
-						facebookId: profile.id,
-						name: profile.displayName
-					}).success(function(resident) {
-						return done(null, resident);
-					}).error(function(err) {
-						return done(err);
-					})
-				} else {
-					if (resident.enabled) {
-						return done(null, resident);
+
+			Resident.find({where: {facebookId: profile.id}})
+				.success(function(resident) {
+					if (!resident) {
+						Resident.create({
+							facebookId: profile.id,
+							name: profile.displayName
+						}).success(function(resident) {
+							return done(null, resident);
+						}).error(function(err) {
+							return done(err);
+						});
+					} else {
+						if (resident.enabled) {
+							return done(null, resident);
+						}
+						return done('User disabled');
 					}
-					return done('User disabled');
-				}
-			}).error(function(err) {
-				return done(err);
-			});
-		}
-	));
+				}).error(function(err) {
+					return done(err);
+				});
+			}
+		)
+	);
 
 	passport.serializeUser(function(resident, done) {
 		done(null, resident.id);
@@ -72,4 +73,4 @@ module.exports = function(app, config) {
 
 
 	return app;
-}
+};

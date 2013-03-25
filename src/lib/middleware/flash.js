@@ -1,7 +1,5 @@
-"use strict";
-
 var flash = require('connect-flash');
 
-module.exports = function(app, config) {
+module.exports = function(app) {
 	app.use(flash());
 };

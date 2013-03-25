@@ -1,8 +1,11 @@
+/* global describe, it, beforeEach */
 var request = require('supertest')
 	, superagent = require('superagent')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()
-	, passportMock = require(path.join(process.cwd(), 'src', 'shared', 'test', 'passport-mock'));
+	, passportMock = require(path.join(
+		process.cwd(), 'src', 'shared', 'test', 'passport-mock')
+	);
 
 describe('GET /community unauthorized', function(){
 	it('should respond with 401', function(done){
@@ -12,7 +15,8 @@ describe('GET /community unauthorized', function(){
 	});
 });
 
-describe('GET /community authorized and without community for the user', function() {
+describe('GET /community authorized and without community for the user'
+	, function() {
 	var agent = superagent.agent();
 
 	beforeEach(function(done) {
@@ -30,7 +34,7 @@ describe('GET /community authorized and without community for the user', functio
 					done(err);
 				}
 			});
-	})
+	});
 
 	it('should redirect to /community/create with 302', function(done) {
 		var req = request(app).get('/community');

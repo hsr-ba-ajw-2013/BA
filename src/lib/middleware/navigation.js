@@ -1,6 +1,4 @@
-"use strict";
-
-module.exports = function(app, config) {
+module.exports = function(app) {
 
 	app.use(function(req, res, next) {
 
@@ -27,4 +25,4 @@ module.exports = function(app, config) {
 		app.locals.navigation = navigation;
 		next();
 	});
-}
+};

@@ -1,7 +1,5 @@
-"use strict";
-
 var express = require('express');
 
-module.exports = function(app, config) {
+module.exports = function(app) {
 	app.use(express.errorHandler());
 };

@@ -1,5 +1,3 @@
-"use strict";
-
 module.exports = function(app, config) {
 	app.locals.config = {
 		facebook: {
@@ -10,4 +8,4 @@ module.exports = function(app, config) {
 			, parseXfbml: config.facebook.parseXfbml
 		}
 	};
-}
+};

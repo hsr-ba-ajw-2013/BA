@@ -1,5 +1,3 @@
-"use strict";
-
 var expressWinston = require('express-winston'),
 	winston = require('winston');
 
@@ -25,5 +23,5 @@ module.exports = function(app, config) {
 			})
 		]
 		, level: config.logging.requestLoglevel
-	}))
+	}));
 };

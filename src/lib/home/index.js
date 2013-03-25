@@ -1,9 +1,6 @@
-"use strict";
+var controller = require('./controller');
 
-var controller = require('./controller')
-	, path = require('path');
-
-module.exports = function(app, config) {
+module.exports = function(app) {
 	controller(app);
 
 	return;

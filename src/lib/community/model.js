@@ -5,15 +5,6 @@
  */
 var Sequelize = require('sequelize');
 
-module.exports = function init(app) {
-	var db = app.get('db');
-	db.define('Community', {
-		name: Sequelize.STRING
-	});
-
-	return createRelationships;
-};
-
 function createRelationships(app) {
 	var db = app.get('db')
 		, Resident = db.daoFactoryManager.getDAO('Resident')
@@ -23,3 +14,12 @@ function createRelationships(app) {
 	Community.hasMany(Task);
 	Community.hasMany(Resident);
 }
+
+module.exports = function init(app) {
+	var db = app.get('db');
+	db.define('Community', {
+		name: Sequelize.STRING
+	});
+
+	return createRelationships;
+};
