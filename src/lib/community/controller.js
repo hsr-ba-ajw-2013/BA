@@ -22,14 +22,19 @@ var index = function(req, res) {
 
 	resident.getCommunity().success(function(community) {
 		if (!community) {
-			res.redirect('./create');
+			return res.redirect('./create');
 		}
+		return renderIndex(req, res, community);
 	}).error(function(err) {
-		res.redirect('./create');
+		return res.redirect('./create');
 	});
 
 };
 
+var renderIndex = function(req, res, community) {
+	res.render('community/views/index', { title: res.__('Your community %s', community.name) });
+};
+
 var create = function(req, res) {
-	res.send(200);
-}
+	res.render('community/views/create', { title: res.__('Create a community') });
+};
