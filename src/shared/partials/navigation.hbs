@@ -1,8 +1,8 @@
 <div class="fixed-navigation">
 	<nav class="navigation" role="navigation">
-		<ul class="title-area">
-			<li><a href="/" class="banner" title="{{trans "Roomies"}}">{{trans "Roomies"}}</a></li>
-		</ul>
+		<div class="title-area">
+			<a href="#" class="banner" title="{{trans "Roomies"}}"><h1>{{trans "Roomies"}}</h1></a>
+		</div>
 		<section class="nav-section">
 			<ul class="left">
 				{{#each navigation}}
@@ -14,7 +14,6 @@
 					</li>
 				{{/each}}
 			</ul>
-
 			{{#if user}}
 			<ul class="right">
 				<li class="account">

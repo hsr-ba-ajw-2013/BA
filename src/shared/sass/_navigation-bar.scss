@@ -28,6 +28,10 @@ $navigation-bar-height: 53px;
 	.title-area {
 		float: left;
 
+		h1 {
+			display: none;
+		}
+
 		.banner {
 			display: block;
 			background-image: url('../images/banner.png');
