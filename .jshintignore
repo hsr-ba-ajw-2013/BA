@@ -1,0 +1,4 @@
+# File: .jshintignore
+# Ignore the following folders/files when running JSHint automatically.
+
+src/public/javascripts/lib
