@@ -11,7 +11,7 @@ $include-html-button-classes: false;
 /* Roomies Styles: */
 @import "_navigation-bar";
 @import "_buttons";
-
+@import "_flash-messages";
 
 body {
 	background: url('../images/noisy-texture.png');

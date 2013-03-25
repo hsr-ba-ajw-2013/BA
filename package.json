@@ -29,6 +29,8 @@
 
 		, "browserify-middleware": "latest"
 		, "underscore": "latest"
+
+		, "connect-domain": "latest"
 	}
 
 	, "devDependencies": {
