@@ -10,4 +10,4 @@ var PREFIX = '/task'
 
 module.exports = function(app) {
 	app.all(PREFIX + '*', loginRequired);
-}
+};
