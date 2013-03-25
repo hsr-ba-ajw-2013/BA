@@ -1,7 +1,7 @@
 <div class="fixed-navigation">
 	<nav class="navigation" role="navigation">
 		<ul class="title-area">
-			<li><a href="/" class="banner" title="Roomies">Roomies</a></li>
+			<li><a href="/" class="banner" title="{{trans "Roomies"}}">{{trans "Roomies"}}</a></li>
 		</ul>
 		<section class="nav-section">
 			<ul class="left">
@@ -15,9 +15,16 @@
 				{{/each}}
 			</ul>
 
+			{{#if user}}
 			<ul class="right">
-				<li class="account"><a href="#"><span class="item-label">Manuel Alabor </span><img class="avatar" src="http://0.gravatar.com/avatar/c36915ec92a666d930c1e91e2c3ba6a4?s=50&d=mm&r=pg" width="25" height="25" /></a></li>
+				<li class="account">
+					<a href="#">
+						<span class="item-label">{{user.name}}</span>
+						<img class="avatar" src="//graph.facebook.com/{{user.facebookId}}/picture" width="25" height="25" />
+					</a>
+				</li>
 			</ul>
+			{{/if}}
 		</section>
 	</nav>
 </div>

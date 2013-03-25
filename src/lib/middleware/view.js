@@ -32,7 +32,6 @@ function registerHelpers(app) {
 	});
 
 	hbs.registerHelper('trans', function(str, options) {
-		console.log(str, options);
 		return app.get('__')(str, options);
 	})
 }
