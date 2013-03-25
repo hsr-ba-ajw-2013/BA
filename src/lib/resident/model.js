@@ -1,11 +1,21 @@
 /**
  * Resident model
  */
- "use strict";
 
 var Sequelize = require('sequelize');
 
-module.exports = function init(app, config) {
+function createRelationships(app) {
+	var db = app.get('db')
+		, Resident = db.daoFactoryManager.getDAO('Resident')
+		, Task = db.daoFactoryManager.getDAO('Task')
+		, Community = db.daoFactoryManager.getDAO('Community');
+
+	Resident.hasMany(Task, {as: 'creator', foreignKey: 'creatorId'});
+	Resident.hasMany(Task, {as: 'fulfillor', foreignKey: 'fulfillorId'});
+	Resident.belongsTo(Community);
+}
+
+module.exports = function init(app) {
 	var db = app.get('db');
 	db.define('Resident', {
 		facebookId: {
@@ -22,14 +32,3 @@ module.exports = function init(app, config) {
 
 	return createRelationships;
 };
-
-function createRelationships(app) {
-	var db = app.get('db')
-		, Resident = db.daoFactoryManager.getDAO('Resident')
-		, Task = db.daoFactoryManager.getDAO('Task')
-		, Community = db.daoFactoryManager.getDAO('Community');
-
-	Resident.hasMany(Task, {as: 'creator', foreignKey: 'creatorId'});
-	Resident.hasMany(Task, {as: 'fulfillor', foreignKey: 'fulfillorId'});
-	Resident.belongsTo(Community);
-}
