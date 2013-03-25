@@ -1,13 +1,11 @@
 <h1>{{ title }}</h1>
 <p>Create a new Community</p>
-
-Logged in as {{ user.name }}
-
-<form action="" method="post">
-  Name: <input type="text" name="cname"><br>
-  <input type="submit" value="Submit">
-</form>
-
+<p>
+	<form action="" method="post">
+		Name: <input type="text" name="cname"><br>
+		<input type="submit" value="Submit">
+	</form>
+</p>
 
 {{#if flash}}
 
