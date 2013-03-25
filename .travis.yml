@@ -9,7 +9,7 @@ language: node_js
 node_js:
   - 0.8
 
-script: "make test-coverage"
+script: "make test-coverage lint"
 
 env:
     global:

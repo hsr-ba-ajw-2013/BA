@@ -1,8 +1,8 @@
 #!/bin/sh
 
 echo '######################################'
-echo '# AFTER SUCCESS #'
-echo '# - START - #'
+echo '#            AFTER SUCCESS           #'
+echo '#             - START -              #'
 echo '######################################'
 
 echo '---- Cloning repo into /tmp ----'
@@ -27,6 +27,6 @@ git commit -m "adding latest coverage to gh-pages"
 git push https://${GH_OAUTH_TOKEN}@github.com/${GH_USER_NAME}/${GH_PROJECT_NAME} 2>&1
 
 echo '######################################'
-echo '# AFTER SUCCESS #'
-echo '# - FINISHED - #'
+echo '#           AFTER SUCCESS            #'
+echo '#            - FINISH -              #'
 echo '######################################'

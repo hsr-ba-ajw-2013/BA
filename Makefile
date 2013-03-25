@@ -69,5 +69,7 @@ precompile-sass:
 precompile-sass-live:
 	@nodemon -w src/shared/sass -e scss -x "make precompile-sass -f" Makefile
 
+lint:
+	@node_modules/.bin/jshint index.js src/
 
-.PHONY: test test-unit test-functional test-unit-live test-functional-live test-coverage setup clean precompile-sass-live
+.PHONY: test test-unit test-functional test-unit-live test-functional-live test-coverage setup clean precompile-sass-live lint

@@ -38,6 +38,7 @@
 		, "mocha": "latest"
 		, "chai": "latest"
 		, "jscover": "latest"
+		, "jshint": "latest"
 	}
 
 	, "engines": {
