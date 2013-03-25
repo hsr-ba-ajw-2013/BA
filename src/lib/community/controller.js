@@ -16,7 +16,7 @@ var renderIndex = function(req, res, community) {
 
 var create = function(req, res) {
 	res.render('community/views/create', {
-		title: res.__('Create Community'), flash: req.flash()
+		title: res.__('Create a community'), flash: req.flash()
 	});
 };
 
@@ -35,7 +35,8 @@ var index = function(req, res) {
 };
 
 var createPost = function(req, res) {
-	var Community = req.app.get('db').daoFactoryManager.getDAO('Community');
+	var resident = req.user
+		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
 
 	//TODO: validate POST
 
@@ -54,6 +55,14 @@ var createPost = function(req, res) {
 				Community.create(communityData)
 					.success(function(community) {
 						console.log("community created: ", community);
+						console.log("---: ", resident);
+
+						resident.setCommunity(community)
+							.success(function(result) {
+								console.log(result);
+								console.log("community has resident");
+							});
+
 					}).error(function(errors) {
 						console.log("errors: ", errors);
 					});
