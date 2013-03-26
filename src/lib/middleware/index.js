@@ -2,6 +2,7 @@
 
 var browserify = require('./browserify')
 	, clientConfig = require('./client-config')
+	, connectDomain = require('./connect-domain')
 	, db = require('./db')
 	, flash = require('./flash')
 	, handler = require('./handler')
@@ -26,6 +27,8 @@ var browserify = require('./browserify')
  *   (Object) config - Configuration
  */
 module.exports = function middleware(app, config) {
+	connectDomain(app, config);
+
 	expressStatic(app, config);
 
 	db(app, config);
@@ -35,15 +38,16 @@ module.exports = function middleware(app, config) {
 	navigation(app, config);
 	http(app, config);
 	flash(app, config);
+	view(app, config);
 
 	passport(app, config);
-	handler(app, config);
+
 	logger(app, config);
-	view(app, config);
 
 	router(app, config);
 
 	clientConfig(app, config);
 
 	livereload(app, config);
+	handler(app, config);
 };

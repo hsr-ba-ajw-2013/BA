@@ -1,5 +1,4 @@
 var express = require('express')
-	, connectDomain = require('connect-domain')
 	, path = require('path')
 	, Exception401 = require(path.join('..', '..',
 		'shared', 'exceptions', '401'));
@@ -16,6 +15,7 @@ function handler401(err, req, res, next) {
 module.exports = function(app) {
 	app.use(handler401);
 
-	app.use(express.errorHandler());
-	app.use(connectDomain());
+	app.configure('development', function() {
+		app.use(express.errorHandler());
+	});
 };
