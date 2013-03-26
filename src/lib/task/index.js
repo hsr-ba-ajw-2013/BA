@@ -1,4 +1,5 @@
 /** Component: Task
+ */
 var controller = require('./controller')
 	, model = require('./model')
 	, path = require('path')

@@ -1,11 +1,6 @@
 /** Controller: Community.Controller
- * 
+ *
  */
-var PREFIX = '/community'
-	, path = require('path')
-	, loginRequired = require(path.join(
-		'..', '..', 'shared', 'policies', 'login-required')
-	);
 
 /** PrivateFunction: renderIndex
  * Renders a Community instance in a specific response object.
