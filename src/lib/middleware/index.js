@@ -3,6 +3,7 @@
 var browserify = require('./browserify')
 	, clientConfig = require('./client-config')
 	, db = require('./db')
+	, flash = require('./flash')
 	, handler = require('./handler')
 	, http = require('./http')
 	, i18n = require('./i18n')
@@ -12,25 +13,33 @@ var browserify = require('./browserify')
 	, passport = require('./passport')
 	, router = require('./router')
 	, expressStatic = require('./static')
-	, view = require('./view')
-	, flash = require('./flash');
+	, view = require('./view');
 
-module.exports = function(app, config) {
+/** Function: middleware
+ * Calls the required middlewares
+ *
+ * Beware: The Ordering of middlewares is very important.
+ *         Don't reorder if you don't know what you're doing.
+ *
+ * Parameters:
+ *   (Express.App) app - Express Application
+ *   (Object) config - Configuration
+ */
+module.exports = function middleware(app, config) {
+	expressStatic(app, config);
+
 	db(app, config);
 
 	i18n(app, config);
 	browserify(app, config);
+	navigation(app, config);
 	http(app, config);
 	flash(app, config);
 	passport(app, config);
 
-	navigation(app, config);
-
 	logger(app, config);
 	handler(app, config);
-
 	view(app, config);
-	expressStatic(app, config);
 
 	router(app, config);
 

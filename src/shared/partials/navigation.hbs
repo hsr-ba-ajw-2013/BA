@@ -1,23 +1,35 @@
 <div class="fixed-navigation">
 	<nav class="navigation" role="navigation">
 		<div class="title-area">
-			<a href="#" class="banner" title="{{trans "Roomies"}}"><h1>{{trans "Roomies"}}</h1></a>
+			<a href="/" class="banner" title="{{trans "Roomies"}}"><h1>{{trans "Roomies"}}</h1></a>
 		</div>
 		<section class="nav-section">
 			<ul class="left">
-				{{#each navigation}}
-					<li>
-						<a href="{{ this.url }}" title="{{ this.title }}">
-							<i class="icon-{{ this.icon }} icon-large"></i>
-							<span class="item-label"> {{ this.title }}</span>
+				{{#if user}}
+					<li{{#navIsActive "/task" this}} class="active"{{/navIsActive}}>
+						<a href="/task" title="{{trans "Tasks"}}">
+							<i class="icon-list icon-large"></i>
+							<span class="item-label"> {{trans "Tasks" }}</span>
 						</a>
 					</li>
-				{{/each}}
+					<li{{#navIsActive "/rank" this}} class="active"{{/navIsActive}}>
+						<a href="/rank" title="{{trans "Rank"}}">
+							<i class="icon-trophy icon-large"></i>
+							<span class="item-label"> {{trans "Rank" }}</span>
+						</a>
+					</li>
+					<li{{#navIsActive "/invite" this}} class="active"{{/navIsActive}}>
+						<a href="/invite" title="{{trans "Invite"}}">
+							<i class="icon-share icon-large"></i>
+							<span class="item-label"> {{trans "Invite" }}</span>
+						</a>
+					</li>
+				{{/if}}
 			</ul>
 			{{#if user}}
 			<ul class="right">
 				<li class="account">
-					<a href="#">
+					<a href="https://facebook.com/{{user.facebookId}}">
 						<span class="item-label">{{user.name}}</span>
 						<img class="avatar" src="//graph.facebook.com/{{user.facebookId}}/picture" width="25" height="25" />
 					</a>

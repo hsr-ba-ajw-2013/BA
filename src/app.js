@@ -58,7 +58,7 @@ function main() {
 module.exports = main;
 
 if (module.parent === require.main) {
-	cluster(function() {
+	cluster(function initializeCluster() {
 		main();
 	});
 }

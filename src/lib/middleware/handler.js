@@ -14,7 +14,7 @@ function handler401(err, req, res, next) {
 }
 
 module.exports = function(app) {
+	app.use(connectDomain());
 	app.use(handler401);
 	app.use(express.errorHandler());
-	app.use(connectDomain());
 };

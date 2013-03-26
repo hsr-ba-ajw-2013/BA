@@ -25,6 +25,12 @@ function registerHelpers(app) {
 		}
 		return;
 	});
+	hbs.registerHelper('navIsActive', function(uri, data, options) {
+		if(data.requestPath.indexOf(uri) === 0) {
+			return options.fn(this);
+		}
+		return;
+	});
 }
 
 module.exports = function(app, config) {

@@ -1,4 +1,5 @@
-var flash = require('connect-flash');
+var flash = require('connect-flash')
+	, util = require('util');
 
 module.exports = function(app) {
 	app.use(flash());
