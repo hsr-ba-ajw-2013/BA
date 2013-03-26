@@ -1,0 +1,28 @@
+$notification-success-color: #5aa50f;
+$notification-error-color: #a60000;
+$notification-warning-color: #b0ab0d;
+$notification-info-color: $color-accent-1;
+
+.message-box {
+	@include alert-base;
+	@include radius(5px);
+
+	position: relative;
+	padding-left: 22px;
+
+	&.success {
+		@include alert-style($notification-success-color);
+	}
+
+	&.error {
+		@include alert-style($notification-error-color)
+	}
+
+	&.warning {
+		@include alert-style($notification-warning-color)
+	}
+
+	&.info {
+		@include alert-style($notification-info-color)
+	}
+}

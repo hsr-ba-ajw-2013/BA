@@ -1,16 +1,42 @@
 {{#hasProperties messages}}
-<ul class="flash-messages row center">
-	{{#each messages.error}}
-		<li class="error">{{this}}</li>
-	{{/each}}
-	{{#each messages.warning}}
-		<li class="info">{{this}}</li>
-	{{/each}}
-	{{#each messages.info}}
-		<li class="info">{{this}}</li>
-	{{/each}}
-	{{#each messages.success}}
-		<li class="success">{{this}}</li>
-	{{/each}}
-</ul>
+<div class="row">
+	<ul class="large-12 columns">
+		{{#if messages.error}}
+			<li class="message-box error">
+				<ul class="icons">
+					{{#each messages.error}}
+						<li><i class="icon-exclamation-sign"></i>{{this}}</li>
+					{{/each}}
+				</ul>
+			</li>
+		{{/if}}
+		{{#if messages.warning}}
+			<li class="message-box warning">
+				<ul class="icons">
+					{{#each messages.warning}}
+						<li><i class="icon-warning-sign"></i>{{this}}</li>
+					{{/each}}
+				</ul>
+			</li>
+		{{/if}}
+		{{#if messages.info}}
+			<li class="message-box info">
+				<ul class="icons">
+					{{#each messages.info}}
+						<li><i class="icon-info-sign"></i>{{this}}</li>
+					{{/each}}
+				</ul>
+			</li>
+		{{/if}}
+		{{#if messages.success}}
+			<li class="message-box success">
+				<ul class="icons">
+					{{#each messages.success}}
+						<li><i class="icon-ok-sign"></i>{{this}}</li>
+					{{/each}}
+				</ul>
+			</li>
+		{{/if}}
+	</ul>
+</div>
 {{/hasProperties}}

@@ -1,9 +1,11 @@
 
 $navigation-bar-bg: $color-accent-1;
-$navigation-bar-item-bg: $color-accent-1;
+$navigation-bar-shadow: #666;
+$navigation-bar-item-bg: $navigation-bar-bg;
 $navigation-bar-item-hover-bg: lighten($navigation-bar-bg, 5%);
 $navigation-bar-item-selected-bg: darken($navigation-bar-bg, 3%);
 $navigation-bar-item-active-bg: $navigation-bar-item-hover-bg;
+$navigation-bar-item-active-text-shadow: rgba(255, 255, 255, .6);
 
 $navigation-bar-height: 53px;
 
@@ -17,12 +19,12 @@ $navigation-bar-height: 53px;
 }
 
 .navigation {
-	background-color: $navigation-bar-bg;
 	width: 100%;
 	height: $navigation-bar-height;
 	line-height: $navigation-bar-height;
-	box-shadow: 0 2px 5px #666;
 	margin-bottom: $navigation-bar-height + 15px;
+	background-color: $navigation-bar-bg;
+	box-shadow: 0 2px 5px $navigation-bar-shadow;
 
 	@include clearfix;
 
@@ -54,11 +56,17 @@ $navigation-bar-height: 53px;
 			width: auto;
 			height: auto;
 			display: inline;
-			margin: 0 10px;
 			list-style: none;
 
+			&.left {
+				margin-left: 15px;
+			}
+
+			&.right {
+				margin-right: 5px;
+			}
+
 			li {
-				//display: block;
 				float: left;
 				margin-right: 1px;
 
@@ -93,7 +101,7 @@ $navigation-bar-height: 53px;
 
 				&.active > a {
 					background-color: $navigation-bar-item-active-bg;
-					//@include single-text-shadow(0, 0, 5px, 50x, white);
+					text-shadow: 0 0 5px $navigation-bar-item-active-text-shadow;
 				}
 
 				&.account {

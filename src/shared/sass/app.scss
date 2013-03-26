@@ -1,16 +1,4 @@
-@function compact($list) {
-  $new-list: ();
-  @each $element in $list {
-    @if $element {
-      $new-list: append($new-list, $element);
-    }
-  }
-@return $new-list;
-}
-
-
 /* Frameworks: */
-//@import "compass";
 $include-html-button-classes: false;
 @import "foundation";
 @import "normalize";
@@ -20,7 +8,7 @@ $include-html-button-classes: false;
 @import "_colors";
 @import "_navigation-bar";
 @import "_buttons";
-@import "_flash-messages";
+@import "_message-boxes";
 
 
 body {
