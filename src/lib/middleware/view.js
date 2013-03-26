@@ -15,7 +15,6 @@ function registerHelpers(app) {
 		return app.get('__')(str, options);
 	});
 	hbs.registerHelper('blocktrans', function(data, obj) {
-		console.log(data, obj);
 		if (!obj) {
 			obj = data;
 			data = obj.hash;
