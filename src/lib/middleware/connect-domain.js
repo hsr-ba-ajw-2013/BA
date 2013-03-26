@@ -5,6 +5,6 @@
 
 var connectDomain = require('connect-domain');
 
-module.exports = function(app, config) {
+module.exports = function(app) {
 	app.use(connectDomain());
 };
