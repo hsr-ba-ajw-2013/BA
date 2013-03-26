@@ -61,6 +61,10 @@ clean:
 	@rm functional-coverage.html
 	@echo "Cleaning npm debug log"
 	@rm npm-debug.log
+	@echo "Cleaning docs"
+	@rm -fr ./docs
+	@echo "Cleaning compiled CSS"
+	@rm $(CSS_PATH)
 
 precompile-sass:
 	-rm $(CSS_PATH)

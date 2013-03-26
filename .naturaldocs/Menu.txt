@@ -65,7 +65,8 @@ Group: Components  {
    Group: Task  {
 
       File: Controller  (no auto-title, lib/task/controller.js)
-      File: Model  (lib/task/model.js)
+      File: Task  (lib/task/index.js)
+      File: Task.Model  (lib/task/model.js)
       }  # Group: Task
 
    }  # Group: Components
