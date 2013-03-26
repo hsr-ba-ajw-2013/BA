@@ -18,8 +18,6 @@ cp $RESULT_UNIT_COVERAGE_PATH ./
 cp $RESULT_FUNCTIIONAL_COVERAGE_PATH ./
 
 echo '---- Copy latest documentation ----'
-ls -la $RESULT_DOCS
-echo '---'
 rm -fr docs/
 cp -R $RESULT_DOCS ./
 
