@@ -1,20 +1,13 @@
-<h1>{{ title }}</h1>
-<p>Create a new Community</p>
-<p>
-	<form action="/community" method="post">
-		Name: <input type="text" name="cname"><br>
-		<input type="submit" value="Submit">
-	</form>
-</p>
-
-{{#if flash}}
-
-	{{#if flash.error}}
-		<div class="error">{{flash.error}}</div>
-	{{/if}}
-
-	{{#if flash.info}}
-		<div class="info">{{flash.info}}</div>
-	{{/if}}
-
-{{/if}}
+<div class="row">
+	<section class="large-centered large-6 columns center">
+		<h4>{{trans "Hello %s" user.name}}</h4>
+		<h5 class="subheader">
+			{{#blocktrans}}You aren't in any community yet.<br/>
+			Please tell us the desired name of your community in order to create it.{{/blocktrans}}
+		</h5>
+		<form action="/community" method="post">
+			<input type="text" name="cname" placeholder="{{trans "WG Name"}}" class="large-8 columns">
+			<input type="submit" value="{{trans "Create WG"}}" class="button large-3 columns">
+		</form>
+	</section>
+</div>
