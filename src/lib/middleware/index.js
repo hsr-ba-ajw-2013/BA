@@ -42,6 +42,7 @@ module.exports = function middleware(app, config) {
 
 	passport(app, config);
 
+	handler(app, config);
 	logger(app, config);
 
 	router(app, config);
@@ -49,5 +50,4 @@ module.exports = function middleware(app, config) {
 	clientConfig(app, config);
 
 	livereload(app, config);
-	handler(app, config);
 };
