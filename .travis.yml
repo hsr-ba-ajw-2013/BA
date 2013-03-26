@@ -9,7 +9,7 @@ language: node_js
 node_js:
   - 0.8
 
-script: "make test-coverage lint"
+script: "make docs test-coverage lint"
 
 env:
     global:
@@ -49,3 +49,7 @@ env:
         # RESULT_FUNCTIIONAL_COVERAGE_PATH
         # A shortcut to the built integration-coverage.html
         - RESULT_FUNCTIIONAL_COVERAGE_PATH=$CI_HOME/functional-coverage.html
+
+        # $RESULT_DOCS
+        # A shortcut to the built code documentation
+        - RESULT_DOCS=$CI_HOME/docs

@@ -1,7 +1,6 @@
 /** Model: Task.Model
  * Task model
  */
-
 var Sequelize = require('sequelize');
 
 
