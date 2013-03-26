@@ -40,5 +40,13 @@ module.exports = {
 		, disableRequestLog: true
 	}
 
+	, livereload: {
+		exts: [
+			"html", "css", "scss", "js", "hbs"
+			, "png", "gif", "jpg"
+		]
+	}
+
+
 	, sessionSecret: "CHANGEME"
 }
