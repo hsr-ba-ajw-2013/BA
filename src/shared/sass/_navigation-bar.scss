@@ -56,10 +56,10 @@ $navigation-bar-height: 53px;
 			display: inline;
 			margin: 0 10px;
 			list-style: none;
-			
+
 			li {
 				//display: block;
-				float: left; 
+				float: left;
 				margin-right: 1px;
 
 				& > a {
@@ -91,9 +91,9 @@ $navigation-bar-height: 53px;
 					@extend .hide-for-small;
 				}
 
-				&.active > a { 
+				&.active > a {
 					background-color: $navigation-bar-item-active-bg;
-					@include single-text-shadow(0, 0, 5px, 50x, white);
+					//@include single-text-shadow(0, 0, 5px, 50x, white);
 				}
 
 				&.account {
@@ -109,7 +109,7 @@ $navigation-bar-height: 53px;
 						padding: 7px 14px 7px 14px;
 					}
 				}
-			}	
+			}
 		}
 
 
