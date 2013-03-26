@@ -8,6 +8,6 @@ test-cov
 *-coverage.html
 .vagrant
 .sass-cache/
-*.css
+src/public/stylesheets/app.css
 docs/
 .naturaldocs/Data
