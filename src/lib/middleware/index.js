@@ -35,10 +35,10 @@ module.exports = function middleware(app, config) {
 	navigation(app, config);
 	http(app, config);
 	flash(app, config);
-	passport(app, config);
 
-	logger(app, config);
+	passport(app, config);
 	handler(app, config);
+	logger(app, config);
 	view(app, config);
 
 	router(app, config);

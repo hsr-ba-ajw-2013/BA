@@ -10,11 +10,12 @@ function handler401(err, req, res, next) {
 			title: res.__('Login required')
 		});
 	}
-	next();
+	next(err);
 }
 
 module.exports = function(app) {
-	app.use(connectDomain());
 	app.use(handler401);
+
 	app.use(express.errorHandler());
+	app.use(connectDomain());
 };

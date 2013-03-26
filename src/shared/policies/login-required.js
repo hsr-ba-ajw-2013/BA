@@ -8,5 +8,5 @@ module.exports = function(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	}
-	throw new Exception401("Unauthorized");
+	return next(new Exception401("Unauthorized"));
 };
