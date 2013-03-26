@@ -10,5 +10,9 @@
 	"Login first": "Login first",
 	"Please login first.": "Please login first.",
 	"Hello %s": "Hello %s",
-	"Login required": "Login required"
+	"Login required": "Login required",
+	"Hello %s!": "Hello %s!",
+	"WG Name": "WG Name",
+	"Create WG": "Create WG",
+	"You aren't in any community yet.<br/>\n\t\t\tPlease tell us the desired name of your community in order to create it.": "You aren't in any community yet.<br/>\n\t\t\tPlease tell us the desired name of your community in order to create it.",
 }

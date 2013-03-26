@@ -1,12 +1,4 @@
 {
-	"Welcome": "Willkommen",
-	"Tasks": "Tasks",
-	"Rank": "Rank",
-	"Invite": "Invite",
-	"Welcome at Roomies!": "Welcome at Roomies!",
-	"Create a community": "Create a community",
-	"Please login first.": "Please login first.",
 	"Login required": "Login required",
-	"Create Community": "Create Community",
-	"Your community %s": "Your community %s"
+	"Create Community": "Create Community"
 }
