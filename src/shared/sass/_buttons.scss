@@ -1,13 +1,5 @@
 .button {
-	@include button-base;
-	@include button-size($button-sml, false, false);
-	@include button-style(lighten($color-accent-1, 1%), true, false);
-	@include single-transition;
-	@include inset-shadow(true);
-
-	& [class*=" icon-"] {
-		padding-right: 8px;
-	}
+	@include border-radius(5px);
 }
 
 .facebook-button {

@@ -60,17 +60,16 @@ $navigation-bar-height: 53px;
 			li {
 				//display: block;
 				float: left; 
+				margin-right: 1px;
 
 				& > a {
 					display: inline-block;
 					color: white;
-					@include radius(5px);
 					width: 100%;
-
 					height: $navigation-bar-height - 14px;
+					@include border-radius(5px);
 					margin-top: 7px;
 					padding: 7px 16px 7px 0;
-					width: 100%;
 
 					& [class*=" icon-"] {
 						width: $navigation-bar-height;
@@ -94,8 +93,7 @@ $navigation-bar-height: 53px;
 
 				&.active > a { 
 					background-color: $navigation-bar-item-active-bg;
-					text-shadow: 0 0 5px white;
-					box-shadow: 0 0 10px white;
+					@include single-text-shadow(0, 0, 5px, 50x, white);
 				}
 
 				&.account {

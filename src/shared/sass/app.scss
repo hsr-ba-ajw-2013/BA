@@ -1,7 +1,19 @@
+@function compact($list) {
+  $new-list: ();
+  @each $element in $list {
+    @if $element {
+      $new-list: append($new-list, $element);
+    }
+  }
+@return $new-list;
+}
+
+
 /* Frameworks: */
 @import "compass";
 $include-html-button-classes: false;
 @import "foundation";
+@import "normalize";
 @import "font-awesome";
 
 /* Roomies: */
