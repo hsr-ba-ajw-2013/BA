@@ -18,7 +18,7 @@ cp $RESULT_UNIT_COVERAGE_PATH ./
 cp $RESULT_FUNCTIIONAL_COVERAGE_PATH ./
 
 echo '---- Copy latest documentation ----'
--rm -fr docs/
+rm -fr docs/
 cp -R $RESULT_DOCS ./
 
 echo '---- Set git settings ----'
