@@ -4,7 +4,7 @@ var express = require('express')
 
 function registerHelpers(app) {
 	hbs.registerHelper('stringify', function(item) {
-		return JSON.stringify(item);
+		return new hbs.SafeString(JSON.stringify(item));
 	});
 
 	hbs.registerHelper('safestring', function(str) {
