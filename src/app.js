@@ -1,7 +1,5 @@
-"use strict";
-
-/**
- * Module dependencies.
+/** File: Application
+ * The Roomies application initilizes...
  */
 var express = require('express')
 	, path = require('path')
@@ -17,7 +15,12 @@ var express = require('express')
 	, task = require('./lib/task')
 	, facebookChannel = require('./lib/facebook-channel');
 
-
+/** Function: main
+ * Sets up all necessary middlewares and starts the application.
+ *
+ * Returns:
+ *     (Express) - An Express.JS application instance
+ */
 function main() {
 	var app = express()
 		, configFileName = '../config.' + app.settings.env

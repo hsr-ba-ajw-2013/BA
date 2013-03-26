@@ -1,10 +1,16 @@
 "use strict";
 
-/**
- * Community model
+/** Model: Community.Model
+ * The actual Community domain object model.
  */
 var Sequelize = require('sequelize');
 
+/** PrivateFunction: createRelationships
+ * Creates the relationship information for this model.
+ *
+ * Parameters:
+ *     (Express) app - An Express.JS application instance
+ */
 function createRelationships(app) {
 	var db = app.get('db')
 		, Resident = db.daoFactoryManager.getDAO('Resident')

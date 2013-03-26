@@ -1,7 +1,6 @@
-/**
+/** Model: Resident.Model
  * Resident model
  */
-
 var Sequelize = require('sequelize');
 
 function createRelationships(app) {

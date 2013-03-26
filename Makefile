@@ -72,4 +72,8 @@ precompile-sass-live:
 lint:
 	@node_modules/.bin/jshint index.js src/
 
-.PHONY: test test-unit test-functional test-unit-live test-functional-live test-coverage setup clean precompile-sass-live lint
+docs:
+	-mkdir ./docs
+	@NaturalDocs -i ./src -o HTML ./docs -p ./.naturaldocs -xi ./src/public/javascripts/lib/ -s Default style
+
+.PHONY: test test-unit test-functional test-unit-live test-functional-live test-coverage setup clean precompile-sass-live lint docs

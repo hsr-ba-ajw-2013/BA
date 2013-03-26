@@ -1,0 +1,94 @@
+Format: 1.52
+
+
+Title: Roomies
+SubTitle: Bachelorthesis
+
+Footer: Copyright &amp;copy; 2013 by HSR, Manuel Alabor, Alexandre Joly &amp; Michael Weibel
+Timestamp: Generated on dd.mm.yyyy
+#   m     - One or two digit month.  January is "1"
+#   mm    - Always two digit month.  January is "01"
+#   mon   - Short month word.  January is "Jan"
+#   month - Long month word.  January is "January"
+#   d     - One or two digit day.  1 is "1"
+#   dd    - Always two digit day.  1 is "01"
+#   day   - Day with letter extension.  1 is "1st"
+#   yy    - Two digit year.  2006 is "06"
+#   yyyy  - Four digit year.  2006 is "2006"
+#   year  - Four digit year.  2006 is "2006"
+
+
+# --------------------------------------------------------------------------
+# 
+# Cut and paste the lines below to change the order in which your files
+# appear on the menu.  Don't worry about adding or removing files, Natural
+# Docs will take care of that.
+# 
+# You can further organize the menu by grouping the entries.  Add a
+# "Group: [name] {" line to start a group, and add a "}" to end it.
+# 
+# You can add text and web links to the menu by adding "Text: [text]" and
+# "Link: [name] ([URL])" lines, respectively.
+# 
+# The formatting and comments are auto-generated, so don't worry about
+# neatness when editing the file.  Natural Docs will clean it up the next
+# time it is run.  When working with groups, just deal with the braces and
+# forget about the indentation and comments.
+# 
+# --------------------------------------------------------------------------
+
+
+File: Application  (app.js)
+
+Group: Components  {
+
+   Group: Home  {
+
+      File: Component  (no auto-title, lib/home/index.js)
+      File: Controller  (no auto-title, lib/home/controller.js)
+      }  # Group: Home
+
+   Group: Community  {
+
+      File: Component  (no auto-title, lib/community/index.js)
+      File: Controller  (no auto-title, lib/community/controller.js)
+      File: Model  (no auto-title, lib/community/model.js)
+      }  # Group: Community
+
+   Group: Resident  {
+
+      File: Component  (no auto-title, lib/resident/index.js)
+      File: Controller  (no auto-title, lib/resident/controller.js)
+      File: Model  (no auto-title, lib/resident/model.js)
+      }  # Group: Resident
+
+   Group: Task  {
+
+      File: Controller  (no auto-title, lib/task/controller.js)
+      File: Model  (lib/task/model.js)
+      }  # Group: Task
+
+   }  # Group: Components
+
+Group: Middlewares  {
+
+   File: Cluster  (lib/cluster/index.js)
+   }  # Group: Middlewares
+
+Group: Exceptions  {
+
+   File: Exception401  (shared/exceptions/401.js)
+   }  # Group: Exceptions
+
+Group: Index  {
+
+   Index: Everything
+   Component Index: Components
+   Controller Index: Controllers
+   File Index: Files
+   Function Index: Functions
+   Model Index: Models
+   Private Function Index: Private Functions
+   Exception Index: Exceptions
+   }  # Group: Index
+

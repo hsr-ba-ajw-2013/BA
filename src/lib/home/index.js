@@ -1,3 +1,5 @@
+/** Component: Home
+ */
 var controller = require('./controller');
 
 // inject express-resource into app

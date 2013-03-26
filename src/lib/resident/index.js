@@ -1,3 +1,5 @@
+/** Component: Resident
+ */
 var controller = require('./controller')
 	, model = require('./model')
 	, path = require('path')

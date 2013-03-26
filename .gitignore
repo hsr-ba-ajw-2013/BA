@@ -9,3 +9,5 @@ test-cov
 .vagrant
 .sass-cache/
 *.css
+docs/
+.naturaldocs/Data

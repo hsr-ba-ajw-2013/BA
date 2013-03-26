@@ -1,3 +1,5 @@
+/** Exception: Exception401
+*/
 var util = require('util');
 
 function Exception401(message) {

@@ -1,7 +1,20 @@
-/**
- * Community Controller
+/** Controller: Community.Controller
+ * 
  */
+var PREFIX = '/community'
+	, path = require('path')
+	, loginRequired = require(path.join(
+		'..', '..', 'shared', 'policies', 'login-required')
+	);
 
+/** PrivateFunction: renderIndex
+ * Renders a Community instance in a specific response object.
+ *
+ * Parameters:
+ *    (Request) req - Request
+ *    (Response) res - The response to render into
+ *    (Community) community - The actual Community instance to render
+ */
 var renderIndex = function(req, res, community) {
 	res.render('community/views/index', {
 		title: res.__('Your community %s', community.name)
@@ -22,6 +35,7 @@ exports.index = function(req, res) {
 
 };
 
+
 exports['new'] = function(req, res) {
 	res.render('community/views/create', {
 		title: res.__('Create Community'),
@@ -29,6 +43,12 @@ exports['new'] = function(req, res) {
 	});
 };
 
+/** Function: createPost
+ *
+ * Parameters:
+ *     (Request) req - Request
+ *     (Response) res - Response
+ */
 exports.create = function(req, res) {
 	var resident = req.user
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
