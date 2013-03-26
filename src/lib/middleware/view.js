@@ -14,6 +14,14 @@ function registerHelpers(app) {
 	hbs.registerHelper('trans', function(str, options) {
 		return app.get('__')(str, options);
 	});
+	hbs.registerHelper('blocktrans', function(data, obj) {
+		console.log(data, obj);
+		if (!obj) {
+			obj = data;
+			data = obj.hash;
+		}
+		return new hbs.SafeString(app.get('__')(obj.fn(this), data));
+	});
 
 	hbs.registerHelper('hasProperties', function(obj, options) {
 		var self = this;
