@@ -23,7 +23,7 @@ var renderIndex = function renderIndex(req, res, community) {
 
 exports.index = function index(req, res) {
 	var resident = req.user;
-console.log("resident: ", resident);
+
 	resident.getCommunity().success(function result(community) {
 		if (!community) {
 			return res.redirect('./new');
