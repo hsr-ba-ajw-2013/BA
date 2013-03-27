@@ -14,6 +14,7 @@ var browserify = require('./browserify')
 	, passport = require('./passport')
 	, router = require('./router')
 	, expressStatic = require('./static')
+	, validator = require('./validator')
 	, view = require('./view');
 
 /** Function: middleware
@@ -39,6 +40,8 @@ module.exports = function middlewareInit(app, config) {
 	// important: the whole application doesn't work
 	// if connect-domain is in front of http.
 	connectDomain(app, config);
+
+	validator(app, config);
 
 	flash(app, config);
 

@@ -7,12 +7,15 @@ var controller = require('./controller')
 		'..', '..', 'shared', 'policies', 'login-required')
 	);
 
-// inject express-resource into app
-require('express-resource');
+// inject express-resource-middleware into app
+require('express-resource-middleware');
 
 module.exports = function taskInit(app) {
-	app.all('/task*', loginRequired);
-	app.resource('task', controller);
+	app.resource('task', controller, {
+		middleware: {
+			"*": loginRequired
+		}
+	});
 
 	return model(app);
 };

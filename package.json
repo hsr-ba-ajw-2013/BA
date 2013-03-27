@@ -9,13 +9,13 @@
 	, "dependencies": {
 		"express": "latest"
 		, "node-sass": "latest"
-		, "express-resource": "latest"
+		, "express-resource-middleware": "git://github.com/mweibel/express-resource.git#express_resource_middleware"
 
 		, "express-hbs": "latest"
 
 		, "connect-flash": "latest"
 
-		, "sequelize": "git://github.com/sequelize/sequelize.git#5788e91ab95849cb54bd85b92c8e733be32ec544"
+		, "sequelize": "git://github.com/sequelize/sequelize.git#6a21270ffad79e8d0142a48df9dcb761b3d0a0ca"
 		, "pg": "latest"
 
 		, "passport": "latest"

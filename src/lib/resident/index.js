@@ -7,12 +7,15 @@ var controller = require('./controller')
 		'..', '..', 'shared', 'policies', 'login-required')
 	);
 
-// inject express-resource into app
-require('express-resource');
+// inject express-resource-middleware into app
+require('express-resource-middleware');
 
 module.exports = function residentInit(app) {
-	app.all('/resident*', loginRequired);
-	app.resource('resident', controller);
+	app.resource('resident', controller, {
+		middleware: {
+			"*": loginRequired
+		}
+	});
 
 	return model(app);
 };

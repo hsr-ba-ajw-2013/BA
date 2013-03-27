@@ -1,7 +1,7 @@
 var controller = require('./controller');
 
-// inject express-resource into app
-require('express-resource');
+// inject express-resource-middleware into app
+require('express-resource-middleware');
 
 module.exports = function facebookChannelInit(app) {
 

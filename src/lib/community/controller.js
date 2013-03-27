@@ -2,6 +2,11 @@
  *
  */
 
+var path = require('path')
+	, validatorsPath = path.join('..', '..', 'shared', 'validators')
+	, createCommunityValidator = require(
+		path.join(validatorsPath, 'create-community'));
+
 /** PrivateFunction: renderIndex
  * Renders a Community instance in a specific response object.
  *
@@ -32,35 +37,17 @@ exports.index = function index(req, res) {
 
 exports['new'] = function newView(req, res) {
 	res.render('community/views/new', {
-		title: res.__('Create a community'),
-		flash: req.flash()
+		title: res.__('Create a community')
 	});
 };
 
-/** Function: createPost
- *
- * Parameters:
- *     (Request) req - Request
- *     (Response) res - Response
- */
-exports.create = function create(req, res) {
+var createCommunity = function createCommunity(req, res) {
 	var resident = req.user
-		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
+		, Community = req.app.get('db').daoFactoryManager.getDAO('Community')
 
-	//TODO: validate POST
-	if (!req.body.name) {
-		req.flash('error', res.__('The community name must be valid.'));
-		return res.redirect('./new');
-	} else if (req.body.name.length > 255) {
-		req.flash('error'
-			, res.__('The community name should' +
-				'be smaller then 255 characters.'));
-		return res.redirect('./new');
-	}
-
-	var communityData = {
-			name: req.body.name.trim()
-	};
+		, communityData = {
+			name: req.param('name')
+		};
 
 	Community.find({ where: communityData })
 		.success(function findResult(community) {
@@ -88,4 +75,17 @@ exports.create = function create(req, res) {
 		.error(function findError() {
 			return res.send(500);
 		});
+};
+
+/** Function: create
+ *
+ * Parameters:
+ *     (Request) req - Request
+ *     (Response) res - Response
+ *
+ * TODO: Ugly.
+ */
+exports.create = {
+	middleware: createCommunityValidator,
+	fn: createCommunity
 };
