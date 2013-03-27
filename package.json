@@ -11,6 +11,8 @@
 		, "node-sass": "latest"
 		, "express-resource-middleware": "git://github.com/mweibel/express-resource.git#express_resource_middleware"
 
+		, "express-validator": "latest"
+
 		, "express-hbs": "latest"
 
 		, "connect-flash": "latest"
