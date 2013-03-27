@@ -73,7 +73,7 @@ exports.create = function create(req, res) {
 								console.log(result);
 								console.log("community has resident");
 								req.flash('success',
-									req.__('Community created successfully.'));
+									res.__('Community created successfully.'));
 								res.redirect('./');
 							});
 

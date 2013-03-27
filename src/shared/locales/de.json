@@ -1,5 +1,7 @@
 {
 	"Login required": "Login required",
 	"Create Community": "Create Community",
-	"Welcome at Roomies!": "Welcome at Roomies!"
+	"Welcome at Roomies!": "Welcome at Roomies!",
+	"Your community %s": "Your community %s",
+	"Community created successfully.": "Community created successfully."
 }

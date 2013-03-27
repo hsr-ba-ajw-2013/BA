@@ -27,11 +27,7 @@ var browserify = require('./browserify')
  *   (Object) config - Configuration
  */
 module.exports = function middlewareInit(app, config) {
-	connectDomain(app, config);
-
 	expressStatic(app, config);
-
-	logger(app, config);
 
 	db(app, config);
 
@@ -39,12 +35,17 @@ module.exports = function middlewareInit(app, config) {
 	browserify(app, config);
 	navigation(app, config);
 	http(app, config);
+
+	// important: the whole application doesn't work
+	// if connect-domain is in front of http.
+	connectDomain(app, config);
+
 	flash(app, config);
-	view(app, config);
 
 	passport(app, config);
-
 	handler(app, config);
+	logger(app, config);
+	view(app, config);
 
 	router(app, config);
 
