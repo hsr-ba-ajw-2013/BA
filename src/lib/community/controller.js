@@ -48,43 +48,42 @@ exports.create = function create(req, res) {
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
 
 	//TODO: validate POST
+	if (!req.body.name) {
+		req.flash('error', res.__('The community name must be valid.'));
+		return res.redirect('./new');
+	} else if (req.body.name.length > 255) {
+		req.flash('error', res.__('The community name should be smaller then 255 characters.'));
+		return res.redirect('./new');
+	}
 
 	var communityData = {
-			name: req.body.name
+			name: req.body.name.trim()
 	};
-
-	console.log(communityData);
 
 	Community.find({ where: communityData })
 		.success(function findResult(community) {
 			if (community !== null) {
-				req.flash('error', "OH NO!!!");
-				res.redirect('back');
+				req.flash('error', res.__('The community already exists.'));
+				return res.redirect('./new');
 			} else {
-				console.log('yoyoo');
 				Community.create(communityData)
 					.success(function createResult(community) {
-						console.log("community created: ", community);
-						console.log("---: ", resident);
-
 						resident.setCommunity(community)
 							.success(function setResult(result) {
-								console.log(result);
-								console.log("community has resident");
 								req.flash('success',
 									res.__('Community created successfully.'));
-								res.redirect('./');
+								return res.redirect('./');
 							})
 							.error(function(errors) {
 								console.log("errors: ", errors);
 							});
 
 					}).error(function createError() {
-						res.send(500);
+						return res.send(500);
 					});
 			}
 		})
 		.error(function findError() {
-			res.send(500);
+			return res.send(500);
 		});
 };

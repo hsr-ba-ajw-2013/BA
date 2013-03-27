@@ -11,5 +11,10 @@
 	"Tasks": "Tasks",
 	"Rank": "Rank",
 	"Invite": "Invite",
-	"Welcome at Roomies!": "Welcome at Roomies!"
+	"Welcome at Roomies!": "Welcome at Roomies!",
+	"Create a community": "Create a community",
+	"Community created successfully.": "Community created successfully.",
+	"Your community %s": "Your community %s",
+	"The community name must be valid.": "The community name must be valid.",
+	"The community name should be smaller then 255 characters.": "The community name should be smaller then 255 characters."
 }
