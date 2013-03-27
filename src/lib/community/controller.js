@@ -52,7 +52,9 @@ exports.create = function create(req, res) {
 		req.flash('error', res.__('The community name must be valid.'));
 		return res.redirect('./new');
 	} else if (req.body.name.length > 255) {
-		req.flash('error', res.__('The community name should be smaller then 255 characters.'));
+		req.flash('error'
+			, res.__('The community name should' +
+				'be smaller then 255 characters.'));
 		return res.redirect('./new');
 	}
 
@@ -69,7 +71,7 @@ exports.create = function create(req, res) {
 				Community.create(communityData)
 					.success(function createResult(community) {
 						resident.setCommunity(community)
-							.success(function setResult(result) {
+							.success(function setResult() {
 								req.flash('success',
 									res.__('Community created successfully.'));
 								return res.redirect('./');
