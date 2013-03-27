@@ -51,7 +51,7 @@ exports.create = function create(req, res) {
 	//TODO: validate POST
 
 	var communityData = {
-			name: req.body.cname
+			name: req.body.name
 	};
 
 	console.log(communityData);
