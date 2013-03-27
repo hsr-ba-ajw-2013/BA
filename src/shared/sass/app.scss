@@ -1,53 +1,16 @@
+/* Roomies - Basic: */
+@import "_colors";
+@import "_foundation-customizations";
+
 /* Frameworks: */
-$include-html-button-classes: false;
 @import "foundation";
 @import "normalize";
 @import "font-awesome";
 
-/* Roomies: */
-@import "_colors";
+/* Roomies - Components: */
 @import "_navigation-bar";
+@import "_body";
 @import "_buttons";
 @import "_message-boxes";
-
-
-body {
-	background: url('../images/noisy-texture.png');
-	margin-top: $navigation-bar-height + 20px;
-}
-
-h2 {
-	@extend .hide-for-small;
-}
-
-.center {
-	text-align: center;
-}
-
-table.tasks {
-	width: 100%;
-
-	tr:hover {
-		background-color: darken($table-even-row-bg, 5%);
-	}
-
-	th, td {
-		&.check {
-			width: 30px;
-		}
-
-		&.due-date {
-			width: 120px;
-		}
-
-		&.reward {
-			@extend .hide-for-small;
-			width: 80px;
-			text-align: center;
-		}
-	}
-
-	th a {
-		color: black;
-	}
-}
+@import "_forms";
+@import "_tasks-table";

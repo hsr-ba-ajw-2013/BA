@@ -1,0 +1,19 @@
+small.error {
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+form {
+	.hint {
+		margin-top: 1px;
+		font-size: emCalc(12px);
+		line-height: 1.2em;
+		color: lighten(#333, 30%);
+	}
+
+	textarea {
+		font-size: $input-font-size;
+	}
+}

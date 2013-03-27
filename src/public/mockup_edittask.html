@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+	<meta charset="utf-8">
+	<title>Roomies | Aufgaben</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+	<meta name="viewport" content="width=320.1">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="description" content="">
+	<meta name="author" content="">
+	
+	<link href="stylesheets/app.css" rel="stylesheet">
+	<script src="javascripts/custom.modernizr.js"></script>
+
+	<link rel="shortcut icon" href="images/favicon.ico">
+	<link rel="apple-touch-icon" sizes="144x144" href="images/apple-touch-icon-144.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72.png">
+	<link rel="apple-touch-icon" sizes="57x57" href="images/apple-touch-icon-57.png">
+	<link rel="apple-touch-icon" href="images/apple-touch-icon-57.png">
+	<link rel="apple-touch-startup-image" media="(device-width: 320px)" href="images/apple-touch-startup-image-320x470.png">
+	<link rel="apple-touch-startup-image" media="(device-width: 320px) and (-webkit-device-pixel-ratio: 2)" href="images/apple-touch-startup-image-640x920.png">
+	<link rel="apple-touch-startup-image" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" href="images/apple-touch-startup-image-640x1096.png">
+</head>
+
+<body>
+	<div class="fixed-navigation">
+		<nav class="navigation" role="navigation">
+			<ul class="title-area">
+				<li><a href="#" class="banner" title="Roomies">Roomies</a></li>
+			</ul>
+
+			<section class="nav-section">
+				<ul class="right">
+					<li class="account"><a href="#"><span class="item-label">Manuel Alabor </span><img class="avatar" src="http://0.gravatar.com/avatar/c36915ec92a666d930c1e91e2c3ba6a4?s=50&d=mm&r=pg" width="25" height="25" /></a></li>
+				</ul>
+			</section>
+		</nav>
+	</div>
+
+	<form class="large-12 columns">
+		<div class="row">
+			<div class="large-12 columns">
+				<h2 class="">Aufgabe erstellen</h2>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="small-3 large-2 columns">
+				<label for="txtTask" class="inline">Aufgabe</label>
+			</div>
+			<div class="small-9 large-7 columns">
+				<input type="text" name="txtTask" id="txtTask" placeholder="Müll entsorgen, Einkaufen, ..." />
+			</div>
+			<div class="large-3 columns hide-for-small hint">
+				Gib' der Aufgabe eine knappe Beschreibung.
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="small-3 large-2 columns">
+				<label for="txtReward" class="inline">Belohnung</label>
+			</div>
+			<div class="small-9 large-7 columns">
+				<input type="number" name="txtReward" id="txtReward" placeholder="1 bis 5 Punkte" min="1" max="5" class="error" />
+				<small class="error">Invalid Input! :(</small>
+			</div>
+			<div class="large-3 columns hide-for-small hint">
+				Wieviel <i class="icon-trophy"></i> Punkte soll der Mitbewohner erhalten, welcher diese Aufgabe erledigt?
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="small-3 large-2 columns">
+				<label for="txtDueDate" class="inline">Fälligkeit</label>
+			</div>
+			<div class="small-9 large-7 columns">
+				<input type="date" name="txtDueDate" id="txtDueDate" placeholder="Belohnung zwischen 1 und 5 Punkten" min="1" max="5" />
+			</div>
+			<div class="large-3 columns hide-for-small hint">
+				Ist diese Aufgabe an einem bestimmten Tag fällig?
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="small-3 large-2 columns">
+				<label for="txtDescription" class="inline">Notizen</label>
+			</div>
+			<div class="small-9 large-7 columns">
+				<textarea name="txtDescription" id="txtDescription" placeholder="Schlüssel zum Keller im Schlüsselkasten..."></textarea>
+			</div>
+			<div class="large-3 columns hide-for-small hint">
+				Hinterlasse Notizen zu dieser Aufgabe, falls nötig.
+			</div>
+		</div>
+	</form>
+
+</body>
+</html>
