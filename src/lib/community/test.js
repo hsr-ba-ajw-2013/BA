@@ -86,7 +86,7 @@ describe('GET /community authorized and with community for the user'
 					request(app)
 						.post('/community')
 						.send({name: communityName})
-						.end(function(err, res) {
+						.end(function(err) {
 							if (err) {
 								done(err);
 							}
