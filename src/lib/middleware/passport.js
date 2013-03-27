@@ -5,7 +5,7 @@
 var passport = require('passport')
 	, FacebookStrategy = require('passport-facebook').Strategy;
 
-module.exports = function(app, config) {
+module.exports = function passportInit(app, config) {
 	var db = app.get('db');
 
 	app.use(passport.initialize());
@@ -20,14 +20,14 @@ module.exports = function(app, config) {
 			var Resident = db.daoFactoryManager.getDAO('Resident');
 
 			Resident.find({where: {facebookId: profile.id}})
-				.success(function(resident) {
+				.success(function result(resident) {
 					if (!resident) {
 						Resident.create({
 							facebookId: profile.id,
 							name: profile.displayName
-						}).success(function(resident) {
+						}).success(function residentCreated(resident) {
 							return done(null, resident);
-						}).error(function(err) {
+						}).error(function errorCreatingResident(err) {
 							return done(err);
 						});
 					} else {
@@ -36,31 +36,31 @@ module.exports = function(app, config) {
 						}
 						return done('User disabled');
 					}
-				}).error(function(err) {
+				}).error(function error(err) {
 					return done(err);
 				});
 			}
 		)
 	);
 
-	passport.serializeUser(function(resident, done) {
+	passport.serializeUser(function serializeUser(resident, done) {
 		done(null, resident.id);
 	});
 
-	passport.deserializeUser(function(id, done) {
+	passport.deserializeUser(function deserializeUser(id, done) {
 		var Resident = db.daoFactoryManager.getDAO('Resident');
-		Resident.find(id).success(function(resident) {
+		Resident.find(id).success(function result(resident) {
 			if(!resident) {
 				return done("Resident not found");
 			}
 			return done(null, resident);
-		}).error(function(err) {
+		}).error(function error(err) {
 			console.log(err);
 			done(err);
 		});
 	});
 
-	app.use(function(req, res, next) {
+	app.use(function assignUser(req, res, next) {
 		// assign user to the template
 		res.locals.user = req.user;
 		next();

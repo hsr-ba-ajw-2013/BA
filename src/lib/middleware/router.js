@@ -1,3 +1,5 @@
-module.exports = function(app) {
+
+
+module.exports = function routerInit(app) {
 	app.use(app.router);
 };

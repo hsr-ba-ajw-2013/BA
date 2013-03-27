@@ -1,7 +1,7 @@
 var expressWinston = require('express-winston'),
 	winston = require('winston');
 
-module.exports = function(app, config) {
+module.exports = function loggerInit(app, config) {
 	app.use(expressWinston.errorLogger({
 		transports: [
 			new winston.transports.Console({

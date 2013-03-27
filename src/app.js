@@ -47,7 +47,7 @@ function main() {
 	// sync db
 	app.get('db').sync();
 
-	http.createServer(app).listen(config.http.port, function(){
+	http.createServer(app).listen(config.http.port, function listening(){
 		console.log("Express server listening on port " + config.http.port);
 	});
 

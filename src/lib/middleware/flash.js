@@ -1,6 +1,6 @@
 var flash = require('connect-flash');
 
-module.exports = function(app) {
+module.exports = function flashInit(app) {
 	app.use(flash());
 
 	app.use(function(req, res, next) {

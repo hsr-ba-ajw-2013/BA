@@ -13,7 +13,7 @@ util.inherits(StrategyMock, passport.Strategy);
 StrategyMock.prototype.authenticate = function authenticate() {
 	if (this.passAuthentication) {
 		var self = this;
-		this.verify(this.user, function(err, resident) {
+		this.verify(this.user, function result(err, resident) {
 			if(err) {
 				self.fail(err);
 			} else {

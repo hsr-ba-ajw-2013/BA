@@ -1,6 +1,6 @@
-module.exports = function(app) {
+module.exports = function navigationInit(app) {
 
-	app.use(function(req, res, next) {
+	app.use(function assignRequestPath(req, res, next) {
 		res.locals.requestPath = req.path;
 		next();
 	});

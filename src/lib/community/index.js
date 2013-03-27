@@ -12,7 +12,7 @@ var controller = require('./controller')
 // inject express-resource into app
 require('express-resource');
 
-module.exports = function(app) {
+module.exports = function communityInit(app) {
 	app.all('/community*', loginRequired);
 	app.resource('community', controller);
 	return model(app);

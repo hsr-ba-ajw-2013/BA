@@ -26,10 +26,12 @@ var browserify = require('./browserify')
  *   (Express.App) app - Express Application
  *   (Object) config - Configuration
  */
-module.exports = function middleware(app, config) {
+module.exports = function middlewareInit(app, config) {
 	connectDomain(app, config);
 
 	expressStatic(app, config);
+
+	logger(app, config);
 
 	db(app, config);
 
@@ -43,7 +45,6 @@ module.exports = function middleware(app, config) {
 	passport(app, config);
 
 	handler(app, config);
-	logger(app, config);
 
 	router(app, config);
 

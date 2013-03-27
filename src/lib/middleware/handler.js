@@ -12,10 +12,10 @@ function handler401(err, req, res, next) {
 	next(err);
 }
 
-module.exports = function(app) {
+module.exports = function handlerInit(app) {
 	app.use(handler401);
 
-	app.configure('development', function() {
+	app.configure('development', function developmentEnvironment() {
 		app.use(express.errorHandler());
 	});
 };

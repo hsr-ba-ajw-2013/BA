@@ -1,4 +1,4 @@
-module.exports = function(app, config) {
+module.exports = function clientConfigInit(app, config) {
 	app.locals.config = {
 		facebook: {
 			clientID: config.facebook.clientID

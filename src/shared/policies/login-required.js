@@ -4,7 +4,7 @@
 
 var Exception401 = require('../exceptions/401');
 
-module.exports = function(req, res, next) {
+module.exports = function loginRequired(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	}

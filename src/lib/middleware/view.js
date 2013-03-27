@@ -3,18 +3,18 @@ var express = require('express')
 	, hbs = require('express-hbs');
 
 function registerHelpers(app) {
-	hbs.registerHelper('stringify', function(item) {
+	hbs.registerHelper('stringify', function stringify(item) {
 		return new hbs.SafeString(JSON.stringify(item));
 	});
 
-	hbs.registerHelper('safestring', function(str) {
+	hbs.registerHelper('safestring', function safestring(str) {
 		return new hbs.SafeString(str);
 	});
 
-	hbs.registerHelper('trans', function(str, options) {
+	hbs.registerHelper('trans', function trans(str, options) {
 		return app.get('__')(str, options);
 	});
-	hbs.registerHelper('blocktrans', function(data, obj) {
+	hbs.registerHelper('blocktrans', function blocktrans(data, obj) {
 		if (!obj) {
 			obj = data;
 			data = obj.hash;
@@ -22,7 +22,7 @@ function registerHelpers(app) {
 		return new hbs.SafeString(app.get('__')(obj.fn(this), data));
 	});
 
-	hbs.registerHelper('hasProperties', function(obj, options) {
+	hbs.registerHelper('hasProperties', function hasProperties(obj, options) {
 		var self = this;
 		for(var prop in obj) {
 			if(obj.hasOwnProperty(prop)) {
@@ -32,7 +32,7 @@ function registerHelpers(app) {
 		}
 		return;
 	});
-	hbs.registerHelper('navIsActive', function(uri, data, options) {
+	hbs.registerHelper('navIsActive', function navIsActive(uri, data, options) {
 		if(data.requestPath.indexOf(uri) === 0) {
 			return options.fn(this);
 		}
@@ -40,7 +40,7 @@ function registerHelpers(app) {
 	});
 }
 
-module.exports = function(app, config) {
+module.exports = function viewInit(app, config) {
 	app.engine('hbs', hbs.express3({
 		partialsDir: path.join(config.srcDir, 'shared', 'partials')
 		, layoutsDir: path.join(config.srcDir, 'shared', 'layouts')

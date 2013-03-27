@@ -10,16 +10,16 @@
  *    (Response) res - The response to render into
  *    (Community) community - The actual Community instance to render
  */
-var renderIndex = function(req, res, community) {
+var renderIndex = function renderIndex(req, res, community) {
 	res.render('community/views/index', {
 		title: res.__('Your community %s', community.name)
 	});
 };
 
-exports.index = function(req, res) {
+exports.index = function index(req, res) {
 	var resident = req.user;
 
-	resident.getCommunity().success(function(community) {
+	resident.getCommunity().success(function result(community) {
 		if (!community) {
 			return res.redirect('./new');
 		}
@@ -31,8 +31,8 @@ exports.index = function(req, res) {
 };
 
 
-exports['new'] = function(req, res) {
-	res.render('community/views/create', {
+exports['new'] = function newView(req, res) {
+	res.render('community/views/new', {
 		title: res.__('Create Community'),
 		flash: req.flash()
 	});
@@ -44,7 +44,7 @@ exports['new'] = function(req, res) {
  *     (Request) req - Request
  *     (Response) res - Response
  */
-exports.create = function(req, res) {
+exports.create = function create(req, res) {
 	var resident = req.user
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
 
@@ -57,26 +57,32 @@ exports.create = function(req, res) {
 	console.log(communityData);
 
 	Community.find({ where: communityData })
-		.success(function(community) {
+		.success(function findResult(community) {
 			if (community !== null) {
 				req.flash('error', "OH NO!!!");
 				res.redirect('back');
 			} else {
+				console.log('yoyoo');
 				Community.create(communityData)
-					.success(function(community) {
+					.success(function createResult(community) {
 						console.log("community created: ", community);
 						console.log("---: ", resident);
 
 						resident.setCommunity(community)
-							.success(function(result) {
+							.success(function setResult(result) {
 								console.log(result);
 								console.log("community has resident");
+								req.flash('success',
+									req.__('Community created successfully.'));
 								res.redirect('./');
 							});
 
-					}).error(function(errors) {
-						console.log("errors: ", errors);
+					}).error(function createError() {
+						res.send(500);
 					});
 			}
+		})
+		.error(function findError() {
+			res.send(500);
 		});
 };

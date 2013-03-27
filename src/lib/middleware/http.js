@@ -1,8 +1,7 @@
-"use strict";
 
 var express = require('express');
 
-module.exports = function(app, config) {
+module.exports = function httpInit(app, config) {
 	app.use(express.bodyParser());
 	app.use(express.methodOverride());
 

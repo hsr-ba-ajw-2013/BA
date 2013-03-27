@@ -1,6 +1,6 @@
 var Sequelize = require('sequelize');
 
-module.exports = function init(app, config) {
+module.exports = function dbInit(app, config) {
 	app.set('db', new Sequelize(
 		config.db.database
 		, config.db.username
