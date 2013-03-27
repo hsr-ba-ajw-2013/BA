@@ -30,10 +30,9 @@ exports.index = function index(req, res) {
 
 };
 
-
 exports['new'] = function newView(req, res) {
 	res.render('community/views/new', {
-		title: res.__('Create Community'),
+		title: res.__('Create a community'),
 		flash: req.flash()
 	});
 };
@@ -75,6 +74,9 @@ exports.create = function create(req, res) {
 								req.flash('success',
 									res.__('Community created successfully.'));
 								res.redirect('./');
+							})
+							.error(function(errors) {
+								console.log("errors: ", errors);
 							});
 
 					}).error(function createError() {

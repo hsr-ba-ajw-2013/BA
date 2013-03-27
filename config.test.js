@@ -21,17 +21,13 @@ module.exports = {
 	}
 
 	, facebook: {
-		clientID: 1245567890
-		, clientSecret: "EXAMPLE"
+		clientID: 496325690405368
+		, clientSecret: "95973369538243fca82a0d9f5740a273"
 		, callbackUrl: '/auth/facebook/callback'
 		, channelUrl: '/fbchannel'
 		, checkStatus: true
 		, useCookies: true
 		, parseXfbml: false
-	}
-
-	, http: {
-		port: 3000
 	}
 
 	, logging: {
@@ -41,5 +37,9 @@ module.exports = {
 		, disableRequestLog: true
 	}
 
-	, sessionSecret: "CHANGEME"
+	, http: {
+		port: 3000
+	}
+
+	, sessionSecret: "mega_ultra$ecret-imfall_dev"
 }
