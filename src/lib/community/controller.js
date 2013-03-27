@@ -23,7 +23,7 @@ var renderIndex = function renderIndex(req, res, community) {
 
 exports.index = function index(req, res) {
 	var resident = req.user;
-
+console.log("resident: ", resident);
 	resident.getCommunity().success(function result(community) {
 		if (!community) {
 			return res.redirect('./new');
@@ -44,7 +44,6 @@ exports['new'] = function newView(req, res) {
 var createCommunity = function createCommunity(req, res) {
 	var resident = req.user
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community')
-
 		, communityData = {
 			name: req.param('name')
 		};
@@ -61,7 +60,7 @@ var createCommunity = function createCommunity(req, res) {
 							.success(function setResult() {
 								req.flash('success',
 									res.__('Community created successfully.'));
-								return res.redirect('./');
+								return res.redirect('/community');
 							})
 							.error(function(errors) {
 								console.log("errors: ", errors);
