@@ -3,7 +3,11 @@ var passport = require('passport')
 
 function StrategyMock(options, verify) {
 	this.name = 'mock';
-	this.passAuthentication = options.passAuthentication || true;
+	if (options.passAuthentication === undefined) {
+		this.passAuthentication = true;
+	} else {
+		this.passAuthentication = options.passAuthentication;
+	}
 	this.user = options.user || 1;
 	this.verify = verify;
 }

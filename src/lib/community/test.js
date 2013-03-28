@@ -3,9 +3,9 @@ var request = require('supertest')
 	, superagent = require('superagent')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()
-	, passportMock = require(path.join(
-		process.cwd(), 'src', 'shared', 'test', 'passport-mock')
-	)
+	, doLogin = require(path.join(
+			process.cwd(), 'src', 'shared', 'test', 'passport-mock')
+		).doLogin
 	, randomString = function randomString(size) {
 		var text = ""
 			, possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
@@ -35,24 +35,8 @@ describe('GET /community authorized and without community for the user'
 	, function() {
 	var agent = superagent.agent();
 
-	beforeEach(function(done) {
-		passportMock(app, {
-			passAuthentication: true,
-			user: {
-				name: 'CommunityTest'
-				, facebookId: Math.round(1000*(Math.random()+1))
-			}
-		});
-		request(app)
-			.get('/mock/login')
-			.end(function(err, result) {
-				if (!err) {
-					agent.saveCookies(result.res);
-					done();
-				} else {
-					done(err);
-				}
-			});
+	beforeEach(function before(done) {
+		doLogin(app, agent, done);
 	});
 
 	it('should redirect to /community/./new with 302', function(done) {
@@ -63,74 +47,12 @@ describe('GET /community authorized and without community for the user'
 	});
 });
 
-describe('GET /community authorized and with community for the user'
-	, function() {
-	var agent = superagent.agent();
-
-	beforeEach(function(done) {
-		passportMock(app, {
-			passAuthentication: true,
-			user: {
-				name: 'CommunityTest'
-				, facebookId: Math.round(1000*(Math.random()+1))
-			}
-		});
-		request(app)
-			.get('/mock/login')
-			.end(function(err, result) {
-				if (!err) {
-					agent.saveCookies(result.res);
-
-					var communityName = randomString();
-					//console.log(communityName);
-
-					request(app)
-						.post('/community')
-						.send({name: communityName})
-						.end(function(err) {
-							if (err) {
-								done(err);
-							}
-							done();
-						});
-
-				} else {
-					done(err);
-				}
-			});
-	});
-
-	it.skip('should show /community with 200', function(done) {
-		var req = request(app).get('/community');
-		agent.attachCookies(req);
-
-		req.expect(200, done);
-	});
-});
-
-
 describe('POST /community authorized'
 	, function() {
 	var agent = superagent.agent();
 
 	beforeEach(function(done) {
-		passportMock(app, {
-			passAuthentication: true,
-			user: {
-				name: 'CommunityTest'
-				, facebookId: Math.round(1000*(Math.random()+1))
-			}
-		});
-		request(app)
-			.get('/mock/login')
-			.end(function(err, result) {
-				if (!err) {
-					agent.saveCookies(result.res);
-					done();
-				} else {
-					done(err);
-				}
-			});
+		doLogin(app, agent, done);
 	});
 
 	it('should not create a community with an empty name string'
@@ -171,5 +93,33 @@ describe('POST /community authorized'
 		req.send({name: communityName})
 			.expect(302)
 			.expect('Location', '/community', done);
+	});
+});
+
+describe('GET /community authorized and with community for the user'
+	, function() {
+	var agent = superagent.agent();
+
+	beforeEach(function before(done) {
+		doLogin(app, agent, function afterLogin() {
+			var communityName = randomString();
+
+			request(app)
+				.post('/community')
+				.send({name: communityName})
+				.end(function(err) {
+					if (err) {
+						done(err);
+					}
+					done();
+				});
+		});
+	});
+
+	it.skip('should show /community with 200', function(done) {
+		var req = request(app).get('/community');
+		agent.attachCookies(req);
+
+		req.expect(200, done);
 	});
 });
