@@ -1,7 +1,7 @@
-$notification-success-color: #5aa50f;
-$notification-error-color: #a60000;
-$notification-warning-color: #b0ab0d;
-$notification-info-color: $color-accent-1;
+$notification-success-color: $color-success;
+$notification-error-color: $color-error;
+$notification-warning-color: $color-warning;
+$notification-info-color: $color-info;
 
 .message-box {
 	@include alert-base;

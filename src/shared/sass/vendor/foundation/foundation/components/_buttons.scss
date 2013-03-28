@@ -143,12 +143,17 @@ $button-disabled-opacity: 0.6 !default;
 }
 
 // We use this to quickly create buttons with a single mixin. As @jaredhardy puts it, "the kitchen sink mixin"
+/*
+
+Leave out the button mixin to use the bourbon button mixin.
+
+
 @mixin button($padding:$button-med, $bg:$primary-color, $radius:false, $full-width:false, $disabled:false, $is-input:false, $is-prefix:false) {
   @include button-base;
   @include button-size($padding, $full-width, $is-input);
   @include button-style($bg, $radius, $disabled);
 }
-
+*/
 
 //
 // Button Classes

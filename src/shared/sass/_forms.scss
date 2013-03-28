@@ -16,4 +16,10 @@ form {
 	textarea {
 		font-size: $input-font-size;
 	}
+
+	.button-bar {
+		border-top: 1px dotted lighten(#333, 70%);
+		padding-top: 10px;
+		margin-top: 20px;
+	}
 }

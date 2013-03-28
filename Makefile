@@ -68,7 +68,7 @@ clean:
 
 precompile-sass:
 	-rm $(CSS_PATH)
-	@sass --load-path src/shared/sass/vendor --load-path src/shared/sass/vendor/foundation $(SCSS_PATH) $(CSS_PATH)
+	@sass -t compressed --load-path src/shared/sass/vendor --load-path src/shared/sass/vendor/foundation --load-path src/shared/sass/vendor/bourbon $(SCSS_PATH) $(CSS_PATH)
 
 precompile-sass-live:
 	@nodemon -w src/shared/sass -e scss -x "make precompile-sass -f" Makefile

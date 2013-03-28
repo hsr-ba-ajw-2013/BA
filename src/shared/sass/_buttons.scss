@@ -1,32 +1,53 @@
+
+$button-color-bg: #f6f6f6;
+
 .button {
-	@include border-radius(5px);
-
-
-	
-
-}
-
-.facebook-button {
-	@include button-base;
-	@include button-size($button-tny, false, false);
-	@include button-style(#3e5c9f, true, false);
-	@include single-transition;
-	@include inset-shadow(true);
+	@include button($button-color-bg);
+	@include border-radius(8px);
+	margin-top: 1px;
 
 	& [class^="icon-"], & [class*=" icon-"] {
 		padding-right: 3px;
 	}
+
+	&.success {
+		@include button($color-success);
+		@include border-radius(8px);
+	}
+
+	&.facebook {
+		@include button($color-facebook);
+		@include border-radius(8px);
+
+		& [class^="icon-"], & [class*=" icon-"] {
+			font-size: 2em;
+		}
+	}
+
+	&.twitter {
+		@include button(#eaeaea);
+		@include border-radius(8px);
+
+		& [class^="icon-"], & [class*=" icon-"] {
+			color: $color-twitter;
+		}
+	}
+
+	&.small {
+		padding: 3px 14px;
+
+		& [class^="icon-"], & [class*=" icon-"] {
+			font-size: 1.4em;
+		}
+	}
+
+	&.widen-for-small {
+		width: 100%;
+	}
 }
 
-.twitter-button {
-	@include button-base;
-	@include button-size($button-tny, false, false);
-	@include button-style(#eaeaea, true, false);
-	@include single-transition;
-	@include inset-shadow(true);
-
-	& [class^="icon-"], & [class*=" icon-"] {
-		color: #00aaf0;
-		padding-right: 5px;
+@media #{$small} {
+	.button.widen-for-small {
+		width: auto;
 	}
 }
