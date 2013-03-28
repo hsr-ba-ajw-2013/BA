@@ -23,15 +23,16 @@ function passportMock(app, options) {
 exports.passportMock = passportMock;
 
 /** Function: doLogin
- * Logs a user in using <passportMock>. Due to it's asynchronous nature, a callback function
- * has to be provided.
+ * Logs a user in using <passportMock>. Due to it's asynchronous
+ * nature, a callback function has to be provided.
  *
  * Parameters:
  *   (express.application) app - Instantiated application
  *   (superagent) agent - Instantiated superagent
  *   (Function) next - Callback function
- *   (Boolean) passAuthentication - [Optional, Default true] set to false if you wish that
- *                                                           the authentication fails.
+ *   (Boolean) passAuthentication - [Optional, Default true]
+ *                                   set to false if you wish that
+ *                                   the authentication fails.
  *   (Object) user - User to create
  */
 exports.doLogin = function doLogin(app, agent, next, passAuthentication, user) {
