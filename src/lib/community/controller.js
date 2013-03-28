@@ -33,6 +33,7 @@ exports.index = function index(req, res) {
 	var resident = req.user;
 
 	resident.getCommunity().success(function result(community) {
+
 		if (!community) {
 			return res.redirect('./new');
 		}
