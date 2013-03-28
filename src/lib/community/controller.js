@@ -1,5 +1,5 @@
 /** Controller: Community.Controller
- *
+ * Community-related CRUD
  */
 
 var path = require('path')
@@ -21,6 +21,14 @@ var renderIndex = function renderIndex(req, res, community) {
 	});
 };
 
+/** Function: index
+ * In case the resident has no community assigned yet, it will redirect
+ * to <new>.
+ *
+ * Parameters:
+ *   (express.request) req - Request
+ *   (express.response) res - Response
+ */
 exports.index = function index(req, res) {
 	var resident = req.user;
 
@@ -35,12 +43,26 @@ exports.index = function index(req, res) {
 
 };
 
+/** Function: new
+ * Renders a form for creating a new community.
+ *
+ * Parameters:
+ *   (express.request) req - Request
+ *   (express.response) res - Response
+ */
 exports['new'] = function newView(req, res) {
 	res.render('community/views/new', {
 		title: res.__('Create a community')
 	});
 };
 
+/** PrivateFunction: createCommunity
+ * Creates a community.
+ *
+ * Parameters:
+ *   (express.request) req - Request
+ *   (express.response) res - Response
+ */
 var createCommunity = function createCommunity(req, res) {
 	var resident = req.user
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community')
@@ -77,12 +99,13 @@ var createCommunity = function createCommunity(req, res) {
 };
 
 /** Function: create
+ * Validates the POSTed form using <createCommunityValidator> as a middleware.
+ * If the form has been valid, it will use the <createCommunity> function
+ * to create a community.
  *
  * Parameters:
  *     (Request) req - Request
  *     (Response) res - Response
- *
- * TODO: Ugly.
  */
 exports.create = {
 	middleware: createCommunityValidator,

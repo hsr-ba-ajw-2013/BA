@@ -71,10 +71,25 @@ Group: Components  {
 
    }  # Group: Components
 
-Group: Middlewares  {
+Group: Lib  {
 
-   File: Cluster  (lib/cluster/index.js)
-   }  # Group: Middlewares
+   File: ConnectDomain  (lib/middleware/connect-domain.js)
+   File: Login  (lib/login/index.js)
+   File: Login.Controller  (lib/login/controller.js)
+   File: middleware  (lib/middleware/index.js)
+   File: Middleware.Validator  (lib/middleware/validator.js)
+
+   Group: Middlewares  {
+
+      File: Cluster  (lib/cluster/index.js)
+      }  # Group: Middlewares
+
+   }  # Group: Lib
+
+Group: Shared  {
+
+   File: doLogin  (shared/test/passport-mock.js)
+   }  # Group: Shared
 
 Group: Exceptions  {
 
