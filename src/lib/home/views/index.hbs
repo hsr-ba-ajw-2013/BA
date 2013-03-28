@@ -1,17 +1,5 @@
 <div class="row">
 	<section class="large-centered large-4 columns center">
-		<img src="images/roomies-shield.png" width="225" height="188" />
-		<h4>{{trans "Welcome at Roomies!"}}</h4>
-		{{#unless user}}
-			<h5 class="subheader">
-				{{trans "Please login with your Facebook account in order to use Roomies."}}
-			</h5>
-			<p>
-				<a href="/auth/facebook" class="facebook-button"><i class="icon-facebook icon-2x"></i> {{trans "Login with Facebook"}}</a>
-			</p>
-		{{/unless}}
-		{{#if user}}
-			{{trans "Hello %s" user.name}}
-		{{/if}}
+		Homepage
 	</section>
 </div>

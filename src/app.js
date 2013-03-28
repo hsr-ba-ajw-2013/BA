@@ -11,6 +11,7 @@ var express = require('express')
 
 	, community = require('./lib/community')
 	, home = require('./lib/home')
+	, login = require('./lib/login')
 	, resident = require('./lib/resident')
 	, task = require('./lib/task')
 	, facebookChannel = require('./lib/facebook-channel');
@@ -31,6 +32,7 @@ function main() {
 	middleware(app, config);
 
 	home(app, config);
+	login(app, config);
 
 	// FIXME: Ugly
 	var communityRelationships = community(app, config)

@@ -5,9 +5,10 @@ var express = require('express')
 
 function handler401(err, req, res, next) {
 	if (err instanceof Exception401) {
-		return res.status(401).render('../shared/views/401', {
-			title: res.__('Login required')
-		});
+		if(req.is('json')) {
+			return res.send(401);
+		}
+		return res.redirect('/login');
 	}
 	next(err);
 }

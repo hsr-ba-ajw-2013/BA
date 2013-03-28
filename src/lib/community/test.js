@@ -23,10 +23,11 @@ var request = require('supertest')
 
 
 describe('GET /community unauthorized', function(){
-	it('should respond with a 401 exception', function(done){
+	it('should redirect to /login', function(done){
 		request(app)
 			.get('/community')
-			.expect(401, done);
+			.expect(302)
+			.expect('Location', '/login', done);
 	});
 });
 
