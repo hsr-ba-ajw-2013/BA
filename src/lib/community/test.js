@@ -80,7 +80,7 @@ describe('POST /community authorized and without community for the user'
 	});
 
 	it.skip('should create a community', function(done) {
-
+		done();
 	});
 
 	it('should redirect to /community with 302 after creating a community'
@@ -95,7 +95,8 @@ describe('POST /community authorized and without community for the user'
 			.expect('Location', '/community', done);
 	});
 
-	it.skip('should redirect to /community/./new with 302 if the community name already exists',
+	it.skip('should redirect to /community/./new with 302 ' +
+		'if the community name already exists',
 		function(done) {
 			var req = request(app)
 						.post('/community')
@@ -120,7 +121,7 @@ describe('POST /community authorized and with community for the user'
 	});
 
 	it.skip('should redirect to /community with 302',function(done) {
-
+		done();
 	});
 
 });
