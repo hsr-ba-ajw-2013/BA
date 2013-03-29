@@ -1,0 +1,43 @@
+table {
+	width: 100%;
+	
+	tbody tr:hover {
+		background-color: darken($table-even-row-bg, 5%);
+	}
+
+	&.tasks {
+		th, td {
+			&.check {
+				width: 30px;
+			}
+
+			&.due-date {
+				width: 120px;
+			}
+
+			&.reward {
+				@extend .hide-for-small;
+				width: 80px;
+				text-align: center;
+			}
+		}
+	}
+
+	&.scoreboard {
+		th, td {
+			&.points {
+				width: 80px;
+				text-align: center;
+			}
+
+			&.badges {
+				width: 80px;
+				text-align: center;
+			}
+		}
+	}
+
+	&.badges {
+		margin-top: 20px;
+	}
+}
