@@ -21,6 +21,10 @@ install() {
 	write_configuration
 	echo "..done"
 
+	echo "Creating postgres DB..."
+	postgres_db
+	echo "...done"
+
 	echo "Done. Please run 'npm start' now."
 	echo
 }
@@ -86,6 +90,11 @@ module.exports = {
 }
 ENDCONF
 ) > config.development.js
+}
+
+postgres_db() {
+	psql -h localhost -U postgres -c "CREATE ROLE roomies WITH PASSWORD '12345' LOGIN"
+	psql -h localhost -U postgres -c "CREATE DATABASE roomies WITH OWNER roomies"
 }
 
 install
