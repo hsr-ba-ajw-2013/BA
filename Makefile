@@ -34,15 +34,17 @@ test-coverage: test
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) src/lib/*/test.js  > unit-coverage.html
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) test/*-test.js > functional-coverage.html
 
-setup: clean
+setup: clean deps config precompile-sass
+	@echo "Done. You should now be able to start using `npm start`."
+
+deps:
 	@echo "Installing dependencies"
 	@npm install
+
+config:
 	@echo "Copying configs"
 	-cp -v config.development.js config.development.old.js
 	@cp -v config.example.js config.development.js
-	@echo "Precompiling SASS Stylesheets"
-	@make precompile-sass
-	@echo "Done. You should now be able to start using `npm start`."
 
 start:
 	@npm start
@@ -67,7 +69,8 @@ clean:
 	-rm $(CSS_PATH)
 
 precompile-sass:
-	-rm $(CSS_PATH)
+	@echo "Precompiling SASS Stylesheets"
+	@rm $(CSS_PATH)
 	@sass -t compressed --load-path src/shared/sass/vendor --load-path src/shared/sass/vendor/foundation --load-path src/shared/sass/vendor/bourbon $(SCSS_PATH) $(CSS_PATH)
 
 precompile-sass-live:
@@ -80,4 +83,4 @@ docs:
 	-mkdir ./docs
 	@NaturalDocs -i ./src -o HTML ./docs -p ./.naturaldocs -xi ./src/public/javascripts/lib/ -s Default style
 
-.PHONY: test test-unit test-functional test-unit-live test-functional-live test-coverage setup clean precompile-sass-live lint docs
+.PHONY: test test-unit test-functional test-unit-live test-functional-live test-coverage setup clean precompile-sass-live lint deps config docs
