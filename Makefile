@@ -52,19 +52,19 @@ live:
 
 clean:
 	@echo "Removing dependencies"
-	@rm -Rf ./node_modules
+	-rm -Rf ./node_modules
 	@echo "Cleaning npm cache"
 	@npm cache clean
 	@echo "Cleaning test-coverage"
-	@rm -Rf ./test-cov
-	@rm unit-coverage.html
-	@rm functional-coverage.html
+	-rm -Rf ./test-cov
+	-rm unit-coverage.html
+	-rm functional-coverage.html
 	@echo "Cleaning npm debug log"
-	@rm npm-debug.log
+	-rm npm-debug.log
 	@echo "Cleaning docs"
-	@rm -fr ./docs
+	-rm -fr ./docs
 	@echo "Cleaning compiled CSS"
-	@rm $(CSS_PATH)
+	-rm $(CSS_PATH)
 
 precompile-sass:
 	-rm $(CSS_PATH)
