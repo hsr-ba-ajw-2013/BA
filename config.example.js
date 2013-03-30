@@ -20,7 +20,7 @@ module.exports = {
 	}
 
 	, facebook: {
-		clientID: 1245567890
+		clientID: 496325690405368
 		, clientSecret: "EXAMPLE"
 		, callbackUrl: '/auth/facebook/callback'
 		, channelUrl: '/fbchannel'
