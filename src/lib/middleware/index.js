@@ -28,14 +28,19 @@ var browserify = require('./browserify')
  *   (Object) config - Configuration
  */
 module.exports = function middlewareInit(app, config) {
-	expressStatic(app, config);
+	i18n(app, config);
+
+	view(app, config);
+	logger(app, config);
+
+	//TODO: csrf
+
+	http(app, config);
 
 	db(app, config);
 
-	i18n(app, config);
 	browserify(app, config);
 	navigation(app, config);
-	http(app, config);
 
 	// important: the whole application doesn't work
 	// if connect-domain is in front of http.
@@ -47,12 +52,12 @@ module.exports = function middlewareInit(app, config) {
 
 	passport(app, config);
 	handler(app, config);
-	logger(app, config);
-	view(app, config);
 
-	router(app, config);
 
 	clientConfig(app, config);
 
 	livereload(app, config);
+
+	router(app, config);
+	expressStatic(app, config);
 };

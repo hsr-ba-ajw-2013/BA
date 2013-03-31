@@ -2,6 +2,7 @@ node_modules/
 npm-debug.log
 config.js
 config.development*.js
+config.production.js
 *.db
 .DS_Store
 test-cov

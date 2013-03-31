@@ -4,7 +4,6 @@ var i18n = require('i18n'),
 	path = require('path');
 
 module.exports = function i18nInit(app, config) {
-
 	i18n.configure({
 		locales:['en', 'de']
 		, directory: path.join(config.srcDir, 'shared', 'locales')
