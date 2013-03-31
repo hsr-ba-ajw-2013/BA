@@ -34,7 +34,7 @@ test-coverage: test
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) src/lib/*/test.js  > unit-coverage.html
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) test/*-test.js > functional-coverage.html
 
-setup: deps config precompile-sass
+setup: clean deps config precompile-sass
 	@echo "Done. You should now be able to start using 'npm start'."
 
 deps:
