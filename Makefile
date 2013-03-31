@@ -70,8 +70,8 @@ clean:
 
 precompile-sass:
 	@echo "Precompiling SASS Stylesheets"
-	@rm $(CSS_PATH)
-	@sass -t compressed --load-path src/shared/sass/vendor --load-path src/shared/sass/vendor/foundation --load-path src/shared/sass/vendor/bourbon $(SCSS_PATH) $(CSS_PATH)
+	-rm $(CSS_PATH)
+	@sass --trace -t compressed --load-path src/shared/sass/vendor --load-path src/shared/sass/vendor/foundation --load-path src/shared/sass/vendor/bourbon $(SCSS_PATH) $(CSS_PATH)
 
 precompile-sass-live:
 	@nodemon -w src/shared/sass -e scss -x "make precompile-sass -f" Makefile
