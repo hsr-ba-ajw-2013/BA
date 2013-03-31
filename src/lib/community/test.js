@@ -20,8 +20,6 @@ var request = require('supertest')
 		return text;
 	};
 
-
-
 describe('GET /community unauthorized', function(){
 	it('should redirect to /login', function(done){
 		request(app)
@@ -79,10 +77,6 @@ describe('POST /community authorized and without community for the user'
 			.expect('Location', '/community/./new', done);
 	});
 
-	it.skip('should create a community', function(done) {
-		done();
-	});
-
 	it('should redirect to /community with 302 after creating a community'
 		, function(done) {
 		var req = request(app)
@@ -95,19 +89,29 @@ describe('POST /community authorized and without community for the user'
 			.expect('Location', '/community', done);
 	});
 
-	it.skip('should redirect to /community/./new with 302 ' +
+	it('should redirect to /community/./new with 302 ' +
 		'if the community name already exists',
 		function(done) {
 			var req = request(app)
 						.post('/community')
-				, communityName = randomString(12);
+				, communityName = randomString(12)
+				, Community = app.get('db')
+								.daoFactoryManager.getDAO('Community');
+
 			agent.attachCookies(req);
 
-			//The community should already exist
+			Community.create({name: communityName})
+				.success(function createResult() {
+					req.send({name: communityName})
+					.expect(302)
+					.expect('Location', '/community/./new', done);
+				})
+				.error(function createError(errors) {
+					done(errors);
+				});
 
-			req.send({name: communityName})
-			.expect(302)
-			.expect('Location', '/community/./new', done);
+
+
 	});
 });
 
@@ -117,20 +121,6 @@ describe('POST /community authorized and with community for the user'
 	var agent = superagent.agent();
 
 	beforeEach(function(done) {
-		doLogin(app, agent, done);
-	});
-
-	it.skip('should redirect to /community with 302',function(done) {
-		done();
-	});
-
-});
-
-describe('GET /community authorized and with community for the user'
-	, function() {
-	var agent = superagent.agent();
-
-	beforeEach(function before(done) {
 		doLogin(app, agent, function afterLogin() {
 			var communityName = randomString();
 
@@ -146,12 +136,57 @@ describe('GET /community authorized and with community for the user'
 		});
 	});
 
+	it('should redirect to /community with 302',function(done) {
+		var req = request(app)
+						.post('/community')
+				, communityName = randomString();
+			agent.attachCookies(req);
+
+			req.send({name: communityName})
+				.expect(302)
+				.expect('Location', '/community', done);
+	});
+
+});
+
+describe('GET /community authorized and with community for the user'
+	, function() {
+	var agent = superagent.agent()
+		, result;
+
+	beforeEach(function before(done) {
+		doLogin(app, agent, function afterLogin() {
+			var communityName = randomString();
+
+			request(app)
+				.post('/community')
+				.send({name: communityName})
+				.end(function(err) {
+					if (err) {
+						done(err);
+					}
+
+					var req = request(app).get('/community');
+					agent.attachCookies(req);
+					req.end(function(err, res) {
+						if (err) {
+							done(err);
+						}
+
+						result = res;
+
+						done();
+
+					});
+				});
+		});
+	});
+
 	it.skip('should show /community with 200', function(done) {
-		var req = request(app).get('/community');
-		agent.attachCookies(req);
 
-		//TODO: mock db
+		result.should.have.status(200);
+		result.should.have.location('/community');
 
-		req.expect(200, done);
+		done();
 	});
 });
