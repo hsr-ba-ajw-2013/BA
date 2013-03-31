@@ -34,8 +34,8 @@ test-coverage: test
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) src/lib/*/test.js  > unit-coverage.html
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) test/*-test.js > functional-coverage.html
 
-setup: clean deps config precompile-sass
-	@echo "Done. You should now be able to start using `npm start`."
+setup: deps config precompile-sass
+	@echo "Done. You should now be able to start using 'npm start'."
 
 deps:
 	@echo "Installing dependencies"
@@ -43,7 +43,7 @@ deps:
 
 config:
 	@echo "Copying configs"
-	-cp -v config.development.js config.development.old.js
+	@-cp -v config.development.js config.development.old.js
 	@cp -v config.example.js config.development.js
 
 start:
@@ -54,24 +54,24 @@ live:
 
 clean:
 	@echo "Removing dependencies"
-	-rm -Rf ./node_modules
+	@-rm -Rf ./node_modules
 	@echo "Cleaning npm cache"
 	@npm cache clean
 	@echo "Cleaning test-coverage"
-	-rm -Rf ./test-cov
-	-rm unit-coverage.html
-	-rm functional-coverage.html
+	@-rm -Rf ./test-cov
+	@-rm unit-coverage.html
+	@-rm functional-coverage.html
 	@echo "Cleaning npm debug log"
-	-rm npm-debug.log
+	@-rm npm-debug.log
 	@echo "Cleaning docs"
-	-rm -fr ./docs
+	@-rm -fr ./docs
 	@echo "Cleaning compiled CSS"
-	-rm $(CSS_PATH)
+	@-rm $(CSS_PATH)
 
 precompile-sass:
 	@echo "Precompiling SASS Stylesheets"
-	-rm $(CSS_PATH)
-	@sass --trace -t compressed --load-path src/shared/sass/vendor --load-path src/shared/sass/vendor/foundation --load-path src/shared/sass/vendor/bourbon $(SCSS_PATH) $(CSS_PATH)
+	@-rm $(CSS_PATH)
+	@-sass --trace -t compressed --load-path src/shared/sass/vendor --load-path src/shared/sass/vendor/foundation --load-path src/shared/sass/vendor/bourbon $(SCSS_PATH) $(CSS_PATH)
 
 precompile-sass-live:
 	@nodemon -w src/shared/sass -e scss -x "make precompile-sass -f" Makefile
