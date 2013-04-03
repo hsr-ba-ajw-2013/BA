@@ -40,6 +40,7 @@ describe('GET /community authorized and without community for the user'
 	it('should redirect to /community/./new with 302', function(done) {
 		var req = request(app).get('/community');
 		agent.attachCookies(req);
+
 		req.expect(302)
 			.expect('Location', '/community/./new', done);
 	});
@@ -122,11 +123,12 @@ describe('POST /community authorized and with community for the user'
 
 	beforeEach(function(done) {
 		doLogin(app, agent, function afterLogin() {
-			var communityName = randomString();
+			var communityName = randomString()
+				, req = request(app)
+					.post('/community');
+			agent.attachCookies(req);
 
-			request(app)
-				.post('/community')
-				.send({name: communityName})
+			req.send({name: communityName})
 				.end(function(err) {
 					if (err) {
 						done(err);
@@ -151,42 +153,30 @@ describe('POST /community authorized and with community for the user'
 
 describe('GET /community authorized and with community for the user'
 	, function() {
-	var agent = superagent.agent()
-		, result;
+	var agent = superagent.agent();
 
 	beforeEach(function before(done) {
 		doLogin(app, agent, function afterLogin() {
-			var communityName = randomString();
+			var communityName = randomString()
+				, req = request(app)
+					.post('/community');
 
-			request(app)
-				.post('/community')
-				.send({name: communityName})
+			agent.attachCookies(req);
+			req.send({name: communityName})
 				.end(function(err) {
 					if (err) {
-						done(err);
+						return done(err);
 					}
-
-					var req = request(app).get('/community');
-					agent.attachCookies(req);
-					req.end(function(err, res) {
-						if (err) {
-							done(err);
-						}
-
-						result = res;
-
-						done();
-
-					});
+					return done();
 				});
 		});
 	});
 
-	it.skip('should show /community with 200', function(done) {
+	it('should show /community with 200', function(done) {
 
-		result.should.have.status(200);
-		result.should.have.location('/community');
+		var req = request(app).get('/community');
+		agent.attachCookies(req);
 
-		done();
+		req.expect(200, done);
 	});
 });
