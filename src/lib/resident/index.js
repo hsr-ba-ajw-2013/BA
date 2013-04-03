@@ -8,6 +8,8 @@ var controller = require('./controller')
 	);
 
 module.exports = function residentInit(app) {
-
+	//FIXME: INYAFACE JSHINT
+	controller = controller;
+	loginRequired = loginRequired;
 	return model(app);
 };
