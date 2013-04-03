@@ -5,7 +5,8 @@
 var path = require('path')
 	, validatorsPath = path.join('..', '..', 'shared', 'validators')
 	, createCommunityValidator = require(
-		path.join(validatorsPath, 'create-community'));
+		path.join(validatorsPath, 'create-community'))
+	, crypto = require('crypto');
 
 /** PrivateFunction: renderIndex
  * Renders a Community instance in a specific response object.
@@ -57,27 +58,6 @@ exports.fresh = function freshView(req, res) {
 	});
 };
 
-/** PrivateFunction: createRandomString
- * Creates a random string.
- *
- * Parameters:
- *   (number) size - Request
- *   (express.response) res - Response
- */
-var createRandomString = function createRandomString(size, possible) {
-	var text = "";
-
-	possible = possible || "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-							"abcdefghijklmnopqrstuvwxyz0123456789";
-	size = size || 12;
-
-	for( var i=0; i < size; i++ ) {
-		text += possible.charAt(
-					Math.floor(Math.random() * possible.length));
-	}
-	return text;
-};
-
 /** PrivateFunction: createUniqueShareLink
  * Creates a random share link.
  *
@@ -89,11 +69,9 @@ var createRandomString = function createRandomString(size, possible) {
  */
 var createUniqueShareLink = function createUniqueShareLink(req, res, tries) {
 	var Community = req.app.get('db').daoFactoryManager.getDAO('Community')
-		, link = ""
-		, possible = "abcdefghijklmnopqrstuvwxyz0123456789";
+		, link = crypto.pseudoRandomBytes(12).toString('hex');
 
 	tries = tries || 1;
-	link = createRandomString(17, possible);
 
 	Community.find({ where: { shareLink: link }})
 		.success(function findResult(community) {

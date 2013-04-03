@@ -3,22 +3,10 @@ var request = require('supertest')
 	, superagent = require('superagent')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()
+	, crypto = require('crypto')
 	, doLogin = require(path.join(
 			process.cwd(), 'src', 'shared', 'test', 'passport-mock')
-		).doLogin
-	, randomString = function randomString(size) {
-		var text = ""
-			, possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-				"abcdefghijklmnopqrstuvwxyz0123456789";
-
-		size = size || 12;
-
-		for( var i=0; i < size; i++ ) {
-			text += possible.charAt(
-						Math.floor(Math.random() * possible.length));
-		}
-		return text;
-	};
+		).doLogin;
 
 describe('GET /community unauthorized', function(){
 	it('should redirect to /login', function(done){
@@ -70,7 +58,7 @@ describe('POST /community authorized and without community for the user'
 		, function(done) {
 		var req = request(app)
 					.post('/community')
-			, communityName = randomString(256);
+			, communityName = crypto.pseudoRandomBytes(200).toString('hex');
 		agent.attachCookies(req);
 
 		req.send({name: communityName})
@@ -82,7 +70,7 @@ describe('POST /community authorized and without community for the user'
 		, function(done) {
 		var req = request(app)
 					.post('/community')
-			, communityName = randomString(12);
+			, communityName = crypto.pseudoRandomBytes(6).toString('hex');
 		agent.attachCookies(req);
 
 		req.send({name: communityName})
@@ -95,7 +83,7 @@ describe('POST /community authorized and without community for the user'
 		function(done) {
 			var req = request(app)
 						.post('/community')
-				, communityName = randomString(12)
+				, communityName = crypto.pseudoRandomBytes(6).toString('hex')
 				, Community = app.get('db')
 								.daoFactoryManager.getDAO('Community');
 
@@ -123,7 +111,7 @@ describe('POST /community authorized and with community for the user'
 
 	beforeEach(function(done) {
 		doLogin(app, agent, function afterLogin() {
-			var communityName = randomString()
+			var communityName = crypto.pseudoRandomBytes(6).toString('hex')
 				, req = request(app)
 					.post('/community');
 			agent.attachCookies(req);
@@ -141,7 +129,7 @@ describe('POST /community authorized and with community for the user'
 	it('should redirect to /community with 302',function(done) {
 		var req = request(app)
 						.post('/community')
-				, communityName = randomString();
+				, communityName = crypto.pseudoRandomBytes(6).toString('hex');
 			agent.attachCookies(req);
 
 			req.send({name: communityName})
@@ -157,7 +145,7 @@ describe('GET /community authorized and with community for the user'
 
 	beforeEach(function before(done) {
 		doLogin(app, agent, function afterLogin() {
-			var communityName = randomString()
+			var communityName = crypto.pseudoRandomBytes(6).toString('hex')
 				, req = request(app)
 					.post('/community');
 
