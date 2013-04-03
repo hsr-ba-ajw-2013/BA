@@ -17,7 +17,7 @@
 
 		, "connect-flash": "~0.1.0"
 
-		, "sequelize": "git://github.com/mweibel/sequelize.git#3d8bce570b62e02cce5f9826c79984ca95ff2b24"
+		, "sequelize": "git://github.com/mweibel/sequelize.git#48fe9864d5db5c95016a1837285d963acbdf5fd8"
 		, "pg": "~0.15.1"
 
 		, "passport": "~0.1.16"
@@ -39,7 +39,7 @@
 	, "devDependencies": {
 		"sqlite3": "~2.1.7"
 		, "supertest": "~0.5.1"
-		, "superagent": "~0.13.0"
+		, "superagent": "~0.14.0"
 		, "mocha": "~1.8.2"
 		, "chai": "~1.5.0"
 		, "jscover": "~0.2.4"
