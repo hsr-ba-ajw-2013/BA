@@ -7,3 +7,9 @@ exports.index = function index(req, res) {
 		title: res.__('Tasks')
 	});
 };
+
+exports.create = exports.fresh = exports.get = exports.update =
+	exports.del = function(req, res) {
+		req = req;//FIXME REMOVE !! JSHINT IN YA FACE.
+		res.send(404);
+};

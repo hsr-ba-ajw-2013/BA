@@ -5,17 +5,28 @@ var controller = require('./controller')
 	, path = require('path')
 	, loginRequired = require(path.join(
 		'..', '..', 'shared', 'policies', 'login-required')
-	);
-
-// inject express-resource-middleware into app
-require('express-resource-middleware');
+	)
+	, COMMUNITY_PREFIX = '/community/:slug'
+	, TASK_PREFIX = COMMUNITY_PREFIX + '/tasks';
 
 module.exports = function taskInit(app) {
-	app.resource('task', controller, {
-		middleware: {
-			"*": loginRequired
-		}
-	});
+	/**
+	 * /community/:slug/tasks GET/POST
+	 *		/new
+	 *		/:id GET/PUT/DELETE
+	 */
+
+	app.all(TASK_PREFIX, loginRequired);
+
+	app.get(TASK_PREFIX, controller.index);
+	app.post(TASK_PREFIX, controller.create);
+
+	app.get(TASK_PREFIX + '/new', controller.fresh);
+
+	app.get(TASK_PREFIX + '/:id', controller.get);
+	app.put(TASK_PREFIX + '/:id', controller.update);
+	app.del(TASK_PREFIX + '/:id', controller.del);
+
 
 	return model(app);
 };

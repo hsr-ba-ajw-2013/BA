@@ -6,15 +6,13 @@ var controller = require('./controller')
 		'..', '..', 'shared', 'policies', 'login-required')
 	);
 
-// inject express-resource-middleware into app
-require('express-resource-middleware');
-
 
 module.exports = function homeInit(app) {
-	app.resource(controller, {
-		base: '/'
-		, middleware: {
-			"*": loginRequired
-		}
-	});
+	/**
+	 * / (GET)
+	 * * /invite/RANDOM (GET -> REDIRECT TO /community/:slug/resident/new)
+	 */
+
+	app.get('/', loginRequired, controller.index);
+	app.get('/invite/:sharelink', controller.invite);
 };

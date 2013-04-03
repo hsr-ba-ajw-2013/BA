@@ -1,11 +1,13 @@
 /** Component: Login
  */
-var controller = require('./controller');
-
-// inject express-resource-middleware into app
-require('express-resource-middleware');
+var controller = require('./controller')
+	, path = require('path')
+	, loginRequired = require(path.join(
+		'..', '..', 'shared', 'policies', 'login-required')
+	);
 
 
 module.exports = function loginInit(app) {
-	app.resource('login', controller);
+	app.get('/login', controller.login);
+	app.get('/logout', loginRequired, controller.logout);
 };

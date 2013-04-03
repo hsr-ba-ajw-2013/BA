@@ -2,8 +2,11 @@
  * Login Controller
  */
 
-/** Function: index
+/** Function: login
  */
-exports.index = function index(req, res) {
-	res.render('login/views/index', { title: res.__('Welcome at Roomies!') });
+exports.login = function login(req, res) {
+	res.render('login/views/login', { title: res.__('Welcome at Roomies!') });
+};
+exports.logout = function logout(req, res) {
+	res.send(404);
 };

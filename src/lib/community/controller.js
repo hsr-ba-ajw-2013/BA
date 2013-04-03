@@ -44,14 +44,14 @@ exports.index = function index(req, res) {
 
 };
 
-/** Function: new
+/** Function: fresh
  * Renders a form for creating a new community.
  *
  * Parameters:
  *   (express.request) req - Request
  *   (express.response) res - Response
  */
-exports['new'] = function newView(req, res) {
+exports.fresh = function newView(req, res) {
 	res.render('community/views/new', {
 		title: res.__('Create a community')
 	});
@@ -165,7 +165,13 @@ var createCommunity = function createCommunity(req, res) {
  *     (Request) req - Request
  *     (Response) res - Response
  */
-exports.create = {
-	middleware: createCommunityValidator,
-	fn: createCommunity
+exports.create = [createCommunityValidator, createCommunity];
+
+/**
+ * TODO
+ */
+exports.get = exports.update = exports.invite = exports.del =
+	function(req, res) {
+		req = req;//FIXME REMOVE !! JSHINT IN YA FACE.
+		res.send(404);
 };

@@ -7,10 +7,9 @@ var controller = require('./controller')
 	, path = require('path')
 	, loginRequired = require(path.join(
 		'..', '..', 'shared', 'policies', 'login-required')
-	);
-
-// inject express-resource-middleware into app
-require('express-resource-middleware');
+	)
+	, PREFIX = '/community'
+	, SLUG_PREFIX = PREFIX + '/:slug';
 
 /** Function: communityInit
  * Initializes the community component by adding
@@ -25,10 +24,36 @@ require('express-resource-middleware');
  *   (Function) function to initialize relationships after creating all models.
  */
 module.exports = function communityInit(app) {
-	app.resource('community', controller, {
-		middleware: {
-			"*": loginRequired
-		}
-	});
+
+	/**
+	 * /community/ GET -- index
+	 *				POST -- create
+	 *
+	 * /community/:slug GET -- get
+	 *					PUT -- update
+	 *
+	 * /community/:slug/invite GET -- invite
+	 *
+	 *
+	 * /community/new GET -- fresh (new is protected word)
+	 *
+	 *
+	 * /community/:slug/residents GET
+	 *		/new
+	 *		/:id GET/PUT/DELETE
+	 */
+
+	app.all(PREFIX + '*', loginRequired);
+
+	app.get(PREFIX, controller.index);
+	app.post(PREFIX, controller.create);
+	app.get(PREFIX + '/new', controller.fresh);
+
+	app.get(SLUG_PREFIX, controller.get);
+	app.put(SLUG_PREFIX, controller.update);
+	app.get(SLUG_PREFIX + '/invite', controller.invite);
+
+	app.del(SLUG_PREFIX, controller.del);
+
 	return model(app);
 };
