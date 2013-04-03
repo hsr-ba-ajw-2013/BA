@@ -57,6 +57,61 @@ exports['new'] = function newView(req, res) {
 	});
 };
 
+/** PrivateFunction: createRandomString
+ * Creates a random string.
+ *
+ * Parameters:
+ *   (number) size - Request
+ *   (express.response) res - Response
+ */
+var createRandomString = function createRandomString(size, possible) {
+	var text = "";
+
+	possible = possible || "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+							"abcdefghijklmnopqrstuvwxyz0123456789";
+	size = size || 12;
+
+	for( var i=0; i < size; i++ ) {
+		text += possible.charAt(
+					Math.floor(Math.random() * possible.length));
+	}
+	return text;
+};
+
+/** PrivateFunction: createUniqueShareLink
+ * Creates a random share link.
+ *
+ * Parameters:
+ *   (express.request) req - Request
+ *   (express.response) res - Response
+ *   (number [optional] [Default = 1])
+		tries - The number of tries if the link already exists
+ */
+var createUniqueShareLink = function createUniqueShareLink(req, res, tries) {
+	var Community = req.app.get('db').daoFactoryManager.getDAO('Community')
+		, link = ""
+		, possible = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+	tries = tries || 1;
+	link = createRandomString(17, possible);
+
+	Community.find({ where: { shareLink: link }})
+		.success(function findResult(community) {
+			if (community) {
+				if (tries - 1 <= 0) {
+					return null;
+				} else {
+					return createUniqueShareLink(req, res, --tries);
+				}
+			}
+		})
+		.error(function findError() {
+			return null;
+		});
+
+	return link;
+};
+
 /** PrivateFunction: createCommunity
  * Creates a community.
  *
@@ -69,9 +124,10 @@ var createCommunity = function createCommunity(req, res) {
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community')
 		, communityData = {
 			name: req.param('name')
+			, shareLink: createUniqueShareLink(req, res)
 		};
 
-	Community.find({ where: communityData })
+	Community.find({ where: { name: communityData.name }})
 		.success(function findResult(community) {
 			if (community !== null) {
 				req.flash('error', res.__('The community already exists.'));
@@ -98,6 +154,7 @@ var createCommunity = function createCommunity(req, res) {
 			return res.send(500);
 		});
 };
+
 
 /** Function: create
  * Validates the POSTed form using <createCommunityValidator> as a middleware.
