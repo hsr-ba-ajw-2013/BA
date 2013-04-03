@@ -98,9 +98,6 @@ describe('POST /community authorized and without community for the user'
 				.error(function createError(errors) {
 					done(errors);
 				});
-
-
-
 	});
 });
 
