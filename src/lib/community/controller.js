@@ -45,14 +45,14 @@ exports.index = function index(req, res) {
 };
 
 /** Function: fresh
- * Renders a form for creating a new community.
+ * Renders a form for creating a new (fresh) community.
  *
  * Parameters:
  *   (express.request) req - Request
  *   (express.response) res - Response
  */
-exports.fresh = function newView(req, res) {
-	res.render('community/views/new', {
+exports.fresh = function freshView(req, res) {
+	res.render('community/views/fresh', {
 		title: res.__('Create a community')
 	});
 };
