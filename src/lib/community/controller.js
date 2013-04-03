@@ -6,7 +6,8 @@ var path = require('path')
 	, validatorsPath = path.join('..', '..', 'shared', 'validators')
 	, createCommunityValidator = require(
 		path.join(validatorsPath, 'create-community'))
-	, crypto = require('crypto');
+	, crypto = require('crypto')
+	, uslug = require('uslug');
 
 /** PrivateFunction: renderIndex
  * Renders a Community instance in a specific response object.
@@ -90,6 +91,24 @@ var createUniqueShareLink = function createUniqueShareLink(req, res, tries) {
 	return link;
 };
 
+var addUniqueSlug = function addUniqueSlug(req, community) {
+	var slug = uslug(community.name)
+		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
+
+	Community.count({ where: { slug: slug }})
+		.success(function countResult(c) {
+			if (c !== 0) {
+				slug = uslug(community.name + " " + community.id);
+			}
+
+			community.slug = slug;
+			community.save()
+				.error( function createError(errors) {
+					console.log("errors: ", errors);
+				});
+		});
+};
+
 /** PrivateFunction: createCommunity
  * Creates a community.
  *
@@ -113,6 +132,9 @@ var createCommunity = function createCommunity(req, res) {
 			} else {
 				Community.create(communityData)
 					.success(function createResult(community) {
+
+						addUniqueSlug(req, community);
+
 						resident.setCommunity(community)
 							.success(function setResult() {
 								req.flash('success',

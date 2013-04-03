@@ -26,6 +26,7 @@ module.exports = function init(app) {
 	db.define('Community', {
 		name: Sequelize.STRING
 		, shareLink: {type: Sequelize.STRING, unique: true}
+		, slug: {type: Sequelize.STRING, unique: true}
 	});
 
 	return createRelationships;
