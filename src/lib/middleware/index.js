@@ -42,6 +42,9 @@ module.exports = function middlewareInit(app, config) {
 
 	http(app, config);
 
+	flash(app, config);
+	validator(app, config);
+
 	passport(app, config);
 
 	browserify(app, config);
@@ -49,10 +52,6 @@ module.exports = function middlewareInit(app, config) {
 	// important: the whole application doesn't work
 	// if connect-domain is in front of http.
 	connectDomain(app, config);
-
-	validator(app, config);
-
-	flash(app, config);
 
 	handler(app, config);
 
