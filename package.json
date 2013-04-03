@@ -9,13 +9,15 @@
 	, "dependencies": {
 		"express": "~3.1.0"
 
+		, "connect-session-sequelize": "git://github.com/mweibel/connect-session-sequelize.git#master"
+
 		, "express-validator": "~0.3.2"
 
 		, "express-hbs": "~0.1.3"
 
 		, "connect-flash": "~0.1.0"
 
-		, "sequelize": "git://github.com/sequelize/sequelize.git#6a21270ffad79e8d0142a48df9dcb761b3d0a0ca"
+		, "sequelize": "git://github.com/mweibel/sequelize.git#3d8bce570b62e02cce5f9826c79984ca95ff2b24"
 		, "pg": "~0.15.1"
 
 		, "passport": "~0.1.16"
