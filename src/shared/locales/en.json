@@ -18,5 +18,10 @@
 	"The community name must be valid.": "The community name must be valid.",
 	"The community name should be smaller then 255 characters.": "The community name should be smaller then 255 characters.",
 	"Name needs to be within 1 and 255 chars.": "Name needs to be within 1 and 255 chars.",
-	"The community already exists.": "The community already exists."
+	"The community already exists.": "The community already exists.",
+	"Invite some dudes to the community!": "Invite some dudes to the community!",
+	"Share following URL with your roommates to organize your life in communes with roomies.": "Share following URL with your roommates to organize your life in communes with roomies.",
+	"Community 'yaay a new community' created successfully.": "Community 'yaay a new community' created successfully.",
+	"The community you wanted to share does not exists.": "The community you wanted to share does not exists.",
+	"You are not allowed to send invites for this community!": "You are not allowed to send invites for this community!"
 }

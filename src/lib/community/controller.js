@@ -140,7 +140,8 @@ var createCommunity = function createCommunity(req, res) {
 								req.flash('success',
 									res.__('Community \'' + community.name +
 										'\' created successfully.'));
-								return res.redirect('/community');
+								return res.redirect('/community/' +
+									community.slug + '/invite');
 							})
 							.error(function(errors) {
 								console.log("errors: ", errors);
@@ -179,21 +180,35 @@ exports.create = [createCommunityValidator, createCommunity];
  */
 exports.invite = function invite(req, res) {
 	var slug = req.params.slug
+		, resident = req.user
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
 
 	Community.find({ where: {slug: slug}})
 		.success(function findResult(community) {
-			console.log(community);
 
 			if (community !== null) {
+
+				if (resident.CommunityId !== community.id) {
+					req.flash('warning',
+								res.__('You are not allowed to send' +
+										' invites for this community!'));
+					return res.redirect('back');
+				}
+
 				return res.render('community/views/invite', {
 							title: res.__('Invite some dudes to the community!')
 							, shareLink: community.shareLink
 						});
+			} else {
+				req.flash('error',
+							res.__('The community you wanted' +
+								' to share does not exists.'));
+				return res.redirect('/');
 			}
+		})
+		.error(function createError() {
+			return res.send(500);
 		});
-
-	return res.send(404);
 };
 
 /**
