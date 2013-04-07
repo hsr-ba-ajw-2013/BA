@@ -1,0 +1,42 @@
+<div class="row">
+	<section class="large-centered large-6 columns center">
+		<h4>{{trans "Hello %s" user.name}}</h4>
+		<h5 class="subheader">
+			{{#blocktrans}}You aren't in any community yet.<br/>
+			Please tell us the desired name of your community in order to create it.{{/blocktrans}}
+		</h5>
+		<form action="/community" method="post">
+			<input type="text" name="name" placeholder="{{trans "WG Name"}}" class="large-8 columns">
+			<input type="submit" value="{{trans "Create WG"}}" class="button large-3 columns">
+		</form>
+	</section>
+</div>
+
+
+<div class="row">
+		<div class="large-6 large-centered columns text-center">
+			<div class="row">
+				<div class="columns">
+					<h4>Yay Manuel!</h4>
+					<h5 class="subheader">
+						Deine WG {{WG-Name}} wurde bei Roomies registriert!<br/>
+						Teile folgende Internetadresse mit deinen Mitbewohneren,
+						um euer WG-Leben mit Roomies zu organisieren.
+					</h5>
+				</div>
+			</div>
+			<div class="row">
+				<div class="columns">
+					<aside class="panel">
+						<p>
+							<input type="text" value="http://roomiesinstance/invite/{{shareLink}}" readonly="readonly" class="copyable" />
+						</p>
+						<p>
+							<a href="#" class="facebook button small"><i class="icon-facebook icon-1-5x"></i> Teilen</a>
+							<a href="#" class="twitter button small"><i class="icon-twitter icon-1-5x"></i> Tweet</a>
+						</p>
+					</aside>
+				</div>
+			</div>
+		</div>
+	</div>

@@ -138,7 +138,8 @@ var createCommunity = function createCommunity(req, res) {
 						resident.setCommunity(community)
 							.success(function setResult() {
 								req.flash('success',
-									res.__('Community created successfully.'));
+									res.__('Community \'' + community.name +
+										'\' created successfully.'));
 								return res.redirect('/community');
 							})
 							.error(function(errors) {
@@ -167,10 +168,38 @@ var createCommunity = function createCommunity(req, res) {
  */
 exports.create = [createCommunityValidator, createCommunity];
 
+/** Function: invite
+ * Show the invite page. So can share the community with some roomies. YAAY :)
+ *
+ * /community/:slug/invite GET
+ *
+ * Parameters:
+ *     (Request) req - Request
+ *     (Response) res - Response
+ */
+exports.invite = function invite(req, res) {
+	var slug = req.params.slug
+		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
+
+	Community.find({ where: {slug: slug}})
+		.success(function findResult(community) {
+			console.log(community);
+
+			if (community !== null) {
+				return res.render('community/views/invite', {
+							title: res.__('Invite some dudes to the community!')
+							, shareLink: community.shareLink
+						});
+			}
+		});
+
+	return res.send(404);
+};
+
 /**
  * TODO
  */
-exports.get = exports.update = exports.invite = exports.del =
+exports.get = exports.update = exports.del =
 	function(req, res) {
 		req = req;//FIXME REMOVE !! JSHINT IN YA FACE.
 		res.send(404);
