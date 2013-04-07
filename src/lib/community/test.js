@@ -4,6 +4,7 @@ var request = require('supertest')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()
 	, crypto = require('crypto')
+	, uslug = require('uslug')
 	, doLogin = require(path.join(
 			process.cwd(), 'src', 'shared', 'test', 'passport-mock')
 		).doLogin;
@@ -66,7 +67,8 @@ describe('POST /community authorized and without community for the user'
 			.expect('Location', '/community/./new', done);
 	});
 
-	it('should redirect to /community with 302 after creating a community'
+	it('should redirect to /community/[slug]/invite ' +
+		'with 302 after creating a community'
 		, function(done) {
 		var req = request(app)
 					.post('/community')
@@ -75,7 +77,8 @@ describe('POST /community authorized and without community for the user'
 
 		req.send({name: communityName})
 			.expect(302)
-			.expect('Location', '/community', done);
+			.expect('Location', '/community/' +
+				uslug(communityName) + '/invite', done);
 	});
 
 	it('should redirect to /community/./new with 302 ' +

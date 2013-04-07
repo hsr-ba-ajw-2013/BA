@@ -124,6 +124,13 @@ var createCommunity = function createCommunity(req, res) {
 			, shareLink: createUniqueShareLink(req, res)
 		};
 
+	if (resident.CommunityId !== null) {
+		req.flash('error',
+			res.__('What exactly are you trying? You\'re ' +
+				'already in a community...'));
+		return res.redirect('/community');
+	}
+
 	Community.find({ where: { name: communityData.name }})
 		.success(function findResult(community) {
 			if (community !== null) {
