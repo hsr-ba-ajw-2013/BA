@@ -9,13 +9,17 @@
 	, "dependencies": {
 		"express": "~3.1.0"
 
+		, "connect-session-sequelize": "git://github.com/mweibel/connect-session-sequelize.git#master"
+
+		, "connect-session-sequelize": "git://github.com/mweibel/connect-session-sequelize.git#master"
+
 		, "express-validator": "~0.3.2"
 
 		, "express-hbs": "~0.1.3"
 
 		, "connect-flash": "~0.1.0"
 
-		, "sequelize": "git://github.com/sequelize/sequelize.git#6a21270ffad79e8d0142a48df9dcb761b3d0a0ca"
+		, "sequelize": "git://github.com/mweibel/sequelize.git#48fe9864d5db5c95016a1837285d963acbdf5fd8"
 		, "pg": "~0.15.1"
 
 		, "passport": "~0.1.16"
@@ -39,7 +43,7 @@
 	, "devDependencies": {
 		"sqlite3": "~2.1.7"
 		, "supertest": "~0.5.1"
-		, "superagent": "~0.13.0"
+		, "superagent": "~0.14.0"
 		, "mocha": "~1.8.2"
 		, "chai": "~1.5.0"
 		, "jscover": "~0.2.4"

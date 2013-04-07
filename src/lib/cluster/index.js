@@ -4,11 +4,11 @@
  *   - https://github.com/hunterloftis
  */
 
-/*var cluster = require('cluster')
+var cluster = require('cluster')
 	, os = require('os');
 
 function initMaster() {
-	cluster.on('death', function() {
+	cluster.on('exit', function() {
 		cluster.fork();
 	});
 
@@ -16,7 +16,7 @@ function initMaster() {
 	while(workerCount--) {
 		cluster.fork();
 	}
-}*/
+}
 
 module.exports = function balance(init) {
 
@@ -25,11 +25,11 @@ module.exports = function balance(init) {
 	//        own memory space.
 	var initFunction = init;
 
-	/*if(cluster.isMaster) {
+	if(cluster.isMaster) {
 		initFunction = initMaster;
 	} else {
 		initFunction = init;
-	}*/
+	}
 
 	return initFunction();
 };
