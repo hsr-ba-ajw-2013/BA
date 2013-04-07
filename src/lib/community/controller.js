@@ -218,11 +218,8 @@ exports.invite = function invite(req, res) {
 		});
 };
 
-/**
- * TODO
- */
 exports.get = exports.update = exports.del =
 	function(req, res) {
-		req = req;//FIXME REMOVE !! JSHINT IN YA FACE.
-		res.send(404);
+		/*jshint unused:false*/
+		res.send(405);  // respond with "method not allowed"
 };
