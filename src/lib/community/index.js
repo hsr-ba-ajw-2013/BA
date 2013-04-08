@@ -31,6 +31,7 @@ module.exports = function communityInit(app) {
 	 *
 	 * /community/:slug GET -- get
 	 *					PUT -- update
+	 *					DEL -- del
 	 *
 	 * /community/:slug/invite GET -- invite
 	 *
@@ -38,7 +39,7 @@ module.exports = function communityInit(app) {
 	 * /community/new GET -- fresh (new is protected word)
 	 *
 	 *
-	 * /community/:slug/residents GET
+	 * /community/:slug/residents GET -> REDIRECT TO residents controller
 	 *		/new
 	 *		/:id GET/PUT/DELETE
 	 */
