@@ -40,7 +40,7 @@ module.exports = function communityInit(app) {
 	 *
 	 *
 	 * /community/:slug/residents GET -> REDIRECT TO residents controller
-	 *		/new
+	 *		/new GET
 	 *		/:id GET/PUT/DELETE
 	 */
 
