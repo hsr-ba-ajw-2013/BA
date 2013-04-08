@@ -3,6 +3,7 @@ npm-debug.log
 config.js
 config.development*.js
 config.production.js
+config/
 *.db
 .DS_Store
 test-cov

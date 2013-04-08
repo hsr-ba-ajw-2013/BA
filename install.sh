@@ -11,33 +11,33 @@ install() {
 
 	echo "Checking out $GIT_TAG..."
 	git checkout $GIT_TAG
-	echo "..done"
+	echo "...done"
 
 	echo "Running setup..."
 	make setup
-	echo "..done"
+	echo "...done"
 
 	echo "Writing configuration..."
 	write_configuration
-	echo "..done"
-
-	echo "Creating postgres DB..."
-	postgres_db
 	echo "...done"
 
-	echo "Done. Please run 'npm start' now."
+	echo -n "Creating postgres DB or running migration..."
+	db
+	echo "done"
+
+	echo "Finished. Please run 'npm start' now."
 	echo
 }
 
 ask_questions() {
-	echo "Verfügbare git tags:"
+	echo "Available git tags:"
 	echo "---------------------"
 	git tag -l
 	echo "---------------------"
 
-	read -p "Welcher Tag soll ausgecheckt werden? " GIT_TAG
+	read -p "Which tag shall be checked out? " GIT_TAG
 
-	read -p "Wie lautet der Facebook App Secret? " FB_APP_SECRET
+	read -p "Roomies Facebook App Secret? " FB_APP_SECRET
 }
 
 write_configuration() {
@@ -93,9 +93,58 @@ ENDCONF
 ) > config.development.js
 }
 
-postgres_db() {
-	psql -h localhost -U postgres -c "CREATE ROLE roomies WITH PASSWORD '12345' LOGIN"
-	psql -h localhost -U postgres -c "CREATE DATABASE roomies WITH OWNER roomies"
+db() {
+	psql -h localhost -U postgres -c "CREATE ROLE roomies WITH PASSWORD '12345' LOGIN" >/dev/null 2>&1
+	psql -h localhost -U postgres -c "CREATE DATABASE roomies WITH OWNER roomies" >/dev/null 2>&1
+
+	mkdir config/
+
+	(
+		cat <<ENDCONF
+{
+	"development": {
+		"username": "roomies"
+		, "password": "12345"
+		, "database": "roomies"
+		, "host": "localhost"
+		, "dialect": "postgres"
+		, "port": 5432
+	}
+	, "test": {
+		"username": "roomies"
+		, "password": "12345"
+		,"database": "roomies_test"
+		,"host": "localhost"
+		, "dialect": "postgres"
+		, "port": 5432
+	}
+	, "production": {
+		"username": "roomies"
+		, "password": "12345"
+		, "database": "roomies"
+		, "host": "localhost"
+		, "dialect": "postgres"
+		, "port": 5432
+	}
+}
+ENDCONF
+) > config/config.json
+
+	# figure out if table already exists and we need to do a migration
+	echo -n "Checking if Communities Table already exists..."
+	TABLE_EXISTS=`psql -U postgres -t -h localhost -d roomies -c "SELECT true FROM pg_tables WHERE tablename = 'Communities'";`
+	TABLE_EXISTS=`echo $TABLE_EXISTS | tr -d ' '`
+	if [ "$TABLE_EXISTS" == "t" ]; then
+		echo "yes."
+		echo -n "Running migrations..."
+		./node_modules/.bin/sequelize -m >/dev/null 2>&1
+		echo "done."
+	fi
+
+	echo -n "Cleaning created files..."
+	rm config/config.json
+	rmdir config
+	echo "done"
 }
 
 install
