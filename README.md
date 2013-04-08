@@ -6,7 +6,9 @@
 Node.js installed.
 
 ## Install
-`npm install`
+`./install.sh`
+
+This script will automatically install all dependencies, create tables & run migrations if needed.
 
 ## Start
 `npm start`
