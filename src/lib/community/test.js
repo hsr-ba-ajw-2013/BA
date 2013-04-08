@@ -93,7 +93,7 @@ describe('Community', function() {
 					doLogin(app, agent, done);
 				});
 
-				it('should redirect to /community/[slug]/invite ' +
+				it('should redirect to /community/:slug/invite ' +
 					'with 302 after creating a community'
 					, function(done) {
 					var req = request(app)
