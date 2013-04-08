@@ -1,15 +1,14 @@
 /** Component: Resident
+ * The Resident component is an Express.JS capable middleware which
+ * encapsulates everything related to the Resident domain object.
  */
 var controller = require('./controller')
 	, model = require('./model')
-	, path = require('path')
-	, loginRequired = require(path.join(
-		'..', '..', 'shared', 'policies', 'login-required')
-	);
+	, PREFIX = '/community/:slug/resident';
 
 module.exports = function residentInit(app) {
-	//FIXME: INYAFACE JSHINT
-	controller = controller;
-	loginRequired = loginRequired;
+
+	app.get(PREFIX + "/new", controller.fresh);
+
 	return model(app);
 };
