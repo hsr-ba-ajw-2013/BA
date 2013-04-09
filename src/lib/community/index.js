@@ -37,11 +37,6 @@ module.exports = function communityInit(app) {
 	 *
 	 *
 	 * /community/new GET -- fresh (new is protected word)
-	 *
-	 *
-	 * /community/:slug/residents GET -> REDIRECT TO residents controller
-	 *		/new GET
-	 *		/:id GET/PUT/DELETE
 	 */
 
 	app.all(PREFIX + '*', loginRequired);

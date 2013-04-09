@@ -27,6 +27,13 @@ module.exports = function init(app) {
 			, allowNull: false
 			, defaultValue: true
 		}
+	}
+	, {
+		instanceMethods: {
+			isInACommunity: function() { //TODO: add it to the migration script
+				return this.CommunityId !== null;
+			}
+		}
 	});
 
 	return createRelationships;

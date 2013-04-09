@@ -8,6 +8,14 @@ var controller = require('./controller')
 
 module.exports = function residentInit(app) {
 
+	/**
+	 * /community/:slug/resident POST -- create
+	 *		/new GET -- fresh
+	 *		/:id GET/PUT/DELETE
+	 */
+
+	app.post(PREFIX, controller.create);
+
 	app.get(PREFIX + "/new", controller.fresh);
 
 	return model(app);

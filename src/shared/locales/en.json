@@ -25,5 +25,13 @@
 	"The community you wanted to share does not exists.": "The community you wanted to share does not exists.",
 	"You are not allowed to send invites for this community!": "You are not allowed to send invites for this community!",
 	"What exactly are you trying? You're already in a community...": "What exactly are you trying? You're already in a community...",
-	"This invatation link is invalid.": "This invatation link is invalid."
+	"This invatation link is invalid.": "This invatation link is invalid.",
+	"Join the community %s": "Join the community %s",
+	"Hi %s": "Hi %s",
+	"You have an invitation for the community '%s'": "You have an invitation for the community '%s'",
+	"Join": "Join",
+	"Do you want to join the community?": "Do you want to join the community?",
+	"Welcome to the community 'yaay a new community'.": "Welcome to the community 'yaay a new community'.",
+	"What are you trying? You already are in a community.": "What are you trying? You already are in a community.",
+	"Welcome to the community 'blabla'.": "Welcome to the community 'blabla'."
 }
