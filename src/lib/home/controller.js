@@ -10,7 +10,14 @@ exports.index = function index(req, res) {
 
 exports.invite = function(req, res) {
 	var shareLink = req.params.sharelink
+		, resident = req.user
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
+
+	if (resident.isInACommunity()) {
+		req.flash('error',
+			res.__('What are you trying? You already are in a community.'));
+		return res.redirect('/');
+	}
 
 	Community.find({ where: {shareLink: shareLink}})
 		.success(function findResult(community) {

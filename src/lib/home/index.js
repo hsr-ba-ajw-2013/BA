@@ -14,5 +14,5 @@ module.exports = function homeInit(app) {
 	 */
 
 	app.get('/', loginRequired, controller.index);
-	app.get('/invite/:sharelink', controller.invite);
+	app.get('/invite/:sharelink', loginRequired, controller.invite);
 };
