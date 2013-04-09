@@ -13,12 +13,12 @@ describe('Home', function() {
 	describe('GET /invite/:shareLink', function() {
 		describe('unauthorized', function() {
 			describe('with an invalid shareLink', function(){
-				it('should redirect to /', function(done){
+				it('should redirect to /login', function(done){
 					request(app)
 						.get('/invite/' +
 							crypto.pseudoRandomBytes(42).toString('hex'))
 						.expect(302)
-						.expect('Location', '/', done);
+						.expect('Location', '/login', done);
 				});
 			});
 
