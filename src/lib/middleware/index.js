@@ -10,7 +10,7 @@ var browserify = require('./browserify')
 	, i18n = require('./i18n')
 	, livereload = require('./livereload')
 	, logger = require('./logger')
-	, navigation = require('./navigation')
+	, templateData = require('./template-data')
 	, passport = require('./passport')
 	, router = require('./router')
 	, expressStatic = require('./static')
@@ -32,7 +32,7 @@ module.exports = function middlewareInit(app, config) {
 
 	i18n(app, config);
 
-	navigation(app, config);
+	templateData(app, config);
 	view(app, config);
 	logger(app, config);
 
