@@ -6,7 +6,8 @@ var path = require('path')
 	, validatorsPath = path.join('..', '..', 'shared', 'validators')
 	, createCommunityValidator = require(
 		path.join(validatorsPath, 'create-community'))
-	, crypto = require('crypto')
+	, utils = require(path.join(
+			process.cwd(), 'src', 'shared', 'utils', 'index.js'))
 	, uslug = require('uslug');
 
 /** PrivateFunction: renderIndex
@@ -70,7 +71,7 @@ exports.fresh = function freshView(req, res) {
  */
 var createUniqueShareLink = function createUniqueShareLink(req, res, tries) {
 	var Community = req.app.get('db').daoFactoryManager.getDAO('Community')
-		, link = crypto.pseudoRandomBytes(12).toString('hex');
+		, link = utils.randomString(12);
 
 	tries = tries || 1;
 
@@ -145,8 +146,9 @@ var createCommunity = function createCommunity(req, res) {
 						resident.setCommunity(community)
 							.success(function setResult() {
 								req.flash('success',
-									res.__('Community \'' + community.name +
-										'\' created successfully.'));
+									res.__('Community \'%s\' ' +
+										'created successfully.'
+										, community.name));
 								return res.redirect('/community/' +
 									community.slug + '/invite');
 							})

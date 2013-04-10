@@ -3,7 +3,8 @@ var request = require('supertest')
 	, superagent = require('superagent')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()
-	, crypto = require('crypto')
+	, utils = require(path.join(
+			process.cwd(), 'src', 'shared', 'utils', 'index.js'))
 	, uslug = require('uslug')
 	, doLogin = require(path.join(
 			process.cwd(), 'src', 'shared', 'test', 'passport-mock')
@@ -45,7 +46,7 @@ describe('Community', function() {
 				beforeEach(function before(done) {
 					doLogin(app, agent, function afterLogin() {
 						var communityName =
-							crypto.pseudoRandomBytes(6).toString('hex')
+							utils.randomString(6)
 							, req = request(app)
 								.post('/community');
 
@@ -78,7 +79,7 @@ describe('Community', function() {
 				var req = request(app)
 							.post('/community')
 					, communityName =
-						crypto.pseudoRandomBytes(12).toString('hex');
+						utils.randomString(12);
 
 				req.send({name: communityName})
 					.expect(401, done);
@@ -99,7 +100,7 @@ describe('Community', function() {
 					var req = request(app)
 								.post('/community')
 						, communityName =
-							crypto.pseudoRandomBytes(6).toString('hex');
+							utils.randomString(6);
 					agent.attachCookies(req);
 
 					req.send({name: communityName})
@@ -125,7 +126,7 @@ describe('Community', function() {
 					var req = request(app)
 								.post('/community')
 						, communityName =
-							crypto.pseudoRandomBytes(200).toString('hex');
+							utils.randomString(256);
 					agent.attachCookies(req);
 
 					req.send({name: communityName})
@@ -139,7 +140,7 @@ describe('Community', function() {
 						var req = request(app)
 									.post('/community')
 							, communityName =
-								crypto.pseudoRandomBytes(6).toString('hex')
+								utils.randomString(6)
 							, Community = app.get('db')
 											.daoFactoryManager
 											.getDAO('Community');
@@ -164,7 +165,7 @@ describe('Community', function() {
 				beforeEach(function(done) {
 					doLogin(app, agent, function afterLogin() {
 						var communityName =
-							crypto.pseudoRandomBytes(6).toString('hex')
+							utils.randomString(6)
 							, req = request(app)
 								.post('/community');
 						agent.attachCookies(req);
@@ -183,7 +184,7 @@ describe('Community', function() {
 					var req = request(app)
 									.post('/community')
 							, communityName =
-								crypto.pseudoRandomBytes(6).toString('hex');
+								utils.randomString(6);
 						agent.attachCookies(req);
 
 						req.send({name: communityName})
