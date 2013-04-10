@@ -245,7 +245,7 @@ exports.invite = function invite(req, res) {
 			} else {
 				req.flash('error',
 							res.__('The community you wanted' +
-								' to share does not exists.'));
+								' to share does not exist.'));
 				return res.redirect('/');
 			}
 		})
