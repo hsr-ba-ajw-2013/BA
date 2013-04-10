@@ -7,7 +7,15 @@ var path = require('path')
 	, createCommunityValidator = require(
 		path.join(validatorsPath, 'create-community'))
 	, crypto = require('crypto')
-	, uslug = require('uslug');
+	, uslug = require('uslug')
+
+	, ExceptionCreateUniqueShareLink = function(message) {
+		this.message = message;
+		this.name = "ExceptionCreateUniqueShareLink";
+		Error.call(this, message);
+	};
+
+require('util').inherits(ExceptionCreateUniqueShareLink, Error);
 
 /** PrivateFunction: renderIndex
  * Renders a Community instance in a specific response object.
@@ -59,17 +67,18 @@ exports.fresh = function freshView(req, res) {
 	});
 };
 
-/** PrivateFunction: createUniqueShareLink
+/** Function: createUniqueShareLink
  * Creates a random share link.
  *
  * Parameters:
- *   (express.request) req - Request
- *   (express.response) res - Response
- *   (number [optional] [Default = 1])
-		tries - The number of tries if the link already exists
+ *   (Sequelize) db - Instance of sequelize
+ *   (Function) done - Callback to call after creating the sharelink
+ *                     (successfully or not)
+ *   (number) tries - [optional] [Default = 1] The number of tries if the link
+ *                                              already exists
  */
-var createUniqueShareLink = function createUniqueShareLink(req, res, tries) {
-	var Community = req.app.get('db').daoFactoryManager.getDAO('Community')
+function createUniqueShareLink(db, done, tries) {
+	var Community = db.daoFactoryManager.getDAO('Community')
 		, link = crypto.pseudoRandomBytes(12).toString('hex');
 
 	tries = tries || 1;
@@ -78,22 +87,30 @@ var createUniqueShareLink = function createUniqueShareLink(req, res, tries) {
 		.success(function findResult(community) {
 			if (community) {
 				if (tries - 1 <= 0) {
-					return null;
-				} else {
-					return createUniqueShareLink(req, res, --tries);
+					return done(new ExceptionCreateUniqueShareLink('Too many tries'));
 				}
+				return createUniqueShareLink(db, --tries, done);
 			}
+			return done(null, link);
 		})
-		.error(function findError() {
-			return null;
+		.error(function findError(err) {
+			return done(err);
 		});
-
-	return link;
 };
+exports.createUniqueShareLink = createUniqueShareLink;
 
-var addUniqueSlug = function addUniqueSlug(req, community) {
+/** Function: addUniqueSlug
+ * Creates a unique slug for a community.
+ *
+ * Parameters:
+ *   (Sequelize) db - Instance of sequelize
+ *   (Community) community - Community model
+ *   (Function) done - Callback to call after creating the sharelink
+ *                     (successfully or not)
+ */
+function addUniqueSlug(db, community, done) {
 	var slug = uslug(community.name)
-		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
+		, Community = db.daoFactoryManager.getDAO('Community');
 
 	Community.count({ where: { slug: slug }})
 		.success(function countResult(c) {
@@ -103,11 +120,15 @@ var addUniqueSlug = function addUniqueSlug(req, community) {
 
 			community.slug = slug;
 			community.save()
-				.error( function createError(errors) {
-					console.log("errors: ", errors);
+				.success(function saved() {
+					done(null, slug);
+				})
+				.error(function saveError(err) {
+					done(err);
 				});
 		});
 };
+exports.addUniqueSlug = addUniqueSlug;
 
 /** PrivateFunction: createCommunity
  * Creates a community.
@@ -118,50 +139,58 @@ var addUniqueSlug = function addUniqueSlug(req, community) {
  */
 var createCommunity = function createCommunity(req, res) {
 	var resident = req.user
-		, Community = req.app.get('db').daoFactoryManager.getDAO('Community')
+		, db = req.app.get('db')
+		, Community = db.daoFactoryManager.getDAO('Community')
 		, communityData = {
 			name: req.param('name')
-			, shareLink: createUniqueShareLink(req, res)
 		};
 
-	if (resident.CommunityId !== null) {
-		req.flash('error',
-			res.__('What exactly are you trying? You\'re ' +
-				'already in a community...'));
-		return res.redirect('/community');
-	}
+	createUniqueShareLink(db, function(err, link) {
+		if (err) {
+			return res.send(500);
+		}
+		communityData.shareLink = link;
 
-	Community.find({ where: { name: communityData.name }})
-		.success(function findResult(community) {
-			if (community !== null) {
-				req.flash('error', res.__('The community already exists.'));
-				return res.redirect('./new');
-			} else {
+		if (resident.CommunityId !== null) {
+			req.flash('error',
+				res.__('What exactly are you trying? You\'re ' +
+					'already in a community...'));
+			return res.redirect('/community');
+		}
+
+		Community.find({ where: { name: communityData.name }})
+			.success(function findResult(community) {
+				if (community !== null) {
+					req.flash('error', res.__('The community already exists.'));
+					return res.redirect('./new');
+				}
 				Community.create(communityData)
 					.success(function createResult(community) {
-
-						addUniqueSlug(req, community);
-
-						resident.setCommunity(community)
-							.success(function setResult() {
-								req.flash('success',
-									res.__('Community \'' + community.name +
-										'\' created successfully.'));
-								return res.redirect('/community/' +
-									community.slug + '/invite');
-							})
-							.error(function(errors) {
-								console.log("errors: ", errors);
-							});
+						addUniqueSlug(db, community, function(err) {
+							if(err) {
+								return res.send(500);
+							}
+							resident.setCommunity(community)
+								.success(function setResult() {
+									req.flash('success',
+										res.__('Community \'' + community.name +
+											'\' created successfully.'));
+									return res.redirect('/community/' +
+										community.slug + '/invite');
+								})
+								.error(function(errors) {
+									res.send(500);
+								});
+						});
 
 					}).error(function createError() {
 						return res.send(500);
 					});
-			}
-		})
-		.error(function findError() {
-			return res.send(500);
-		});
+			})
+			.error(function findError() {
+				return res.send(500);
+			});
+	});
 };
 
 
