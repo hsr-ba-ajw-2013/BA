@@ -11,8 +11,6 @@ after_success:
 language: node_js
 node_js:
   - 0.8
-services:
-  - sqlite3
 
 script: "make docs test-coverage lint"
 
