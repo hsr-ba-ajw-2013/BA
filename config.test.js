@@ -22,7 +22,7 @@ module.exports = {
 
 	, facebook: {
 		clientID: 496325690405368
-		, clientSecret: "95973369538243fca82a0d9f5740a273"
+		, clientSecret: "DO NOT CHANGE ME TO THE REAL ONE"
 		, callbackUrl: '/auth/facebook/callback'
 		, channelUrl: '/fbchannel'
 		, checkStatus: true
