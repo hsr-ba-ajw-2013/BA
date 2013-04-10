@@ -6,20 +6,20 @@
 		<section class="nav-section">
 			<ul class="left">
 				{{#if user}}
-					<li{{#navIsActive "/task" this}} class="active"{{/navIsActive}}>
-						<a href="/task" title="{{trans "Tasks"}}">
+					<li{{#navIsActive "/community/{{community.slug}}/task" this}} class="active"{{/navIsActive}}>
+						<a href="/community/{{community.slug}}/task" title="{{trans "Tasks"}}">
 							<i class="icon-list icon-large"></i>
 							<span class="item-label"> {{trans "Tasks" }}</span>
 						</a>
 					</li>
-					<li{{#navIsActive "/rank" this}} class="active"{{/navIsActive}}>
-						<a href="/rank" title="{{trans "Rank"}}">
+					<li{{#navIsActive "/community/{{community.slug}}/rank" this}} class="active"{{/navIsActive}}>
+						<a href="/community/{{community.slug}}/rank" title="{{trans "Rank"}}">
 							<i class="icon-trophy icon-large"></i>
 							<span class="item-label"> {{trans "Rank" }}</span>
 						</a>
 					</li>
-					<li{{#navIsActive "/invite" this}} class="active"{{/navIsActive}}>
-						<a href="/invite" title="{{trans "Invite"}}">
+					<li{{#navIsActive "/community/{{community.slug}}/invite" this}} class="active"{{/navIsActive}}>
+						<a href="/community/{{community.slug}}/invite" title="{{trans "Invite"}}">
 							<i class="icon-share icon-large"></i>
 							<span class="item-label"> {{trans "Invite" }}</span>
 						</a>
