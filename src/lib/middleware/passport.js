@@ -67,11 +67,33 @@ module.exports = function passportInit(app, config) {
 	});
 
 	app.get('/auth/facebook', passport.authenticate('facebook'));
-	app.get('/auth/facebook/callback', passport.authenticate('facebook', {
-		successRedirect: '/community'
-		, failureRedirect: '/'
-		, failureFlash: true
-	}));
+	app.get('/auth/facebook/callback', function(req, res, next) {
+		passport.authenticate('facebook', function(err, user){
+			var redirectUrl = '/community';
+
+			if (err) {
+				console.log("err", err);
+				return next(err);
+			}
+
+			if (!user) {
+				return res.redirect('/');
+			}
+
+			if (req.session.redirectUrl) {
+				redirectUrl = req.session.redirectUrl;
+				req.session.redirectUrl = null;
+			}
+
+			req.logIn(user, function(err){
+				if (err) {
+					return next(err);
+				}
+			});
+
+			res.redirect(redirectUrl);
+		})(req, res, next);
+	});
 
 	app.set('passport', passport);
 
