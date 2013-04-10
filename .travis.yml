@@ -11,6 +11,8 @@ after_success:
 language: node_js
 node_js:
   - 0.8
+services:
+  - sqlite3
 
 script: "make docs test-coverage lint"
 
@@ -28,7 +30,7 @@ env:
         #
         # Copy the resulting "secure" property here:
         - secure: "eWkg0QTrYfWbPpitHRZWvtnTD2gTZsHEfZI1/cVA3mUs1Vycx/bNHzAt4fNm\nWR7EsTkaNLkc6p3JA797kwIyCugt+0D2tTdn7ra532Gye9u/KGjJB38HuJ0A\nQxibB+ahyAOJL+NjRNAQsME2lFmNv950/4sRbXYybijxJD6fqcw="
-        
+
         # GH_USER_NAME & GH_PROJECT_NAME
         # The Github Account you created the OAuth token with and the repo you
         # want to push the generated PDF to (gh-pages branch is used automatically)
