@@ -2,6 +2,8 @@
 # Makefile for roomies-prototype
 #
 
+SHELL = bash
+
 REPORTER = spec
 COVERAGE_REPORTER = html-cov
 TEST_CMD = NODE_ENV=test ./node_modules/.bin/mocha --require test/runner.js --globals config
@@ -30,9 +32,15 @@ test-functional-live:
 
 test-coverage: test
 	@echo "Building Test Coverage Reports:"
+	@echo -n "Running jscover..."
 	@$(COVERAGE_CMD)
+	@echo "done"
+	@echo -n "Creating unit coverage report..."
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) src/lib/*/test.js  > unit-coverage.html
+	@echo "done"
+	@echo -n "Creating functional coverage report..."
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) test/*-test.js > functional-coverage.html
+	@echo "done"
 
 setup: clean deps config precompile-sass
 	@echo "Done. You should now be able to start using 'npm start'."
