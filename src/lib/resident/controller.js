@@ -55,8 +55,8 @@ exports.create = function(req, res) {
 			resident.setCommunity(community)
 				.success(function setResult() {
 					req.flash('success',
-						res.__('Welcome to the community \'' + community.name +
-							'\'.'));
+						res.__('Welcome to the community \'%s\'.'
+							, community.name));
 					return res.redirect('/');
 				})
 				.error(function(errors) {

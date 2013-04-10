@@ -15,7 +15,8 @@ exports.invite = function(req, res) {
 
 	if (resident.isInACommunity()) {
 		req.flash('error',
-			res.__('What are you trying? You already are in a community.'));
+			res.__('You cannot accept invitations. ' +
+				'You already are in a community.'));
 		return res.redirect('/');
 	}
 

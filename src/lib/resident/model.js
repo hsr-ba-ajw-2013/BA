@@ -30,7 +30,7 @@ module.exports = function init(app) {
 	}
 	, {
 		instanceMethods: {
-			isInACommunity: function() { //TODO: add it to the migration script
+			isInACommunity: function() {
 				return this.CommunityId !== null;
 			}
 		}
