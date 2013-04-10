@@ -128,6 +128,9 @@ function addUniqueSlug(db, community, done) {
 				.error(function saveError(err) {
 					done(err);
 				});
+		})
+		.error(function errorCount(err) {
+			done(err);
 		});
 }
 exports.addUniqueSlug = addUniqueSlug;

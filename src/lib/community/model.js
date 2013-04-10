@@ -21,8 +21,8 @@ function createRelationships(app) {
 	Community.hasMany(Resident);
 }
 
-module.exports = function init(app) {
-	var db = app.get('db');
+module.exports = function init(app, db) {
+	var db = app ? app.get('db') : db;
 	db.define('Community', {
 		name: Sequelize.STRING
 		, shareLink: {type: Sequelize.STRING, unique: true}
