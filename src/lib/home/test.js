@@ -3,7 +3,8 @@ var request = require('supertest')
 	, superagent = require('superagent')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()
-	, crypto = require('crypto')
+	, utils = require(path.join(
+			process.cwd(), 'src', 'shared', 'utils', 'index.js'))
 	, doLogin = require(path.join(
 			process.cwd(), 'src', 'shared', 'test', 'passport-mock')
 		).doLogin;
@@ -16,7 +17,7 @@ describe('Home', function() {
 				it('should redirect to /login', function(done){
 					request(app)
 						.get('/invite/' +
-							crypto.pseudoRandomBytes(42).toString('hex'))
+							utils.randomString(42))
 						.expect(302)
 						.expect('Location', '/login', done);
 				});
@@ -28,7 +29,7 @@ describe('Home', function() {
 				it('should redirect to /login', function(done){
 					request(app)
 						.get('/invite/' +
-							crypto.pseudoRandomBytes(42).toString('hex'))
+							utils.randomString(42))
 						.expect(302)
 						.expect('Location', '/login', done);
 				});
@@ -44,7 +45,7 @@ describe('Home', function() {
 				beforeEach(function before(done) {
 					doLogin(app, agent, function afterLogin() {
 						var communityName =
-							crypto.pseudoRandomBytes(6).toString('hex')
+							utils.randomString(6)
 							, req = request(app)
 								.post('/community');
 
@@ -63,7 +64,7 @@ describe('Home', function() {
 
 					it('should redirect to /', function(done){
 						var req = request(app).get('/invite/' +
-								crypto.pseudoRandomBytes(42).toString('hex'));
+								utils.randomString(42));
 						agent.attachCookies(req);
 
 						req.expect(302)
@@ -75,7 +76,7 @@ describe('Home', function() {
 
 					it('should redirect to /', function(done){
 						var req = request(app).get('/invite/' +
-								crypto.pseudoRandomBytes(42).toString('hex'));
+								utils.randomString(42));
 						agent.attachCookies(req);
 
 						req.expect(302)
@@ -94,7 +95,7 @@ describe('Home', function() {
 
 					it('should redirect to /', function(done){
 						var req = request(app).get('/invite/' +
-								crypto.pseudoRandomBytes(42).toString('hex'));
+								utils.randomString(42));
 						agent.attachCookies(req);
 
 						req.expect(302)
