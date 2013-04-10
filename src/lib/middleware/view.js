@@ -1,6 +1,7 @@
 var express = require('express')
 	, path = require('path')
-	, hbs = require('express-hbs');
+	, hbs = require('express-hbs')
+	, url = require('url');
 
 function registerHelpers(app) {
 	hbs.registerHelper('stringify', function stringify(item) {
@@ -37,6 +38,15 @@ function registerHelpers(app) {
 			return options.fn(this);
 		}
 		return;
+	});
+	hbs.registerHelper('getUrl', function getUrl(path, data) {
+		var urlData = {
+			protocol: data.protocol
+			, host: data.host
+			, pathname: path
+		};
+
+		return url.format(urlData);
 	});
 }
 
