@@ -22,7 +22,7 @@ function createRelationships(app) {
 }
 
 module.exports = function init(app, db) {
-	var db = app ? app.get('db') : db;
+	db = app ? app.get('db') : db;
 	db.define('Community', {
 		name: Sequelize.STRING
 		, shareLink: {type: Sequelize.STRING, unique: true}
