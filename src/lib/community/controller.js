@@ -240,7 +240,7 @@ exports.invite = function invite(req, res) {
 				return res.render('community/views/invite', {
 							title: res.__('Invite your roomies' +
 								' to the community!')
-							, shareLink: community.shareLink
+							, shareLink: "/invite/" + community.shareLink
 						});
 			} else {
 				req.flash('error',
