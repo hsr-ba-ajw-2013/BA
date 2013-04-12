@@ -3,8 +3,20 @@
  */
 
 exports.index = function index(req, res) {
-	res.render('task/views/index', {
-		title: res.__('Tasks')
+	var resident = req.user;
+
+	resident.getCommunity().success(function result(community) {
+
+		if (!community) {
+			return res.redirect('/');
+		}
+
+		community.getTasks().success(function result(tasks) {
+			res.render('task/views/index', {
+				title: res.__('Tasks')
+				, tasks: tasks
+			});
+		});
 	});
 };
 

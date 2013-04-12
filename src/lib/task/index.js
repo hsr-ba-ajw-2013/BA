@@ -7,7 +7,7 @@ var controller = require('./controller')
 		'..', '..', 'shared', 'policies', 'login-required')
 	)
 	, COMMUNITY_PREFIX = '/community/:slug'
-	, TASK_PREFIX = COMMUNITY_PREFIX + '/tasks';
+	, TASK_PREFIX = COMMUNITY_PREFIX + '/task';
 
 module.exports = function taskInit(app) {
 	/**
