@@ -1,3 +1,7 @@
+function addFullfilledAt(migration, DataTypes, done) {
+	migration.addColumn('Tasks', 'fullfilledAt', Sequelize.DATE)
+		.complete(done);
+};
 
 function addShareLink(migration, DataTypes, done) {
 	migration.addColumn('Communities', 'shareLink', {
@@ -56,12 +60,16 @@ module.exports = {
 	up: function(migration, DataTypes, done) {
 		addShareLink(migration, DataTypes,
 			addSlug.bind(this, migration, DataTypes,
-				migrateExistingData.bind(this, migration, DataTypes, done)
+				migrateExistingData.bind(this, migration, DataTypes,
+					addFullfilledAt.bind(this, migration, DataTypes, done)
+				)
 			)
 		);
 	},
 	down: function(migration) {
 		migration.removeColumn('Communities', 'shareLink');
 		migration.removeColumn('Communities', 'slug');
+
+		migration.removeColumn('Tasks', 'fullfilledAt');
 	}
 }
