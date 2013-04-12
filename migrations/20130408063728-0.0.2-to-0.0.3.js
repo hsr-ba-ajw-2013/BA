@@ -3,6 +3,11 @@ function addFullfilledAt(migration, DataTypes, done) {
 		.complete(done);
 };
 
+function addReward(migration, DataTypes, done) {
+	migration.addColumn('Tasks', 'reward', Sequelize.INTEGER)
+		.complete(done);
+};
+
 function addShareLink(migration, DataTypes, done) {
 	migration.addColumn('Communities', 'shareLink', {
 		type: DataTypes.STRING, unique: true
@@ -61,7 +66,9 @@ module.exports = {
 		addShareLink(migration, DataTypes,
 			addSlug.bind(this, migration, DataTypes,
 				migrateExistingData.bind(this, migration, DataTypes,
-					addFullfilledAt.bind(this, migration, DataTypes, done)
+					addFullfilledAt.bind(this, migration, DataTypes,
+						addReward.bind(this, migration, DataTypes, done)
+					)
 				)
 			)
 		);
@@ -71,5 +78,6 @@ module.exports = {
 		migration.removeColumn('Communities', 'slug');
 
 		migration.removeColumn('Tasks', 'fullfilledAt');
+		migration.removeColumn('Tasks', 'reward');
 	}
 }

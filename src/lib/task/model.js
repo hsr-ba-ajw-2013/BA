@@ -21,6 +21,7 @@ module.exports = function init(app) {
 	db.define('Task', {
 		name: Sequelize.STRING
 		, description: Sequelize.STRING
+		, reward: Sequelize.INTEGER
 		, fullfilledAt: Sequelize.DATE
 	});
 
