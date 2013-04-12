@@ -4,7 +4,8 @@
  */
 var controller = require('./controller')
 	, model = require('./model')
-	, PREFIX = '/community/:slug/resident';
+	, COMMUNITY_PREFIX = '/community/:slug'
+	, RESIDENT_PREFIX = COMMUNITY_PREFIX + '/resident';
 
 module.exports = function residentInit(app) {
 
@@ -14,9 +15,9 @@ module.exports = function residentInit(app) {
 	 *		/:id GET/PUT/DELETE
 	 */
 
-	app.post(PREFIX, controller.create);
+	app.post(RESIDENT_PREFIX, controller.create);
 
-	app.get(PREFIX + "/new", controller.fresh);
+	app.get(RESIDENT_PREFIX + "/new", controller.fresh);
 
 	return model(app);
 };
