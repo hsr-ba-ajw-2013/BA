@@ -11,9 +11,12 @@ var controller = require('./controller')
 
 module.exports = function taskInit(app) {
 	/**
-	 * /community/:slug/tasks GET/POST
-	 *		/new
-	 *		/:id GET/PUT/DELETE
+	 * /community/:slug/tasks GET -- index
+	 *							POST -- create
+	 *		/new -- fresh (new is protected word)
+	 *		/:id GET -- get
+	 *				PUT -- update
+	 *				DELETE -- del
 	 */
 
 	app.all(TASK_PREFIX, loginRequired);

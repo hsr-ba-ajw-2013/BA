@@ -1,7 +1,15 @@
 <div class="row">
 	<header class="large-12 columns">
-		<h2>Aufgaben</h2>
+		<h2>{{trans "Tasks"}}</h2>
 	</header>
+</div>
+<div class="row">
+	<div class="large-12 columns">
+		<a class="btn" href="/community/{{community.slug}}/task/new" title="{{trans "Add a new task"}}">
+			<i class="icon-plus icon-large"></i>
+			<span class="item-label"> {{trans "Add a new task"}}</span>
+		</a>
+	</div>
 </div>
 <div class="row">
 	<div class="large-12 columns">
@@ -9,42 +17,20 @@
 			<thead>
 				<tr>
 					<th class="check"></th>
-					<th class="task"><a href="#" title="Nach Aufgabe sortieren">Aufgabe</a></th>
-					<th class="due-date"><a href="#" title="Nach Fälligkeit sortieren">Fällig bis <i class="icon-sort-up"></i></i></a></th>
-					<th class="reward"><a href="#" title="Nach Belohnung sortieren">Wert</a></th>
+					<th class="task"><a href="#" title="{{trans "Sort by task"}}">{{trans "Task"}}</a></th>
+					<th class="due-date"><a href="#" title="{{trans "Sort by due date"}}">{{trans "Due date"}} <i class="icon-sort-up"></i></i></a></th>
+					<th class="reward"><a href="#" title="{{trans "Sort by reward"}}">{{trans "Value"}}</a></th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
-					<td class="check"><i class="icon-check"></i></td>
-					<td class="task">Müll rausbringen</td>
-					<td class="due-date">26.03.2013</td>
-					<td class="reward">10 <i class="icon-trophy"></i></td>
-				</tr>
-				<tr>
-					<td class="check"><i class="icon-check-empty"></i></td>
-					<td class="task">Müll rausbringen</td>
-					<td class="due-date">30.03.2013</td>
-					<td class="reward">10 <i class="icon-trophy"></i></td>
-				</tr>
-				<tr>
-					<td class="check"><i class="icon-check"></i></td>
-					<td class="task">Müll rausbringen</td>
-					<td class="due-date">-</td>
-					<td class="reward">10 <i class="icon-trophy"></i></td>
-				</tr>
-				<tr>
-					<td class="check"><i class="icon-check-empty"></i></td>
-					<td class="task">Müll rausbringen</td>
-					<td class="due-date">-</td>
-					<td class="reward">10 <i class="icon-trophy"></i></td>
-				</tr>
-				<tr>
-					<td class="check"><i class="icon-check"></i></td>
-					<td class="task">Müll rausbringen</td>
-					<td class="due-date">-</td>
-					<td class="reward">10 <i class="icon-trophy"></i></td>
-				</tr>
+				{{#each tasks}}
+				    <tr>
+						<td class="check"><i class="icon-check"></i></td>
+						<td class="task">{{name}}</td>
+						<td class="due-date">{{dueDate}}</td>
+						<td class="reward">{{reward}} <i class="icon-trophy"></i></td>
+					</tr>
+				{{/each}}
 			</tbody>
 		</table>
 	</div>
