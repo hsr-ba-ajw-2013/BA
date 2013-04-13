@@ -3,6 +3,11 @@ function addFullfilledAt(migration, DataTypes, done) {
 		.complete(done);
 };
 
+function addDueDate(migration, DataTypes, done) {
+	migration.addColumn('Tasks', 'dueDate', Sequelize.DATE)
+		.complete(done);
+};
+
 function addReward(migration, DataTypes, done) {
 	migration.addColumn('Tasks', 'reward', Sequelize.INTEGER)
 		.complete(done);
@@ -67,7 +72,9 @@ module.exports = {
 			addSlug.bind(this, migration, DataTypes,
 				migrateExistingData.bind(this, migration, DataTypes,
 					addFullfilledAt.bind(this, migration, DataTypes,
-						addReward.bind(this, migration, DataTypes, done)
+						addDueDate.binf(this.migration, DataTypes,
+							addReward.bind(this, migration, DataTypes, done)
+						)
 					)
 				)
 			)
@@ -78,6 +85,7 @@ module.exports = {
 		migration.removeColumn('Communities', 'slug');
 
 		migration.removeColumn('Tasks', 'fullfilledAt');
+		migration.removeColumn('Tasks', 'dueDate');
 		migration.removeColumn('Tasks', 'reward');
 	}
 }

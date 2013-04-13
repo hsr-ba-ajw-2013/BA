@@ -23,6 +23,7 @@ module.exports = function init(app) {
 		, description: Sequelize.STRING
 		, reward: Sequelize.INTEGER
 		, fullfilledAt: Sequelize.DATE
+		, dueDate: Sequelize.DATE
 	});
 
 	return createRelationships;
