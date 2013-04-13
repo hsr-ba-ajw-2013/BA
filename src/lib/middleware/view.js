@@ -1,7 +1,7 @@
 var express = require('express')
 	, path = require('path')
 	, hbs = require('express-hbs')
-	, url = require('url');
+	, urlHelper = require('url');
 
 function registerHelpers(app) {
 	hbs.registerHelper('stringify', function stringify(item) {
@@ -39,15 +39,30 @@ function registerHelpers(app) {
 		}
 		return;
 	});
-	hbs.registerHelper('getUrl', function getUrl(path, data) {
+	hbs.registerHelper('url', function url(path, data) {
 		var urlData = {
 			protocol: data.protocol
 			, host: data.host
 			, pathname: path
 		};
 
-		return url.format(urlData);
+		return urlHelper.format(urlData);
 	});
+	hbs.registerHelper('for', function forLoop(from, to, incr, block) {
+		var accum = '';
+		for(var i = from; i < to; i += incr) {
+			accum += block.fn(i);
+		}
+		return accum;
+	});
+	//hbs.registerHelper('each', function each(context, options) {
+	//	var ret = "";
+
+	//	for(var i=0, j=context.length; i<j; i++) {
+	//		ret = ret + options.fn(context[i]);
+	//	}
+	//	return ret;
+	//});
 }
 
 module.exports = function viewInit(app, config) {
