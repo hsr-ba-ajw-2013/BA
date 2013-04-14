@@ -179,8 +179,9 @@ var createCommunity = function createCommunity(req, res) {
 							resident.setCommunity(community)
 								.success(function setResult() {
 									req.flash('success',
-										res.__('Community \'' + community.name +
-											'\' created successfully.'));
+										res.__('Community \'%s' +
+											'\' created successfully.'
+											, community.name));
 									return res.redirect('/community/' +
 										community.slug + '/invite');
 								})

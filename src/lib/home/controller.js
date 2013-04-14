@@ -5,7 +5,14 @@
 /** Function: index
  */
 exports.index = function index(req, res) {
-	res.render('home/views/index', { title: res.__('Welcome at Roomies!') });
+	var resident = req.user;
+
+	if (!resident.isInACommunity()) {
+		return res.redirect('/community/new');
+	} else {
+		return res.render('home/views/index',
+			{ title: res.__('Welcome at Roomies!') });
+	}
 };
 
 exports.invite = function(req, res) {
