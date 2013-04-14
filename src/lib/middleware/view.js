@@ -58,7 +58,7 @@ function registerHelpers(app) {
 		return accum;
 	});
 	hbs.registerHelper('dateFormat', function dateFormat(context, block) {
-		var f = block.hash.format || "Do MMM YYYY";
+		var f = block.hash.format || "LL";
 		return moment(Date(context)).format(f);
 	});
 
