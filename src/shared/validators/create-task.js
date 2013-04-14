@@ -13,7 +13,7 @@ module.exports = function createTaskValidator(req, res, next) {
 	req.sanitize('txtReward').trim();
 
 	error = res.__('Due date needs to be a date in the future.');
-	req.assert('txtDueDate', error).len(1, 1).isInt();
+	req.assert('txtDueDate', error).isDate();
 	req.sanitize('txtDueDate').trim();
 
 	error = res.__('Description needs to be within 0 and 255 chars.');
