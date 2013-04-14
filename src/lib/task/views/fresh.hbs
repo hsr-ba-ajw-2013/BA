@@ -1,0 +1,61 @@
+<form class="large-12 columns" action="/community/{{community.slug}}/task" method="post">
+		<div class="row">
+			<div class="large-12 columns">
+				<h2 class="">Aufgabe erstellen</h2>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="small-3 large-2 columns">
+				<label for="txtTask" class="inline">Aufgabe</label>
+			</div>
+			<div class="small-9 large-7 columns">
+				<input type="text" name="txtTask" id="txtTask" placeholder="Müll entsorgen, Einkaufen, ..." />
+			</div>
+			<div class="large-3 columns hide-for-small hint">
+				Gib' der Aufgabe eine knappe Beschreibung.
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="small-3 large-2 columns">
+				<label for="txtReward" class="inline">Belohnung</label>
+			</div>
+			<div class="small-9 large-7 columns">
+				<input type="number" name="txtReward" id="txtReward" placeholder="1 bis 5 Punkte" min="1" max="5" />
+			</div>
+			<div class="large-3 columns hide-for-small hint">
+				Wieviel <i class="icon-trophy"></i> Punkte soll der Mitbewohner erhalten, welcher diese Aufgabe erledigt?
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="small-3 large-2 columns">
+				<label for="txtDueDate" class="inline">Fälligkeit</label>
+			</div>
+			<div class="small-9 large-7 columns">
+				<input type="date" name="txtDueDate" id="txtDueDate" placeholder="14.04.2013" min="1" max="5" />
+			</div>
+			<div class="large-3 columns hide-for-small hint">
+				Ist diese Aufgabe an einem bestimmten Tag fällig?
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="small-3 large-2 columns">
+				<label for="txtDescription" class="inline">Notizen</label>
+			</div>
+			<div class="small-9 large-7 columns">
+				<textarea name="txtDescription" id="txtDescription" placeholder="Schlüssel zum Keller im Schlüsselkasten..."></textarea>
+			</div>
+			<div class="large-3 columns hide-for-small hint">
+				Hinterlasse Notizen zu dieser Aufgabe, falls nötig.
+			</div>
+		</div>
+
+		<div class="row button-bar">
+			<div class="small-12 large-offset-2 large-9 columns">
+				<input type="submit" value="Aufgabe speichern" class="button success widen-for-small" />
+			</div>
+		</div>
+	</form>
