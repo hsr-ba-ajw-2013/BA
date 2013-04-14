@@ -1,5 +1,5 @@
-function addFullfilledAt(migration, DataTypes, done) {
-	migration.addColumn('Tasks', 'fullfilledAt', DataTypes.DATE)
+function addFulfilledAt(migration, DataTypes, done) {
+	migration.addColumn('Tasks', 'fulfilledAt', DataTypes.DATE)
 		.complete(done);
 };
 
@@ -71,7 +71,7 @@ module.exports = {
 		addShareLink(migration, DataTypes,
 			addSlug.bind(this, migration, DataTypes,
 				migrateExistingData.bind(this, migration, DataTypes,
-					addFullfilledAt.bind(this, migration, DataTypes,
+					addFulfilledAt.bind(this, migration, DataTypes,
 						addDueDate.binf(this.migration, DataTypes,
 							addReward.bind(this, migration, DataTypes, done)
 						)
@@ -84,7 +84,7 @@ module.exports = {
 		migration.removeColumn('Communities', 'shareLink');
 		migration.removeColumn('Communities', 'slug');
 
-		migration.removeColumn('Tasks', 'fullfilledAt');
+		migration.removeColumn('Tasks', 'fulfilledAt');
 		migration.removeColumn('Tasks', 'dueDate');
 		migration.removeColumn('Tasks', 'reward');
 	}

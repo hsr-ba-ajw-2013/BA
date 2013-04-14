@@ -79,6 +79,55 @@ var createTask = function createCommunity(req, res) {
 
 exports.create = [createTaskValidator, createTask];
 
+exports.check = function check(req, res) {
+	var resident = req.user
+		, db = req.app.get('db')
+		, Task = db.daoFactoryManager.getDAO('Task')
+		, Community = db.daoFactoryManager.getDAO('Community')
+		, taskId = req.params.id
+		, slug = req.params.slug;
+
+	Task.find(taskId)
+		.success(function findResult(task) {
+			if (!task) {
+				return res.send(404);
+			}
+
+			Community.find({ where: {slug: slug}})
+				.success(function findCommunityResult(community) {
+					if (!community) {
+						return res.send(404);
+					}
+
+					if (resident.CommunityId !== community.id) {
+						return res.send(405);
+					}
+
+					task.fulfilledAt = new Date();
+					task.save().success(function taskSaveSuccess() {
+						task.setFulfillor(resident)
+							.success(function setFulfillorResult() {
+								return res.redirect('../../');
+							})
+							.error(function setFulfillorError(error) {
+								console.log(error);
+								return res.send(500);
+							});
+					})
+					.error(function taskSaveError(error) {
+						console.log(error);
+						return res.send(500);
+					});
+
+				})
+				.error(function findCommunityError(error) {
+					console.log(error);
+					return res.send(500);
+				});
+		});
+
+};
+
 exports.get = exports.update =
 	exports.del = function(req, res) {
 		req = req;//FIXME REMOVE !! JSHINT IN YA FACE.

@@ -26,7 +26,15 @@
 			<tbody>
 				{{#each tasks}}
 				    <tr>
-						<td class="check"><i class="icon-check"></i></td>
+						<td class="check">
+							{{#if isFullFilled}}
+								<i class="icon-check"></i>
+							{{else}}
+								<a href="{{id}}/check">
+									<i class="icon-check-empty"></i>
+								</a>
+							{{/if}}
+						</td>
 						<td class="task">{{name}}</td>
 						<td class="description">{{description}}</td>
 						<td class="due-date">{{dateFormat dueDate}}</td>

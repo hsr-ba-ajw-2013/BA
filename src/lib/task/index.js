@@ -30,6 +30,8 @@ module.exports = function taskInit(app) {
 	app.put(TASK_PREFIX + '/:id', controller.update);
 	app.del(TASK_PREFIX + '/:id', controller.del);
 
+	//TODO: is GET the way to go?
+	app.get(TASK_PREFIX + '/:id/check', controller.check);
 
 	return model(app);
 };

@@ -22,8 +22,14 @@ module.exports = function init(app) {
 		name: Sequelize.STRING
 		, description: Sequelize.STRING
 		, reward: Sequelize.INTEGER
-		, fullfilledAt: Sequelize.DATE
+		, fulfilledAt: Sequelize.DATE
 		, dueDate: Sequelize.DATE
+	} , {
+		instanceMethods: {
+			isFullFilled: function() {
+				return this.fulfilledAt !== null;
+			}
+		}
 	});
 
 	return createRelationships;
