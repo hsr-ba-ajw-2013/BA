@@ -1,7 +1,9 @@
 var express = require('express')
 	, path = require('path')
 	, hbs = require('express-hbs')
-	, url = require('url');
+	, url = require('url')
+	, moment = require('moment');
+
 
 function registerHelpers(app) {
 	hbs.registerHelper('stringify', function stringify(item) {
@@ -55,6 +57,11 @@ function registerHelpers(app) {
 		}
 		return accum;
 	});
+	hbs.registerHelper('dateFormat', function dateFormat(context, block) {
+		var f = block.hash.format || "Do MMM YYYY";
+		return moment(Date(context)).format(f);
+	});
+
 	//hbs.registerHelper('each', function each(context, options) {
 	//	var ret = "";
 
