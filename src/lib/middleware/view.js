@@ -39,7 +39,7 @@ function registerHelpers(app) {
 		}
 		return;
 	});
-	hbs.registerHelper('getUrl', function getUrl(path, data) {
+	hbs.registerHelper('url', function formatUrl(path, data) {
 		var urlData = {
 			protocol: data.protocol
 			, host: data.host
