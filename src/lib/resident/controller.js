@@ -9,14 +9,13 @@
  *   (express.response) res - Response
  */
 exports.fresh = function(req, res) {
-	var shareLink = req.cookies.shareLink
+	var shareLink = req.session.shareLink
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
 
-	//TODO: use cookies for that is not realy the best idee...
-	res.clearCookie('shareLink');
+	req.session.shareLink = '';
 
 	if (shareLink === undefined) {
-		return res.send(404);
+		return res.send(405);
 	}
 
 	Community.find({ where: {shareLink: shareLink}})

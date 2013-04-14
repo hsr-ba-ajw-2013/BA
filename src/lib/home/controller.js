@@ -31,7 +31,7 @@ exports.invite = function(req, res) {
 		.success(function findResult(community) {
 
 			if (community !== null) {
-				res.cookie('shareLink', shareLink, { maxAge: 300000 });
+				req.session.shareLink = shareLink;
 
 				return res.redirect('/community/' +
 					community.slug + '/resident/new');
