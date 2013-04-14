@@ -1,15 +1,15 @@
 function addFullfilledAt(migration, DataTypes, done) {
-	migration.addColumn('Tasks', 'fullfilledAt', Sequelize.DATE)
+	migration.addColumn('Tasks', 'fullfilledAt', DataTypes.DATE)
 		.complete(done);
 };
 
 function addDueDate(migration, DataTypes, done) {
-	migration.addColumn('Tasks', 'dueDate', Sequelize.DATE)
+	migration.addColumn('Tasks', 'dueDate', DataTypes.DATE)
 		.complete(done);
 };
 
 function addReward(migration, DataTypes, done) {
-	migration.addColumn('Tasks', 'reward', Sequelize.INTEGER)
+	migration.addColumn('Tasks', 'reward', DataTypes.INTEGER)
 		.complete(done);
 };
 

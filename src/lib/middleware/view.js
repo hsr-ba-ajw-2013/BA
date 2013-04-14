@@ -1,7 +1,7 @@
 var express = require('express')
 	, path = require('path')
 	, hbs = require('express-hbs')
-	, urlHelper = require('url');
+	, url = require('url');
 
 function registerHelpers(app) {
 	hbs.registerHelper('stringify', function stringify(item) {
@@ -39,14 +39,14 @@ function registerHelpers(app) {
 		}
 		return;
 	});
-	hbs.registerHelper('url', function url(path, data) {
+	hbs.registerHelper('url', function formatUrl(path, data) {
 		var urlData = {
 			protocol: data.protocol
 			, host: data.host
 			, pathname: path
 		};
 
-		return urlHelper.format(urlData);
+		return url.format(urlData);
 	});
 	hbs.registerHelper('for', function forLoop(from, to, incr, block) {
 		var accum = '';
