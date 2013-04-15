@@ -1,6 +1,6 @@
 # BA
 
-[![Build Status](https://travis-ci.org/hsr-ba-ajw-2013/BA.png)](https://travis-ci.org/hsr-ba-ajw-2013/BA)
+[![Build Status](https://travis-ci.org/hsr-ba-ajw-2013/BA.png?branch=master)](https://travis-ci.org/hsr-ba-ajw-2013/BA)
 
 ## Prerequisites
 Node.js installed.
