@@ -1,61 +1,61 @@
 <form class="large-12 columns" action="/community/{{community.slug}}/task" method="post">
 		<div class="row">
 			<div class="large-12 columns">
-				<h2 class="">Aufgabe erstellen</h2>
+				<h2 class="">{{trans "Create a task"}}</h2>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="small-3 large-2 columns">
-				<label for="txtTask" class="inline">Aufgabe</label>
+				<label for="txtTask" class="inline">{{trans "Task"}}</label>
 			</div>
 			<div class="small-9 large-7 columns">
-				<input type="text" name="txtTask" id="txtTask" placeholder="Müll entsorgen, Einkaufen, ..." />
+				<input type="text" name="txtTask" id="txtTask" placeholder="{{trans "to go shopping"}}" />
 			</div>
 			<div class="large-3 columns hide-for-small hint">
-				Gib' der Aufgabe eine knappe Beschreibung.
+				{{trans "Give a brief description of the task."}}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="small-3 large-2 columns">
-				<label for="txtReward" class="inline">Belohnung</label>
+				<label for="txtReward" class="inline">{{trans "Reward"}}</label>
 			</div>
 			<div class="small-9 large-7 columns">
-				<input type="number" name="txtReward" id="txtReward" placeholder="1 bis 5 Punkte" min="1" max="5" />
+				<input type="number" name="txtReward" id="txtReward" placeholder="{{trans "1 to 5 points"}}" min="1" max="5" />
 			</div>
 			<div class="large-3 columns hide-for-small hint">
-				Wieviel <i class="icon-trophy"></i> Punkte soll der Mitbewohner erhalten, welcher diese Aufgabe erledigt?
+				{{trans "How many %s points should the roommate receive, who completed the task?" "<i class=\"icon-trophy\"></i>"}}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="small-3 large-2 columns">
-				<label for="txtDueDate" class="inline">Fälligkeit</label>
+				<label for="txtDueDate" class="inline">{{trans "Due date"}}</label>
 			</div>
 			<div class="small-9 large-7 columns">
-				<input type="date" name="txtDueDate" id="txtDueDate" placeholder="2/2/2014" />
+				<input type="date" name="txtDueDate" id="txtDueDate" placeholder="{{trans "2/2/2014"}}" />
 			</div>
 			<div class="large-3 columns hide-for-small hint">
-				Ist diese Aufgabe an einem bestimmten Tag fällig?
+				{{trans "Is this task due on a specific day?"}}
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="small-3 large-2 columns">
-				<label for="txtDescription" class="inline">Notizen</label>
+				<label for="txtDescription" class="inline">{{trans "Note"}}</label>
 			</div>
 			<div class="small-9 large-7 columns">
-				<textarea name="txtDescription" id="txtDescription" placeholder="Schlüssel zum Keller im Schlüsselkasten..."></textarea>
+				<textarea name="txtDescription" id="txtDescription" placeholder="{{trans "Don't forget the steaks!"}}"></textarea>
 			</div>
 			<div class="large-3 columns hide-for-small hint">
-				Hinterlasse Notizen zu dieser Aufgabe, falls nötig.
+				{{trans "Leave a note for this task, if necessary."}}
 			</div>
 		</div>
 
 		<div class="row button-bar">
 			<div class="small-12 large-offset-2 large-9 columns">
-				<input type="submit" value="Aufgabe speichern" class="button success widen-for-small" />
+				<input type="submit" value="{{trans "Save task"}}" class="button success widen-for-small" />
 			</div>
 		</div>
 	</form>
