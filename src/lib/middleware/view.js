@@ -59,7 +59,7 @@ function registerHelpers(app) {
 	});
 	hbs.registerHelper('dateFormat', function dateFormat(context, block) {
 		var f = block.hash.format || "LL";
-		return moment(Date(context)).format(f);
+		return moment(context).format(f);
 	});
 
 	//hbs.registerHelper('each', function each(context, options) {
