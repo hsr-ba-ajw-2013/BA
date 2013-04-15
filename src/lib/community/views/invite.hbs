@@ -13,10 +13,10 @@
 						<p>
 							<input type="text" value="{{url shareLink this}}" readonly="readonly" class="copyable" />
 						</p>
-						<p>
-							<a href="#" class="facebook button small"><i class="icon-facebook icon-1-5x"></i> {{trans "Share"}}</a>
-							<a href="#" class="twitter button small"><i class="icon-twitter icon-1-5x"></i> {{trans "Tweet"}}</a>
-						</p>
+						<div class="fb-like" data-send="false" data-layout="button_count" data-width="450" data-show-faces="false" data-action="recommend"></div>
+						<a href="https://twitter.com/share" class="twitter-share-button">{{trans "Tweet"}}</a>
+
+						<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="https://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
 					</aside>
 				</div>
 			</div>
