@@ -17,7 +17,7 @@ exports.index = function index(req, res) {
 			return res.redirect('/');
 		}
 
-		community.getTasks().success(function result(tasks) {
+		community.getTasks({order: 'id DESC'}).success(function result(tasks) {
 			res.render('task/views/index', {
 				title: res.__('Tasks')
 				, tasks: tasks
