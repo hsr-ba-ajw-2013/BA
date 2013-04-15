@@ -26,7 +26,7 @@ module.exports = function init(app) {
 		, dueDate: Sequelize.DATE
 	} , {
 		instanceMethods: {
-			isFullFilled: function() {
+			isFulfill: function() {
 				return this.fulfilledAt !== null;
 			}
 		}
