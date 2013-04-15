@@ -61,15 +61,6 @@ function registerHelpers(app) {
 		var f = block.hash.format || "LL";
 		return moment(context).format(f);
 	});
-
-	//hbs.registerHelper('each', function each(context, options) {
-	//	var ret = "";
-
-	//	for(var i=0, j=context.length; i<j; i++) {
-	//		ret = ret + options.fn(context[i]);
-	//	}
-	//	return ret;
-	//});
 }
 
 module.exports = function viewInit(app, config) {
