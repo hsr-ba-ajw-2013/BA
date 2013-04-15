@@ -19,13 +19,11 @@ function initMaster() {
 }
 
 module.exports = function balance(init) {
+	var initFunction = init
+		// detect if in debug mode - don't launch a cluster then
+		, debug = typeof v8debug === 'object';
 
-	// FIXME: Because the session is stored currently in memory,
-	//        clustering is no good as every cluster has it's
-	//        own memory space.
-	var initFunction = init;
-
-	if(cluster.isMaster) {
+	if(cluster.isMaster && !debug) {
 		initFunction = initMaster;
 	} else {
 		initFunction = init;
