@@ -25,7 +25,9 @@
 				<input type="number" name="txtReward" id="txtReward" placeholder="{{trans "1 to 5 points"}}" min="1" max="5" />
 			</div>
 			<div class="large-3 columns hide-for-small hint">
-				{{trans "How many %s points should the roommate receive, who completed the task?" "<i class=\"icon-trophy\"></i>"}}
+				{{#blocktrans}}
+					How many <i class="icon-trophy"></i> points should the roommate receive, who completed the task?
+				{{/blocktrans}}
 			</div>
 		</div>
 
