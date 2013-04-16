@@ -45,9 +45,9 @@ test-coverage: test coverage
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) test/*-test.js > functional-coverage.html
 	@echo "done"
 
-test-coveralls: coverage
+test-coveralls: test coverage
 	@echo "Sending coverage to coveralls.io:"
-	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERALLS_REPORTER) src/lib/*/test.js | ./node_modules/coveralls/bin/coveralls.js
+	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERALLS_REPORTER) test-cov | ./node_modules/coveralls/bin/coveralls.js
 
 setup: clean deps config precompile-sass
 	@echo "Done. You should now be able to start using 'npm start'."
