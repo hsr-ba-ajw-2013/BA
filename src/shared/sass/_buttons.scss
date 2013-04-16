@@ -15,6 +15,15 @@ $button-color-bg: #f6f6f6;
 		@include border-radius(8px);
 	}
 
+	&.facebook {
+		@include button($color-facebook);
+		@include border-radius(8px);
+
+		& [class^="icon-"], & [class*=" icon-"] {
+		  font-size: 2em;
+		}
+	}
+
 	&.small {
 		padding: 3px 14px;
 		font-size: emCalc(11px);
