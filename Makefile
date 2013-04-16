@@ -6,6 +6,7 @@ SHELL = bash
 
 REPORTER = spec
 COVERAGE_REPORTER = html-cov
+COVERALLS_REPORTER = mocha-lcov-reporter
 TEST_CMD = NODE_ENV=test ./node_modules/.bin/mocha --require test/runner.js --globals config
 COVERAGE_CMD = NODE_ENV=test ./node_modules/.bin/jscover src test-cov
 TEST_LIVE_CMD = $(TEST_CMD) --growl --watch
@@ -30,17 +31,23 @@ test-unit-live:
 test-functional-live:
 	@$(TEST_LIVE_CMD) --reporter $(REPORTER) test/*-test.js
 
-test-coverage: test
-	@echo "Building Test Coverage Reports:"
+coverage:
 	@echo -n "Running jscover..."
 	@$(COVERAGE_CMD)
 	@echo "done"
+
+test-coverage: test coverage
+	@echo "Building Test Coverage Reports:"
 	@echo -n "Creating unit coverage report..."
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) src/lib/*/test.js  > unit-coverage.html
 	@echo "done"
 	@echo -n "Creating functional coverage report..."
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) test/*-test.js > functional-coverage.html
 	@echo "done"
+
+test-coveralls: coverage
+	@echo "Sending coverage to coveralls.io:"
+	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERALLS_REPORTER) src/lib/*/test.js | ./node_modules/coveralls/bin/coveralls.js
 
 setup: clean deps config precompile-sass
 	@echo "Done. You should now be able to start using 'npm start'."
