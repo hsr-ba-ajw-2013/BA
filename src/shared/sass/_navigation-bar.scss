@@ -119,6 +119,11 @@ $navigation-bar-height: 53px;
 
 	}
 
+	.logout {
+		padding-right: 10px;
+		color: #fff;
+	}
+
 }
 
 @media only screen and (max-width: #{$small-screen}) {

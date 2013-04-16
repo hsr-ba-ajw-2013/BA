@@ -8,5 +8,6 @@ exports.login = function login(req, res) {
 	res.render('login/views/login', { title: res.__('Welcome at Roomies!') });
 };
 exports.logout = function logout(req, res) {
-	res.send(404);
+	req.logout();
+	res.redirect('/');
 };
