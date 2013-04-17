@@ -8,7 +8,8 @@ REPORTER = spec
 COVERAGE_REPORTER = html-cov
 COVERALLS_REPORTER = mocha-lcov-reporter
 TEST_CMD = NODE_ENV=test ./node_modules/.bin/mocha --require test/runner.js --globals config
-COVERAGE_CMD = NODE_ENV=test ./node_modules/.bin/jscoverage src src-cov --exclude /\.\(hbs\|otf\|eot\|svg\|ttf\|woff\|png\|ico\|html\|css\|json\)/
+COVERAGE_CMD = NODE_ENV=test ./node_modules/.bin/jscover src src-cov
+COVERALLS_CMD = NODE_ENV=test ./node_modules/.bin/jscoverage src src-cov --exclude /\.\(hbs\|otf\|eot\|svg\|ttf\|woff\|png\|ico\|html\|css\|json\)/
 TEST_LIVE_CMD = $(TEST_CMD) --growl --watch
 
 SCSS_PATH = src/shared/sass/app.scss
@@ -31,8 +32,13 @@ test-unit-live:
 test-functional-live:
 	@$(TEST_LIVE_CMD) --reporter $(REPORTER) test/*-test.js
 
-coverage:
+coveralls:
 	@echo -n "Running jscoverage..."
+	@$(COVERALLS_CMD)
+	@echo "done"
+
+coverage:
+	@echo -n "Running jscover..."
 	@$(COVERAGE_CMD)
 	@echo "done"
 
@@ -45,7 +51,7 @@ test-coverage: test coverage
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) test/*-test.js > functional-coverage.html
 	@echo "done"
 
-test-coveralls: test coverage
+test-coveralls: test coveralls
 	@echo "Sending coverage to coveralls.io:"
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERALLS_REPORTER) src/lib/*/test.js | ./node_modules/coveralls/bin/coveralls.js
 
