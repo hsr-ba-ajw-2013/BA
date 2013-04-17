@@ -53,6 +53,7 @@ Group: Components  {
       File: Component  (no auto-title, lib/community/index.js)
       File: Controller  (no auto-title, lib/community/controller.js)
       File: Model  (no auto-title, lib/community/model.js)
+      File: Transporter  (lib/community/transporter.js)
       }  # Group: Community
 
    Group: Resident  {
@@ -66,24 +67,29 @@ Group: Components  {
 
       File: Controller  (no auto-title, lib/task/controller.js)
       File: Task  (lib/task/index.js)
-      File: Task.Model  (lib/task/model.js)
+      File: Model  (no auto-title, lib/task/model.js)
       }  # Group: Task
 
+   Group: FacebookChannel  {
+
+      File: Component  (no auto-title, lib/facebook-channel/index.js)
+      File: Controller  (no auto-title, lib/facebook-channel/controller.js)
+      }  # Group: FacebookChannel
+
+   Group: Login  {
+
+      File: Component  (no auto-title, lib/login/index.js)
+      File: Controller  (no auto-title, lib/login/controller.js)
+      }  # Group: Login
+
+   File: Cluster  (lib/cluster/index.js)
    }  # Group: Components
 
 Group: Lib  {
 
    File: ConnectDomain  (lib/middleware/connect-domain.js)
-   File: Login  (lib/login/index.js)
-   File: Login.Controller  (lib/login/controller.js)
    File: middleware  (lib/middleware/index.js)
    File: Middleware.Validator  (lib/middleware/validator.js)
-
-   Group: Middlewares  {
-
-      File: Cluster  (lib/cluster/index.js)
-      }  # Group: Middlewares
-
    }  # Group: Lib
 
 Group: Shared  {

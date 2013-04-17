@@ -16,8 +16,6 @@ var controller = require('./controller')
  * Initializes the community component by adding
  * the controller to the available resources.
  *
- * Uses: express-resource-middleware
- *
  * Parameters:
  *   (express.application) app - Initialized express application
  *

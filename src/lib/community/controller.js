@@ -37,8 +37,8 @@ var renderIndex = function renderIndex(req, res, community) {
  * to <new>.
  *
  * Parameters:
- *   (express.request) req - Request
- *   (express.response) res - Response
+ *   (Request) req - Request
+ *   (Response) res - Response
  */
 exports.index = function index(req, res) {
 	var resident = req.user;
@@ -59,8 +59,8 @@ exports.index = function index(req, res) {
  * Renders a form for creating a new (fresh) community.
  *
  * Parameters:
- *   (express.request) req - Request
- *   (express.response) res - Response
+ *   (Request) req - Request
+ *   (Response) res - Response
  */
 exports.fresh = function freshView(req, res) {
 	res.render('community/views/fresh', {
@@ -139,8 +139,8 @@ exports.addUniqueSlug = addUniqueSlug;
  * Creates a community.
  *
  * Parameters:
- *   (express.request) req - Request
- *   (express.response) res - Response
+ *   (Request) req - Request
+ *   (Response) res - Response
  */
 var createCommunity = function createCommunity(req, res) {
 	var resident = req.user
@@ -205,10 +205,6 @@ var createCommunity = function createCommunity(req, res) {
  * Validates the POSTed form using <createCommunityValidator> as a middleware.
  * If the form has been valid, it will use the <createCommunity> function
  * to create a community.
- *
- * Parameters:
- *     (Request) req - Request
- *     (Response) res - Response
  */
 exports.create = [createCommunityValidator, createCommunity];
 
@@ -218,8 +214,8 @@ exports.create = [createCommunityValidator, createCommunity];
  * /community/:slug/invite GET
  *
  * Parameters:
- *     (Request) req - Request
- *     (Response) res - Response
+ *   (Request) req - Request
+ *   (Response) res - Response
  */
 exports.invite = function invite(req, res) {
 	var slug = req.params.slug

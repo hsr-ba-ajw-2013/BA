@@ -3,6 +3,12 @@
  */
 
 /** Function: index
+ * Homepage which redirects to /community/new if the currently logged-in user
+ * is not in a community yet.
+ *
+ * Parameters:
+ *   (Request) req - Request
+ *   (Response) res - Response
  */
 exports.index = function index(req, res) {
 	var resident = req.user;
@@ -15,6 +21,13 @@ exports.index = function index(req, res) {
 	}
 };
 
+/** Function: invite
+ * Invite url handler
+ *
+ * Parameters:
+ *   (Request) req - Request
+ *   (Response) res - Response
+ */
 exports.invite = function(req, res) {
 	var shareLink = req.params.sharelink
 		, resident = req.user

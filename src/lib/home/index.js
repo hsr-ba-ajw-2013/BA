@@ -1,4 +1,6 @@
 /** Component: Home
+ * The Community component is an Express.JS capable middleware which
+ * encapsulates urls to the homepage and inviting.
  */
 var controller = require('./controller')
 	, path = require('path')
@@ -7,7 +9,12 @@ var controller = require('./controller')
 		'..', '..', 'shared', 'policies', 'login-required')
 	);
 
-
+/** Function: homeInit
+ * Initializes Home urls (/ and /invite/:sharelink).
+ *
+ * Parameters:
+ *   (express.application) app - Initialized express application
+ */
 module.exports = function homeInit(app) {
 	/**
 	 * / (GET)
