@@ -1,5 +1,5 @@
 /** File: Application
- * The Roomies application initilizes...
+ * The Roomies application initializator.
  */
 var express = require('express')
 	, path = require('path')

@@ -1,4 +1,6 @@
 /** Component: Task
+ * The Task component is an Express.JS capable middleware which
+ * encapsulates everything related to the Task domain object.
  */
 var controller = require('./controller')
 	, model = require('./model')
@@ -9,6 +11,15 @@ var controller = require('./controller')
 	, COMMUNITY_PREFIX = '/community/:slug'
 	, TASK_PREFIX = COMMUNITY_PREFIX + '/task';
 
+/** Function: taskInit
+ * Initializes Task URLs
+ *
+ * Parameters:
+ *   (Express) app - Initialized express application
+ *
+ * Returns:
+ *   (Function) function to initialize relationships after creating all models.
+ */
 module.exports = function taskInit(app) {
 	/**
 	 * /community/:slug/tasks GET -- index

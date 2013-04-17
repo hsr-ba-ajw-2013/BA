@@ -94,23 +94,34 @@ Group: Lib  {
 
 Group: Shared  {
 
-   File: doLogin  (shared/test/passport-mock.js)
+   Group: Test  {
+
+      File: doLogin  (shared/test/passport-mock.js)
+      }  # Group: Test
+
+   Group: Validators  {
+
+      File: createCommunityValidator  (shared/validators/create-community.js)
+      File: createTaskValidator  (shared/validators/create-task.js)
+      }  # Group: Validators
+
+   Group: Exceptions  {
+
+      File: Exception401  (shared/exceptions/401.js)
+      }  # Group: Exceptions
+
    }  # Group: Shared
-
-Group: Exceptions  {
-
-   File: Exception401  (shared/exceptions/401.js)
-   }  # Group: Exceptions
 
 Group: Index  {
 
    Index: Everything
-   Component Index: Components
    Controller Index: Controllers
    File Index: Files
    Function Index: Functions
    Model Index: Models
    Private Function Index: Private Functions
    Exception Index: Exceptions
+   Module Index: Module
+   Component Index: Components
    }  # Group: Index
 

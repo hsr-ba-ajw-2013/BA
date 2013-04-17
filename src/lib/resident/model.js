@@ -3,6 +3,12 @@
  */
 var Sequelize = require('sequelize');
 
+/** PrivateFunction: createRelationships
+ * Creates the relationship information for this model.
+ *
+ * Parameters:
+ *     (Express) app - An Express.js application instance
+ */
 function createRelationships(app) {
 	var db = app.get('db')
 		, Resident = db.daoFactoryManager.getDAO('Resident')
@@ -14,6 +20,18 @@ function createRelationships(app) {
 	Resident.belongsTo(Community);
 }
 
+
+/** Function: init
+ * Initialize resident model
+ *
+ * Parameters:
+ *   (Express) app - An Express.js application instance
+ *   (Sequelize) db - Sequelize instance
+ *
+ * Returns:
+ *   (Function) - <createRelationships> to initiate relationships after all
+ *                 required models have been instantiated.
+ */
 module.exports = function init(app) {
 	var db = app.get('db');
 	db.define('Resident', {

@@ -8,6 +8,13 @@ var path = require('path')
 		path.join(validatorsPath, 'create-task'))
 	, moment = require('moment');
 
+/** Function: index
+ * Render list of tasks
+ *
+ * Parameters:
+ *   (Request) req - Request
+ *   (Response) res - Response
+ */
 exports.index = function index(req, res) {
 	var resident = req.user;
 
@@ -26,13 +33,27 @@ exports.index = function index(req, res) {
 	});
 };
 
+/** Function: fresh
+ * Render new task form
+ *
+ * Parameters:
+ *   (Request) req - Request
+ *   (Response) res - Response
+ */
 exports.fresh = function fresh(req, res) {
 	res.render('task/views/fresh', {
 				title: res.__('New Task')
 			});
 };
 
-var createTask = function createCommunity(req, res) {
+/** PrivateFunction: createTask
+ * Creates a task
+ *
+ * Parameters:
+ *   (Request) req - Request
+ *   (Response) res - Response
+ */
+var createTask = function createTask(req, res) {
 	var resident = req.user
 		, db = req.app.get('db')
 		, Task = db.daoFactoryManager.getDAO('Task');
@@ -77,8 +98,19 @@ var createTask = function createCommunity(req, res) {
 	});
 };
 
+/** Function: create
+ * POST-target for <fresh> which will validate the form using
+ * <Shared.Validators.createTaskValidator> and if successful, call <createTask>.
+ */
 exports.create = [createTaskValidator, createTask];
 
+/** Function: check
+ * Marks a task as done.
+ *
+ * Parameters:
+ *   (Request) req - Request
+ *   (Response) res - Response
+ */
 exports.check = function check(req, res) {
 	var resident = req.user
 		, db = req.app.get('db')

@@ -7,6 +7,15 @@ var controller = require('./controller')
 	, COMMUNITY_PREFIX = '/community/:slug'
 	, RESIDENT_PREFIX = COMMUNITY_PREFIX + '/resident';
 
+/** Function: residentInit
+ * Initializes Resident URLs
+ *
+ * Parameters:
+ *   (Express) app - Initialized express application
+ *
+ * Returns:
+ *   (Function) function to initialize relationships after creating all models.
+ */
 module.exports = function residentInit(app) {
 
 	/**

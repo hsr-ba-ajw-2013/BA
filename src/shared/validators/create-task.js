@@ -2,6 +2,14 @@
  * Create task validator
  */
 
+/** Function: createTaskValidator
+ * Validates & Sanitizes the task form.
+ *
+ * Parameters:
+ *   (Request) req - Request
+ *   (Response) res - Response
+ *   (Function) next - Callback
+ */
 module.exports = function createTaskValidator(req, res, next) {
 	var error = res.__('Name needs to be within 1 and 255 chars.');
 	req.assert('txtTask', error).len(1, 255);

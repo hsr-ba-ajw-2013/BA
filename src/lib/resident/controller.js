@@ -3,10 +3,11 @@
  */
 
 /** Function: fresh
+ * Shows a form to join a community if the shareLink is valid.
  *
  * Parameters:
- *   (express.request) req - Request
- *   (express.response) res - Response
+ *   (Request) req - Request
+ *   (Response) res - Response
  */
 exports.fresh = function(req, res) {
 	var shareLink = req.session.shareLink
@@ -38,6 +39,13 @@ exports.fresh = function(req, res) {
 
 };
 
+/** Function: create
+ * Adds a resident to a community if the sharelink & slug is valid
+ *
+ * Parameters:
+ *   (Request) req - Request
+ *   (Response) res - Response
+ */
 exports.create = function(req, res) {
 	var shareLink = req.session.shareLink
 		, slug = req.params.slug

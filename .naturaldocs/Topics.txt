@@ -92,6 +92,17 @@ Topic Type: Component
       components
 
 
+Topic Type: Module
+
+   Plural: Modules
+   Scope: Start
+   Page Title If First: Yes
+
+   Keywords:
+      module
+      modules
+
+
 Topic Type: Controller
 
    Plural: Controllers
