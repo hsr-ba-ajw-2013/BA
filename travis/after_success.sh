@@ -13,10 +13,6 @@ cd gh-pages
 echo '---- Switch to gh-pages branch ----'
 git checkout gh-pages
 
-echo '---- Copy latest coverage reports ----'
-cp $RESULT_UNIT_COVERAGE_PATH ./
-cp $RESULT_FUNCTIIONAL_COVERAGE_PATH ./
-
 echo '---- Copy latest documentation ----'
 rm -fr docs/
 cp -R $RESULT_DOCS ./
@@ -27,7 +23,7 @@ git config --global user.email $GIT_AUTHOR_EMAIL
 
 echo '---- Add files, commit and push ----'
 git add -A
-git commit -m "adding latest coverage reports and documentation to gh-pages"
+git commit -m "adding latest documentation to gh-pages"
 git push https://${GH_OAUTH_TOKEN}@github.com/${GH_USER_NAME}/${GH_PROJECT_NAME} 2>&1
 
 echo '######################################'

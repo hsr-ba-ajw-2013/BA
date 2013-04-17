@@ -1,6 +1,7 @@
 # BA
 
 [![Build Status](https://travis-ci.org/hsr-ba-ajw-2013/BA.png?branch=master)](https://travis-ci.org/hsr-ba-ajw-2013/BA)
+[![Coverage Status](https://coveralls.io/repos/hsr-ba-ajw-2013/BA/badge.png?branch=master)](https://coveralls.io/r/hsr-ba-ajw-2013/BA)
 
 ## Prerequisites
 Node.js installed.
