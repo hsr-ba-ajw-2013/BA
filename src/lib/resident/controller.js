@@ -12,10 +12,9 @@ exports.fresh = function(req, res) {
 	var shareLink = req.session.shareLink
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
 
-	req.session.shareLink = '';
 
-	if (shareLink === undefined) {
-		return res.send(405);
+	if (!shareLink) {
+		return res.send(403);
 	}
 
 	Community.find({ where: {shareLink: shareLink}})
@@ -40,15 +39,26 @@ exports.fresh = function(req, res) {
 };
 
 exports.create = function(req, res) {
-	var slug = req.params.slug
+	var shareLink = req.session.shareLink
+		, slug = req.params.slug
 		, resident = req.user
 		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
+
+	req.session.shareLink = '';
 
 	Community.find({ where: {slug: slug}})
 		.success( function findResult(community) {
 
-			if (community === null) {
-				res.send(500);
+			if (!community) {
+				return res.send(500);
+			}
+
+			if (!shareLink) {
+				return res.send(403);
+			}
+
+			if (shareLink !== community.shareLink) {
+				return res.send(403);
 			}
 
 			resident.setCommunity(community)
@@ -60,12 +70,12 @@ exports.create = function(req, res) {
 				})
 				.error(function(errors) {
 					console.log("errors: ", errors);
-					res.send(500);
+					return res.send(500);
 				});
 
 		})
 		.error( function createError() {
-			res.send(500);
+			return res.send(500);
 		});
 };
 
