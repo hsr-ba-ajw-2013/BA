@@ -8,7 +8,7 @@ REPORTER = spec
 COVERAGE_REPORTER = html-cov
 COVERALLS_REPORTER = mocha-lcov-reporter
 TEST_CMD = NODE_ENV=test ./node_modules/.bin/mocha --require test/runner.js --globals config
-COVERAGE_CMD = NODE_ENV=test ./node_modules/.bin/jscover src test-cov
+COVERAGE_CMD = NODE_ENV=test ./node_modules/.bin/jscoverage src src-cov --exclude /\.\(hbs\|otf\|eot\|svg\|ttf\|woff\|png\|ico\|html\|css\|json\)/
 TEST_LIVE_CMD = $(TEST_CMD) --growl --watch
 
 SCSS_PATH = src/shared/sass/app.scss
@@ -32,7 +32,7 @@ test-functional-live:
 	@$(TEST_LIVE_CMD) --reporter $(REPORTER) test/*-test.js
 
 coverage:
-	@echo -n "Running jscover..."
+	@echo -n "Running jscoverage..."
 	@$(COVERAGE_CMD)
 	@echo "done"
 
@@ -47,7 +47,7 @@ test-coverage: test coverage
 
 test-coveralls: test coverage
 	@echo "Sending coverage to coveralls.io:"
-	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERALLS_REPORTER) test-cov | ./node_modules/coveralls/bin/coveralls.js src
+	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERALLS_REPORTER) src/lib/*/test.js | ./node_modules/coveralls/bin/coveralls.js
 
 setup: clean deps config precompile-sass
 	@echo "Done. You should now be able to start using 'npm start'."

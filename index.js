@@ -8,7 +8,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 
 var app;
 if(process.env.COVERAGE) {
-	app = require('./test-cov/app.js');
+	app = require('./src-cov/app.js');
 } else {
 	app = require('./src/app.js');
 }
