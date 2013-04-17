@@ -17,7 +17,7 @@ var controller = require('./controller')
  * the controller to the available resources.
  *
  * Parameters:
- *   (express.application) app - Initialized express application
+ *   (Express) app - Initialized express application
  *
  * Returns:
  *   (Function) function to initialize relationships after creating all models.

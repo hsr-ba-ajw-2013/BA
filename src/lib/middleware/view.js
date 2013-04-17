@@ -1,10 +1,20 @@
+/** Module: View
+ * Sets the template parser <handlebars.js at http://handlebarsjs.com/> and
+ * creates various handlebars helpers.
+ */
+
 var express = require('express')
 	, path = require('path')
 	, hbs = require('express-hbs')
 	, url = require('url')
 	, moment = require('moment');
 
-
+/** PrivateFunction: registerHelpers
+ * Registers handlebars helpers.
+ *
+ * Parameters:
+ *   (Express) app - Initialized express application
+ */
 function registerHelpers(app) {
 	hbs.registerHelper('stringify', function stringify(item) {
 		return new hbs.SafeString(JSON.stringify(item));
@@ -63,6 +73,13 @@ function registerHelpers(app) {
 	});
 }
 
+/** Function: viewInit
+ * Initializes the view middleware.
+ *
+ * Parameters:
+ *   (Express) app - Initialized express application
+ *   (Object) config - Configuration
+ */
 module.exports = function viewInit(app, config) {
 	app.engine('hbs', hbs.express3({
 		partialsDir: path.join(config.srcDir, 'shared', 'partials')

@@ -1,4 +1,6 @@
-"use strict";
+/** Module: Middleware
+ * Initializes all middlewares
+ */
 
 var browserify = require('./browserify')
 	, clientConfig = require('./client-config')
@@ -17,14 +19,14 @@ var browserify = require('./browserify')
 	, validator = require('./validator')
 	, view = require('./view');
 
-/** Function: middleware
+/** Function: middlewareInit
  * Calls the required middlewares
  *
  * Beware: The Ordering of middlewares is very important.
  *         Don't reorder if you don't know what you're doing.
  *
  * Parameters:
- *   (Express.App) app - Express Application
+ *   (Express) app - Express Application
  *   (Object) config - Configuration
  */
 module.exports = function middlewareInit(app, config) {

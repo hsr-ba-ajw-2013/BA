@@ -85,12 +85,26 @@ Group: Components  {
    File: Cluster  (lib/cluster/index.js)
    }  # Group: Components
 
-Group: Lib  {
+Group: Middleware  {
 
+   File: Browserify  (lib/middleware/browserify.js)
+   File: ClientConfig  (lib/middleware/client-config.js)
    File: ConnectDomain  (lib/middleware/connect-domain.js)
-   File: middleware  (lib/middleware/index.js)
-   File: Middleware.Validator  (lib/middleware/validator.js)
-   }  # Group: Lib
+   File: Database  (lib/middleware/db.js)
+   File: Flash  (lib/middleware/flash.js)
+   File: Handler  (lib/middleware/handler.js)
+   File: HTTP  (lib/middleware/http.js)
+   File: i18n  (lib/middleware/i18n.js)
+   File: Livereload  (lib/middleware/livereload.js)
+   File: Logger  (lib/middleware/logger.js)
+   File: Middleware  (lib/middleware/index.js)
+   File: Passport  (lib/middleware/passport.js)
+   File: Router  (lib/middleware/router.js)
+   File: Static  (lib/middleware/static.js)
+   File: TemplateData  (lib/middleware/template-data.js)
+   File: Validator  (lib/middleware/validator.js)
+   File: View  (lib/middleware/view.js)
+   }  # Group: Middleware
 
 Group: Shared  {
 

@@ -1,8 +1,18 @@
-"use strict";
+/** Module: i18n
+ * Internationalization support using <i18n at
+ *                                    https://github.com/mashpie/i18n-node>.
+ */
 
 var i18n = require('i18n'),
 	path = require('path');
 
+/** Function: i18nInit
+ * Initializes i18n middleware and assigns template helpers.
+ *
+ * Parameters:
+ *   (Express) app - Initialized express application
+ *   (Object) config - Configuration
+ */
 module.exports = function i18nInit(app, config) {
 	i18n.configure({
 		locales:['en', 'de']

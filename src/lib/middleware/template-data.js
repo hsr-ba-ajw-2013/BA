@@ -1,3 +1,10 @@
+/** Module: TemplateData
+ * Assigns template data to the templates.
+ */
+
+/** Function: templateDataInit
+ * Initializes the template data middleware.
+ */
 module.exports = function templateDataInit(app) {
 
 	app.use(function assignRequestPath(req, res, next) {

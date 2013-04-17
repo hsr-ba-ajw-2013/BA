@@ -1,6 +1,21 @@
+/** Module: Logger
+ * Logs requests & errors if enabled.
+ *
+ * Uses:
+ *   - <winston at https://github.com/flatiron/winston>
+ *   - <express-winston at https://github.com/firebaseco/express-winston>
+ */
+
 var expressWinston = require('express-winston'),
 	winston = require('winston');
 
+/** Function: loggerInit
+ * Initializes logging
+ *
+ * Parameters:
+ *   (Express) app - Initialized express application
+ *   (Object) config - Configuration
+ */
 module.exports = function loggerInit(app, config) {
 	app.use(expressWinston.errorLogger({
 		transports: [

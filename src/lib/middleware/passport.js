@@ -1,10 +1,20 @@
-/**
- * Passport configuration
+/** Module: Passport
+ * Passport configuration & initialization using <Passportjs
+ *                                           at http://passportjs.org/>.
+ *
+ * Uses the <FacebookStrategy at http://passportjs.org/guide/facebook/>.
  */
 
 var passport = require('passport')
 	, FacebookStrategy = require('passport-facebook').Strategy;
 
+/** Function: passportInit
+ * Initializes passport.js
+ *
+ * Parameters:
+ *   (Express) app - Initialized express application
+ *   (Object) config - Configuration
+ */
 module.exports = function passportInit(app, config) {
 	var db = app.get('db');
 
