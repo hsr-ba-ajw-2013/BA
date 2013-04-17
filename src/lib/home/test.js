@@ -11,6 +11,68 @@ var request = require('supertest')
 
 describe('Home', function() {
 
+	describe ('GET /', function() {
+		describe('unauthorized', function() {
+			it('should redirect to /login', function(done){
+					request(app)
+						.get('/')
+						.expect(302)
+						.expect('Location', '/login', done);
+				});
+		});
+
+		describe('authorized', function() {
+			var agent = superagent.agent();
+
+			describe('without a community for the user', function() {
+
+				beforeEach(function before(done) {
+					doLogin(app, agent, done);
+				});
+
+				it('should redirect to /community/new with 302'
+					, function(done) {
+					var req = request(app).get('/');
+					agent.attachCookies(req);
+
+					req.expect(302)
+						.expect('Location', '/community/new', done);
+				});
+
+			});
+
+			describe('with a community for the user', function() {
+
+				beforeEach(function before(done) {
+					doLogin(app, agent, function afterLogin() {
+						var communityName =
+							utils.randomString(6)
+							, req = request(app)
+								.post('/community');
+
+						agent.attachCookies(req);
+						req.send({name: communityName})
+							.end(function(err) {
+								if (err) {
+									return done(err);
+								}
+								return done();
+							});
+					});
+				});
+
+				it('should show / with 200', function(done) {
+					var req = request(app).get('/');
+					agent.attachCookies(req);
+
+					req.expect(200, done);
+				});
+
+			});
+
+		});
+	});
+
 	describe('GET /invite/:shareLink', function() {
 		describe('unauthorized', function() {
 			describe('with an invalid shareLink', function(){
