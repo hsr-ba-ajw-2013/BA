@@ -1,7 +1,12 @@
 /** Exception: Exception401
-*/
+ * 401 Unauthorized exception
+ */
+
 var util = require('util');
 
+/** Class: Exception401
+ * Inherits from Error.
+ */
 function Exception401(message) {
 	this.message = message;
 	this.name = "Exception401";

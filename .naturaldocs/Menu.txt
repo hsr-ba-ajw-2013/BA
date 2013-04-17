@@ -110,6 +110,11 @@ Group: Shared  {
       File: Exception401  (shared/exceptions/401.js)
       }  # Group: Exceptions
 
+   Group: Policies  {
+
+      File: LoginRequired  (no auto-title, shared/policies/login-required.js)
+      }  # Group: Policies
+
    }  # Group: Shared
 
 Group: Index  {
