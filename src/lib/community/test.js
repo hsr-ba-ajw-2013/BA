@@ -1,6 +1,5 @@
 /* global describe, it, beforeEach */
-var request = require('supertest')
-	, superagent = require('superagent')
+var request = require('super-request')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()
 	, utils = require(path.join(
@@ -17,56 +16,52 @@ describe('Community', function() {
 			it('should redirect to /login', function(done){
 				request(app)
 					.get('/community')
+					.followRedirect(false)
 					.expect(302)
 					.expect('Location', '/login', done);
 			});
 		});
 
 		describe('authorized', function() {
+
 			describe('without community for the user', function() {
-				var agent = superagent.agent();
+				var req = request(app);
 
 				beforeEach(function before(done) {
-					doLogin(app, agent, done);
+					req = doLogin(app, req);
+					done();
 				});
 
 				it('should redirect to /community/./new with 302',
 					function(done) {
-						var req = request(app).get('/community');
-						agent.attachCookies(req);
-
-						req.expect(302)
+						req.get('/community')
+							.followRedirect(false)
+							.expect(302)
 							.expect('Location', '/community/./new', done);
 				});
 			});
 
 			describe('with community for the user', function() {
-				var agent = superagent.agent();
+				var req = request(app);
 
 				beforeEach(function before(done) {
-					doLogin(app, agent, function afterLogin() {
-						var communityName =
-							utils.randomString(6)
-							, req = request(app)
-								.post('/community');
+					req = doLogin(app, req);
+					var communityName = utils.randomString(6);
 
-						agent.attachCookies(req);
-						req.send({name: communityName})
-							.end(function(err) {
-								if (err) {
-									return done(err);
-								}
-								return done();
-							});
-					});
+					req.post('/community')
+						.form({name: communityName})
+						.end(function(err) {
+							if (err) {
+								return done(err);
+							}
+							return done();
+						});
 				});
 
 				it('should show /community with 200', function(done) {
 
-					var req = request(app).get('/community');
-					agent.attachCookies(req);
-
-					req.expect(200, done);
+					req.get('/community')
+						.expect(200, done);
 				});
 			});
 		});
@@ -74,36 +69,37 @@ describe('Community', function() {
 
 	describe('POST /community', function() {
 		describe('unauthorized', function() {
-			it('should not create a community and return 401', function(done) {
+			it('should not create a community and return 302', function(done) {
 
 				var req = request(app)
 							.post('/community')
 					, communityName =
 						utils.randomString(12);
 
-				req.send({name: communityName})
-					.expect(401, done);
+				req
+					.followRedirect(true)
+					.form({name: communityName})
+					.expect(302, done);
 			});
 		});
 
 		describe('authorized', function() {
 			describe('without community for the user', function() {
-				var agent = superagent.agent();
+				var req = request(app);
 
 				beforeEach(function(done) {
-					doLogin(app, agent, done);
+					req = doLogin(app, req);
+					done();
 				});
 
 				it('should redirect to /community/:slug/invite ' +
 					'with 302 after creating a community'
 					, function(done) {
-					var req = request(app)
-								.post('/community')
-						, communityName =
+					var communityName =
 							utils.randomString(6);
-					agent.attachCookies(req);
 
-					req.send({name: communityName})
+					req.post('/community')
+						.form({name: communityName})
 						.expect(302)
 						.expect('Location', '/community/' +
 							uslug(communityName) + '/invite', done);
@@ -111,11 +107,9 @@ describe('Community', function() {
 
 				it('should not create a community with an empty name string'
 					, function(done) {
-					var req = request(app)
-								.post('/community');
-					agent.attachCookies(req);
 
-					req.send({name: ''})
+					req.post('/community')
+						.form({name: ''})
 						.expect(302)
 						.expect('Location', '/community/./new', done);
 
@@ -123,13 +117,11 @@ describe('Community', function() {
 
 				it('should not create a community with more than 255 chars'
 					, function(done) {
-					var req = request(app)
-								.post('/community')
-						, communityName =
+					var communityName =
 							utils.randomString(256);
-					agent.attachCookies(req);
 
-					req.send({name: communityName})
+					req.post('/community')
+						.form({name: communityName})
 						.expect(302)
 						.expect('Location', '/community/./new', done);
 				});
@@ -137,21 +129,20 @@ describe('Community', function() {
 				it('should redirect to /community/./new with 302 ' +
 					'if the community name already exists',
 					function(done) {
-						var req = request(app)
-									.post('/community')
-							, communityName =
+						var communityName =
 								utils.randomString(6)
 							, Community = app.get('db')
 											.daoFactoryManager
 											.getDAO('Community');
 
-						agent.attachCookies(req);
 
 						Community.create({name: communityName})
 							.success(function createResult() {
-								req.send({name: communityName})
-								.expect(302)
-								.expect('Location', '/community/./new', done);
+								req.post('/community')
+									.form({name: communityName})
+									.expect(302)
+									.expect('Location', '/community/./new'
+										, done);
 							})
 							.error(function createError(errors) {
 								done(errors);
@@ -160,34 +151,29 @@ describe('Community', function() {
 			});
 
 			describe('with community for the user', function() {
-				var agent = superagent.agent();
 
-				beforeEach(function(done) {
-					doLogin(app, agent, function afterLogin() {
-						var communityName =
-							utils.randomString(6)
-							, req = request(app)
-								.post('/community');
-						agent.attachCookies(req);
+				var req = request(app);
 
-						req.send({name: communityName})
-							.end(function(err) {
-								if (err) {
-									done(err);
-								}
-								done();
-							});
-					});
+				beforeEach(function before(done) {
+					req = doLogin(app, req);
+					var communityName = utils.randomString(6);
+
+					req.post('/community')
+						.form({name: communityName})
+						.end(function(err) {
+							if (err) {
+								return done(err);
+							}
+							return done();
+						});
 				});
 
 				it('should redirect to /community with 302',function(done) {
-					var req = request(app)
-									.post('/community')
-							, communityName =
-								utils.randomString(6);
-						agent.attachCookies(req);
+					var communityName =
+							utils.randomString(6);
 
-						req.send({name: communityName})
+						req.post('/community')
+							.form({name: communityName})
 							.expect(302)
 							.expect('Location', '/community', done);
 				});

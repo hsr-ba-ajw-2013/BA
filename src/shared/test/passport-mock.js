@@ -2,8 +2,7 @@
  * Mocks <PassportJs at http://passportjs.org> to be used in tests.
  */
 var passport = require('passport')
-	, StrategyMock = require('./strategy-mock')
-	, request = require('supertest');
+	, StrategyMock = require('./strategy-mock');
 
 /** Function: passportMock
  * Creates necessary configuration (<StrategyMock>) and routes (/mock/login)
@@ -34,19 +33,18 @@ function passportMock(app, options) {
 exports.passportMock = passportMock;
 
 /** Function: doLogin
- * Logs a user in using <passportMock>. Due to it's asynchronous
- * nature, a callback function has to be provided.
+ * Logs a user in using <passportMock>. Returns the
+ * super-request request with the session in it.
  *
  * Parameters:
  *   (Express) app - Instantiated application
- *   (superagent) agent - Instantiated superagent
- *   (Function) next - Callback function
+ *   (Request) req - Instantiated super-request
  *   (Boolean) passAuthentication - [Optional, Default true]
  *                                   set to false if you wish that
  *                                   the authentication fails.
  *   (Object) user - User to create
  */
-exports.doLogin = function doLogin(app, agent, next, passAuthentication, user) {
+exports.doLogin = function doLogin(app, req, passAuthentication, user) {
 	if (passAuthentication === undefined) {
 		passAuthentication	= true;
 	}
@@ -59,14 +57,5 @@ exports.doLogin = function doLogin(app, agent, next, passAuthentication, user) {
 		passAuthentication: passAuthentication,
 		user: user
 	});
-	request(app)
-		.get('/mock/login')
-		.end(function loginMockEnd(err, result) {
-			if (!err) {
-				agent.saveCookies(result.res);
-				next();
-			} else {
-				next(err);
-			}
-		});
+	return req.get('/mock/login').end();
 };

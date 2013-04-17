@@ -1,6 +1,5 @@
 /* global describe, it, beforeEach */
-var request = require('supertest')
-	, superagent = require('superagent')
+var request = require('super-request')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()
 	, utils = require(path.join(
@@ -15,27 +14,29 @@ describe('Home', function() {
 		describe('unauthorized', function() {
 			it('should redirect to /login', function(done){
 					request(app)
-						.get('/')
+						.get('/community')
+						.followRedirect(false)
 						.expect(302)
 						.expect('Location', '/login', done);
 				});
 		});
 
 		describe('authorized', function() {
-			var agent = superagent.agent();
+			var req = request(app);
 
 			describe('without a community for the user', function() {
 
 				beforeEach(function before(done) {
-					doLogin(app, agent, done);
+					req = doLogin(app, req);
+					done();
 				});
 
 				it('should redirect to /community/new with 302'
 					, function(done) {
-					var req = request(app).get('/');
-					agent.attachCookies(req);
 
-					req.expect(302)
+					req.get('/')
+						.expect(302)
+						.followRedirect(false)
 						.expect('Location', '/community/new', done);
 				});
 
@@ -43,29 +44,25 @@ describe('Home', function() {
 
 			describe('with a community for the user', function() {
 
-				beforeEach(function before(done) {
-					doLogin(app, agent, function afterLogin() {
-						var communityName =
-							utils.randomString(6)
-							, req = request(app)
-								.post('/community');
+				var req = request(app);
 
-						agent.attachCookies(req);
-						req.send({name: communityName})
-							.end(function(err) {
-								if (err) {
-									return done(err);
-								}
-								return done();
-							});
-					});
+				beforeEach(function before(done) {
+					req = doLogin(app, req);
+					var communityName = utils.randomString(6);
+
+					req.post('/community')
+						.form({name: communityName})
+						.end(function(err) {
+							if (err) {
+								return done(err);
+							}
+							return done();
+						});
 				});
 
 				it('should show / with 200', function(done) {
-					var req = request(app).get('/');
-					agent.attachCookies(req);
-
-					req.expect(200, done);
+					req.get('/')
+						.expect(200, done);
 				});
 
 			});
@@ -76,10 +73,12 @@ describe('Home', function() {
 	describe('GET /invite/:shareLink', function() {
 		describe('unauthorized', function() {
 			describe('with an invalid shareLink', function(){
+
 				it('should redirect to /login', function(done){
 					request(app)
 						.get('/invite/' +
 							utils.randomString(42))
+						.followRedirect(false)
 						.expect(302)
 						.expect('Location', '/login', done);
 				});
@@ -92,6 +91,7 @@ describe('Home', function() {
 					request(app)
 						.get('/invite/' +
 							utils.randomString(42))
+						.followRedirect(false)
 						.expect(302)
 						.expect('Location', '/login', done);
 				});
@@ -100,36 +100,32 @@ describe('Home', function() {
 
 		describe('authorized', function() {
 
-			var agent = superagent.agent();
 
 			describe('with a community for the user', function() {
 
-				beforeEach(function before(done) {
-					doLogin(app, agent, function afterLogin() {
-						var communityName =
-							utils.randomString(6)
-							, req = request(app)
-								.post('/community');
+				var req = request(app);
 
-						agent.attachCookies(req);
-						req.send({name: communityName})
-							.end(function(err) {
-								if (err) {
-									return done(err);
-								}
-								return done();
-							});
-					});
+				beforeEach(function before(done) {
+					req = doLogin(app, req);
+					var communityName = utils.randomString(6);
+
+					req.post('/community')
+						.form({name: communityName})
+						.end(function(err) {
+							if (err) {
+								return done(err);
+							}
+							return done();
+						});
 				});
 
 				describe('with an invalid shareLink', function() {
 
 					it('should redirect to /', function(done){
-						var req = request(app).get('/invite/' +
-								utils.randomString(42));
-						agent.attachCookies(req);
-
-						req.expect(302)
+						req.get('/invite/' +
+								utils.randomString(42))
+							.followRedirect(false)
+							.expect(302)
 							.expect('Location', '/', done);
 					});
 				});
@@ -137,30 +133,32 @@ describe('Home', function() {
 				describe('with a valid shareLink', function() {
 
 					it('should redirect to /', function(done){
-						var req = request(app).get('/invite/' +
-								utils.randomString(42));
-						agent.attachCookies(req);
 
-						req.expect(302)
+						req.get('/invite/' +
+								utils.randomString(42))
+							.expect(302)
+							.followRedirect(false)
 							.expect('Location', '/', done);
 					});
 				});
 			});
 
 			describe('without a community for the user', function() {
+				var req = request(app);
 
 				beforeEach(function before(done) {
-					doLogin(app, agent, done);
+					req = doLogin(app, req);
+					done();
 				});
 
 				describe('with an invalid shareLink', function() {
 
 					it('should redirect to /', function(done){
-						var req = request(app).get('/invite/' +
-								utils.randomString(42));
-						agent.attachCookies(req);
 
-						req.expect(302)
+						req.get('/invite/' +
+								utils.randomString(42))
+							.followRedirect(false)
+							.expect(302)
 							.expect('Location', '/', done);
 					});
 				});
