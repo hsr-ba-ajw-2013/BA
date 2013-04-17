@@ -1,4 +1,4 @@
-/** Module: Shared.Validators.createCommunityValidator
+/** Module: CreateCommunityValidator
  * Create community validator
  */
 

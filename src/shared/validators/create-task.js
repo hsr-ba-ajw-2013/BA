@@ -1,4 +1,4 @@
-/** Module: Shared.Validators.createTaskValidator
+/** Module: CreateTaskValidator
  * Create task validator
  */
 

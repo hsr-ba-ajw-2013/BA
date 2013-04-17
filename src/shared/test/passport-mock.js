@@ -1,7 +1,18 @@
+/** Module: PassportMock
+ * Mocks <PassportJs at http://passportjs.org> to be used in tests.
+ */
 var passport = require('passport')
 	, StrategyMock = require('./strategy-mock')
 	, request = require('supertest');
 
+/** Function: passportMock
+ * Creates necessary configuration (<StrategyMock>) and routes (/mock/login)
+ * in order to do a mocked login.
+ *
+ * Parameters:
+ *   (Express) app - Express.js Application
+ *   (Object) options - Options for <StrategyMock>
+ */
 function passportMock(app, options) {
 	var db = app.get('db');
 	passport.use(new StrategyMock(options,
@@ -27,7 +38,7 @@ exports.passportMock = passportMock;
  * nature, a callback function has to be provided.
  *
  * Parameters:
- *   (express.application) app - Instantiated application
+ *   (Express) app - Instantiated application
  *   (superagent) agent - Instantiated superagent
  *   (Function) next - Callback function
  *   (Boolean) passAuthentication - [Optional, Default true]

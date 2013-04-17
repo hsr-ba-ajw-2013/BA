@@ -1,4 +1,4 @@
-/** Module: Policy.LoginRequired
+/** Module: LoginRequired
  * Policy for enforcing login
  */
 

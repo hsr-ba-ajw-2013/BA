@@ -100,7 +100,7 @@ var createTask = function createTask(req, res) {
 
 /** Function: create
  * POST-target for <fresh> which will validate the form using
- * <Shared.Validators.createTaskValidator> and if successful, call <createTask>.
+ * <CreateTaskValidator> and if successful, call <createTask>.
  */
 exports.create = [createTaskValidator, createTask];
 

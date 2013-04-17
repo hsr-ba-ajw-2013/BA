@@ -65,8 +65,8 @@ Group: Components  {
 
    Group: Task  {
 
+      File: Component  (no auto-title, lib/task/index.js)
       File: Controller  (no auto-title, lib/task/controller.js)
-      File: Task  (lib/task/index.js)
       File: Model  (no auto-title, lib/task/model.js)
       }  # Group: Task
 
@@ -96,13 +96,14 @@ Group: Shared  {
 
    Group: Test  {
 
-      File: doLogin  (shared/test/passport-mock.js)
+      File: PassportMock  (shared/test/passport-mock.js)
+      File: StrategyMock  (shared/test/strategy-mock.js)
       }  # Group: Test
 
    Group: Validators  {
 
-      File: createCommunityValidator  (shared/validators/create-community.js)
-      File: createTaskValidator  (shared/validators/create-task.js)
+      File: CreateCommunityValidator  (shared/validators/create-community.js)
+      File: CreateTaskValidator  (shared/validators/create-task.js)
       }  # Group: Validators
 
    Group: Exceptions  {
@@ -114,6 +115,11 @@ Group: Shared  {
 
       File: LoginRequired  (no auto-title, shared/policies/login-required.js)
       }  # Group: Policies
+
+   Group: Utils  {
+
+      File: Utils  (shared/utils/index.js)
+      }  # Group: Utils
 
    }  # Group: Shared
 
