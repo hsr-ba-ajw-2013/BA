@@ -21,7 +21,7 @@ exports.index = function index(req, res) {
 	resident.getCommunity().success(function result(community) {
 
 		if (!community) {
-			return res.redirect('/');
+			return res.redirect('/community/new');
 		}
 
 		community.getTasks({order: 'id DESC'}).success(function result(tasks) {
