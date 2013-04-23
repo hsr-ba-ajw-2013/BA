@@ -61,7 +61,7 @@ var createTask = function createTask(req, res) {
 	resident.getCommunity().success(function result(community) {
 
 		if (!community) {
-			return res.redirect('/');
+			return res.redirect('/community/new');
 		}
 
 		var taskData = {
