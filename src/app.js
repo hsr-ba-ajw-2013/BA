@@ -14,6 +14,7 @@ var express = require('express')
 	, login = require('./lib/login')
 	, resident = require('./lib/resident')
 	, task = require('./lib/task')
+	, rank = require('./lib/rank')
 	, facebookChannel = require('./lib/facebook-channel');
 
 /** Function: main
@@ -39,9 +40,12 @@ function main() {
 		, residentRelationships = resident(app, config)
 		, taskRelationships = task(app, config);
 
+	rank(app, config);
+
 	communityRelationships(app);
 	residentRelationships(app);
 	taskRelationships(app);
+	//rankRelationships(app);
 
 	facebookChannel(app, config);
 
