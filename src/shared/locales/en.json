@@ -16,5 +16,17 @@
 	"You aren't in any community yet.<br/>\n\t\t\tPlease tell us the desired name of your community in order to create it.": "You aren't in any community yet.<br/>\n\t\t\tPlease tell us the desired name of your community in order to create it.",
 	"WG Name": "WG Name",
 	"Create WG": "Create WG",
-	"Logout": "Logout"
+	"Logout": "Logout",
+	"Add a new task": "Add a new task",
+	"Sort by task": "Sort by task",
+	"Task": "Task",
+	"Description": "Description",
+	"Sort by due date": "Sort by due date",
+	"Due date": "Due date",
+	"Sort by reward": "Sort by reward",
+	"Value": "Value",
+	"Reward needs to be a number between 1 and 5.": "Reward needs to be a number between 1 and 5.",
+	"Due date needs to be a date in the future.": "Due date needs to be a date in the future.",
+	"Description needs to be within 0 and 255 chars.": "Description needs to be within 0 and 255 chars.",
+	"Task successfully added.": "Task successfully added."
 }
