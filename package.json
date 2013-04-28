@@ -36,6 +36,7 @@
 		, "uslug": "~1.0.3"
 		, "moment": "~1.7.2"
 
+		, "handlebars": "1.0.10"
 		, "barefoot": "git://github.com/swissmanu/barefoot.git"
 	}
 

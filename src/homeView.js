@@ -4,7 +4,7 @@ var Barefoot = require('barefoot')()
 module.exports = View.extend({
 	el: '#main'
 	, initialize: function() {
-		
+
 	}
 	, template: 'Home :)'
 	, renderView: function() {

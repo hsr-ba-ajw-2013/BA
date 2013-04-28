@@ -7,7 +7,7 @@ module.exports = View.extend({
 	, initialize: function() {
 		this.addSubview(new MenuView());
 	}
-	, template: '<header><h1>Roomies</h1><nav></nav></header><section id="main"></section>'
+	, template: ''
 	, renderView: function() {
 		this.$el.html(this.template);
 	}
