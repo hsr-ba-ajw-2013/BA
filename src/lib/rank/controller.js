@@ -39,8 +39,6 @@ exports.index = function index(req, res) {
 				'ORDER BY points DESC'
 			)
 			.success(function(ranks) {
-				console.log(ranks);
-
 				res.render('rank/views/index', {
 					title: res.__('Tasks')
 					, ranks: ranks
