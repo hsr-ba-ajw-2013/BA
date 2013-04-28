@@ -1,14 +1,17 @@
 var _ = require('underscore')
 	, Barefoot = require('barefoot')()
-	, dataStore = new Barefoot.DataStore();
+	//, dataStore = new Barefoot.DataStore()
+	, barefootStartOptions = {};
 
 var RoomiesRouter = Barefoot.Router.extend({
 	routes: { }
 });
 
-var startOptions = {/*dataStore: dataStore*/};
-if(!process.browser) _.extend(startOptions, require('./barefootFactory'));
-Barefoot.start(RoomiesRouter, startOptions);
+if(Barefoot.isRunningOnServer()) {
+	// This is the only "on server" check which is necessary.
+	_.extend(barefootStartOptions, require('./barefootFactory'));
+}
+Barefoot.start(RoomiesRouter, barefootStartOptions);
 
 
 /** File: Application
