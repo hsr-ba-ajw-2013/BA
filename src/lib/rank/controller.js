@@ -22,7 +22,7 @@ exports.index = function index(req, res) {
 		community.getResidents().success(function residentsResult(residents) {
 
 			if (!residents) {
-				req.flash('error', 'An error occurred.');
+				req.flash('error', res.__('An error occurred.'));
 				return res.redirect('..');
 			}
 
