@@ -26,34 +26,6 @@ exports.index = function index(req, res) {
 				return res.redirect('..');
 			}
 
-			//db.query(
-			//		'SELECT DISTINCT ' +
-			//			'SUM(t.reward) AS points ' +
-			//			', rd AS resident ' +
-			//		'FROM "Tasks" t ' +
-			//		'INNER JOIN ( ' +
-			//			'SELECT r."facebookId", r."id" ' +
-			//			'FROM "Residents" r ' +
-			//		') rd ("facebookId", "id") ' +
-			//		'ON rd."id" = t."fulfillorId" ' +
-			//		'WHERE t."fulfilledAt" >= ' +
-			//			'(current_date - interval \'7 days\') ' +
-			//		'GROUP BY t."fulfillorId", rd.* ' +
-			//		'ORDER BY points DESC'
-			//	)
-
-			//db.query(
-			//	'SELECT DISTINCT ' +
-			//		'SUM(t.reward) AS points ' +
-			//		', rd AS resident ' +
-			//	'FROM "Tasks" t, "Residents" r ' +
-			//	'WHERE t."fulfillorId" = r."id" ' +
-			//		'AND t."fulfilledAt" >= ' +
-			//			'(current_date - interval \'7 days\') ' +
-			//	'GROUP BY t."fulfillorId", r."id" ' +
-			//	'ORDER BY points DESC'
-			//)
-
 			db.query(
 				'SELECT DISTINCT ' +
 					'SUM(t.reward) AS points ' +
