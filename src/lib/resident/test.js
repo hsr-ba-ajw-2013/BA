@@ -1,4 +1,4 @@
-/* global describe, it, beforeEach */
+/* global describe, it, beforeEach, after */
 var request = require('super-request')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()
@@ -9,6 +9,13 @@ var request = require('super-request')
 			process.cwd(), 'src', 'shared', 'test', 'passport-mock')
 		).doLogin;
 
+after(function(done) {
+	app.get('db').drop().success(function() {
+		done();
+	}).error(function() {
+		done();
+	});
+});
 
 describe('Resident', function() {
 

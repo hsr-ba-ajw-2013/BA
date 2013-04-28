@@ -42,7 +42,7 @@ module.exports = function init(app, db) {
 		, dueDate: Sequelize.DATE
 	} , {
 		instanceMethods: {
-			isFulfill: function() {
+			isFulfilled: function() {
 				return this.fulfilledAt !== null;
 			}
 		}

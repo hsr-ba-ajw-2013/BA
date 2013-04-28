@@ -1,5 +1,3 @@
-"use srict"
-
 /* Setup Chai & ShouldJS: */
 var chai = require('chai');
 chai.should();

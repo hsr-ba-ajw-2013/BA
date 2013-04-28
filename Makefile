@@ -20,7 +20,10 @@ test: test-unit test-functional
 
 test-unit:
 	@echo "Running Unit Tests:"
-	@$(TEST_CMD) --reporter $(REPORTER) src/lib/*/test.js
+	@$(TEST_CMD) --reporter $(REPORTER) src/lib/community/test.js
+	@$(TEST_CMD) --reporter $(REPORTER) src/lib/home/test.js
+	@$(TEST_CMD) --reporter $(REPORTER) src/lib/resident/test.js
+	@$(TEST_CMD) --reporter $(REPORTER) src/lib/task/test.js
 
 test-functional:
 	@echo "Running Functional Tests:"

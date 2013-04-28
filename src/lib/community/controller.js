@@ -26,11 +26,11 @@ require('util').inherits(ExceptionCreateUniqueShareLink, Error);
  *    (Response) res - The response to render into
  *    (Community) community - The actual Community instance to render
  */
-var renderIndex = function renderIndex(req, res, community) {
+function renderIndex(req, res, community) {
 	res.render('community/views/index', {
 		title: res.__('Your community %s', community.name)
 	});
-};
+}
 
 /** Function: index
  * In case the resident has no community assigned yet, it will redirect
@@ -142,7 +142,7 @@ exports.addUniqueSlug = addUniqueSlug;
  *   (Request) req - Request
  *   (Response) res - Response
  */
-var createCommunity = function createCommunity(req, res) {
+function createCommunity(req, res) {
 	var resident = req.user
 		, db = req.app.get('db')
 		, Community = db.daoFactoryManager.getDAO('Community')
@@ -198,7 +198,7 @@ var createCommunity = function createCommunity(req, res) {
 				return res.send(500);
 			});
 	});
-};
+}
 
 
 /** Function: create

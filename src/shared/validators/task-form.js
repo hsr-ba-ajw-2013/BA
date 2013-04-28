@@ -22,7 +22,7 @@ module.exports = function createTaskValidator(req, res, next) {
 	req.sanitize('txtReward').trim();
 
 	error = res.__('Due date needs to be a date in the future.');
-	req.assert('txtDueDate', error).isDate();
+	req.assert('txtDueDate', error).isDate().isAfter();
 	req.sanitize('txtDueDate').xss();
 	req.sanitize('txtDueDate').trim();
 
@@ -34,6 +34,9 @@ module.exports = function createTaskValidator(req, res, next) {
 	var errors = req.validationErrors();
 	if(errors) {
 		req.flash('error', errors[0].msg);
+		if (req.params.id) {
+			return res.redirect('.');
+		}
 		return res.redirect('./new');
 	}
 	return next();

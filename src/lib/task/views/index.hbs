@@ -17,17 +17,39 @@
 			<thead>
 				<tr>
 					<th class="check"></th>
-					<th class="task"><a href="#" title="{{trans "Sort by task"}}">{{trans "Task"}}</a></th>
+					<th class="task">
+						<a href="?field=name&order={{newOrder}}" title="{{trans "Sort by task"}}">
+							{{trans "Task"}}
+							{{#ifequals currField 'name'}}
+								<i class="icon-sort-{{#ifequals ../currOrder 'ASC'}}up{{else}}down{{/ifequals}}"></i>
+							{{/ifequals}}
+						</a>
+					</th>
 					<th class="description">{{trans "Description"}}</th>
-					<th class="due-date"><a href="#" title="{{trans "Sort by due date"}}">{{trans "Due date"}} <i class="icon-sort-up"></i></i></a></th>
-					<th class="reward"><a href="#" title="{{trans "Sort by reward"}}">{{trans "Value"}}</a></th>
+					<th class="due-date">
+						<a href="?field=dueDate&order={{newOrder}}" title="{{trans "Sort by due date"}}">
+							{{trans "Due date"}}
+							{{#ifequals currField 'dueDate'}}
+								<i class="icon-sort-{{#ifequals ../currOrder 'ASC'}}up{{else}}down{{/ifequals}}"></i>
+							{{/ifequals}}
+						</a>
+					</th>
+					<th class="reward">
+						<a href="?field=reward&order={{newOrder}}" title="{{trans "Sort by reward"}}">
+							{{trans "Value"}}
+							{{#ifequals currField 'reward'}}
+								<i class="icon-sort-{{#ifequals ../currOrder 'ASC'}}up{{else}}down{{/ifequals}}"></i>
+							{{/ifequals}}
+						</a>
+					</th>
+					<th class="action"></th>
 				</tr>
 			</thead>
 			<tbody>
 				{{#each tasks}}
 				    <tr>
 						<td class="check">
-							{{#if isFulfill}}
+							{{#if isFulfilled}}
 								<i class="icon-check"></i>
 							{{else}}
 								<a href="/community/{{../../community.slug}}/task/{{id}}/check">
@@ -39,6 +61,13 @@
 						<td class="description">{{description}}</td>
 						<td class="due-date">{{dateFormat dueDate}}</td>
 						<td class="reward">{{reward}} <i class="icon-trophy"></i></td>
+						<td class="action">
+							{{^if isFulfilled}}
+							<a href="/community/{{../../community.slug}}/task/{{id}}/edit">
+								<i class="icon-edit"></i>
+							</a>
+							{{/if}}
+						</td>
 					</tr>
 				{{/each}}
 			</tbody>

@@ -1,6 +1,6 @@
 table {
 	width: 100%;
-	
+
 	tbody tr:hover {
 		background-color: darken($table-even-row-bg, 5%);
 	}
@@ -19,6 +19,11 @@ table {
 				@extend .hide-for-small;
 				width: 80px;
 				text-align: center;
+			}
+
+			&.action {
+				text-align: right;
+				width: 10px;
 			}
 		}
 	}

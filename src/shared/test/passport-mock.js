@@ -2,7 +2,8 @@
  * Mocks <PassportJs at http://passportjs.org> to be used in tests.
  */
 var passport = require('passport')
-	, StrategyMock = require('./strategy-mock');
+	, StrategyMock = require('./strategy-mock')
+	, utils = require('../utils');
 
 /** Function: passportMock
  * Creates necessary configuration (<StrategyMock>) and routes (/mock/login)
@@ -49,8 +50,9 @@ exports.doLogin = function doLogin(app, req, passAuthentication, user) {
 		passAuthentication	= true;
 	}
 	user = user || {
-		name: 'CommunityTest'
-		, facebookId: Math.round(1000*(Math.random()+1))
+		name: utils.randomString(16)
+		, facebookId: Math.round(1000 * (Math.random() + 1)) *
+			Math.round(1000 * (Math.random() + 1))
 	};
 
 	passportMock(app, {

@@ -37,12 +37,15 @@ module.exports = function taskInit(app) {
 
 	app.get(TASK_PREFIX + '/new', controller.fresh);
 
-	app.get(TASK_PREFIX + '/:id', controller.get);
 	app.put(TASK_PREFIX + '/:id', controller.update);
 	app.del(TASK_PREFIX + '/:id', controller.del);
 
 	//TODO: is GET the way to go?
 	app.get(TASK_PREFIX + '/:id/check', controller.check);
+
+	app.get(TASK_PREFIX + '/:id/edit', controller.edit);
+	// PUT/POST to update
+	app.post(TASK_PREFIX + '/:id/edit', controller.update);
 
 	return model(app);
 };

@@ -71,6 +71,12 @@ function registerHelpers(app) {
 		var f = block.hash.format || "LL";
 		return moment(context).format(f);
 	});
+	hbs.registerHelper('ifequals', function ifequals(a, b, block) {
+		if(a === b) {
+			return block.fn(this);
+		}
+		return block.inverse(this);
+	});
 }
 
 /** Function: viewInit
