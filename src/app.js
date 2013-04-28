@@ -2,7 +2,7 @@ var _ = require('underscore')
 	, Barefoot = require('barefoot')()
 	, Router = require('./router')
 	, dataStore = new Barefoot.DataStore()
-	, barefootStartOptions = {dataStore: dataStore};
+	, barefootStartOptions = { dataStore: dataStore };
 
 if(Barefoot.isRunningOnServer()) {
 	// This is the only "on server" check which is necessary.
