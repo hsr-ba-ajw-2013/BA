@@ -2,8 +2,6 @@
  * Rank Controller
  */
 
-var _ = require('underscore');
-
 /** Function: index
  * Render list of tasks
  *
@@ -15,15 +13,11 @@ exports.index = function index(req, res) {
 	var resident = req.user
 		, db = req.app.get('db');
 
-	db = db;
-
 	resident.getCommunity().success(function result(community) {
 
 		if (!community) {
 			return res.redirect('/community/new');
 		}
-
-		var ranks = [];
 
 		community.getResidents().success(function residentsResult(residents) {
 
@@ -32,39 +26,57 @@ exports.index = function index(req, res) {
 				return res.redirect('..');
 			}
 
-			for (var i = 0; i < residents.length; i++) {
+			//db.query(
+			//		'SELECT DISTINCT ' +
+			//			'SUM(t.reward) AS points ' +
+			//			', rd AS resident ' +
+			//		'FROM "Tasks" t ' +
+			//		'INNER JOIN ( ' +
+			//			'SELECT r."facebookId", r."id" ' +
+			//			'FROM "Residents" r ' +
+			//		') rd ("facebookId", "id") ' +
+			//		'ON rd."id" = t."fulfillorId" ' +
+			//		'WHERE t."fulfilledAt" >= ' +
+			//			'(current_date - interval \'7 days\') ' +
+			//		'GROUP BY t."fulfillorId", rd.* ' +
+			//		'ORDER BY points DESC'
+			//	)
 
-				var curResident = residents[i]
-					, rankData = {
-						resident: curResident
-						, points: Math.round(10*Math.random())
-						, badges: Math.round(10*Math.random())
-					};
+			//db.query(
+			//	'SELECT DISTINCT ' +
+			//		'SUM(t.reward) AS points ' +
+			//		', rd AS resident ' +
+			//	'FROM "Tasks" t, "Residents" r ' +
+			//	'WHERE t."fulfillorId" = r."id" ' +
+			//		'AND t."fulfilledAt" >= ' +
+			//			'(current_date - interval \'7 days\') ' +
+			//	'GROUP BY t."fulfillorId", r."id" ' +
+			//	'ORDER BY points DESC'
+			//)
 
-				/*db.query(
-					'SELECT SUM(reward) ' +
-					'FROM "Tasks" ' +
-					'WHERE \'fulfillorId\' = \'' + curResident.id + '\'' +
-					'AND \'fulfilledAt\' >= ' +
-					'cast((current_date - interval \'7 days\') as TIMESTAMP)')
-					.success(function(rows) {
-						console.log(JSON.stringify(rows))
+			db.query(
+				'SELECT DISTINCT ' +
+					'SUM(t.reward) AS points ' +
+					', r."facebookId" ' +
+					', r."name" ' +
+				'FROM "Tasks" t, "Residents" r ' +
+				'WHERE t."fulfillorId" = r."id" ' +
+					'AND t."fulfilledAt" >= ' +
+						'(current_date - interval \'7 days\') ' +
+				'GROUP BY t."fulfillorId", r."id" ' +
+				'ORDER BY points DESC'
+			)
+			.success(function(ranks) {
+				console.log(ranks);
 
-				})
-				.error(function queryError(error) {
-					console.log(error);
-				});*/
+				res.render('rank/views/index', {
+					title: res.__('Tasks')
+					, ranks: ranks
+				});
 
-				ranks[ranks.length] = rankData;
-			}
-
-			ranks = _(ranks).sortBy(function sortByPoints(rank) {
-				return -(1000*rank.points + rank.badges);
-			});
-
-			res.render('rank/views/index', {
-				title: res.__('Tasks')
-				, ranks: ranks
+			})
+			.error(function queryError(error) {
+				console.log(error);
 			});
 
 		});
