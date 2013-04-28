@@ -29,14 +29,14 @@
 		, "express-livereload": "~0.0.24"
 		, "i18n": "~0.3.9"
 
-		, "browserify-middleware": "~1.2.0"
-
 		, "underscore": "~1.4.4"
 
 		, "connect-domain": "~0.5.0"
 
 		, "uslug": "~1.0.3"
 		, "moment": "~1.7.2"
+
+		, "barefoot": "git://github.com/swissmanu/barefoot.git"
 	}
 
 	, "devDependencies": {

@@ -1,6 +1,19 @@
+var _ = require('underscore')
+	, Barefoot = require('barefoot')()
+	, dataStore = new Barefoot.DataStore();
+
+var RoomiesRouter = Barefoot.Router.extend({
+	routes: { }
+});
+
+var startOptions = {/*dataStore: dataStore*/};
+if(!process.browser) _.extend(startOptions, require('./barefootFactory'));
+Barefoot.start(RoomiesRouter, startOptions);
+
+
 /** File: Application
  * The Roomies application initializator.
- */
+ *
 var express = require('express')
 	, path = require('path')
 
@@ -22,7 +35,7 @@ var express = require('express')
  *
  * Returns:
  *     (Express) - An Express.JS application instance
- */
+ *
 function main() {
 	var app = express()
 		, configFileName = '../config.' + app.settings.env
@@ -70,3 +83,4 @@ if (module.parent === require.main) {
 		main();
 	});
 }
+*/
