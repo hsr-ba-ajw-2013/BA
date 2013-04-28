@@ -32,8 +32,8 @@ function createRelationships(app) {
  *   (Function) - <createRelationships> to initiate relationships after all
  *                 required models have been instantiated.
  */
-module.exports = function init(app) {
-	var db = app.get('db');
+module.exports = function init(app, db) {
+	db = app ? app.get('db') : db;
 	db.define('Task', {
 		name: Sequelize.STRING
 		, description: Sequelize.STRING

@@ -1,15 +1,14 @@
 /* global describe, it, beforeEach */
-var request = require('super-request')
-	, path = require('path')
-	, app = require(path.join(process.cwd(), 'index.js'))()
-	, utils = require(path.join(
-			process.cwd(), 'src', 'shared', 'utils', 'index.js'))
-	, uslug = require('uslug')
-	, doLogin = require(path.join(
-			process.cwd(), 'src', 'shared', 'test', 'passport-mock')
-		).doLogin;
-
 describe('Community', function() {
+	var request = require('super-request')
+		, path = require('path')
+		, app = require(path.join(process.cwd(), 'index.js'))()
+		, utils = require(path.join(
+				process.cwd(), 'src', 'shared', 'utils', 'index.js'))
+		, uslug = require('uslug')
+		, doLogin = require(path.join(
+				process.cwd(), 'src', 'shared', 'test', 'passport-mock')
+			).doLogin;
 
 	describe('GET /community', function(){
 		describe('unauthorized', function() {
