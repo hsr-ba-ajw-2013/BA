@@ -89,6 +89,10 @@ clean:
 	@echo "Cleaning compiled CSS"
 	@-rm $(CSS_PATH)
 
+precompile-templates:
+	@echo "Precompiling Templates"
+	@node template-precompiler.js
+
 precompile-sass:
 	@echo "Precompiling SASS Stylesheets"
 	@-rm $(CSS_PATH)
@@ -104,4 +108,4 @@ docs:
 	-mkdir ./docs
 	@NaturalDocs -i ./src -o HTML ./docs -p ./.naturaldocs -xi ./src/public/javascripts/lib/ -s Default style
 
-.PHONY: test test-unit test-functional test-unit-live test-functional-live test-coverage setup clean precompile-sass-live lint deps config docs
+.PHONY: test test-unit test-functional test-unit-live test-functional-live test-coverage setup clean precompile-sass-live lint deps config docs precompile-templates
