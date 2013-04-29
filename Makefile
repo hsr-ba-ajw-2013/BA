@@ -15,25 +15,23 @@ TEST_LIVE_CMD = $(TEST_CMD) --growl --watch
 SCSS_PATH = src/shared/sass/app.scss
 CSS_PATH = src/public/stylesheets/app.css
 
+# .dir will be matched with the TESTS Variable
+TEST_FILES = community.dir home.dir resident.dir task.dir
+# .dir replaced by .test in order to use it in %.test
+TESTS = $(TEST_FILES:.dir=.test)
+LIVE_TESTS = $(TEST_FILES:.dir=.live-test)
 
-test: test-unit test-functional
 
-test-unit:
-	@echo "Running Unit Tests:"
-	@$(TEST_CMD) --reporter $(REPORTER) src/lib/community/test.js
-	@$(TEST_CMD) --reporter $(REPORTER) src/lib/home/test.js
-	@$(TEST_CMD) --reporter $(REPORTER) src/lib/resident/test.js
-	@$(TEST_CMD) --reporter $(REPORTER) src/lib/task/test.js
+test: $(TESTS)
 
-test-functional:
-	@echo "Running Functional Tests:"
-	@$(TEST_CMD) --reporter $(REPORTER) test/*-test.js
+# replace .test with /test.js from e.g. community.test (as argument [$@] to this function)
+# in order to run the test
+# this enables you to run `make test` as well as e.g. `make community.test`
+%.test:
+	@$(TEST_CMD) --reporter $(REPORTER) src/lib/$(subst .test,/test.js,$@)
 
-test-unit-live:
-	@$(TEST_LIVE_CMD) --reporter $(REPORTER) src/lib/*/test.js
-
-test-functional-live:
-	@$(TEST_LIVE_CMD) --reporter $(REPORTER) test/*-test.js
+%.live-test:
+	@$(TEST_LIVE_CMD) --reporter $(REPORTER) src/lib/$(subst .live-test,/test.js,$@)
 
 coveralls:
 	@echo -n "Running jscoverage..."
@@ -49,9 +47,6 @@ test-coverage: test coverage
 	@echo "Building Test Coverage Reports:"
 	@echo -n "Creating unit coverage report..."
 	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) src/lib/*/test.js  > unit-coverage.html
-	@echo "done"
-	@echo -n "Creating functional coverage report..."
-	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) test/*-test.js > functional-coverage.html
 	@echo "done"
 
 test-coveralls: test coveralls
@@ -107,4 +102,4 @@ docs:
 	-mkdir ./docs
 	@NaturalDocs -i ./src -o HTML ./docs -p ./.naturaldocs -xi ./src/public/javascripts/lib/ -s Default style
 
-.PHONY: test test-unit test-functional test-unit-live test-functional-live test-coverage setup clean precompile-sass-live lint deps config docs
+.PHONY: test test-unit test-unit-live test-coverage setup clean precompile-sass-live lint deps config docs
