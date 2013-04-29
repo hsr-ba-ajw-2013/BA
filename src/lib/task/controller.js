@@ -202,8 +202,7 @@ exports.create = [taskFormValidator, createTask];
  */
 function findAndCheckTaskAndCommunity(taskId, slug, resident, req, res, next) {
 	var db = req.app.get('db')
-		, Task = db.daoFactoryManager.getDAO('Task')
-		, Community = db.daoFactoryManager.getDAO('Community');
+		, Task = db.daoFactoryManager.getDAO('Task');
 
 	Task.find(taskId)
 		.success(function findResult(task) {
@@ -211,7 +210,7 @@ function findAndCheckTaskAndCommunity(taskId, slug, resident, req, res, next) {
 				return res.send(404);
 			}
 
-			Community.find({ where: {slug: slug}})
+			task.getCommunity({ where: {slug: slug, id: task.CommunityId}})
 				.success(function findCommunityResult(community) {
 					if (!community) {
 						return res.send(404);

@@ -91,6 +91,13 @@ describe('Task', function() {
 					req.get('/community/' + slug + '/task')
 						.expect(200, done);
 				});
+
+				it('should return a 404 when accessing a not existing task',
+					function(done) {
+
+					req.get('/community/' + slug + '/task/1337')
+						.expect(404, done);
+				});
 			});
 		});
 	});
@@ -145,11 +152,12 @@ describe('Task', function() {
 
 			describe('with community for the user', function() {
 
-				var req = request(app);
+				var req = request(app)
+					, communityName = utils.randomString(6)
+					, slug = uslug(communityName);
 
 				beforeEach(function before(done) {
 					req = doLogin(app, req);
-					var communityName = utils.randomString(6);
 
 					req.post('/community')
 						.form({name: communityName})
@@ -161,14 +169,33 @@ describe('Task', function() {
 						});
 				});
 
-				it('should redirect to /community with 302',function(done) {
-					var communityName =
-							utils.randomString(6);
+				it('should create a task and redirect to /community/:slug/task',
+					function(done) {
+					var taskData = {
+						name: utils.randomString(12)
+						, description: utils.randomString(12)
+						, reward: 3
+						, dueDate: new Date(new Date().getTime() +
+							24 * 60 * 60)
+					};
+					req.post('/community/' + slug + '/task')
+						.form(taskData)
+						.followRedirect(false)
+						.expect(302)
+						.expect('Location', '/community/' + slug + '/task/.',
+							done);
+				});
 
-						req.post('/community')
-							.form({name: communityName})
-							.expect(302)
-							.expect('Location', '/community', done);
+				it('should return a 404 when accessing the task with' +
+					'wrong community', function(done) {
+					req.get('/community/ASDF/task/1/check')
+						.expect(404, done);
+				});
+
+				it.skip('should return a 405 when accessing a task on' +
+					' a community which does not belong to the user',
+					function() {
+					//TODO
 				});
 			});
 		});
