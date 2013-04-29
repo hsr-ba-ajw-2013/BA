@@ -161,10 +161,10 @@ function createTask(req, res) {
 		, db = req.app.get('db');
 	getCommunityFromResident(resident, res, function(community) {
 		var taskData = {
-			name: req.param('txtTask')
-			, description: req.param('txtDescription')
-			, reward: req.param('txtReward')
-			, dueDate: moment(req.param('txtDueDate')).toDate()
+			name: req.param('name')
+			, description: req.param('description')
+			, reward: req.param('reward')
+			, dueDate: moment(req.param('dueDate')).toDate()
 		};
 
 		createTaskInDatabase(taskData, db, community, resident, res,
@@ -304,12 +304,15 @@ function updateTask(req, res) {
 					res.__('Only not fulfilled tasks can be edited.'));
 				return res;
 			}
-			task.name = req.param('txtTask');
-			task.reward = req.param('txtReward');
-			task.description = req.param('txtDescription');
-			task.dueDate = moment(req.param('txtDueDate')).toDate();
+			task.name = req.param('name');
+			task.reward = req.param('reward');
+			task.description = req.param('description');
+			task.dueDate = moment(req.param('dueDate')).toDate();
 			task.save()
 				.success(function taskSaved() {
+					if (req.is('json')) {
+						return res.json(200, task);
+					}
 					req.flash('success', res.__('Task saved successfully.'));
 					return res.redirect('/community/' +
 						community.slug + '/task');

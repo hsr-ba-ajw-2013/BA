@@ -102,10 +102,10 @@ describe('Task', function() {
 				var req = request(app)
 							.post('/community/ASDF/task')
 					, taskData = {
-						txtTask: utils.randomString(12)
-						, txtDescription: utils.randomString(12)
-						, txtReward: 3
-						, txtDueDate: new Date()
+						name: utils.randomString(12)
+						, description: utils.randomString(12)
+						, reward: 3
+						, dueDate: new Date()
 					};
 
 
@@ -128,10 +128,10 @@ describe('Task', function() {
 				it('should redirect to /community/new with 302',
 					function(done) {
 						var taskData = {
-							txtTask: utils.randomString(12)
-							, txtDescription: utils.randomString(12)
-							, txtReward: 3
-							, txtDueDate: new Date(new Date().getTime() +
+							name: utils.randomString(12)
+							, description: utils.randomString(12)
+							, reward: 3
+							, dueDate: new Date(new Date().getTime() +
 								24 * 60 * 60)
 						};
 
@@ -174,6 +174,67 @@ describe('Task', function() {
 		});
 	});
 
+	describe('UPDATE /community/slug/task/:id', function() {
+		describe('authorized', function() {
+			describe('with an existing, not fulfilled task', function() {
+				var communityName = utils.randomString(6)
+					, slug = uslug(communityName)
+					, taskId = 0
+					, req = request(app)
+					, taskData = {
+						name: utils.randomString(12)
+						, description: utils.randomString(12)
+						, reward: 3
+						, dueDate: new Date(new Date().getTime() +
+							24 * 60 * 60)
+					};
+
+				beforeEach(function before(done) {
+					req = doLogin(app, req);
+
+
+					req.post('/community')
+						.form({name: communityName})
+						.end(function(err) {
+							if (err) {
+								return done(err);
+							}
+
+							req.post('/community/' + slug + '/task')
+								.json(taskData)
+								.end(function(err, res) {
+									if(err) {
+										return done(err);
+									}
+									var locationHeader = res.headers.location,
+										lastSlash =
+											locationHeader.lastIndexOf('/');
+
+									taskId = locationHeader
+											.substring(lastSlash + 1);
+									done();
+								});
+						});
+				});
+
+				it('should update the task', function update(done) {
+					var updateData = taskData;
+					updateData.name = 'Updated!';
+
+					req.put('/community/' + slug + '/task/' + taskId)
+						.json(updateData)
+						.end(function(err, res) {
+							if(err) {
+								return done(err);
+							}
+							res.body.name.should.equal(updateData.name);
+							done();
+						});
+				});
+			});
+		});
+	});
+
 	describe('DELETE /community/:slug/task/:id', function() {
 		describe('authorized', function() {
 			describe('with an existing, not fulfilled task', function() {
@@ -193,10 +254,10 @@ describe('Task', function() {
 								return done(err);
 							}
 							var taskData = {
-								txtTask: utils.randomString(12)
-								, txtDescription: utils.randomString(12)
-								, txtReward: 3
-								, txtDueDate: new Date(new Date().getTime() +
+								name: utils.randomString(12)
+								, description: utils.randomString(12)
+								, reward: 3
+								, dueDate: new Date(new Date().getTime() +
 									24 * 60 * 60)
 							};
 

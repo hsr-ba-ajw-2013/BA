@@ -7,10 +7,10 @@
 
 	<div class="row">
 		<div class="small-3 large-2 columns">
-			<label for="txtTask" class="inline">{{trans "Task"}}</label>
+			<label for="name" class="inline">{{trans "Task"}}</label>
 		</div>
 		<div class="small-9 large-7 columns">
-			<input type="text" name="txtTask" id="txtTask" placeholder="{{trans "to go shopping"}}"{{#if task}} value="{{task.name}}"{{/if}} />
+			<input type="text" name="name" id="name" placeholder="{{trans "to go shopping"}}"{{#if task}} value="{{task.name}}"{{/if}} />
 		</div>
 		<div class="large-3 columns hide-for-small hint">
 			{{trans "Give a brief description of the task."}}
@@ -19,10 +19,10 @@
 
 	<div class="row">
 		<div class="small-3 large-2 columns">
-			<label for="txtReward" class="inline">{{trans "Reward"}}</label>
+			<label for="reward" class="inline">{{trans "Reward"}}</label>
 		</div>
 		<div class="small-9 large-7 columns">
-			<input type="number" name="txtReward" id="txtReward" placeholder="{{trans "1 to 5 points"}}" min="1" max="5"{{#if task}} value="{{task.reward}}"{{/if}} />
+			<input type="number" name="reward" id="reward" placeholder="{{trans "1 to 5 points"}}" min="1" max="5"{{#if task}} value="{{task.reward}}"{{/if}} />
 		</div>
 		<div class="large-3 columns hide-for-small hint">
 			{{#blocktrans}}
@@ -33,10 +33,10 @@
 
 	<div class="row">
 		<div class="small-3 large-2 columns">
-			<label for="txtDueDate" class="inline">{{trans "Due date"}}</label>
+			<label for="dueDate" class="inline">{{trans "Due date"}}</label>
 		</div>
 		<div class="small-9 large-7 columns">
-			<input type="date" name="txtDueDate" id="txtDueDate" placeholder="{{trans "2/22/2014"}}"{{#if task}} value="{{dateFormat task.dueDate}}"{{/if}} />
+			<input type="date" name="dueDate" id="dueDate" placeholder="{{trans "2/22/2014"}}"{{#if task}} value="{{dateFormat task.dueDate}}"{{/if}} />
 		</div>
 		<div class="large-3 columns hide-for-small hint">
 			{{trans "Is this task due on a specific day?"}}
@@ -45,10 +45,10 @@
 
 	<div class="row">
 		<div class="small-3 large-2 columns">
-			<label for="txtDescription" class="inline">{{trans "Note"}}</label>
+			<label for="description" class="inline">{{trans "Note"}}</label>
 		</div>
 		<div class="small-9 large-7 columns">
-			<textarea name="txtDescription" id="txtDescription" placeholder="{{trans "Don't forget the steaks!"}}">{{#if task}}{{task.description}}{{/if}}</textarea>
+			<textarea name="description" id="description" placeholder="{{trans "Don't forget the steaks!"}}">{{#if task}}{{task.description}}{{/if}}</textarea>
 		</div>
 		<div class="large-3 columns hide-for-small hint">
 			{{trans "Leave a note for this task, if necessary."}}

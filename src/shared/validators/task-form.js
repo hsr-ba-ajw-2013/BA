@@ -12,24 +12,24 @@
  */
 module.exports = function createTaskValidator(req, res, next) {
 	var error = res.__('Name needs to be within 1 and 255 chars.');
-	req.assert('txtTask', error).len(1, 255);
-	req.sanitize('txtTask').xss();
-	req.sanitize('txtTask').trim();
+	req.assert('name', error).len(1, 255);
+	req.sanitize('name').xss();
+	req.sanitize('name').trim();
 
 	error = res.__('Reward needs to be a number between 1 and 5.');
-	req.assert('txtReward', error).len(1, 1).isInt();
-	req.sanitize('txtReward').xss();
-	req.sanitize('txtReward').trim();
+	req.assert('reward', error).len(1, 1).isInt();
+	req.sanitize('reward').xss();
+	req.sanitize('reward').trim();
 
 	error = res.__('Due date needs to be a date in the future.');
-	req.assert('txtDueDate', error).isDate().isAfter();
-	req.sanitize('txtDueDate').xss();
-	req.sanitize('txtDueDate').trim();
+	req.assert('dueDate', error).isDate().isAfter();
+	req.sanitize('dueDate').xss();
+	req.sanitize('dueDate').trim();
 
 	error = res.__('Description needs to be within 0 and 255 chars.');
-	req.assert('txtDescription', error).len(0, 255);
-	req.sanitize('txtDescription').xss();
-	req.sanitize('txtDescription').trim();
+	req.assert('description', error).len(0, 255);
+	req.sanitize('description').xss();
+	req.sanitize('description').trim();
 
 	var errors = req.validationErrors();
 	if(errors) {
