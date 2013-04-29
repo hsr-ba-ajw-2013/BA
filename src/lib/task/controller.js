@@ -13,6 +13,29 @@ var path = require('path')
 	];
 
 
+/** PrivateFunction: getCommunityFromResident
+ * Gets the community by the resident and calls
+ * next as the callback function
+ *
+ * Parameters:
+ *   (Resident) resident - Resident
+ *   (Response) response - Response
+ *   (Function) next - Next callback
+ */
+function getCommunityFromResident(resident, res, next) {
+	resident.getCommunity()
+		.success(function result(community) {
+			if(!community) {
+				return res.redirect('/community/new');
+			}
+			next(community);
+		})
+		.error(function error() {
+			res.send(500);
+		});
+}
+
+
 /** Function: index
  * Render list of tasks
  *
@@ -23,12 +46,7 @@ var path = require('path')
 exports.index = function index(req, res) {
 	var resident = req.user;
 
-	resident.getCommunity().success(function result(community) {
-
-		if (!community) {
-			return res.redirect('/community/new');
-		}
-
+	getCommunityFromResident(resident, res, function result(community) {
 		var order = parseInt(req.param('order'), 10) === 2 ? 'DESC' : 'ASC'
 			, field = AVAILABLE_FIELDS.indexOf(req.param('field')) !== -1 ?
 				req.param('field') : 'dueDate';
@@ -56,13 +74,80 @@ exports.index = function index(req, res) {
 exports.fresh = function fresh(req, res) {
 	var resident = req.user;
 
-	resident.getCommunity().success(function result(community) {
+	getCommunityFromResident(resident, res, function result(community) {
 		return res.render('task/views/form', {
 			title: res.__('New Task')
 			, action: '/community/' + community.slug + '/task'
 		});
 	});
 };
+
+/** PrivateFunction: errorHandler
+ * Dummy error handler which just returns an internal server error.
+ */
+var errorHandler = (function errorHandler(res) {
+	return function() {
+		res.send(500);
+	};
+});
+
+/** PrivateFunction: setCommunity
+ * Sets community to a task and calls successCb on success.
+ *
+ * Parameters:
+ *   (Task) task - Task to assign the community to
+ *   (Community) community - Community to set to the task
+ *   (Response) res - Response
+ *   (Function) successCb - Success callback
+ */
+function setCommunity(task, community, res, successCb) {
+	task.setCommunity(community)
+		.success(successCb)
+		.error(errorHandler(res));
+}
+
+/** PrivateFunction: setCreator
+ * Sets creator of a task and calls successCb on success.
+ *
+ * Parameters:
+ *   (Task) task - Task to assign the community to
+ *   (Resident) creator - Creator of the task
+ *   (Response) res - Response
+ *   (Function) successCb - Success callback
+ */
+function setCreator(task, creator, res, successCb) {
+	task.setCreator(creator)
+		.success(function() {
+			successCb();
+		})
+		.error(errorHandler(res));
+}
+
+/** PrivateFunction: createTaskInDatabase
+ * Creates the task in the database using <Task> and calls next on success.
+ *
+ * Parameters:
+ *   (Object) data - Task data
+ *   (Sequelize) db - Database instance
+ *   (Community) community - Community to add the task to
+ *   (Resident) creator - Creator
+ *   (Response) res - Response
+ *   (Function) next - Next callback on success
+ */
+function createTaskInDatabase(data, db, community, creator, res, next) {
+	var Task = db.daoFactoryManager.getDAO('Task');
+
+	Task.create(data)
+		.success(function createSuccess(task) {
+			setCommunity(task, community, res, function() {
+				setCreator(task, creator, res, function() {
+					next(task);
+				});
+			});
+		})
+		.error(errorHandler(res));
+}
+
 
 /** PrivateFunction: createTask
  * Creates a task
@@ -73,48 +158,26 @@ exports.fresh = function fresh(req, res) {
  */
 function createTask(req, res) {
 	var resident = req.user
-		, db = req.app.get('db')
-		, Task = db.daoFactoryManager.getDAO('Task');
-	resident.getCommunity()
-		.success(function result(community) {
-			if (!community) {
-				return res.redirect('/community/new');
-			}
+		, db = req.app.get('db');
+	getCommunityFromResident(resident, res, function(community) {
+		var taskData = {
+			name: req.param('txtTask')
+			, description: req.param('txtDescription')
+			, reward: req.param('txtReward')
+			, dueDate: moment(req.param('txtDueDate')).toDate()
+		};
 
-			var taskData = {
-				name: req.param('txtTask')
-				, description: req.param('txtDescription')
-				, reward: req.param('txtReward')
-				, dueDate: moment(req.param('txtDueDate')).toDate()
-			};
-
-			Task.create(taskData)
-				.success(function createResult(task) {
-
-					task.setCommunity(community)
-						.success(function setCommunityResult() {
-
-							task.setCreator(resident)
-								.success(function setCreatorResult() {
-									req.flash('success',
-										res.__('Task successfully added.'));
-									return res.redirect('.');
-								})
-								.error(function setCreatorError(){
-									res.send(500);
-								});
-						})
-						.error(function setCommunityError() {
-							res.send(500);
-						});
-				})
-				.error(function createError() {
-					res.send(500);
-				});
-		})
-		.error(function getCommunityError() {
-			return res.send(500);
+		createTaskInDatabase(taskData, db, community, resident, res,
+			function(task) {
+				if (req.is('json')) {
+					res.location('/community/' +
+						community.slug + '/task/' + task.id);
+					return res.send(201);
+				}
+				req.flash('success', res.__('Task successfully added.'));
+				return res.redirect('.');
 		});
+	});
 }
 
 /** Function: create
@@ -267,13 +330,19 @@ exports.del = function del(req, res) {
 	findAndCheckTaskAndCommunity(taskId, slug, resident, req, res,
 		function(task, community) {
 			if (task.isFulfilled()) {
+				if(req.is('json')) {
+					return res.send(400);
+				}
 				req.flash('error',
 					res.__('Only not fulfilled tasks can be edited.'));
-				return res;
+				return res.redirect('/community/' + community.slug + '/task');
 			}
 
 			task.destroy()
 				.success(function deletedTask() {
+					if (req.is('json')) {
+						return res.send(204);
+					}
 					req.flash('success', res.__('Task deleted successfully'));
 					return res.redirect('/community/' +
 						community.slug + '/task');

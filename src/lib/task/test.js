@@ -173,4 +173,56 @@ describe('Task', function() {
 			});
 		});
 	});
+
+	describe('DELETE /community/:slug/task/:id', function() {
+		describe('authorized', function() {
+			describe('with an existing, not fulfilled task', function() {
+				var communityName = utils.randomString(6)
+					, slug = uslug(communityName)
+					, taskId = 0
+					, req = request(app);
+
+				beforeEach(function before(done) {
+					req = doLogin(app, req);
+
+
+					req.post('/community')
+						.form({name: communityName})
+						.end(function(err) {
+							if (err) {
+								return done(err);
+							}
+							var taskData = {
+								txtTask: utils.randomString(12)
+								, txtDescription: utils.randomString(12)
+								, txtReward: 3
+								, txtDueDate: new Date(new Date().getTime() +
+									24 * 60 * 60)
+							};
+
+							req.post('/community/' + slug + '/task')
+								.json(taskData)
+								.end(function(err, res) {
+									if(err) {
+										return done(err);
+									}
+									var locationHeader = res.headers.location,
+										lastSlash =
+											locationHeader.lastIndexOf('/');
+
+									taskId = locationHeader
+											.substring(lastSlash + 1);
+									done();
+								});
+						});
+				});
+
+				it('should delete the task', function(done) {
+					req.del('/community/' + slug + '/task/' + taskId)
+						.json({})
+						.expect(204, done);
+				});
+			});
+		});
+	});
 });

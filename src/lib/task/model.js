@@ -38,12 +38,18 @@ module.exports = function init(app, db) {
 		name: Sequelize.STRING
 		, description: Sequelize.STRING
 		, reward: Sequelize.INTEGER
-		, fulfilledAt: Sequelize.DATE
+		, fulfilledAt: {
+			type: Sequelize.DATE
+			, allowNull: true
+		}
 		, dueDate: Sequelize.DATE
 	} , {
 		instanceMethods: {
 			isFulfilled: function() {
-				return this.fulfilledAt !== null;
+				// bug in sequelize? When submitting no value for fulfilledAt
+				// it will tell "invalid date" instead of null.
+				return this.fulfilledAt !== null &&
+					this.fulfilledAt.toString() !== 'Invalid Date';
 			}
 		}
 	});
