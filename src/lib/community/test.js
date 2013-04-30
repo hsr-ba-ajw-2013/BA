@@ -41,12 +41,12 @@ describe('Community', function() {
 					done();
 				});
 
-				it('should redirect to /community/./new with 302',
+				it('should redirect to /community/new with 302',
 					function(done) {
 						req.get('/community')
 							.followRedirect(false)
 							.expect(302)
-							.expect('Location', '/community/./new', done);
+							.expect('Location', '/community/new', done);
 				});
 			});
 
@@ -120,7 +120,7 @@ describe('Community', function() {
 					req.post('/community')
 						.form({name: ''})
 						.expect(302)
-						.expect('Location', '/community/./new', done);
+						.expect('Location', '/community/new', done);
 
 				});
 
@@ -132,10 +132,10 @@ describe('Community', function() {
 					req.post('/community')
 						.form({name: communityName})
 						.expect(302)
-						.expect('Location', '/community/./new', done);
+						.expect('Location', '/community/new', done);
 				});
 
-				it('should redirect to /community/./new with 302 ' +
+				it('should redirect to /community/new with 302 ' +
 					'if the community name already exists',
 					function(done) {
 						var communityName =
@@ -150,7 +150,7 @@ describe('Community', function() {
 								req.post('/community')
 									.form({name: communityName})
 									.expect(302)
-									.expect('Location', '/community/./new'
+									.expect('Location', '/community/new'
 										, done);
 							})
 							.error(function createError(errors) {

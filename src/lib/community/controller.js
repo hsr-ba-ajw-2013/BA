@@ -41,18 +41,9 @@ function renderIndex(req, res, community) {
  *   (Response) res - Response
  */
 exports.index = function index(req, res) {
-	var resident = req.user;
+	var community = res.locals.community;
 
-	resident.getCommunity().success(function result(community) {
-
-		if (!community) {
-			return res.redirect('./new');
-		}
-		return renderIndex(req, res, community);
-	}).error(function() {
-		return res.redirect('./new');
-	});
-
+	return renderIndex(req, res, community);
 };
 
 /** Function: fresh
@@ -167,7 +158,7 @@ function createCommunity(req, res) {
 			.success(function findResult(community) {
 				if (community !== null) {
 					req.flash('error', res.__('The community already exists.'));
-					return res.redirect('./new');
+					return res.redirect('/community/new');
 				}
 				Community.create(communityData)
 					.success(function createResult(community) {

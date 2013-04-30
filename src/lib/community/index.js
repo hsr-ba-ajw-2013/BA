@@ -8,6 +8,9 @@ var controller = require('./controller')
 	, loginRequired = require(path.join(
 		'..', '..', 'shared', 'policies', 'login-required')
 	)
+	, communityRequired = require(path.join(
+		'..', '..', 'shared', 'policies', 'community-required')
+	)
 	, communityTransporter = require('./transporter')
 	, PREFIX = '/community'
 	, SLUG_PREFIX = PREFIX + '/:slug';
@@ -40,9 +43,11 @@ module.exports = function communityInit(app) {
 
 	app.all(PREFIX + '*', loginRequired, communityTransporter);
 
-	app.get(PREFIX, controller.index);
+	app.get(PREFIX, communityRequired, controller.index);
 	app.post(PREFIX, controller.create);
 	app.get(PREFIX + '/new', controller.fresh);
+
+	app.all(SLUG_PREFIX, communityRequired);
 
 	app.get(SLUG_PREFIX, controller.get);
 	app.put(SLUG_PREFIX, controller.update);

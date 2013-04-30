@@ -11,7 +11,7 @@ module.exports = function createCommunityValidator(req, res, next) {
 	var errors = req.validationErrors();
 	if(errors) {
 		req.flash('error', errors[0].msg);
-		return res.redirect('./new');
+		return res.redirect('/community/new');
 	}
 	return next();
 };

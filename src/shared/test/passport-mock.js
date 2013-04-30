@@ -28,7 +28,7 @@ function passportMock(app, options) {
 	);
 
 	app.get('/mock/login', passport.authenticate('mock', {
-		successRedirect: '/community'
+		successRedirect: '/login'
 	}));
 }
 exports.passportMock = passportMock;

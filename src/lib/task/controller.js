@@ -13,29 +13,6 @@ var path = require('path')
 	];
 
 
-/** PrivateFunction: getCommunityFromResident
- * Gets the community by the resident and calls
- * next as the callback function
- *
- * Parameters:
- *   (Resident) resident - Resident
- *   (Response) response - Response
- *   (Function) next - Next callback
- */
-function getCommunityFromResident(resident, res, next) {
-	resident.getCommunity()
-		.success(function result(community) {
-			if(!community) {
-				return res.redirect('/community/new');
-			}
-			next(community);
-		})
-		.error(function error() {
-			res.send(500);
-		});
-}
-
-
 /** Function: index
  * Render list of tasks
  *
@@ -44,23 +21,21 @@ function getCommunityFromResident(resident, res, next) {
  *   (Response) res - Response
  */
 exports.index = function index(req, res) {
-	var resident = req.user;
+	var community = res.locals.community;
 
-	getCommunityFromResident(resident, res, function result(community) {
-		var order = parseInt(req.param('order'), 10) === 2 ? 'DESC' : 'ASC'
-			, field = AVAILABLE_FIELDS.indexOf(req.param('field')) !== -1 ?
-				req.param('field') : 'dueDate';
+	var order = parseInt(req.param('order'), 10) === 2 ? 'DESC' : 'ASC'
+		, field = AVAILABLE_FIELDS.indexOf(req.param('field')) !== -1 ?
+			req.param('field') : 'dueDate';
 
-		community.getTasks({order: field + ' ' + order}).success(
-			function result(tasks) {
-				res.render('task/views/index', {
-					newOrder: order === 'DESC' ? 1 : 2
-					, currOrder: order
-					, currField: field
-					, title: res.__('Tasks')
-					, tasks: tasks
-				});
-		});
+	community.getTasks({order: field + ' ' + order}).success(
+		function result(tasks) {
+			res.render('task/views/index', {
+				newOrder: order === 'DESC' ? 1 : 2
+				, currOrder: order
+				, currField: field
+				, title: res.__('Tasks')
+				, tasks: tasks
+			});
 	});
 };
 
@@ -72,14 +47,13 @@ exports.index = function index(req, res) {
  *   (Response) res - Response
  */
 exports.fresh = function fresh(req, res) {
-	var resident = req.user;
+	var community = res.locals.community;
 
-	getCommunityFromResident(resident, res, function result(community) {
-		return res.render('task/views/form', {
-			title: res.__('New Task')
-			, action: '/community/' + community.slug + '/task'
-		});
+	return res.render('task/views/form', {
+		title: res.__('New Task')
+		, action: '/community/' + community.slug + '/task'
 	});
+
 };
 
 /** PrivateFunction: errorHandler
@@ -158,25 +132,25 @@ function createTaskInDatabase(data, db, community, creator, res, next) {
  */
 function createTask(req, res) {
 	var resident = req.user
+		, community = res.locals.community
 		, db = req.app.get('db');
-	getCommunityFromResident(resident, res, function(community) {
-		var taskData = {
-			name: req.param('name')
-			, description: req.param('description')
-			, reward: req.param('reward')
-			, dueDate: moment(req.param('dueDate')).toDate()
-		};
 
-		createTaskInDatabase(taskData, db, community, resident, res,
-			function(task) {
-				if (req.is('json')) {
-					res.location('/community/' +
-						community.slug + '/task/' + task.id);
-					return res.send(201);
-				}
-				req.flash('success', res.__('Task successfully added.'));
-				return res.redirect('.');
-		});
+	var taskData = {
+		name: req.param('name')
+		, description: req.param('description')
+		, reward: req.param('reward')
+		, dueDate: moment(req.param('dueDate')).toDate()
+	};
+
+	createTaskInDatabase(taskData, db, community, resident, res,
+		function(task) {
+			if (req.is('json')) {
+				res.location('/community/' +
+					community.slug + '/task/' + task.id);
+				return res.send(201);
+			}
+			req.flash('success', res.__('Task successfully added.'));
+			return res.redirect('.');
 	});
 }
 
