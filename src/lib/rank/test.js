@@ -49,7 +49,7 @@ describe('Rank', function() {
 				});
 			});
 
-			describe('with community for the user', function() {
+			describe.skip('with community for the user', function() {
 				var req = request(app)
 					, name = utils.randomString(6)
 					, slug = uslug(name);
