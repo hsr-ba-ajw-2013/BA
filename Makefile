@@ -16,7 +16,7 @@ SCSS_PATH = src/shared/sass/app.scss
 CSS_PATH = src/public/stylesheets/app.css
 
 # .dir will be matched with the TESTS Variable
-TEST_FILES = community.dir home.dir resident.dir task.dir
+TEST_FILES = community.dir home.dir resident.dir task.dir rank.dir
 # .dir replaced by .test in order to use it in %.test
 TESTS = $(TEST_FILES:.dir=.test)
 LIVE_TESTS = $(TEST_FILES:.dir=.live-test)
