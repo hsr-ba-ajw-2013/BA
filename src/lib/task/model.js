@@ -48,8 +48,7 @@ module.exports = function init(app, db) {
 			isFulfilled: function() {
 				// bug in sequelize? When submitting no value for fulfilledAt
 				// it will tell "invalid date" instead of null.
-				return this.fulfilledAt !== null &&
-					this.fulfilledAt.toString() !== 'Invalid Date';
+				return this.fulfilledAt !== null;
 			}
 		}
 	});
