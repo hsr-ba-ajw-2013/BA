@@ -12,28 +12,11 @@ var path = require('path')
 	, mainJavaScriptFile = {
 		route: '/javascripts/app.js'
 		, file: path.join(process.cwd(), 'src', 'app.js')
-		, exclude: [path.join(process.cwd(), 'src', 'barefootFactory.js')].concat(getServerOnlyFiles())
+		, exclude: [path.join(process.cwd(), 'src', 'barefootFactory.js')]
 	};
-
-
-
-/** START DEBUG **/
-function getServerOnlyFiles() {
-	var _ = require('underscore');
-	var files = fs.readdirSync(path.join(process.cwd(), 'node_modules', 'barefoot', 'lib', 'server'));
-
-	_.each(files, function(file, i) {
-		files[i] = path.join(process.cwd(), 'node_modules', 'barefoot', 'lib', 'server', file);
-	});
-
-	return files;
-}
-/** END DEBUG **/
 
 // Keep a reference of the src directory:
 config.srcDir = path.join(process.cwd, 'src');
-
-// Setup basic Express.JS app:
 
 
 /** PrivateFunction: loadLayoutTemplate
@@ -71,12 +54,12 @@ function setupMiddlewares(app) {
 
 		next();
 	});
-	
+
 	app.use(function(req, res, next) {
 		res.cookie('locale', req.locale);
 		next();
 	});
-	
+
 	/*
 	middleware(app, config);
 

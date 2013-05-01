@@ -10,7 +10,7 @@ var Barefoot = require('barefoot')()
  * This implementation ensures that the locale available of this view is
  * inherited down to any available subviews.
  */
-RoomiesView.prototype.beforeRender = function beforeRender() {
+function beforeRender() {
 	if(_.has(this.options, 'locale')) {
 		var locale = this.options.locale;
 
@@ -20,4 +20,5 @@ RoomiesView.prototype.beforeRender = function beforeRender() {
 	}
 }
 
+RoomiesView.prototype.beforeRender = beforeRender;
 module.exports = RoomiesView;

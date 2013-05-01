@@ -51,10 +51,10 @@ module.exports = Router.extend({
 	 *     (<RoomiesView>) view - The view which should be rendered.
 	 */
 	, render: function render(view) {
+		/* jshint camelcase:false */ // Ensures that jshint ignores __super__
 		var locale = this.getLocale();
 		view.options.locale = locale;
-		
-		// Call the super-implementation of render:
-		return this.__proto__.__proto__.render.call(this, view);
+
+		return this.constructor.__super__.render.call(this, view);
 	}
 });

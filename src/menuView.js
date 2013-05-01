@@ -6,8 +6,9 @@ module.exports = View.extend({
 	, template: templates.menu
 
 	, beforeRender: function beforeRender() {
+		/* jshint camelcase:false */ // Ensures that jshint ignores __super__
 		templates.setLocale(this.options.locale);
-		this.__proto__.__proto__.beforeRender.call(this);
+		this.constructor.__super__.beforeRender.call(this);
 	}
 
 	, renderView: function() {
