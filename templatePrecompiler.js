@@ -17,7 +17,7 @@ _.each(templateFiles, function(file) {
 
 	if(file && ext === '.hbs') {
 		var name = file.substr(0, file.length-4)
-			, rawTemplate = fs.readFileSync(path.join(__dirname, 'src', 'templates', file), 'utf-8')
+			, rawTemplate = fs.readFileSync(path.join(templatesSource, file), 'utf-8')
 			, precompiledTemplate = Handlebars.precompile(rawTemplate);
 
 		if(precompiledTemplate) {
