@@ -10,13 +10,18 @@ module.exports = Router.extend({
 	}
 
 	, home: function home() {
-		this.render(new HomeView());
+		var locale = this.cookieAdapter.get('locale');
+		this.render(new HomeView({ locale: locale }));
 	}
 
 	, mainView: function() {
+		var locale = this.cookieAdapter.get('locale');
+
 		if(_.isUndefined(this._mainView)) {
 			this._mainView = new MainView();
 		}
+
+		this._mainView.options.locale = locale;
 		return this._mainView;
 	}
 });

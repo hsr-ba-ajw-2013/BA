@@ -47,6 +47,5 @@ module.exports = {
 		]
 	}
 
-
 	, sessionSecret: "CHANGEME"
 }

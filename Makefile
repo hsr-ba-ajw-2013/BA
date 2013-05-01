@@ -91,7 +91,7 @@ clean:
 
 precompile-templates:
 	@echo "Precompiling Templates"
-	@node template-precompiler.js
+	@node templatePrecompiler.js
 
 precompile-sass:
 	@echo "Precompiling SASS Stylesheets"

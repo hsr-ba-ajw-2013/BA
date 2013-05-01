@@ -7,7 +7,7 @@ var Handlebars = require('handlebars')
 	, path = require('path')
 	, fs = require('fs')
 	, templatesSource = path.join(__dirname, 'src', 'templates')
-	, templatesDestination = path.join(__dirname, 'src', 'templates', 'precompiled-templates.js')
+	, templatesDestination = path.join(__dirname, 'src', 'templates', 'precompiledTemplates.js')
 	, templateFiles = fs.readdirSync(templatesSource)
 	, precompiledTemplates = {}
 

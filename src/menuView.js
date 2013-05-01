@@ -3,12 +3,10 @@ var Barefoot = require('barefoot')()
 	, templates = require('./templates');
 
 module.exports = View.extend({
-	el: 'nav'
-	, initialize: function() {
-		//this.addSubview(new NavigationView());
-	}
+	el: '.fixed-navigation'
 	, template: templates.menu
 	, renderView: function() {
+		templates.setLocale(this.options.locale);
 		this.$el.html(this.template({user:{}}));
 	}
 });

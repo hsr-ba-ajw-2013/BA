@@ -38,8 +38,6 @@ Timestamp: Generated on dd.mm.yyyy
 # --------------------------------------------------------------------------
 
 
-File: Application  (app.js)
-
 Group: Components  {
 
    Group: Home  {
@@ -97,12 +95,12 @@ Group: Middleware  {
    File: i18n  (lib/middleware/i18n.js)
    File: Livereload  (lib/middleware/livereload.js)
    File: Logger  (lib/middleware/logger.js)
-   File: Middleware  (lib/middleware/index.js)
+   File: Middleware  (no auto-title, lib/middleware/index.js)
    File: Passport  (lib/middleware/passport.js)
    File: Router  (lib/middleware/router.js)
    File: Static  (lib/middleware/static.js)
    File: TemplateData  (lib/middleware/template-data.js)
-   File: Validator  (lib/middleware/validator.js)
+   File: Validator  (no auto-title, lib/middleware/validator.js)
    File: View  (lib/middleware/view.js)
    }  # Group: Middleware
 
@@ -110,7 +108,7 @@ Group: Shared  {
 
    Group: Test  {
 
-      File: PassportMock  (shared/test/passport-mock.js)
+      File: PassportMock  (no auto-title, shared/test/passport-mock.js)
       File: StrategyMock  (shared/test/strategy-mock.js)
       }  # Group: Test
 
@@ -136,6 +134,10 @@ Group: Shared  {
       }  # Group: Utils
 
    }  # Group: Shared
+
+File: barefootFactory.js  (barefootFactory.js)
+File: Rank  (lib/rank/index.js)
+File: Rank.Controller  (lib/rank/controller.js)
 
 Group: Index  {
 
