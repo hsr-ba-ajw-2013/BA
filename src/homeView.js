@@ -1,5 +1,4 @@
-var Barefoot = require('barefoot')()
-	, View = Barefoot.View;
+var View = require('./roomiesView');
 
 module.exports = View.extend({
 	el: '#main'

@@ -1,6 +1,5 @@
-var Barefoot = require('barefoot')()
+var View = require('./roomiesView')
 	, _ = require('underscore')
-	, View = Barefoot.View
 	, MenuView = require('./menuView');
 
 module.exports = View.extend({
