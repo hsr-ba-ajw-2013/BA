@@ -1,7 +1,7 @@
 var Barefoot = require('barefoot')()
 	, Router = Barefoot.Router
-	, MainView = require('./mainView')
-	, HomeView = require('./homeView')
+	, MainView = require('../views/main')
+	, HomeView = require('../views/home')
 	, _ = require('underscore');
 
 module.exports = Router.extend({

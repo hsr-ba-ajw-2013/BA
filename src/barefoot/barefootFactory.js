@@ -3,16 +3,16 @@ var path = require('path')
 	, express = require('express')
 	, _ = require('underscore')
 	, app = express()
-	, configFileName = '../config.' + app.settings.env
+	, configFileName = path.join(process.cwd(), 'config.' + app.settings.env)
 	, config = require(configFileName)
 
-	, roomiesLocales = require('./shared/locales')
+	, roomiesLocales = require('../shared/locales')
 	, locale = require('locale')(roomiesLocales.supported)
 
 	, mainJavaScriptFile = {
 		route: '/javascripts/app.js'
 		, file: path.join(process.cwd(), 'src', 'app.js')
-		, exclude: [path.join(process.cwd(), 'src', 'barefootFactory.js')]
+		, exclude: [path.join(process.cwd(), 'src', 'barefoot', 'barefootFactory.js')]
 	};
 
 // Keep a reference of the src directory:
@@ -27,7 +27,7 @@ config.srcDir = path.join(process.cwd, 'src');
  *     (String) the html template
  */
 function loadLayoutTemplate() {
-	var layoutFile = path.join(process.cwd(), 'src', 'layout.html')
+	var layoutFile = path.join(process.cwd(), 'src', 'barefoot', 'layout.html')
 		, encoding = 'utf8'
 		, layoutTemplate = fs.readFileSync(layoutFile, encoding);
 

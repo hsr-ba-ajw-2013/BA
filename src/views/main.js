@@ -1,5 +1,5 @@
 var View = require('./roomiesView')
-	, MenuView = require('./menuView');
+	, MenuView = require('./menu');
 
 module.exports = View.extend({
 	initialize: function() {

@@ -1,5 +1,5 @@
 var View = require('./roomiesView')
-	, templates = require('./templates');
+	, templates = require('../templates');
 
 module.exports = View.extend({
 	el: '.fixed-navigation'
@@ -12,6 +12,6 @@ module.exports = View.extend({
 	}
 
 	, renderView: function() {
-		this.$el.html(this.template({user:{}}));
+		this.$el.html(this.template({}));
 	}
 });

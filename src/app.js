@@ -6,7 +6,7 @@ var _ = require('underscore')
 
 if(Barefoot.isRunningOnServer()) {
 	// This is the only "on server" check which is necessary.
-	var barefootFactory = require('./barefootFactory');
+	var barefootFactory = require('./barefoot/barefootFactory');
 	_.extend(barefootStartOptions, barefootFactory);
 }
 Barefoot.start(Router, barefootStartOptions);
