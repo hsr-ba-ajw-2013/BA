@@ -8,7 +8,6 @@ REPORTER = spec
 COVERAGE_REPORTER = html-cov
 COVERALLS_REPORTER = mocha-lcov-reporter
 TEST_CMD = NODE_ENV=test ./node_modules/.bin/mocha --require test/runner.js --globals config
-COVERAGE_CMD = NODE_ENV=test ./node_modules/.bin/jscover src src-cov
 COVERALLS_CMD = NODE_ENV=test ./node_modules/.bin/jscoverage src src-cov --exclude /\.\(hbs\|otf\|eot\|svg\|ttf\|woff\|png\|ico\|html\|css\|json\)/
 TEST_LIVE_CMD = $(TEST_CMD) --growl --watch
 
@@ -38,20 +37,14 @@ coveralls:
 	@$(COVERALLS_CMD)
 	@echo "done"
 
-coverage:
-	@echo -n "Running jscover..."
-	@$(COVERAGE_CMD)
-	@echo "done"
+parse-code-coverage:
+	@echo "Parsing code coverage.."
+	@$(foreach the_test, $(TESTS), $(shell COVERAGE=1 $(TEST_CMD) --reporter $(COVERALLS_REPORTER) src/lib/$(subst .test,/test.js,$(the_test)) > coveralls_$(the_test).log))
 
-test-coverage: test coverage
-	@echo "Building Test Coverage Reports:"
-	@echo -n "Creating unit coverage report..."
-	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) src/lib/*/test.js  > unit-coverage.html
-	@echo "done"
-
-test-coveralls: test coveralls
-	@echo "Sending coverage to coveralls.io:"
-	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERALLS_REPORTER) src/lib/*/test.js | ./node_modules/coveralls/bin/coveralls.js
+test-coveralls: test coveralls parse-code-coverage
+	@echo "Merging & sending them to coveralls.."
+	@./node_modules/.bin/lcov-result-merger coveralls_\*.log | ./node_modules/coveralls/bin/coveralls.js
+	@echo "Done"
 
 setup: clean deps config precompile-sass
 	@echo "Done. You should now be able to start using 'npm start'."
@@ -102,4 +95,4 @@ docs:
 	-mkdir ./docs
 	@NaturalDocs -i ./src -o HTML ./docs -p ./.naturaldocs -xi ./src/public/javascripts/lib/ -s Default style
 
-.PHONY: test test-unit test-unit-live test-coverage setup clean precompile-sass-live lint deps config docs
+.PHONY: test test-unit test-unit-live test-coveralls parse-code-coverage setup clean precompile-sass-live lint deps config docs
