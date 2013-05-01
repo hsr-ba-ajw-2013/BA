@@ -14,4 +14,4 @@ src-cov
 src/public/stylesheets/app.css
 docs/
 .naturaldocs/Data
-src/templates/precompiled-templates.js
+src/templates/precompiledTemplates.js
