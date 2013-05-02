@@ -1,7 +1,7 @@
 # File: .jshintignore
 # Ignore the following folders/files when running JSHint automatically.
 
-src/public/javascripts/lib
-src/templates/precompiledTemplates.js
+src/server/public/javascripts/lib
+src/shared/templates/precompiledTemplates.js
 src/shared/locales/de.js
 src/shared/locales/en.js

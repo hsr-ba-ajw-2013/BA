@@ -1,10 +1,31 @@
 /** Class: Templates
+ * This class provides access to the precompiled handlebars templates of the
+ * roomies application.
  *
+ * When starting the application on the server, a "precompiledTemplates.js" file
+ * is genereated by precompiling all "*.hbs" files contained in the
+ * "src/shared/templates" directory.
+ *
+ * This particular file will be exposed by the templates module afterwards.
+ *
+ * In addition, all handlebars helpers are registered here.
+ *
+ * How to use a template:
+ * Assume that you have a template file named "src/shared/templates/fancy.hbs".
+ * After precompiliation, you can access that template as the follwoing example
+ * shows:
+ *
+ * > var templates = require('./shared/templates');
+ * >     , rendered = templates.fancy();
+ *
+ * How to set the locale for rendering:
+ * Before calling a particular template, you can use the <setLocale> function
+ * to define the locale/language, which you'd like to use.
  */
 var Handlebars = require('handlebars')
 	, _ = require('underscore')
 	, precompiledTemplates = require('./precompiledTemplates')
-	, locales = require('../shared/locales')
+	, locales = require('../locales')
 	, locale;
 
 

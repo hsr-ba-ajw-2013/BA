@@ -1,3 +1,8 @@
+/** Class: BarefootFactory
+ * The <BarefootFactory> is used to setup the server side application. It will
+ * only be loaded and used when the application is started on the node.js
+ * server.
+ */
 var path = require('path')
 	, fs = require('fs')
 	, express = require('express')
@@ -7,17 +12,52 @@ var path = require('path')
 	, config = require(configFileName)
 
 	, roomiesLocales = require('../shared/locales')
-	, locale = require('locale')(roomiesLocales.supported)
-
-	, mainJavaScriptFile = {
-		route: '/javascripts/app.js'
-		, file: path.join(process.cwd(), 'src', 'app.js')
-		, exclude: [path.join(process.cwd(), 'src', 'barefoot', 'barefootFactory.js')]
-	};
+	, locale = require('locale')(roomiesLocales.supported);
 
 // Keep a reference of the src directory:
 config.srcDir = path.join(process.cwd, 'src');
 
+
+/** PrivateFunction: getDirectoryFiles
+ * Returns an array with the paths of all files contained in the given path.
+ * This function traverses the directory tree down recursivly.
+ *
+ * Parameters:
+ *     (String) directoryPath - The directory to list
+ *     (Array) extensionFilter - An array with file extension you'd like to
+ *                               returns. Example: ['.js']
+ * Returns:
+ *     (Array) with absolute file paths
+ */
+function getDirectoryFiles(directoryPath, extensionFilter) {
+	extensionFilter = extensionFilter || [];
+
+	var files
+		, crawler = function crawler(subdirectory, fileBuffer) {
+			if(_.isUndefined(fileBuffer)) { fileBuffer = []; }
+
+			var content = fs.readdirSync(subdirectory);
+
+			_.each(content, function(file) {
+				var filePath = path.join(subdirectory, file)
+					, extension = path.extname(file);
+
+				if(fs.statSync(filePath).isFile()) {
+					if(extensionFilter.length === 0 ||
+						extensionFilter.indexOf(extension) !== -1) {
+						fileBuffer.push(filePath);
+					}
+				} else {
+					crawler(filePath, fileBuffer);
+				}
+			});
+
+			return fileBuffer;
+		};
+
+	files = crawler(directoryPath);
+	return files;
+}
 
 /** PrivateFunction: loadLayoutTemplate
  * Loads the "layout.html" file from the src directory and returns the file
@@ -27,19 +67,40 @@ config.srcDir = path.join(process.cwd, 'src');
  *     (String) the html template
  */
 function loadLayoutTemplate() {
-	var layoutFile = path.join(process.cwd(), 'src', 'barefoot', 'layout.html')
+	var layoutFile = path.join(process.cwd(), 'src', 'server', 'layout.html')
 		, encoding = 'utf8'
 		, layoutTemplate = fs.readFileSync(layoutFile, encoding);
 
 	return layoutTemplate;
 }
 
+/** PrivateFunction: clientJavaScriptFile
+ * Returns an object with information, where and how barefoot should server the
+ * client side javascript code.
+ */
+function clientJavaScriptFile() {
+	var serverOnlySource = path.join(process.cwd(), 'src', 'server');
+
+	return {
+		route: '/javascripts/app.js'
+		, file: path.join(process.cwd(), 'src', 'app.js')
+		, exclude: getDirectoryFiles(serverOnlySource, ['.js'])
+	};
+}
+
+/** Function: setupMiddlewares(app)
+ * This function is called by barefoot. It sets up all application specific
+ * middlewares for the given Express.JS app.
+ *
+ * Parameters:
+ *     (Object) app - An Express.JS app
+ */
 function setupMiddlewares(app) {
 	console.log('Setting up Express.JS Middleware');
 	app.use(locale);
 
 	app.use(express.bodyParser());
-	app.use(express.static(path.join(process.cwd(),'src','public')));
+	app.use(express.static(path.join(process.cwd(),'src', 'server', 'public')));
 
 	app.use(function(req, res, next) {
 		if(_.isUndefined(req.cookies)) {
@@ -134,5 +195,5 @@ module.exports = {
 	, startExpressApp: startExpressApp
 	, layoutTemplate: loadLayoutTemplate()
 	//, apiRoutes: apiRoutes
-	, mainJavaScriptFile: mainJavaScriptFile
+	, mainJavaScriptFile: clientJavaScriptFile()
 };
