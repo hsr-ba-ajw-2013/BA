@@ -11,7 +11,7 @@ src-cov
 *-coverage.html
 .vagrant
 .sass-cache/
-src/public/stylesheets/app.css
+src/server/public/stylesheets/app.css
 docs/
 .naturaldocs/Data
-src/templates/precompiledTemplates.js
+src/shared/templates/precompiledTemplates.js
