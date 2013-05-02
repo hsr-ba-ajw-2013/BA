@@ -12,8 +12,9 @@ COVERAGE_CMD = NODE_ENV=test ./node_modules/.bin/jscover src src-cov
 COVERALLS_CMD = NODE_ENV=test ./node_modules/.bin/jscoverage src src-cov --exclude /\.\(hbs\|otf\|eot\|svg\|ttf\|woff\|png\|ico\|html\|css\|json\)/
 TEST_LIVE_CMD = $(TEST_CMD) --growl --watch
 
-SCSS_PATH = src/shared/sass/app.scss
-CSS_PATH = src/public/stylesheets/app.css
+SCSS_BASE = src/server/sass
+SCSS_PATH = $(SCSS_BASE)/app.scss
+CSS_PATH = src/server/public/stylesheets/app.css
 
 
 test: test-unit test-functional
@@ -96,7 +97,7 @@ precompile-templates:
 precompile-sass:
 	@echo "Precompiling SASS Stylesheets"
 	@-rm $(CSS_PATH)
-	@-sass --trace -t compressed --load-path src/shared/sass/vendor --load-path src/shared/sass/vendor/foundation --load-path src/shared/sass/vendor/bourbon $(SCSS_PATH) $(CSS_PATH)
+	@-sass --trace -t compressed --load-path $(SCSS_BASE)/vendor --load-path $(SCSS_BASE)/vendor/foundation --load-path $(SCSS_BASE)/vendor/bourbon $(SCSS_PATH) $(CSS_PATH)
 
 precompile-sass-live:
 	@nodemon -w src/shared/sass -e scss -x "make precompile-sass -f" Makefile
