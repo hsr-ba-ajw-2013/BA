@@ -1,22 +1,23 @@
 /** Module: Logger
  * Logs requests & errors if enabled.
  *
- * Uses:
- *   - <winston at https://github.com/flatiron/winston>
- *   - <express-winston at https://github.com/firebaseco/express-winston>
+ * More information:
+ * * <winston at https://github.com/flatiron/winston>
+ * * <express-winston at https://github.com/firebaseco/express-winston>
  */
 
-var expressWinston = require('express-winston'),
-	winston = require('winston');
+var expressWinston = require('express-winston')
+	, winston = require('winston');
 
-/** Function: loggerInit
- * Initializes logging
+/** PrivateFunction: setupErrorLogging
+ * Initializes a winston logger for the given Express.js app to log error
+ * related messages.
  *
  * Parameters:
- *   (Express) app - Initialized express application
+ *   (Object) app - Express.JS app to add the logger to
  *   (Object) config - Configuration
  */
-module.exports = function loggerInit(app, config) {
+function setupErrorLogging(app, config) {
 	app.use(expressWinston.errorLogger({
 		transports: [
 			new winston.transports.Console({
@@ -27,8 +28,16 @@ module.exports = function loggerInit(app, config) {
 		]
 		, level: config.logging.errorLoglevel
 	}));
+}
 
-	// request logging
+/** PrivateFunction: setupRequestLogging
+ * Initializes a winston logger for the given Express.js app to log requests.
+ *
+ * Parameters:
+ *   (Object) app - Express.JS app to add the logger to
+ *   (Object) config - Configuration
+ */
+function setupRequestLogging(app, config) {
 	app.use(expressWinston.logger({
 		transports: [
 			new winston.transports.Console({
@@ -39,4 +48,19 @@ module.exports = function loggerInit(app, config) {
 		]
 		, level: config.logging.requestLoglevel
 	}));
-};
+}
+
+/** Function: loggerInit
+ * Initializes the winston logger for the given Express.JS application using the
+ * passed configuration options.
+ *
+ * Parameters:
+ *   (Object) app - Express.JS app to add the logger to
+ *   (Object) config - Configuration
+ */
+function setupLoggers(app, config) {
+	setupErrorLogging(app, config);
+	setupRequestLogging(app, config);
+}
+
+module.exports = setupLoggers;

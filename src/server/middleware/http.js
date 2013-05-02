@@ -1,34 +1,33 @@
 /** Module: HTTP
- * HTTP Middleware
- *
- * Handles:
- *   - parsing body using <bodyParser
- *                         at http://expressjs.com/api.html#bodyParser>
- *   - parsing cookies using <cookieParser
- *                             at http://expressjs.com/api.html#cookieParser>
- *   - session support using <session at
- *                 http://www.senchalabs.org/connect/middleware-session.html>
- *                 and <SequelizeStore at
- *                    https://github.com/mweibel/connect-session-sequelize>
- *   - faux HTTP method support using <methodOverride at
- *           http://www.senchalabs.org/connect/middleware-methodOverride.html>
+ * The HTTP middleware sets up a few default middlewares to an Express.JS app:
+ * * <bodyParser at http://expressjs.com/api.html#bodyParser> to ensure that
+ *   request payload is injected into the request object
+ * * <cookieParser at http://expressjs.com/api.html#cookieParser> to parse
+ *   cookies
+ * * <session at http://www.senchalabs.org/connect/middleware-session.html>
+ *   and <SequelizeStore at
+ *   https://github.com/mweibel/connect-session-sequelize> for session handling
+ * * <methodOverride at
+ *   http://www.senchalabs.org/connect/middleware-methodOverride.html> for faux
+ *   HTTP support
  */
 
 var express = require('express')
-	, SequelizeStore = require('connect-session-sequelize')(express);
+	//, SequelizeStore = require('connect-session-sequelize')(express);
+	;
 
-/** Function: httpInit
- * Initializes http middleware
+/** Function: setupHttp
+ * Adds described middlewares to the passed Express.JS application
  *
  * Parameters:
- *   (Express) app - Initialized express application
+ *   (Object) app - Express.JS application
  *   (Object) config - Configuration
  */
-module.exports = function httpInit(app, config) {
+function setupHttp(app/*, config*/) {
 	app.use(express.bodyParser());
-
 	app.use(express.cookieParser());
-	app.use(express.session({
+
+	/*app.use(express.session({
 		store: new SequelizeStore({
 			db: app.get('db')
 		})
@@ -36,4 +35,7 @@ module.exports = function httpInit(app, config) {
 	}));
 
 	app.use(express.methodOverride());
-};
+	*/
+}
+
+module.exports = setupHttp;

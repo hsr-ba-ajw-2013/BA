@@ -12,7 +12,9 @@ var path = require('path')
 	, config = require(configFileName)
 
 	, roomiesLocales = require('../shared/locales')
-	, locale = require('locale')(roomiesLocales.supported);
+	, locale = require('locale')(roomiesLocales.supported)
+
+	, middleware = require('./middleware');
 
 // Keep a reference of the src directory:
 config.srcDir = path.join(process.cwd, 'src');
@@ -99,8 +101,8 @@ function setupMiddlewares(app) {
 	console.log('Setting up Express.JS Middleware');
 	app.use(locale);
 
-	app.use(express.bodyParser());
-	app.use(express.static(path.join(process.cwd(),'src', 'server', 'public')));
+	//app.use(express.bodyParser());
+	//app.use(express.static(y));
 
 	app.use(function(req, res, next) {
 		if(_.isUndefined(req.cookies)) {
@@ -121,9 +123,9 @@ function setupMiddlewares(app) {
 		next();
 	});
 
-	/*
 	middleware(app, config);
 
+	/*
 	home(app, config);
 	login(app, config);
 
