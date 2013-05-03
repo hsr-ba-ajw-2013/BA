@@ -11,10 +11,11 @@ var path = require('path')
 	, configFileName = path.join(process.cwd(), 'config.' + app.settings.env)
 	, config = require(configFileName)
 
-	, roomiesLocales = require('../shared/locales')
-	, locale = require('locale')(roomiesLocales.supported)
+	, templateLocales = require('../shared/locales')
+	, locale = require('locale')(templateLocales.supported)
 
-	, middleware = require('./middleware');
+	, middleware = require('./middleware')
+	, api = require('./api');
 
 // Keep a reference of the src directory:
 config.srcDir = path.join(process.cwd, 'src');
@@ -125,6 +126,8 @@ function setupMiddlewares(app) {
 
 	middleware(app, config);
 
+
+
 	/*
 	home(app, config);
 	login(app, config);
@@ -161,41 +164,11 @@ function startExpressApp(app) {
 	return app;
 }
 
-/*
-var apiRoutes = {
-	get: {
-		'/contacts': function(query) {
-			console.log('bäm, here are your contacts', query);
-			return contacts;
-		}
-	}
-	, post: {
-		'/contacts': function(contact, query) {
-			console.log('yay, save a contact', contact, query);
-		}
-		, '/notfound': function() {
-			throw new errors.NotFoundError('yay, errors are working :)');
-		}
-	}
-	, put: {
-		'/contacts': function(contact, query) {
-			console.log('yay, update a contact', contact, query);
-			contacts.push(contact);
-			console.log(contacts);
-		}
-	}
-	, del: {
-		'/contacts/:id/:name': function(id, name, query) {
-			console.log(':( delete a contact', id, name, query);
-		}
-	}
-};*/
-
 module.exports = {
 	app: app
 	, setupMiddlewares: setupMiddlewares
 	, startExpressApp: startExpressApp
 	, layoutTemplate: loadLayoutTemplate()
-	//, apiRoutes: apiRoutes
+	, apiRoutes: api.routes
 	, mainJavaScriptFile: clientJavaScriptFile()
 };

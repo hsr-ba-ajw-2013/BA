@@ -2,13 +2,12 @@
  * Initializes all middlewares
  */
 
-var //browserify = require('./browserify')
-	//, clientConfig = require('./client-config')
+var	//, clientConfig = require('./client-config')
 	//, connectDomain = require('./connect-domain')
-	//, db = require('./db')
+	db = require('./db')
 	//, flash = require('./flash')
 	//, handler = require('./handler')
-	http = require('./http')
+	, http = require('./http')
 	//, i18n = require('./i18n')
 	//, livereload = require('./livereload')
 	, logger = require('./logger')
@@ -20,17 +19,18 @@ var //browserify = require('./browserify')
 	//, view = require('./view');
 	;
 
-/** Function: middlewareInit
+/** Function: setupMiddleware
  * Calls the required middlewares
  *
- * Beware: The Ordering of middlewares is very important.
- *         Don't reorder if you don't know what you're doing.
+ * Beware:
+ * The Ordering of middlewares is very important. Don't reorder if you don't
+ * know what you're doing.
  *
  * Parameters:
- *   (Express) app - Express Application
- *   (Object) config - Configuration
+ *     (Express) app - Express Application
+ *     (Object) config - Configuration
  */
-module.exports = function middlewareInit(app, config) {
+function setupMiddleware(app, config) {
 	expressStatic(app, config);
 
 	//i18n(app, config);
@@ -41,7 +41,7 @@ module.exports = function middlewareInit(app, config) {
 
 	//TODO: csrf
 
-	//db(app, config);
+	db(app, config);
 
 	http(app, config);
 
@@ -64,4 +64,6 @@ module.exports = function middlewareInit(app, config) {
 	//livereload(app, config);
 
 	//router(app, config);
-};
+}
+
+module.exports = setupMiddleware;
