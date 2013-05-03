@@ -1,4 +1,5 @@
 var View = require('./roomiesView')
+	, UserModel = require('../models/user')
 	, templates = require('../templates');
 
 module.exports = View.extend({
@@ -12,6 +13,9 @@ module.exports = View.extend({
 	}
 
 	, renderView: function() {
+		var user = new UserModel();
+		user.fetch();
+
 		this.$el.html(this.template({}));
 	}
 });

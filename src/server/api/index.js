@@ -1,3 +1,11 @@
+var apiRoutes = {
+	get: {
+		'/test': function() {
+			console.log(this.req.locale);
+		}
+	}
+};
+
 /*
 var apiRoutes = {
 	get: {
@@ -28,4 +36,4 @@ var apiRoutes = {
 	}
 };*/
 
-module.exports = { routes: {} };
+module.exports = { routes: apiRoutes };
