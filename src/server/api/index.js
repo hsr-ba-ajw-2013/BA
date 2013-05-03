@@ -1,7 +1,9 @@
 var apiRoutes = {
 	get: {
 		'/test': function() {
-			console.log(this.req.locale);
+			// Accessing the db middleware:
+			//console.log(this.app.get('db'));
+			return {};
 		}
 	}
 };
