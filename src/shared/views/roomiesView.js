@@ -20,5 +20,37 @@ function beforeRender() {
 	}
 }
 
-RoomiesView.prototype.beforeRender = beforeRender;
+/** Function: setDocumentTitle
+ * Takes the given title string, adds " * Roomies" to it and sets it as the
+ * documents title.
+ *
+ * Parameters:
+ *     (String) title - The title you'd like to display.
+ *
+ * See also:
+ * * <setPlainDocumentTitle>
+ */
+function setDocumentTitle(title) {
+	this.setPlainDocumentTitle(title + ' &middot; Roomies');
+}
+
+/** Function: setPlainDocumentTitle
+ * Takes the given title string and sets it as the current documents title.
+ *
+ * Parameters:
+ *     (String) title - The title you'd like to display
+ *
+ * See also:
+ * * <setDocumentTitle>
+ */
+function setPlainDocumentTitle(title) {
+	this.$('head title').html(title);
+}
+
+
+_.extend(RoomiesView.prototype, {
+	beforeRender: beforeRender
+	, setDocumentTitle: setDocumentTitle
+	, setPlainDocumentTitle: setPlainDocumentTitle
+});
 module.exports = RoomiesView;
