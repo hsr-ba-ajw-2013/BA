@@ -29,6 +29,12 @@ var Handlebars = require('handlebars')
 	, locale;
 
 
+/** PrivateFunction: safeStringHelper
+ */
+function safeStringHelper(text) {
+	return new Handlebars.SafeString(text);
+}
+
 /** PrivateFunction: translationHelper
  * A small helper function to make the <Locales> module available to handlebar
  * templates. It is avialable using the "trans" helper:
@@ -38,13 +44,28 @@ var Handlebars = require('handlebars')
  *
  * Parameters:
  *     (String) text -  Text to translate using <Locales.translate>.
+ *     (Object) options - If needed, values which should replace placeholders in
+ *                        the text.
  *
  * Returns:
  *     (String) a translated version of the text parameter.
  */
-function translationHelper(text) {
-	return locales.translate(locale, text);
+function translationHelper(text, options) {
+	return locales.translate(locale, text, options);
 }
+
+
+/** PrivateFunction: blockTranslationHelper
+ */
+function blockTranslationHelper(data, obj) {
+	if (!obj) {
+		obj = data;
+		data = obj.hash;
+	}
+
+	return safeStringHelper(translationHelper(obj.fn(this), data));
+}
+
 
 /** Function: setLocale
  * Sets the locale which should be used to render the templates.
@@ -59,8 +80,9 @@ function setLocale(newLocale) {
 	locale = newLocale;
 }
 
+Handlebars.registerHelper('safestring', safeStringHelper);
 Handlebars.registerHelper('trans', translationHelper);
-
+Handlebars.registerHelper('blocktrans', blockTranslationHelper);
 
 _.extend(precompiledTemplates, { setLocale: setLocale });
 module.exports = precompiledTemplates;

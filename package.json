@@ -39,6 +39,7 @@
 
 		, "handlebars": "1.0.10"
 		, "barefoot": "git://github.com/swissmanu/barefoot.git"
+		, "sprintf": "~0.1.0"
 	}
 
 	, "devDependencies": {

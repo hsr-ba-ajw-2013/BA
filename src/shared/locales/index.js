@@ -7,7 +7,8 @@ var translations = {
 		, en: require('./en')
 	}
 	, _ = require('underscore')
-	, languages = _.keys(translations);
+	, languages = _.keys(translations)
+	, vsprintf = require('sprintf').vsprintf;
 
 /** Function: translate
  * Translates a text using the available translations to the given
@@ -33,6 +34,12 @@ function translate(locale, text) {
 		if(!_.isUndefined(translation)) {
 			result = translation;
 		}
+	}
+
+	// If there are more than the usual arguments, try applying them using 
+	// sprintf by replacing eventual placeholders:
+	if (arguments.length > 2) {
+		result = vsprintf(result, Array.prototype.slice.call(arguments, 2));
 	}
 
 	return result;

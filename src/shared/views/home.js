@@ -6,7 +6,7 @@ module.exports = View.extend({
 	, initialize: function() {
 
 	}
-	, template: templates.login
+	, template: templates.community.fresh
 	, renderView: function() {
 		this.$el.html(this.template({}));
 	}
