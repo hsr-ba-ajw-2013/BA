@@ -3,16 +3,17 @@
  */
 
 var	//, clientConfig = require('./client-config')
-	//, connectDomain = require('./connect-domain')
-	db = require('./db')
+	connectDomain = require('./connect-domain')
+	, db = require('./db')
 	//, flash = require('./flash')
 	//, handler = require('./handler')
 	, http = require('./http')
+	, locale = require('./locale')
 	//, i18n = require('./i18n')
 	//, livereload = require('./livereload')
 	, logger = require('./logger')
 	//, templateData = require('./template-data')
-	//, passport = require('./passport')
+	, passport = require('./passport')
 	//, router = require('./router')
 	, expressStatic = require('./static')
 	//, validator = require('./validator')
@@ -45,16 +46,16 @@ function setupMiddleware(app, config) {
 
 	http(app, config);
 
+	locale(app, config);
+
 	//flash(app, config);
 	//validator(app, config);
 
-	//passport(app, config);
-
-	//browserify(app, config);
+	passport(app, config);
 
 	// important: the whole application doesn't work
 	// if connect-domain is in front of http.
-	//connectDomain(app, config);
+	connectDomain(app, config);
 
 	//handler(app, config);
 
