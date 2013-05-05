@@ -9,7 +9,7 @@
  *   https://github.com/mweibel/connect-session-sequelize> for session handling
  * * <methodOverride at
  *   http://www.senchalabs.org/connect/middleware-methodOverride.html> for faux
- *   HTTP support
+ *   HTTP method support
  */
 
 var express = require('express')
