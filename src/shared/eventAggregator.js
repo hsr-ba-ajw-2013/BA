@@ -7,8 +7,7 @@
  * * <Backbone.Events at http://backbonejs.org/#Events>
  */
 var Barefoot = require('barefoot')()
-	, _ = require('underscore');
-
-eventAggregator = _.extend({}, Barefoot.Events);
+	, _ = require('underscore')
+	, eventAggregator = _.extend({}, Barefoot.Events);
 
 module.exports = eventAggregator;

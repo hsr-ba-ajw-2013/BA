@@ -48,7 +48,7 @@ function setDocumentTitle(title) {
  */
 function setPlainDocumentTitle(title) {
 	this.$('head title').html(title);
-	
+
 	if(!_.isUndefined(this.eventAggregator)) {
 		this.eventAggregator.trigger('change:documenttitle', title);
 	}

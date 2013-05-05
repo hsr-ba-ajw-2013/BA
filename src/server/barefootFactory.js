@@ -97,7 +97,7 @@ function clientJavaScriptFile() {
  */
 function setupMiddlewares(app) {
 	console.log('Setting up Express.JS Middleware');
-	
+
 	middleware(app, config);
 
 

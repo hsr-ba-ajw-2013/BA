@@ -16,7 +16,7 @@ var _ = require('underscore')
  *     (Request) req - Express.JS request object
  *     (Response) res - Express.JS response object
  *     (Function) next - Proceed with the next middleware callback
- */	
+ */
 function ensureLocale(req, res, next) {
 	if(_.isUndefined(req.cookies)) {
 		req.cookies = { locale: req.locale };

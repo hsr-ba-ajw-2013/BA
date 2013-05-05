@@ -53,7 +53,9 @@ module.exports = function(eventAggregator) {
 		, mainView: function mainView() {
 			var locale = this.getLocale();
 
-			if(_.isUndefined(this._mainView)) { this._mainView = new MainView(); }
+			if(_.isUndefined(this._mainView)) {
+				this._mainView = new MainView();
+			}
 			this._mainView.options.locale = locale;
 
 			return this._mainView;
