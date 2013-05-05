@@ -37,6 +37,9 @@ function setDocumentTitle(title) {
 /** Function: setPlainDocumentTitle
  * Takes the given title string and sets it as the current documents title.
  *
+ * If available, this function triggers a "change:documenttitle" event on the
+ * event aggregator.
+ *
  * Parameters:
  *     (String) title - The title you'd like to display
  *
@@ -45,6 +48,10 @@ function setDocumentTitle(title) {
  */
 function setPlainDocumentTitle(title) {
 	this.$('head title').html(title);
+	
+	if(!_.isUndefined(this.eventAggregator)) {
+		this.eventAggregator.trigger('change:documenttitle', title);
+	}
 }
 
 

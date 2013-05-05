@@ -1,6 +1,7 @@
 var _ = require('underscore')
 	, Barefoot = require('barefoot')()
-	, Router = require('./shared/router')
+	, eventAggregator = require('./shared/eventAggregator')
+	, Router = require('./shared/router')(eventAggregator)
 	, dataStore = new Barefoot.DataStore()
 	, barefootStartOptions = { dataStore: dataStore };
 

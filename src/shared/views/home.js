@@ -10,4 +10,7 @@ module.exports = View.extend({
 	, renderView: function() {
 		this.$el.html(this.template({}));
 	}
+	, afterRender: function() {
+		this.setDocumentTitle('Welcome');
+	}
 });
