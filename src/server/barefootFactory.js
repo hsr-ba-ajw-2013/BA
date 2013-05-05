@@ -18,7 +18,7 @@ var path = require('path')
 	, api = require('./api');
 
 // Keep a reference of the src directory:
-config.srcDir = path.join(process.cwd, 'src');
+config.srcDir = path.join(process.cwd(), 'src');
 
 
 /** PrivateFunction: getDirectoryFiles
