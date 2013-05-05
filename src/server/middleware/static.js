@@ -1,6 +1,6 @@
 /** Module: Static
  * Serves static files from the "src/server/public" directory using the common
- * express.js middleware "static".
+ * express.js middleware "static". Further the favicon is set here.
  */
 
 var express = require('express'),
@@ -16,6 +16,11 @@ var express = require('express'),
  */
 function setupStatic(app, config) {
 	app.use(express.static(path.join(config.srcDir, 'server', 'public')));
+
+	app.use(express.favicon(
+		path.join(config.srcDir, 'server', 'public', 'images', 'favicon.ico')
+		, { maxAge: 2592000000 }) // 30 days
+	);
 }
 
 module.exports = setupStatic;
