@@ -6,11 +6,10 @@ module.exports = View.extend({
 	, initialize: function() {
 
 	}
-	, template: templates.login
 	, renderView: function() {
-		this.$el.html(this.template({}));
+		this.$el.html(templates.community.fresh({}));
 	}
 	, afterRender: function() {
-		this.setDocumentTitle('Welcome');
+		this.setDocumentTitle('Create Community');
 	}
 });

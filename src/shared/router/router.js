@@ -3,15 +3,21 @@ module.exports = function(eventAggregator) {
 		, Router = Barefoot.Router
 		, MainView = require('../views/main')
 		, HomeView = require('../views/home')
+		, CreateCommunityView = require('../views/newCommunity')
 		, _ = require('underscore');
 
 	return Router.extend({
 		routes: {
 			'': 'home'
+			, 'community': 'community'
 		}
 
 		, home: function home() {
 			this.render(this.createView(HomeView));
+		}
+
+		, community: function community() {
+			this.render(this.createView(CreateCommunityView));
 		}
 
 
