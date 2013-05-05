@@ -1,21 +1,24 @@
-/** Module: Passport
- * Passport configuration & initialization using <Passportjs
- *                                           at http://passportjs.org/>.
+/** Module: Auth
+ * Provides authentication services using <Passport at http://passportjs.org/>.
  *
- * Uses the <FacebookStrategy at http://passportjs.org/guide/facebook/>.
+ * For the moment, authentication with the <FacebookStrategy at
+ * http://passportjs.org/guide/facebook/> is implemented. The following routes
+ * are added to your Express.JS application during setup:
+ * * /auth/facebook
+ * * /auth/facebook/callback
  */
 
 var passport = require('passport')
 	, FacebookStrategy = require('passport-facebook').Strategy;
 
-/** Function: passportInit
- * Initializes passport.js
+/** Function: setupAuth
+ * Initialize the Passport authentication provider and its Facebook strategy.
  *
  * Parameters:
  *   (Express) app - Initialized express application
  *   (Object) config - Configuration
  */
-module.exports = function passportInit(app, config) {
+function setupAuth(app, config) {
 	var db = app.get('db');
 
 	app.use(passport.initialize());
@@ -107,6 +110,7 @@ module.exports = function passportInit(app, config) {
 
 	app.set('passport', passport);
 
-
 	return app;
-};
+}
+
+module.exports = setupAuth;

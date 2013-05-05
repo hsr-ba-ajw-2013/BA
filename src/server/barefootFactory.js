@@ -11,9 +11,6 @@ var path = require('path')
 	, configFileName = path.join(process.cwd(), 'config.' + app.settings.env)
 	, config = require(configFileName)
 
-	, templateLocales = require('../shared/locales')
-	, locale = require('locale')(templateLocales.supported)
-
 	, middleware = require('./middleware')
 	, api = require('./api');
 
@@ -100,55 +97,33 @@ function clientJavaScriptFile() {
  */
 function setupMiddlewares(app) {
 	console.log('Setting up Express.JS Middleware');
-	app.use(locale);
-
-	//app.use(express.bodyParser());
-	//app.use(express.static(y));
-
-	app.use(function(req, res, next) {
-		if(_.isUndefined(req.cookies)) {
-			req.cookies = { locale: req.locale };
-		} else {
-			if(_.has(req.cookies, 'locale')) {
-				req.cookies = { locale: req.locale };
-			} else {
-				req.cookies = _.extend(req.cookies, { locale: req.locale });
-			}
-		}
-
-		next();
-	});
-
-	app.use(function(req, res, next) {
-		res.cookie('locale', req.locale);
-		next();
-	});
-
+	
 	middleware(app, config);
-
 
 
 	/*
 	home(app, config);
 	login(app, config);
 
-	// FIXME: Ugly
-	var communityRelationships = community(app, config)
-		, residentRelationships = resident(app, config)
-		, taskRelationships = task(app, config);
+	*/
 
-	rank(app, config);
+	// FIXME: Ugly
+	var communityRelationships = require('./OLD lib/community/model')(app)
+		, residentRelationships = require('./OLD lib/resident/model')(app)
+		, taskRelationships = require('./OLD lib/task/model')(app);
+
+	//rank(app, config);
 
 	communityRelationships(app);
 	residentRelationships(app);
 	taskRelationships(app);
 	//rankRelationships(app);
-
+	/*
 	facebookChannel(app, config);
 	*/
 
 	// sync db
-	//app.get('db').sync();
+	app.get('db').sync();
 }
 
 /** Function: startExpressApp

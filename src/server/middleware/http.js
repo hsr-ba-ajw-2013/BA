@@ -13,8 +13,7 @@
  */
 
 var express = require('express')
-	//, SequelizeStore = require('connect-session-sequelize')(express);
-	;
+	, SequelizeStore = require('connect-session-sequelize')(express);
 
 /** Function: setupHttp
  * Adds described middlewares to the passed Express.JS application
@@ -23,19 +22,20 @@ var express = require('express')
  *   (Object) app - Express.JS application
  *   (Object) config - Configuration
  */
-function setupHttp(app/*, config*/) {
+function setupHttp(app, config) {
+	var db = app.get('db');
+
 	app.use(express.bodyParser());
 	app.use(express.cookieParser());
 
-	/*app.use(express.session({
+	app.use(express.session({
 		store: new SequelizeStore({
-			db: app.get('db')
+			db: db
 		})
 		, secret: config.sessionSecret
 	}));
 
 	app.use(express.methodOverride());
-	*/
 }
 
 module.exports = setupHttp;

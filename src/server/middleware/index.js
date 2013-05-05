@@ -13,7 +13,7 @@ var	//, clientConfig = require('./client-config')
 	//, livereload = require('./livereload')
 	, logger = require('./logger')
 	//, templateData = require('./template-data')
-	, passport = require('./passport')
+	, auth = require('./auth')
 	//, router = require('./router')
 	, expressStatic = require('./static')
 	//, validator = require('./validator')
@@ -33,37 +33,23 @@ var	//, clientConfig = require('./client-config')
  */
 function setupMiddleware(app, config) {
 	expressStatic(app, config);
-
 	//i18n(app, config);
-
 	//templateData(app, config);
 	//view(app, config);
 	logger(app, config);
-
 	//TODO: csrf
-
 	db(app, config);
-
 	http(app, config);
-
 	locale(app, config);
-
 	//flash(app, config);
 	//validator(app, config);
-
-	passport(app, config);
-
+	auth(app, config);
 	// important: the whole application doesn't work
 	// if connect-domain is in front of http.
 	connectDomain(app, config);
-
 	//handler(app, config);
-
-
 	//clientConfig(app, config);
-
 	//livereload(app, config);
-
 	//router(app, config);
 }
 
