@@ -1,5 +1,5 @@
 var View = require('./roomiesView')
-	, UserModel = require('../models/user')
+	, ResidentModel = require('../models/resident')
 	, templates = require('../templates');
 
 module.exports = View.extend({
@@ -13,9 +13,21 @@ module.exports = View.extend({
 	}
 
 	, renderView: function() {
-		var user = new UserModel();
-		user.fetch();
+		var resident = new ResidentModel();
+		resident.set('facebookId', '1329590618');
+		resident.fetch();
+		console.log('Fetch: ', resident);
 
 		this.$el.html(this.template({}));
+	}
+
+	, events: {
+		'click .fixed-navigation': 'onClickFixedNavigation'
+	}
+
+	, onClickFixedNavigation: function onClickFixedNavigation() {
+		var resident = new ResidentModel();
+		resident.set('facebookId', '1329590618');
+		resident.fetch();
 	}
 });
