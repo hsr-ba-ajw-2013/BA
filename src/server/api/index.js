@@ -1,41 +1,26 @@
-var apiRoutes = {
-	get: {
-		'/test': function() {
-			// Accessing the db middleware:
-			//console.log(this.app.get('db'));
-			return {};
-		}
-	}
-};
+var _ = require('underscore');
 
-/*
-var apiRoutes = {
-	get: {
-		'/contacts': function(query) {
-			console.log('bäm, here are your contacts', query);
-			return contacts;
+var api = (function() {
+	return {
+		routes: {}
+		, addRoute: function addRoute(method, route, callback) {
+			if(_.isUndefined(this.routes[method])) {
+				this.routes[method] = {};
+			}
+			this.routes[method][route] = callback;
 		}
-	}
-	, post: {
-		'/contacts': function(contact, query) {
-			console.log('yay, save a contact', contact, query);
-		}
-		, '/notfound': function() {
-			throw new errors.NotFoundError('yay, errors are working :)');
-		}
-	}
-	, put: {
-		'/contacts': function(contact, query) {
-			console.log('yay, update a contact', contact, query);
-			contacts.push(contact);
-			console.log(contacts);
-		}
-	}
-	, del: {
-		'/contacts/:id/:name': function(id, name, query) {
-			console.log(':( delete a contact', id, name, query);
-		}
-	}
-};*/
 
-module.exports = { routes: apiRoutes };
+		, get: function get(route, callback) {
+			this.addRoute('get', route, callback);
+		}
+		, post: function post(route, callback) {
+			this.addRoute('post', route, callback);
+		}
+	};
+})();
+
+
+require('./resident')(api);
+
+
+module.exports = { routes: api.routes };
