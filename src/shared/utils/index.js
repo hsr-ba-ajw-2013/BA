@@ -20,3 +20,8 @@ exports.randomString = function randomString(length) {
 
 	return crypto.pseudoRandomBytes(length).toString('hex').substr(0, length);
 };
+
+/** Function: EventEmitter
+ * Event Emitter class
+ */
+exports.EventEmitter = require('./event-emitter');

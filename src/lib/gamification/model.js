@@ -1,4 +1,4 @@
-/** Model: Community.Model
+/** Model: Gamification.Model
  * The actual Community domain object model.
  */
 var Sequelize = require('sequelize');
@@ -11,12 +11,15 @@ var Sequelize = require('sequelize');
  */
 function createRelationships(app) {
 	var db = app.get('db')
-		, Resident = db.daoFactoryManager.getDAO('Resident')
-		, Task = db.daoFactoryManager.getDAO('Task')
-		, Community = db.daoFactoryManager.getDAO('Community');
+		, Achievement = db.daoFactoryManager.getDAO('Achievement')
+		, Resident = db.daoFactoryManager.getDAO('Resident');
+	Achievement.belongsTo(Resident);
+}
 
-	Community.hasMany(Task);
-	Community.hasMany(Resident);
+function getAchievementTypes() {
+	return [
+		'10tasks', '20tasks'
+	];
 }
 
 /** Function: init
@@ -32,10 +35,11 @@ function createRelationships(app) {
  */
 module.exports = function init(app, db) {
 	db = app ? app.get('db') : db;
-	db.define('Community', {
-		name: Sequelize.STRING
-		, shareLink: {type: Sequelize.STRING, unique: true}
-		, slug: {type: Sequelize.STRING, unique: true}
+
+	var achievements = require('./achievements');
+	var ids = require('./achievements').identifiers();
+	db.define('Achievement', {
+		'type': Sequelize.ENUM.apply(Sequelize.ENUM, ids)
 	});
 
 	return createRelationships;
