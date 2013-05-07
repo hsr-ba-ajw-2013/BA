@@ -1,0 +1,62 @@
+<div class="row">
+	<div class="large-3 small-4 columns">
+		<img class="avatar" src="//graph.facebook.com/{{user.facebookId}}/picture?type=large" />
+	</div>
+	<div class="large-9 small-8 columns">
+		<h2>{{user.name}}</h2>
+		<p>
+			<strong>{{trans "Points:"}}</strong> 156 <i class="icon-trophy"></i><br/>
+			<strong>{{trans "Badges:"}}</strong> 3
+		</p>
+	</div>
+</div>
+
+<div class="row">
+	<div class="large-12 columns">
+		<table class="badges">
+			<thead>
+				<tr>
+					<th class="badge">{{trans "Badges"}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="badge"><i class="icon-certificate"></i> WG-Mutter: 50 Aufgaben erledigt</td>
+				</tr>
+				<tr>
+					<td class="badge"><i class="icon-certificate"></i> Fürsroglich: 30 Aufgaben erledigt</td>
+				</tr>
+				<tr>
+					<td class="badge"><i class="icon-certificate"></i> Newbie: 5 Aufgaben erledigt</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+<div class="row">
+	<div class="large-12 columns">
+		<table class="community">
+			<thead>
+				<tr>
+					<th class="community">{{trans "Community"}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td class="community">{{trans "You're in the community named: %s" community.name}}</td>
+				</tr>
+				<tr class="danger">
+					<td class="community">
+						<form action="/community" method="POST">
+							{{#blocktrans}}<b>DANGER ZONE: </b>Delete the community{{/blocktrans}}
+							<input type="submit" value="{{trans "Delete the community"}}" class="button button-danger large-2 columns right">
+							<input type="hidden" name="_method" value="DELETE" />
+							<input type="hidden" name="community" value="{{community.slug}}" />
+						</form>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

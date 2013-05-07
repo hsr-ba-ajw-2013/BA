@@ -45,6 +45,11 @@ module.exports = function init(app, db) {
 			, allowNull: false
 			, defaultValue: true
 		}
+		, isAdmin: {
+			type: Sequelize.BOOLEAN
+			, allowNull: false
+			, defaultValue: false
+		}
 	}
 	, {
 		instanceMethods: {

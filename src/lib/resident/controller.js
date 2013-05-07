@@ -87,3 +87,15 @@ exports.create = function(req, res) {
 		});
 };
 
+exports.ownProfile = function(req, res) {
+	var resident = req.user;
+
+	return res.redirect('./' + resident.facebookId);
+};
+
+exports.profile = function(req, res) {
+	return res.render('resident/views/profile', {
+		title: res.__('Your profile')
+	});
+};
+
