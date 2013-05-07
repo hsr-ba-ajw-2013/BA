@@ -1,3 +1,4 @@
+/* global describe, it, beforeEach */
 var EventEmitter = require('../../shared/utils').EventEmitter
 	, observer = require('./observer')
 	, path = require('path')
@@ -69,5 +70,5 @@ describe('Gamification', function() {
 			});
 			eventBus.trigger('task:done', resident, task);
 		});
-	})
+	});
 });

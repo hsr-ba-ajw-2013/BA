@@ -14,4 +14,4 @@ exports.identifiers = function() {
 		ids.push(exports.achievements[obj].identifier);
 	}
 	return ids;
-}
+};

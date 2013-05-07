@@ -55,6 +55,7 @@ function main() {
 
 	// sync db
 	app.get('db').sync().error(function(err) {
+		/* jshint unused: false */
 		//silently fail if anything goes wrong.
 		//console.log(err);
 	});

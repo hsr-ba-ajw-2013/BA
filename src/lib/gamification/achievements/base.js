@@ -2,14 +2,29 @@
  * Base Interface for Achievements
  */
 
-var IDENTIFIER = 'base';
-
 function BaseAchievement() {
-	this.identifier = IDENTIFIER;
+}
+
+BaseAchievement.prototype.giveAchievementIfMatches =
+	function giveAchievementIfMatches(db, data) {
+	/* jshint unused: false */
+	throw new Error('Not implemented');
 };
 
-BaseAchievement.prototype.giveAchievementIfMatches = function(db, data) {
-	throw new Error('Not implemented');
+BaseAchievement.prototype.giveAchievement =
+	function giveAchievement(db, resident, cb) {
+	var Achievement = db.daoFactoryManager.getDAO('Achievement');
+	Achievement.create({
+		type: this.identifier
+	}).success(function createdAchievement(achievement) {
+		achievement.setResident(resident).success(function addedToResident() {
+			cb(true);
+		}).error(function(err) {
+			console.log(err);
+		});
+	}).error(function(err) {
+		console.log(err);
+	});
 };
 
 module.exports = BaseAchievement;

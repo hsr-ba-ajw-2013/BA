@@ -16,12 +16,6 @@ function createRelationships(app) {
 	Achievement.belongsTo(Resident);
 }
 
-function getAchievementTypes() {
-	return [
-		'10tasks', '20tasks'
-	];
-}
-
 /** Function: init
  * Initialize community model
  *
@@ -36,7 +30,6 @@ function getAchievementTypes() {
 module.exports = function init(app, db) {
 	db = app ? app.get('db') : db;
 
-	var achievements = require('./achievements');
 	var ids = require('./achievements').identifiers();
 	db.define('Achievement', {
 		'type': Sequelize.ENUM.apply(Sequelize.ENUM, ids)

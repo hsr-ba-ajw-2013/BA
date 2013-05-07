@@ -25,14 +25,15 @@ EventEmitter.prototype.off = function off(event, listener) {
 	}
 	/* jshint camelcase:false */
 	this.super_.removeListener(event, listener);
-}
+};
 
-EventEmitter.prototype.on = function on(event, listeners) {
+EventEmitter.prototype.on = function on(event, listener) {
 	if(event === 'all') {
 		return this.allListeners.push(listener);
 	}
+	/* jshint camelcase: false */
 	EventEmitter.super_.prototype.on.apply(this, arguments);
-}
+};
 
 EventEmitter.prototype.trigger = function trigger(event) {
 	/* jshint camelcase:false */
@@ -43,6 +44,6 @@ EventEmitter.prototype.trigger = function trigger(event) {
 		return true;
 	}
 	this.emit(event, arguments);
-}
+};
 
 module.exports = EventEmitter;

@@ -6,7 +6,7 @@ var util = require('util')
  */
 function FirstTaskRule() {
 	BaseRule.call(this);
-};
+}
 
 util.inherits(FirstTaskRule, BaseRule);
 
