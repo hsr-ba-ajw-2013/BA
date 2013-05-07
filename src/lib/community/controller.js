@@ -169,12 +169,18 @@ function createCommunity(req, res) {
 							}
 							resident.setCommunity(community)
 								.success(function setResult() {
-									req.flash('success',
-										res.__('Community \'%s' +
-											'\' created successfully.'
-											, community.name));
-									return res.redirect('/community/' +
-										community.slug + '/invite');
+									resident.isAdmin = true;
+									resident.save().success(function() {
+										req.flash('success',
+											res.__('Community \'%s' +
+												'\' created successfully.'
+												, community.name));
+										return res.redirect('/community/' +
+											community.slug + '/invite');
+									})
+									.error(function() {
+										res.send(500);
+									});
 								})
 								.error(function() {
 									res.send(500);
@@ -198,6 +204,46 @@ function createCommunity(req, res) {
  * to create a community.
  */
 exports.create = [createCommunityValidator, createCommunity];
+
+/** Function: del
+ * Delete the community is the user has right to do it.
+ */
+exports.del = function handlePost(req, res) {
+	var resident = req.user
+		, communitySlugToDelete = req.param('community');
+
+	if (!resident.isAdmin) {
+		req.flash('error',
+			res.__('You do not have sufficient rights ' +
+				'to perform this operation.'));
+		return res.status(403).redirect('back');
+	}
+
+	resident.getCommunity()
+		.success(function successResult(residentCommunity) {
+			if (residentCommunity &&
+				communitySlugToDelete === residentCommunity.slug) {
+
+				residentCommunity.enabled = false;
+				residentCommunity.save().success(function saveSuccess() {
+					req.flash('success',
+						res.__('The community was successfully deleted.'));
+					return res.redirect('/');
+				})
+				.error(function() {
+					res.send(500);
+				});
+			} else {
+				req.flash('error',
+					res.__('You do not have sufficient rights ' +
+						'to perform this operation.'));
+				return res.status(403).redirect('back');
+			}
+		})
+		.error(function getError() {
+			return res.send(500);
+		});
+};
 
 /** Function: invite
  * Show the invite page. So can share the community with some roomies. YAAY :)
@@ -242,7 +288,7 @@ exports.invite = function invite(req, res) {
 		});
 };
 
-exports.get = exports.update = exports.del =
+exports.get = exports.update =
 	function(req, res) {
 		/*jshint unused:false*/
 		res.send(405);  // respond with "method not allowed"
