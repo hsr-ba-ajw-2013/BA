@@ -40,71 +40,105 @@ Timestamp: Generated on dd.mm.yyyy
 
 File: Application  (app.js)
 
-Group: Components  {
+Group: Lib  {
 
-   Group: Home  {
+   Group: Components  {
 
-      File: Component  (no auto-title, lib/home/index.js)
-      File: Controller  (no auto-title, lib/home/controller.js)
-      }  # Group: Home
+      File: Cluster  (lib/cluster/index.js)
 
-   Group: Community  {
+      Group: Community  {
 
-      File: Component  (no auto-title, lib/community/index.js)
-      File: Controller  (no auto-title, lib/community/controller.js)
-      File: Model  (no auto-title, lib/community/model.js)
-      File: Transporter  (lib/community/transporter.js)
-      }  # Group: Community
+         File: Component  (no auto-title, lib/community/index.js)
+         File: Controller  (no auto-title, lib/community/controller.js)
+         File: Model  (no auto-title, lib/community/model.js)
+         File: Transporter  (lib/community/transporter.js)
+         }  # Group: Community
 
-   Group: Resident  {
+      Group: FacebookChannel  {
 
-      File: Component  (no auto-title, lib/resident/index.js)
-      File: Controller  (no auto-title, lib/resident/controller.js)
-      File: Model  (no auto-title, lib/resident/model.js)
-      }  # Group: Resident
+         File: Component  (no auto-title, lib/facebook-channel/index.js)
+         File: Controller  (no auto-title, lib/facebook-channel/controller.js)
+         }  # Group: FacebookChannel
 
-   Group: Task  {
+      Group: Gamification  {
 
-      File: Component  (no auto-title, lib/task/index.js)
-      File: Controller  (no auto-title, lib/task/controller.js)
-      File: Model  (no auto-title, lib/task/model.js)
-      }  # Group: Task
+         File: Component  (no auto-title, lib/gamification/index.js)
+         File: Model  (no auto-title, lib/gamification/model.js)
+         File: Observer  (lib/gamification/observer.js)
 
-   Group: FacebookChannel  {
+         Group: Achievements  {
 
-      File: Component  (no auto-title, lib/facebook-channel/index.js)
-      File: Controller  (no auto-title, lib/facebook-channel/controller.js)
-      }  # Group: FacebookChannel
+            File: Achievements  (no auto-title, lib/gamification/achievements/index.js)
+            File: BaseAchievement  (lib/gamification/achievements/base.js)
+            File: FirstAchievement  (lib/gamification/achievements/first-task.js)
+            }  # Group: Achievements
 
-   Group: Login  {
+         Group: Rules  {
 
-      File: Component  (no auto-title, lib/login/index.js)
-      File: Controller  (no auto-title, lib/login/controller.js)
-      }  # Group: Login
+            File: Rules  (no auto-title, lib/gamification/rules/index.js)
+            File: BaseRule  (lib/gamification/rules/base.js)
+            File: FirstTaskRule  (lib/gamification/rules/first-task.js)
+            }  # Group: Rules
 
-   File: Cluster  (lib/cluster/index.js)
-   }  # Group: Components
+         }  # Group: Gamification
 
-Group: Middleware  {
+      Group: Home  {
 
-   File: Browserify  (lib/middleware/browserify.js)
-   File: ClientConfig  (lib/middleware/client-config.js)
-   File: ConnectDomain  (lib/middleware/connect-domain.js)
-   File: Database  (lib/middleware/db.js)
-   File: Flash  (lib/middleware/flash.js)
-   File: Handler  (lib/middleware/handler.js)
-   File: HTTP  (lib/middleware/http.js)
-   File: i18n  (lib/middleware/i18n.js)
-   File: Livereload  (lib/middleware/livereload.js)
-   File: Logger  (lib/middleware/logger.js)
-   File: Middleware  (lib/middleware/index.js)
-   File: Passport  (lib/middleware/passport.js)
-   File: Router  (lib/middleware/router.js)
-   File: Static  (lib/middleware/static.js)
-   File: TemplateData  (lib/middleware/template-data.js)
-   File: Validator  (lib/middleware/validator.js)
-   File: View  (lib/middleware/view.js)
-   }  # Group: Middleware
+         File: Component  (no auto-title, lib/home/index.js)
+         File: Controller  (no auto-title, lib/home/controller.js)
+         }  # Group: Home
+
+      Group: Login  {
+
+         File: Component  (no auto-title, lib/login/index.js)
+         File: Controller  (no auto-title, lib/login/controller.js)
+         }  # Group: Login
+
+      Group: Rank  {
+
+         File: Component  (no auto-title, lib/rank/index.js)
+         File: Controller  (no auto-title, lib/rank/controller.js)
+         }  # Group: Rank
+
+      Group: Resident  {
+
+         File: Component  (no auto-title, lib/resident/index.js)
+         File: Controller  (no auto-title, lib/resident/controller.js)
+         File: Model  (no auto-title, lib/resident/model.js)
+         }  # Group: Resident
+
+      Group: Task  {
+
+         File: Component  (no auto-title, lib/task/index.js)
+         File: Controller  (no auto-title, lib/task/controller.js)
+         File: Model  (no auto-title, lib/task/model.js)
+         }  # Group: Task
+
+      }  # Group: Components
+
+   Group: Middleware  {
+
+      File: Browserify  (lib/middleware/browserify.js)
+      File: ClientConfig  (lib/middleware/client-config.js)
+      File: ConnectDomain  (lib/middleware/connect-domain.js)
+      File: Database  (lib/middleware/db.js)
+      File: EventBus  (lib/middleware/event-bus.js)
+      File: Flash  (lib/middleware/flash.js)
+      File: Handler  (lib/middleware/handler.js)
+      File: HTTP  (lib/middleware/http.js)
+      File: i18n  (lib/middleware/i18n.js)
+      File: Livereload  (lib/middleware/livereload.js)
+      File: Logger  (lib/middleware/logger.js)
+      File: Middleware  (lib/middleware/index.js)
+      File: Passport  (lib/middleware/passport.js)
+      File: Router  (lib/middleware/router.js)
+      File: Static  (lib/middleware/static.js)
+      File: TemplateData  (lib/middleware/template-data.js)
+      File: Validator  (lib/middleware/validator.js)
+      File: View  (lib/middleware/view.js)
+      }  # Group: Middleware
+
+   }  # Group: Lib
 
 Group: Shared  {
 
@@ -117,7 +151,7 @@ Group: Shared  {
    Group: Validators  {
 
       File: CreateCommunityValidator  (shared/validators/create-community.js)
-      File: CreateTaskValidator  (shared/validators/create-task.js)
+      File: CreateTaskValidator  (shared/validators/task-form.js)
       }  # Group: Validators
 
    Group: Exceptions  {
@@ -127,12 +161,14 @@ Group: Shared  {
 
    Group: Policies  {
 
+      File: CommunityRequired  (shared/policies/community-required.js)
       File: LoginRequired  (no auto-title, shared/policies/login-required.js)
       }  # Group: Policies
 
    Group: Utils  {
 
       File: Utils  (shared/utils/index.js)
+      File: Utils.EventEmitter  (shared/utils/event-emitter.js)
       }  # Group: Utils
 
    }  # Group: Shared
@@ -148,5 +184,7 @@ Group: Index  {
    Exception Index: Exceptions
    Module Index: Module
    Component Index: Components
+   Class Index: Classes
+   Interface Index: Interfaces
    }  # Group: Index
 
