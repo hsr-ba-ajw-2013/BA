@@ -16,6 +16,9 @@ function getResidentWithFacebookId(success, error, facebookId) {
 	var db = this.app.get('db')
 		, residentDao = db.daoFactoryManager.getDAO('Resident');
 
+
+	//console.log('--------- Authenticated? ', this.req.isAuthenticated());
+
 	residentDao.find({ where: { facebookId: facebookId }})
 		.success(function results(resident) {
 			if(resident !== null) {

@@ -126,6 +126,17 @@ function setupMiddlewares(app) {
 	app.get('db').sync();
 }
 
+/** Function: setupApiAdapter
+ * Injected into barefoot to trigger the setup of all API functionalities.
+ *
+ * Parameters:
+ *     (APIAdapter) apiAdapter - The Barefoot APIAdapter which wants to get its
+ *                               configuration.
+ */
+function setupApiAdapter(apiAdapter) {
+	api(apiAdapter);
+}
+
 /** Function: startExpressApp
  * This callback is used by barefoot to start the server application.
  */
@@ -144,6 +155,6 @@ module.exports = {
 	, setupMiddlewares: setupMiddlewares
 	, startExpressApp: startExpressApp
 	, layoutTemplate: loadLayoutTemplate()
-	, apiRoutes: api.routes
+	, setupApiAdapter: setupApiAdapter
 	, mainJavaScriptFile: clientJavaScriptFile()
 };
