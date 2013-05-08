@@ -2,10 +2,12 @@
 var request = require('super-request')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()
+	, srcPath = path.join(process.cwd(),
+		(process.env.COVERAGE ? 'src-cov' : 'src'))
 	, utils = require(path.join(
-			process.cwd(), 'src', 'shared', 'utils', 'index.js'))
+			srcPath, 'shared', 'utils', 'index.js'))
 	, doLogin = require(path.join(
-			process.cwd(), 'src', 'shared', 'test', 'passport-mock')
+			srcPath, 'shared', 'test', 'passport-mock')
 		).doLogin;
 
 after(function(done) {

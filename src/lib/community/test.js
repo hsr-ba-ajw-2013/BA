@@ -1,13 +1,15 @@
 /* global describe, it, beforeEach, after */
 var request = require('super-request')
-		, path = require('path')
-		, app = require(path.join(process.cwd(), 'index.js'))()
-		, utils = require(path.join(
-				process.cwd(), 'src', 'shared', 'utils', 'index.js'))
-		, uslug = require('uslug')
-		, doLogin = require(path.join(
-				process.cwd(), 'src', 'shared', 'test', 'passport-mock')
-			).doLogin;
+	, path = require('path')
+	, srcPath = path.join(process.cwd(),
+		(process.env.COVERAGE ? 'src-cov' : 'src'))
+	, app = require(path.join(process.cwd(), 'index.js'))()
+	, utils = require(path.join(
+			srcPath, 'shared', 'utils', 'index.js'))
+	, uslug = require('uslug')
+	, doLogin = require(path.join(
+			srcPath, 'shared', 'test', 'passport-mock')
+		).doLogin;
 
 
 after(function(done) {
