@@ -1,12 +1,12 @@
 /** Module: API
  */
 var _ = require('underscore')
-	, residentApi = require('./resident');
+	, setupResidentApi = require('./resident');
 
 
 
 function initApi(api) {
-	residentApi(api);
+	setupResidentApi(api);
 }
 
 module.exports = initApi;
