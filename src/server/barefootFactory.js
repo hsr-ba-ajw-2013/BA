@@ -105,25 +105,12 @@ function setupMiddlewares(app) {
 	home(app, config);
 	login(app, config);
 
-	*/
-
-	// FIXME: Ugly
-	var communityRelationships = require('./OLD lib/community/model')(app)
-		, residentRelationships = require('./OLD lib/resident/model')(app)
-		, taskRelationships = require('./OLD lib/task/model')(app);
-
 	//rank(app, config);
 
-	communityRelationships(app);
-	residentRelationships(app);
-	taskRelationships(app);
-	//rankRelationships(app);
-	/*
 	facebookChannel(app, config);
 	*/
 
 	// sync db
-	app.get('db').sync();
 }
 
 /** Function: setupApiAdapter
