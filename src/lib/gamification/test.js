@@ -1,7 +1,7 @@
 /* global describe, it, beforeEach */
 var	path = require('path')
-	, srcPath = path.join(process.cwd(), (process.env.COVERAGE ? 'src-cov' : 'src'))
-	, request = require('super-request')
+	, srcPath = path.join(process.cwd(),
+		(process.env.COVERAGE ? 'src-cov' : 'src'))
 	, EventEmitter = require(path.join(srcPath, 'shared', 'utils')).EventEmitter
 	, observer = require(path.join(srcPath, 'lib', 'gamification', 'observer'))
 	, app = require(path.join(process.cwd(), 'index.js'))()
@@ -12,14 +12,13 @@ var	path = require('path')
 describe('Gamification', function() {
 	describe('Tasks', function() {
 		var eventBus, resident, task, Achievement
-			, req = request(app)
 			, user = {
 				name: utils.randomString(12)
 				, facebookId: Math.round(1000 * (Math.random() + 1)) *
 					Math.round(1000 * (Math.random() + 1))
 			}
 			, communityName = utils.randomString(12)
-			, communitySlug = uslug(communityName)
+			, communitySlug = uslug(communityName);
 
 		beforeEach(function(done) {
 			var db = app.get('db')
@@ -32,29 +31,30 @@ describe('Gamification', function() {
 
 			Achievement = db.daoFactoryManager.getDAO('Achievement');
 
-			Resident.create(user).success(function residentCreated(createdResident) {
-				resident = createdResident;
-				Community.create({
-					name: communityName
-					, slug: communitySlug
-					, shareLink: communityName
-				}).success(function(community) {
-					resident.setCommunity(community);
+			Resident.create(user).success(
+				function residentCreated(createdResident) {
+					resident = createdResident;
+					Community.create({
+						name: communityName
+						, slug: communitySlug
+						, shareLink: communityName
+					}).success(function(community) {
+						resident.setCommunity(community);
 
-					Task.create({
-						name: utils.randomString(12)
-						, description: utils.randomString(12)
-						, reward: 5
-						, dueDate: new Date(new Date() + 24 * 3600)
-					}).success(function(createdTask) {
-						task = createdTask;
-						task.setCommunity(community)
-							.success(function communitySet() {
-								task = createdTask;
-								done();
-							});
+						Task.create({
+							name: utils.randomString(12)
+							, description: utils.randomString(12)
+							, reward: 5
+							, dueDate: new Date(new Date() + 24 * 3600)
+						}).success(function(createdTask) {
+							task = createdTask;
+							task.setCommunity(community)
+								.success(function communitySet() {
+									task = createdTask;
+									done();
+								});
+						});
 					});
-				});
 			}).error(function(err) {
 				done(err);
 			});
@@ -71,7 +71,8 @@ describe('Gamification', function() {
 						resident.getAchievements()
 							.success(function(achievements) {
 								if(!achievements.length) {
-									return done(new Error('No achievements found'));
+									return done(
+										new Error('No achievements found'));
 								}
 								done();
 							});
