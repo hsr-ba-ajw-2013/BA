@@ -6,6 +6,7 @@ var browserify = require('./browserify')
 	, clientConfig = require('./client-config')
 	, connectDomain = require('./connect-domain')
 	, db = require('./db')
+	, eventBus = require('./event-bus')
 	, flash = require('./flash')
 	, handler = require('./handler')
 	, http = require('./http')
@@ -33,6 +34,8 @@ module.exports = function middlewareInit(app, config) {
 	expressStatic(app, config);
 
 	i18n(app, config);
+
+	eventBus(app, config);
 
 	templateData(app, config);
 	view(app, config);

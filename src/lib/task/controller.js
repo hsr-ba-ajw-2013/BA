@@ -225,6 +225,8 @@ exports.check = function check(req, res) {
 				.success(function taskSaveSuccess() {
 					task.setFulfillor(resident)
 						.success(function setFulfillorResult() {
+							req.app.get('eventbus')
+								.trigger('task:done', resident, task);
 							return res.redirect('../../');
 						})
 						.error(function setFulfillorError() {
