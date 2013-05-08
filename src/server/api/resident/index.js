@@ -3,7 +3,6 @@
  * encapsulates everything related to the Resident domain object.
  */
 var controller = require('./controller')
-	, model = require('./model')
 	, URL_PREFIX = '/resident'
 
 /** Function: residentInit

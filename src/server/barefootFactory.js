@@ -140,8 +140,8 @@ function startExpressApp(app) {
 module.exports = {
 	app: app
 	, setupMiddlewares: setupMiddlewares
-	, startExpressApp: startExpressApp
-	, layoutTemplate: loadLayoutTemplate()
 	, setupApiAdapter: setupApiAdapter
 	, mainJavaScriptFile: clientJavaScriptFile()
+	, layoutTemplate: loadLayoutTemplate()
+	, startExpressApp: startExpressApp
 };
