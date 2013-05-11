@@ -36,6 +36,11 @@ module.exports = function init(app, db) {
 		name: Sequelize.STRING
 		, shareLink: {type: Sequelize.STRING, unique: true}
 		, slug: {type: Sequelize.STRING, unique: true}
+		, enabled: {
+			type: Sequelize.BOOLEAN
+			, allowNull: false
+			, defaultValue: true
+		}
 	});
 
 	return createRelationships;
