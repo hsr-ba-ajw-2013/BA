@@ -11,6 +11,9 @@ var controller = require('./controller')
 	, communityRequired = require(path.join(
 		'..', '..', 'shared', 'policies', 'community-required')
 	)
+	, communityIsActive = require(path.join(
+		'..', '..', 'shared', 'policies', 'community-isactive')
+	)
 	, COMMUNITY_PREFIX = '/community/:slug'
 	, RANK_PREFIX = COMMUNITY_PREFIX + '/rank';
 
@@ -28,7 +31,7 @@ module.exports = function rankInit(app) {
 	 * /community/:slug/rank GET -- index
 	 */
 
-	app.all(RANK_PREFIX, loginRequired, communityRequired);
+	app.all(RANK_PREFIX, loginRequired, communityRequired, communityIsActive);
 
 	app.get(RANK_PREFIX, controller.index);
 };

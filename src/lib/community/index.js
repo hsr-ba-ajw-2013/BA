@@ -55,7 +55,7 @@ module.exports = function communityInit(app) {
 
 	app.get(SLUG_PREFIX, controller.get);
 	app.put(SLUG_PREFIX, controller.update);
-	app.get(SLUG_PREFIX + '/invite', controller.invite);
+	app.get(SLUG_PREFIX + '/invite', communityIsActive, controller.invite);
 
 	app.del(SLUG_PREFIX, controller.del);
 

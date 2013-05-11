@@ -11,6 +11,9 @@ var controller = require('./controller')
 	, communityRequired = require(path.join(
 		'..', '..', 'shared', 'policies', 'community-required')
 	)
+	, communityIsActive = require(path.join(
+		'..', '..', 'shared', 'policies', 'community-isactive')
+	)
 	, COMMUNITY_PREFIX = '/community/:slug'
 	, TASK_PREFIX = COMMUNITY_PREFIX + '/task';
 
@@ -33,7 +36,7 @@ module.exports = function taskInit(app) {
 	 *				DELETE -- del
 	 */
 
-	app.all(TASK_PREFIX, loginRequired, communityRequired);
+	app.all(TASK_PREFIX, loginRequired, communityRequired, communityIsActive);
 
 	app.get(TASK_PREFIX, controller.index);
 	app.post(TASK_PREFIX, controller.create);
