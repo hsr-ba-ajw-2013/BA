@@ -16,7 +16,7 @@ module.exports = View.extend({
 		var resident = new ResidentModel();
 		resident.set('facebookId', '1329590618');
 		resident.fetch();
-		console.log('Fetch: ', resident);
+		//console.log('Fetch: ', resident);
 
 		this.$el.html(this.template({}));
 	}

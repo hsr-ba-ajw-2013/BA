@@ -20,6 +20,7 @@ function beforeRender() {
 	}
 }
 
+
 /** Function: setDocumentTitle
  * Takes the given title string, adds " * Roomies" to it and sets it as the
  * documents title.
