@@ -140,60 +140,69 @@ function createCommunity(req, res) {
 		, communityData = {
 			name: req.param('name')
 		};
-
 	createUniqueShareLink(db, function(err, link) {
 		if (err) {
 			return res.send(500);
 		}
 		communityData.shareLink = link;
 
-		if (resident.CommunityId !== null) {
-			req.flash('error',
-				res.__('What exactly are you trying? You\'re ' +
-					'already in a community...'));
-			return res.redirect('/community');
-		}
-
-		Community.find({ where: { name: communityData.name }})
-			.success(function findResult(community) {
-				if (community !== null) {
-					req.flash('error', res.__('The community already exists.'));
-					return res.redirect('/community/new');
+		resident.getCommunity()
+			.success(function getSuccess(community) {
+				if (community && community.enabled) {
+					req.flash('error',
+						res.__('What exactly are you trying? You\'re ' +
+							'already in a community...'));
+					return res.redirect('/community');
 				}
-				Community.create(communityData)
-					.success(function createResult(community) {
 
-						addUniqueSlug(db, community, function(err) {
-							if(err) {
-								return res.send(500);
-							}
-							resident.setCommunity(community)
-								.success(function setResult() {
-									resident.isAdmin = true;
-									resident.save().success(function() {
-										req.flash('success',
-											res.__('Community \'%s' +
-												'\' created successfully.'
-												, community.name));
-										return res.redirect('/community/' +
-											community.slug + '/invite');
-									})
-									.error(function() {
-										res.send(500);
-									});
-								})
-								.error(function() {
-									res.send(500);
+				Community.find({ where: { name: communityData.name }})
+					.success(function findResult(community) {
+						if (community !== null) {
+							req.flash('error', res.__('The community' +
+								' already exists.'));
+							return res.redirect('/community/new');
+						}
+						Community.create(communityData)
+							.success(function createResult(community) {
+
+								addUniqueSlug(db, community, function(err) {
+									if(err) {
+										return res.send(500);
+									}
+									resident.setCommunity(community)
+										.success(function setResult() {
+											resident.isAdmin = true;
+											resident.save().success(function() {
+												req.flash('success',
+													res.__('Community \'%s' +
+														'\' created' +
+														' successfully.'
+														, community.name));
+												return res.redirect(
+													'/community/' +
+													community.slug + '/invite');
+											})
+											.error(function() {
+												res.send(500);
+											});
+										})
+										.error(function() {
+											res.send(500);
+										});
 								});
-						});
 
-					}).error(function createError() {
+							}).error(function createError() {
+								return res.send(500);
+							});
+					})
+					.error(function findError() {
 						return res.send(500);
 					});
 			})
-			.error(function findError() {
+			.error(function getError() {
 				return res.send(500);
 			});
+
 	});
 }
 
