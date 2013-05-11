@@ -191,4 +191,56 @@ describe('Community', function() {
 			});
 		});
 	});
+
+	describe('DEL /community' ,function() {
+		describe('unauthorized', function() {
+			it('should redirect to /login', function(done){
+				request(app)
+					.del('/community')
+					.followRedirect(false)
+					.expect(302)
+					.expect('Location', '/login', done);
+			});
+		});
+
+		describe('authorized', function() {
+			var req = request(app)
+				, theCommunity = {};
+
+			beforeEach(function before(done) {
+				req = doLogin(app, req);
+				var communityName = utils.randomString(6)
+				, Community = app.get('db')
+									.daoFactoryManager
+									.getDAO('Community');
+
+					req.post('/community')
+						.form({name: communityName})
+						.end(function(err) {
+							if (err) {
+								return done(err);
+							}
+
+							Community.find({name: communityName})
+								.success(function findSuccess(community) {
+									theCommunity = community;
+									return done();
+								})
+								.error(function findError(error) {
+									return done(error);
+								});
+						});
+			});
+
+			describe('as Admin of the community', function() {
+				it('should set the property "enabled" ' +
+					'of the community to "false"', function(done) {
+					req.del('/community')
+						.form({community: theCommunity.slug})
+						.expect(302)
+						.expect('Location', '/', done);
+				});
+			});
+		});
+	});
 });

@@ -53,5 +53,6 @@
 	"2/22/2014": "2/22/2014",
 	"Only not fulfilled tasks can be edited.": "Only not fulfilled tasks can be edited.",
 	"Task deleted successfully": "Task deleted successfully",
-	"You're not in a community, yet.": "You're not in a community, yet."
+	"You're not in a community, yet.": "You're not in a community, yet.",
+	"You do not have sufficient rights to perform this operation.": "You do not have sufficient rights to perform this operation."
 }
