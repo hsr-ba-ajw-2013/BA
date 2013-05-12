@@ -3,7 +3,8 @@
  */
 var Barefoot = require('barefoot')()
 	, RoomiesView = Barefoot.View.extend()
-	, _ = require('underscore');
+	, _ = require('underscore')
+	, locales = require('../locales');
 
 /** Function: beforeRender
  * The beforeRender hook is called before the rendering of a view takes place.
@@ -55,10 +56,41 @@ function setPlainDocumentTitle(title) {
 	}
 }
 
+/** Function: getApplicationModel
+ * Convenient function to return the application wide <ApplicationModel> from
+ * the DataStore.
+ *
+ * Returns:
+ *     (<ApplicationModel>)
+ */
+function getApplicationModel() {
+	var applicationModel = this.options.dataStore.get('applicationModel');
+	return applicationModel;
+}
+
+/** Function: translate
+ * Convenient function to translate a text using the present locale from the
+ * options object.
+ *
+ * Parameters:
+ *     (String) text - String to translate
+ *
+ * Returns:
+ *     (String) translated text
+ */
+function translate() {
+	var locale = this.options.locale
+		, translateArguments = [locale].concat(_.values(arguments));
+
+	return locales.translate.apply(this, translateArguments);
+}
+
 
 _.extend(RoomiesView.prototype, {
 	beforeRender: beforeRender
 	, setDocumentTitle: setDocumentTitle
 	, setPlainDocumentTitle: setPlainDocumentTitle
+	, getApplicationModel: getApplicationModel
+	, translate: translate
 });
 module.exports = RoomiesView;
