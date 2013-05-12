@@ -17,7 +17,7 @@ util.inherits(FirstTaskAchievement, BaseAchievement);
 
 FirstTaskAchievement.prototype.giveAchievementIfMatches = function(db, data, cb) {
 	var self = this;
-	this.rule.matches(data, function matchChecked(matches) {
+	this.rule.matches(this.identifier, data, function matchChecked(matches) {
 		if(!matches) {
 			return cb(false);
 		}

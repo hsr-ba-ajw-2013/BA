@@ -11,7 +11,7 @@ module.exports = {
 		}
 	}*/
 	db: {
-		database: 'roomies_test'
+		database: 'roomies_test2'
 		, options: {
 			dialect: 'sqlite'
 			, logging: false

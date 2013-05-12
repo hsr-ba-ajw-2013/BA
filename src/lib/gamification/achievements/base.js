@@ -13,12 +13,13 @@ BaseAchievement.prototype.giveAchievementIfMatches =
 
 BaseAchievement.prototype.giveAchievement =
 	function giveAchievement(db, resident, cb) {
-	var Achievement = db.daoFactoryManager.getDAO('Achievement');
+	var Achievement = db.daoFactoryManager.getDAO('Achievement')
+		, self = this;
 	Achievement.create({
 		type: this.identifier
 	}).success(function createdAchievement(achievement) {
 		achievement.setResident(resident).success(function addedToResident() {
-			cb(true);
+			cb(true, self.identifier);
 		}).error(function(err) {
 			console.log(err);
 		});

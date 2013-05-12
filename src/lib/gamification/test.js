@@ -17,7 +17,7 @@ function giveFulfilledTask(eventBus, resident, amount) {
 	Task.create({
 		name: utils.randomString(12)
 		, description: utils.randomString(12)
-		, reward: 2
+		, reward: 5
 		, dueDate: new Date(new Date() + 24 * 3600)
 		, fulfilledAt: new Date(new Date() + 24 * 2800)
 		, CommunityId: resident.CommunityId
@@ -80,20 +80,32 @@ describe('Gamification', function() {
 
 		});
 
+		afterEach(function(done) {
+			app.get('db').query('DELETE FROM `Tasks`').success(function(a) {
+				app.get('db').query('DELETE FROM `Achievements`').success(function() {
+					done();
+				}).error(function(err) {
+					console.log(err);
+				});
+			}).error(function(err) {
+				console.log(err);
+			});
+		});
+
 		it('should give an achievement upon first task done', function(done) {
 			// due to the asynchronous nature of event-bus, we need to
 			// listen to another event.
 			task.fulfilledAt = new Date(new Date() + 24 * 2900);
 			task.save().success(function saved() {
 				task.setFulfillor(resident).success(function fulfillorSet() {
-					eventBus.on('achievement:added', function() {
-						eventBus.removeAllListeners('achievement:added');
+					eventBus.on('achievement:added:first-task', function() {
 						resident.getAchievements()
 							.success(function(achievements) {
 								if(!achievements.length) {
 									return done(
 										new Error('No achievements found'));
 								}
+								eventBus.removeAllListeners('achievement:added:first-task');
 								done();
 							});
 					});
@@ -105,17 +117,41 @@ describe('Gamification', function() {
 		it('should give an achievement after ten tasks done', function(done) {
 			// due to the asynchronous nature of event-bus, we need to
 			// listen to another event.
-			eventBus.on('achievement:added', function() {
+			eventBus.on('achievement:added:ten-tasks', function() {
 				resident.getAchievements({type: 'ten-tasks'})
 					.success(function(achievements) {
 						if(!achievements.length) {
 							return done(
 								new Error('No achievements found'));
 						}
+						eventBus.removeAllListeners('achievement:added:ten-tasks');
 						done();
+					})
+					.error(function(err) {
+						done(err);
 					});
 			});
-			giveFulfilledTask(eventBus, resident, 9);
+			giveFulfilledTask(eventBus, resident, 10);
+		});
+
+		it('should give an achievement after twenty points done', function(done) {
+			// due to the asynchronous nature of event-bus, we need to
+			// listen to another event.
+			eventBus.on('achievement:added:twenty-points', function() {
+				resident.getAchievements({where: '`type` = "twenty-points"'})
+					.success(function(achievements) {
+						if(!achievements.length) {
+							return done(
+								new Error('No achievements found'));
+						};
+						eventBus.removeAllListeners('achievement:added');
+						done();
+					})
+					.error(function(err) {
+						done(err);
+					});
+			});
+			giveFulfilledTask(eventBus, resident, 5);
 		});
 	});
 });

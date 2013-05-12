@@ -11,7 +11,7 @@ function NTasksRule(number) {
 
 util.inherits(NTasksRule, BaseRule);
 
-NTasksRule.prototype.matches = function matches(data, cb) {
+NTasksRule.prototype.matches = function matches(type, data, cb) {
 	var resident = data[0]
 		, self = this;
 	resident.getFulfilledTasks().success(function tasksFound(tasks) {

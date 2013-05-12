@@ -3,11 +3,13 @@
  */
 
 var FirstTaskAchievement = require('./first-task')
-	, TenTasksAchievement = require('./ten-tasks');
+	, TenTasksAchievement = require('./ten-tasks')
+	, TwentyPointsAchievement = require('./twenty-points');
 
 exports.achievements = [
 	new FirstTaskAchievement()
 	, new TenTasksAchievement()
+	, new TwentyPointsAchievement()
 ];
 
 exports.identifiers = function() {
