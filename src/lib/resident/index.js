@@ -8,7 +8,6 @@ var controller = require('./controller')
 	, loginRequired = require(path.join(
 		'..', '..', 'shared', 'policies', 'login-required')
 	)
-	, communityTransporter = require(path.join('..', 'community','transporter'))
 	, COMMUNITY_PREFIX = '/community/:slug'
 	, RESIDENT_PREFIX = COMMUNITY_PREFIX + '/resident'
 	, PROFILE_PREFIX = '/profile';

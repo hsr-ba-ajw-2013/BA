@@ -17,12 +17,13 @@ NPointsRule.prototype.matches = function matches(type, data, cb) {
 	resident.getFulfilledTasks({attributes: ['SUM(`reward`) AS totalreward']})
 		.success(function tasksFound(tasks) {
 			if(tasks[0].totalreward >= self.points) {
-				resident.getAchievements({where: '`type` = "' + type + '"'}).success(function(achievements) {
-					if(!achievements.length) {
-						return cb(true);
-					}
-					cb(false);
-				});
+				resident.getAchievements({where: '`type` = "' + type + '"'})
+					.success(function(achievements) {
+						if(!achievements.length) {
+							return cb(true);
+						}
+						cb(false);
+					});
 			} else {
 				cb(false);
 			}

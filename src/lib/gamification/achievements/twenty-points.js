@@ -18,11 +18,12 @@ util.inherits(TwentyPointsAchievement, BaseAchievement);
 TwentyPointsAchievement.prototype.giveAchievementIfMatches =
 	function(db, data, cb) {
 		var self = this;
-		this.rule.matches(this.identifier, data, function matchChecked(matches) {
-			if(!matches) {
-				return cb(false);
-			}
-			self.giveAchievement(db, data[0], cb);
+		this.rule.matches(this.identifier, data,
+			function matchChecked(matches) {
+				if(!matches) {
+					return cb(false);
+				}
+				self.giveAchievement(db, data[0], cb);
 		});
 	};
 

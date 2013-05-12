@@ -15,14 +15,16 @@ function FirstTaskAchievement() {
 
 util.inherits(FirstTaskAchievement, BaseAchievement);
 
-FirstTaskAchievement.prototype.giveAchievementIfMatches = function(db, data, cb) {
-	var self = this;
-	this.rule.matches(this.identifier, data, function matchChecked(matches) {
-		if(!matches) {
-			return cb(false);
-		}
-		self.giveAchievement(db, data[0], cb);
-	});
+FirstTaskAchievement.prototype.giveAchievementIfMatches =
+	function(db, data, cb) {
+		var self = this;
+		this.rule.matches(this.identifier, data,
+			function matchChecked(matches) {
+				if(!matches) {
+					return cb(false);
+				}
+				self.giveAchievement(db, data[0], cb);
+		});
 };
 
 

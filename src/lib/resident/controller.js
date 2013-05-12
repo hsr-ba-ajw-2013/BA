@@ -100,7 +100,8 @@ function getAchievements(resident, cb) {
 }
 
 function getFulfilledTasksPointSum(resident, cb) {
-	resident.getFulfilledTasks({attributes: ['SUM(`reward`) AS totalreward']}).success(function(sum) {
+	resident.getFulfilledTasks({attributes: ['SUM(`reward`) AS totalreward']})
+	.success(function(sum) {
 		cb(sum[0].totalreward);
 	});
 }
@@ -111,19 +112,21 @@ exports.profile = function(req, res) {
 
 	Resident.find(userId).success(function(resident) {
 		resident.getCommunity().success(function(community) {
-			getAchievements(resident, function(achievements, achievementsCount) {
-				getFulfilledTasksPointSum(resident, function(pointsSum) {
-					return res.render('resident/views/profile', {
-						title: res.__(resident.name + '\'s profile')
-						, resident: resident
-						, displayDangerZone: resident.id === req.user.id && resident.isAdmin
-						, community: community
-						, achievements: achievements
-						, achievementsCount: achievementsCount
-						, pointsSum: pointsSum
+			getAchievements(resident,
+				function(achievements, achievementsCount) {
+					getFulfilledTasksPointSum(resident, function(pointsSum) {
+						return res.render('resident/views/profile', {
+							title: res.__(resident.name + '\'s profile')
+							, resident: resident
+							, displayDangerZone: resident.id === req.user.id &&
+								resident.isAdmin
+							, community: community
+							, achievements: achievements
+							, achievementsCount: achievementsCount
+							, pointsSum: pointsSum
+						});
 					});
 				});
-			});
 		}).error(function(err) {
 			console.log(err);
 			return res.send(500);

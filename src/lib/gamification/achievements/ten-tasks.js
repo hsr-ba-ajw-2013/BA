@@ -15,14 +15,16 @@ function TenTasksAchievement() {
 
 util.inherits(TenTasksAchievement, BaseAchievement);
 
-TenTasksAchievement.prototype.giveAchievementIfMatches = function(db, data, cb) {
-	var self = this;
-	this.rule.matches(this.identifier, data, function matchChecked(matches) {
-		if(!matches) {
-			return cb(false);
-		}
-		self.giveAchievement(db, data[0], cb);
-	});
+TenTasksAchievement.prototype.giveAchievementIfMatches =
+	function(db, data, cb) {
+		var self = this;
+		this.rule.matches(this.identifier, data,
+			function matchChecked(matches) {
+				if(!matches) {
+					return cb(false);
+				}
+				self.giveAchievement(db, data[0], cb);
+		});
 };
 
 
