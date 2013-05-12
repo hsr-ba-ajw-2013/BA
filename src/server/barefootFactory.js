@@ -12,7 +12,8 @@ var path = require('path')
 	, config = require(configFileName)
 
 	, middleware = require('./middleware')
-	, api = require('./api');
+	, api = require('./api')
+	, ResidentModel = require('../shared/models/resident');
 
 // Keep a reference of the src directory:
 config.srcDir = path.join(process.cwd(), 'src');
@@ -97,20 +98,11 @@ function clientJavaScriptFile() {
  */
 function setupMiddlewares(app) {
 	console.log('Setting up Express.JS Middleware');
-
 	middleware(app, config);
 
-
 	/*
-	home(app, config);
-	login(app, config);
-
-	//rank(app, config);
-
 	facebookChannel(app, config);
 	*/
-
-	// sync db
 }
 
 /** Function: setupApiAdapter
@@ -137,11 +129,62 @@ function startExpressApp(app) {
 	return app;
 }
 
-module.exports = {
-	app: app
-	, setupMiddlewares: setupMiddlewares
-	, setupApiAdapter: setupApiAdapter
-	, mainJavaScriptFile: clientJavaScriptFile()
-	, layoutTemplate: loadLayoutTemplate()
-	, startExpressApp: startExpressApp
-};
+/** Function: setupServerRequestContext
+ * Enhances the setupRequestContext function of the app.js file by adding some
+ * server specific functionality to it.
+ * 
+ * To ensure its execution, it will be monkey-patched on export.
+ *
+ * This function works inside the scope of the router! So you have access to all
+ * of its properties.
+ *
+ * For the moment, it reads the user property from the req property of the
+ * router and creates a ResidentModel with it. That model is placed in the
+ * ApplicationModel which is accessible via the <Barefoot.DataStore at
+ * http://swissmanu.github.io/barefoot/docs/files/lib/datastore-js.html>
+ */
+function setupServerRequestContext() {
+	// We should probably have a user property in the req object since the
+	// auth middleware injects it there. Lets do some fun stuff with it and
+	// create a ResidentModel out of it.
+	var authenticatedUser = this.req.user
+		, authenticatedResident = new ResidentModel(authenticatedUser.selectedValues);
+
+	this.dataStore.get('applicationModel').set('user', authenticatedResident);
+}
+
+
+/** exporter
+ * Monkey-patches the startOptions.setupRequestContext function by wrapping it
+ * into the setupCombinedRequestContext function. This wrapper will ensure that
+ * when setupRequestContext is executed on the server, setupServerRequestContext
+ * is executed too.
+ *
+ * Parameters:
+ *     (Object) startOptions - Barefoot startup options
+ *
+ * Returns:
+ *     (Object) containing server specific barefoot startup options
+ */
+function exporter(startOptions) {
+	var setupSharedRequestContext = startOptions.setupRequestContext
+		, setupCombinedRequestContext = function setupCombinedRequestContext() {
+			var routerScope = this;
+			setupSharedRequestContext.call(routerScope);
+			setupServerRequestContext.call(routerScope);
+		};
+
+	startOptions.setupRequestContext = setupCombinedRequestContext;
+	_.extend(startOptions, {
+		app: app
+		, setupMiddlewares: setupMiddlewares
+		, setupApiAdapter: setupApiAdapter
+		, mainJavaScriptFile: clientJavaScriptFile()
+		, layoutTemplate: loadLayoutTemplate()
+		, startExpressApp: startExpressApp
+	});
+
+	return startOptions;
+}
+
+module.exports = exporter;
