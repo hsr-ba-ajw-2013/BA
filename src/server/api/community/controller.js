@@ -1,4 +1,4 @@
-/** Controller: Community.Controller
+/** Class: Community.Controller
  * Community-related CRUD
  */
 

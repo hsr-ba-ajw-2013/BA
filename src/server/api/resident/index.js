@@ -1,4 +1,4 @@
-/** Component: Resident
+/** Component: Api.Resident
  * The Resident component is an Express.JS capable middleware which
  * encapsulates everything related to the Resident domain object.
  */

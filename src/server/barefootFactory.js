@@ -84,7 +84,7 @@ function clientJavaScriptFile() {
 	return {
 		route: '/javascripts/app.js'
 		, file: path.join(process.cwd(), 'src', 'app.js')
-		, exclude: getDirectoryFiles(serverOnlySource, ['.js']).concat(getDirectoryFiles(path.join(process.cwd(), 'node_modules', 'barefoot', 'lib', 'server')))
+		, exclude: getDirectoryFiles(serverOnlySource, ['.js'])
 	};
 }
 

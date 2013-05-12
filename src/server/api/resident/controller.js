@@ -1,8 +1,9 @@
-/** Controller: Resident.Controller
+/** Class: Api.Resident.Controller
  * Resident Controller
  */
 
-var errors = require('barefoot')().errors;
+var errors = require('../errors')
+	, utils = require('../utils');
 
 /** Function: getResidentWithFacebookId
  * Returns a resident with a specific facebook id.
@@ -16,8 +17,7 @@ function getResidentWithFacebookId(success, error, facebookId) {
 	var db = this.app.get('db')
 		, residentDao = db.daoFactoryManager.getDAO('Resident');
 
-
-	//console.log('--------- Authenticated? ', this.req.isAuthenticated());
+	utils.checkPermissionToAccess(this.req);
 
 	residentDao.find({ where: { facebookId: facebookId }})
 		.success(function results(resident) {
