@@ -1,4 +1,4 @@
-/* global describe, it, beforeEach, after */
+/* global describe, it, beforeEach, after  */
 var request = require('super-request')
 	, path = require('path')
 	, srcPath = path.join(process.cwd(),
