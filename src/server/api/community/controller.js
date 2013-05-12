@@ -1,6 +1,6 @@
 /** Class: Community.Controller
  * Community-related CRUD
- */
+ *
 
 var path = require('path')
 	//, validatorsPath = path.join('..', '..', 'shared', 'validators')
@@ -77,7 +77,7 @@ exports.fresh = function freshView(req, res) {
  *                     (successfully or not)
  *   (number) tries - [optional] [Default = 1] The number of tries if the link
  *                                              already exists
- */
+ *
 function createUniqueShareLink(db, done, tries) {
 	var Community = db.daoFactoryManager.getDAO('Community')
 		, link = utils.randomString(12);
@@ -109,7 +109,7 @@ exports.createUniqueShareLink = createUniqueShareLink;
  *   (Community) community - Community model
  *   (Function) done - Callback to call after creating the sharelink
  *                     (successfully or not)
- */
+ *
 function addUniqueSlug(db, community, done) {
 	var slug = uslug(community.name)
 		, Community = db.daoFactoryManager.getDAO('Community');
@@ -141,7 +141,7 @@ exports.addUniqueSlug = addUniqueSlug;
  * Parameters:
  *   (Request) req - Request
  *   (Response) res - Response
- */
+ *
 var createCommunity = function createCommunity(req, res) {
 	var resident = req.user
 		, db = req.app.get('db')
@@ -198,7 +198,7 @@ var createCommunity = function createCommunity(req, res) {
 				return res.send(500);
 			});
 	});
-	*/
+	*
 };
 
 
@@ -254,6 +254,7 @@ exports.invite = function invite(req, res) {
 
 exports.get = exports.update = exports.del =
 	function(req, res) {
-		/*jshint unused:false*/
+		/*jshint unused:false*
 		res.send(405);  // respond with "method not allowed"
 //};
+*/

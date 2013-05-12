@@ -9,9 +9,9 @@
 var Barefoot = require('barefoot')()
 	, _ = require('underscore');
 
-function EventAggregator(options) {
+function EventAggregator() {
 	return this;
-};
+}
 
 _.extend(EventAggregator.prototype, Barefoot.Events);
 

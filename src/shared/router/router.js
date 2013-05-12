@@ -71,7 +71,7 @@ module.exports = Router.extend({
 			this._mainView.options.locale = locale;
 			this._mainView.options.dataStore = this.dataStore;
 			this._mainView.options.apiAdapter = this.apiAdapter;
-			this._mainView.options.eventAggregator = this.eventAggregator;			
+			this._mainView.options.eventAggregator = this.eventAggregator;
 		}
 
 		return this._mainView;

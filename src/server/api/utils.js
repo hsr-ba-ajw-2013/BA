@@ -25,4 +25,4 @@ function checkPermissionToAccess(req) {
 
 module.exports = {
 	checkPermissionToAccess: checkPermissionToAccess
-}
+};

@@ -148,7 +148,9 @@ function setupServerRequestContext() {
 	// auth middleware injects it there. Lets do some fun stuff with it and
 	// create a ResidentModel out of it.
 	var authenticatedUser = this.req.user
-		, authenticatedResident = new ResidentModel(authenticatedUser.selectedValues);
+		, authenticatedResident = new ResidentModel(
+			authenticatedUser.selectedValues
+		);
 
 	this.dataStore.get('applicationModel').set('user', authenticatedResident);
 }

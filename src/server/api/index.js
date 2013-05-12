@@ -11,8 +11,7 @@
  * * <Barefoot.APIAdapter at 
  *   http://swissmanu.github.io/barefoot/docs/files/lib/apiadapter-js.html>
  */
-var _ = require('underscore')
-	, setupResidentApi = require('./resident');
+var setupResidentApi = require('./resident');
 
 function initApi(api) {
 	setupResidentApi(api);
