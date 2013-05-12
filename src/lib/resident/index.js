@@ -35,7 +35,7 @@ module.exports = function residentInit(app) {
 	app.get(RESIDENT_PREFIX + "/new", controller.fresh);
 
 
-	app.all(PROFILE_PREFIX + '*', loginRequired, communityTransporter);
+	app.all(PROFILE_PREFIX + '*', loginRequired);
 	app.get(PROFILE_PREFIX, controller.ownProfile);
 	app.get(PROFILE_PREFIX + "/:id", controller.profile);
 

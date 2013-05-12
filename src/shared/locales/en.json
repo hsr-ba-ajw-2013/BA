@@ -54,5 +54,18 @@
 	"Only not fulfilled tasks can be edited.": "Only not fulfilled tasks can be edited.",
 	"Task deleted successfully": "Task deleted successfully",
 	"You're not in a community, yet.": "You're not in a community, yet.",
-	"You do not have sufficient rights to perform this operation.": "You do not have sufficient rights to perform this operation."
+	"You do not have sufficient rights to perform this operation.": "You do not have sufficient rights to perform this operation.",
+	"Points:": "Points:",
+	"Badges:": "Badges:",
+	"Badges": "Badges",
+	"Community": "Community",
+	"You're in the community named: %s": "You're in the community named: %s",
+	"<b>DANGER ZONE: </b>Delete the community": "<b>DANGER ZONE: </b>Delete the community",
+	"Delete the community": "Delete the community",
+	"Hi %s": "Hi %s",
+	"You have an invitation for the community '%s'": "You have an invitation for the community '%s'",
+	"Do you want to join the community?": "Do you want to join the community?",
+	"Join": "Join",
+	"ten-tasks": "10 Tasks done",
+	"first-task": "First Task done"
 }

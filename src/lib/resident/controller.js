@@ -90,12 +90,47 @@ exports.create = function(req, res) {
 exports.ownProfile = function(req, res) {
 	var resident = req.user;
 
-	return res.redirect('./' + resident.facebookId);
+	return res.redirect('./' + resident.id);
 };
 
+function getAchievements(resident, cb) {
+	resident.getAchievements().success(function(achievements) {
+		cb(achievements, achievements.length);
+	});
+}
+
+function getFulfilledTasksPointSum(resident, cb) {
+	resident.getFulfilledTasks({attributes: ['SUM(`reward`) AS totalreward']}).success(function(sum) {
+		cb(sum[0].totalreward);
+	});
+}
+
 exports.profile = function(req, res) {
-	return res.render('resident/views/profile', {
-		title: res.__('Your profile')
+	var userId = req.param('id')
+		, Resident = req.app.get('db').daoFactoryManager.getDAO('Resident');
+
+	Resident.find(userId).success(function(resident) {
+		resident.getCommunity().success(function(community) {
+			getAchievements(resident, function(achievements, achievementsCount) {
+				getFulfilledTasksPointSum(resident, function(pointsSum) {
+					return res.render('resident/views/profile', {
+						title: res.__(resident.name + '\'s profile')
+						, resident: resident
+						, displayDangerZone: resident.id === req.user.id && resident.isAdmin
+						, community: community
+						, achievements: achievements
+						, achievementsCount: achievementsCount
+						, pointsSum: pointsSum
+					});
+				});
+			});
+		}).error(function(err) {
+			console.log(err);
+			return res.send(500);
+		});
+	}).error(function(err) {
+		console.log(err);
+		return res.send(500);
 	});
 };
 

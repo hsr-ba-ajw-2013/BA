@@ -15,6 +15,11 @@ $button-color-bg: #f6f6f6;
 		@include border-radius(8px);
 	}
 
+	&.attention {
+		@include button($color-error);
+		@include border-radius(8px);
+	}
+
 	&.facebook {
 		@include button($color-facebook);
 		@include border-radius(8px);
