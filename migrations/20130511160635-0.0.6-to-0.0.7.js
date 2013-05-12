@@ -28,7 +28,7 @@ function updateCommunity(db, community, done) {
 		, communityController = require(path.join(__dirname, '..', 'src', 'lib', 'community', 'controller'));
 	if (community.enabled === null) {
 		community.enabled = true;
-		community.save().success(done);
+		community.save().success(done).error(done);
 	}
 }
 
