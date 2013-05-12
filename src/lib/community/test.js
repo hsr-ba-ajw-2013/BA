@@ -232,13 +232,81 @@ describe('Community', function() {
 						});
 			});
 
-			describe('as Admin of the community', function() {
-				it('should set the property "enabled" ' +
-					'of the community to "false"', function(done) {
-					req.del('/community')
-						.form({community: theCommunity.slug})
-						.expect(302)
-						.expect('Location', '/', done);
+			describe('in the current community', function() {
+				describe.skip('with admin rights', function() {
+					it('should set the property "enabled" ' +
+						'of the community to "false"', function(done) {
+						req.del('/community')
+							.form({community: theCommunity.slug})
+							.expect(302)
+							.expect('Location', '/', done);
+					});
+				});
+
+				describe('without admin rights', function() {
+
+					var secReq = request(app);
+
+					beforeEach(function before(done) {
+						secReq = doLogin(app, secReq);
+
+						secReq
+							.get('/invite/' + theCommunity.sharelink)
+							.end()
+							.post('/community/' +
+								theCommunity.slug + '/resident')
+							.end(function(err) {
+								if (err) {
+									return done(err);
+								}
+
+								return done();
+							});
+					});
+
+					it('should get a state 403', function(done) {
+						secReq.del('/community')
+							.form({community: theCommunity.slug})
+							.followRedirect(false)
+							.expect(403, done);
+					});
+				});
+			});
+
+			describe('in an other community', function() {
+
+				var secReq = request(app);
+
+				beforeEach(function before(done) {
+					secReq = doLogin(app, secReq);
+
+					secReq.post('/community')
+						.form({name: utils.randomString(13)})
+						.end(function(err) {
+							if (err) {
+								return done(err);
+							}
+							return done();
+						});
+
+				});
+
+				describe('with admin rights', function() {
+					it('should get a state 403', function(done) {
+						secReq.del('/community')
+							.form({community: theCommunity.slug})
+							.followRedirect(false)
+							.expect(403, done);
+					});
+				});
+
+				describe('without admin rights', function() {
+					it('should get a state 403', function(done) {
+						secReq.del('/community')
+							.form({community: theCommunity.slug})
+							.followRedirect(false)
+							.expect(403, done);
+					});
 				});
 			});
 		});

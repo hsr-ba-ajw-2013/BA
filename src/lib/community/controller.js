@@ -225,14 +225,14 @@ exports.del = function handlePost(req, res) {
 		req.flash('error',
 			res.__('You do not have sufficient rights ' +
 				'to perform this operation.'));
-		return res.status(403).redirect('back');
+		return res.send(403);
 	}
 
 	resident.getCommunity()
 		.success(function successResult(residentCommunity) {
+			console.log(communitySlugToDelete, residentCommunity.slug);
 			if (residentCommunity &&
 				communitySlugToDelete === residentCommunity.slug) {
-
 				residentCommunity.enabled = false;
 				residentCommunity.save().success(function saveSuccess() {
 					req.flash('success',
@@ -246,7 +246,7 @@ exports.del = function handlePost(req, res) {
 				req.flash('error',
 					res.__('You do not have sufficient rights ' +
 						'to perform this operation.'));
-				return res.status(403).redirect('back');
+				return res.send(403);
 			}
 		})
 		.error(function getError() {
