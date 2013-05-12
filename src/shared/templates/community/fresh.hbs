@@ -2,8 +2,7 @@
 	<section class="large-centered large-6 columns center">
 		<h4>{{trans "Hello %s" user.name}}</h4>
 		<h5 class="subheader">
-			{{#blocktrans}}You aren't in any community yet.<br/>
-			Please tell us the desired name of your community in order to create it.{{/blocktrans}}
+			{{#blocktrans}}You aren't in any community yet.<br/>Please tell us the desired name of your community in order to create it.{{/blocktrans}}
 		</h5>
 		<form action="/community" method="post">
 			<input type="text" name="name" placeholder="{{trans "WG Name"}}" class="large-8 columns">

@@ -13,7 +13,7 @@ module.exports = {
 	, "Welcome at Roomies!": "Welcome at Roomies!"
 	, "Create a community": "Create a community"
 	, "Hello %s": "Hello %s"
-	, "You aren't in any community yet.<br/>\n\t\t\tPlease tell us the desired name of your community in order to create it.": "You aren't in any community yet.<br/>\n\t\t\tPlease tell us the desired name of your community in order to create it."
+	, "You aren't in any community yet.<br/>Please tell us the desired name of your community in order to create it.": "You are not in any community yet.<br/>Please tell us the desired name of your community in order to create it."
 	, "WG Name": "WG Name"
 	, "Create WG": "Create WG"
 	, "Logout": "Logout"
