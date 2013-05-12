@@ -230,7 +230,6 @@ exports.del = function handlePost(req, res) {
 
 	resident.getCommunity()
 		.success(function successResult(residentCommunity) {
-			console.log(communitySlugToDelete, residentCommunity.slug);
 			if (residentCommunity &&
 				communitySlugToDelete === residentCommunity.slug) {
 				residentCommunity.enabled = false;
