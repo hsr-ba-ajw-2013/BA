@@ -2,10 +2,12 @@
  * Enabled Achievements
  */
 
-var FirstTaskAchievement = require('./first-task');
+var FirstTaskAchievement = require('./first-task')
+	, TenTasksAchievement = require('./ten-tasks');
 
 exports.achievements = [
 	new FirstTaskAchievement()
+	, new TenTasksAchievement()
 ];
 
 exports.identifiers = function() {

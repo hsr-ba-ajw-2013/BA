@@ -2,4 +2,4 @@
  * Available rules
  */
 
-exports.FirstTaskRule = require('./first-task');
+exports.NTasksRule = require('./n-tasks');

@@ -24,7 +24,8 @@ EventEmitter.prototype.off = function off(event, listener) {
 		return removed;
 	}
 	/* jshint camelcase:false */
-	this.super_.removeListener(event, listener);
+	//EventEmitter.super_.prototype.removeListener.apply(this, arguments);
+	this.removeListener(event, listener);
 };
 
 EventEmitter.prototype.on = function on(event, listener) {
