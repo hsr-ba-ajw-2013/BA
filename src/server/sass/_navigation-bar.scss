@@ -113,15 +113,13 @@ $navigation-bar-height: 53px;
 						padding: 7px 14px 7px 14px;
 					}
 				}
+
+				&.logout {
+					padding-right: 10px;
+				}
 			}
 		}
 
-
-	}
-
-	.logout {
-		padding-right: 10px;
-		color: #fff;
 	}
 
 }

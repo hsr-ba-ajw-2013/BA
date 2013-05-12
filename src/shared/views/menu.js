@@ -1,6 +1,7 @@
 var View = require('./roomiesView')
 	, ResidentModel = require('../models/resident')
-	, templates = require('../templates');
+	, templates = require('../templates')
+	, _ = require('underscore');
 
 module.exports = View.extend({
 	el: '.fixed-navigation'
@@ -13,12 +14,11 @@ module.exports = View.extend({
 	}
 
 	, renderView: function() {
-		var resident = new ResidentModel();
-		resident.set('facebookId', '1329590618');
-		resident.fetch();
-		//console.log('Fetch: ', resident);
+		var applicationModel = this.options.dataStore.get('applicationModel')
+			, user = applicationModel.get('user');
+		if(!_.isUndefined(user)) { user = user.toJSON(); }
 
-		this.$el.html(this.template({}));
+		this.$el.html(this.template({ user: user}));
 	}
 
 	, events: {

@@ -11,4 +11,6 @@ module.exports = {
 	, "Ranking": "Rangliste"
 	, "Invite": "Einladen"
 	, "Logout": "Abmelden"
+
+	, "Hello %s": "Hallo %s"
 };

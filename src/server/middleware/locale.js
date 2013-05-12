@@ -21,17 +21,13 @@ function ensureLocale(req, res, next) {
 	if(_.isUndefined(req.cookies)) {
 		req.cookies = { locale: req.locale };
 	} else {
-		if(_.has(req.cookies, 'locale')) {
-			req.cookies = { locale: req.locale };
-		} else {
-			req.cookies = _.extend(req.cookies, { locale: req.locale });
-		}
+		req.cookies.locale = req.locale;
 	}
 
 	next();
 }
 
-/** PrivateFunction: putLocaleToRequest
+/** PrivateFunction: putLocaleToResponseCookie
  * Saves the locale value from the cookie into the request-object for later
  * access.
  *
@@ -40,8 +36,8 @@ function ensureLocale(req, res, next) {
  *     (Response) res - Express.JS response object
  *     (Function) next - Proceed with the next middleware callback
  */
-function putLocaleToRequest(req, res, next) {
-	res.cookie('locale', req.locale);
+function putLocaleToResponseCookie(req, res, next) {
+	res.cookie('locale', req.cookies.locale);
 	next();
 }
 
@@ -56,7 +52,7 @@ function setupLocale(app) {
 	app.use(locale);
 
 	app.use(ensureLocale);
-	app.use(putLocaleToRequest);
+	app.use(putLocaleToResponseCookie);
 }
 
 module.exports = setupLocale;

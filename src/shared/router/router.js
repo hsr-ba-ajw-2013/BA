@@ -63,7 +63,8 @@ module.exports = Router.extend({
 
 		if(_.isUndefined(this._mainView)) {
 			this._mainView = new MainView({
-				dataStore: this.dataStore
+				locale: locale
+				, dataStore: this.dataStore
 				, apiAdapter: this.apiAdapter
 				, eventAggregator: this.eventAggregator
 			});

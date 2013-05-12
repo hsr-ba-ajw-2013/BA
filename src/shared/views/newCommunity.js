@@ -1,5 +1,6 @@
 var View = require('./roomiesView')
-	, templates = require('../templates');
+	, templates = require('../templates')
+	, _ = require('underscore');
 
 module.exports = View.extend({
 	el: '#main'
@@ -7,9 +8,13 @@ module.exports = View.extend({
 
 	}
 	, renderView: function() {
-		this.$el.html(templates.community.fresh({}));
+		var applicationModel = this.getApplicationModel()
+			, user = applicationModel.get('user');
+		if(!_.isUndefined(user)) { user = user.toJSON(); }
+
+		this.$el.html(templates.community.fresh({ user: user }));
 	}
 	, afterRender: function() {
-		this.setDocumentTitle('Create Community');
+		this.setDocumentTitle(this.translate('Create Community'));
 	}
 });
