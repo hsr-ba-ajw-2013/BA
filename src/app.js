@@ -1,5 +1,4 @@
-var _ = require('underscore')
-	, Barefoot = require('barefoot')()
+var Barefoot = require('barefoot')()
 	, EventAggregator = require('./shared/eventAggregator')
 	, ResidentModel = require('./shared/models/resident')
 	, Router = require('./shared/router')
