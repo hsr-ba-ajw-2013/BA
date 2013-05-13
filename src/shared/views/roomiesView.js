@@ -56,16 +56,15 @@ function setPlainDocumentTitle(title) {
 	}
 }
 
-/** Function: getApplicationModel
- * Convenient function to return the application wide <ApplicationModel> from
- * the DataStore.
+/** Function: getDataStore
+ * Convenient function to return the application wide DataStore.
  *
  * Returns:
- *     (<ApplicationModel>)
+ *     (<DataStore at 
+ *      http://swissmanu.github.io/barefoot/docs/files/lib/datastore-js.html>)
  */
-function getApplicationModel() {
-	var applicationModel = this.options.dataStore.get('applicationModel');
-	return applicationModel;
+function getDataStore() {
+	return this.options.dataStore;
 }
 
 /** Function: translate
@@ -90,7 +89,7 @@ _.extend(RoomiesView.prototype, {
 	beforeRender: beforeRender
 	, setDocumentTitle: setDocumentTitle
 	, setPlainDocumentTitle: setPlainDocumentTitle
-	, getApplicationModel: getApplicationModel
+	, getDataStore: getDataStore
 	, translate: translate
 });
 module.exports = RoomiesView;

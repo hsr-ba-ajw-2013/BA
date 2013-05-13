@@ -155,8 +155,7 @@ function setupServerRequestContext() {
 			authenticatedUser.selectedValues
 		);
 
-		this.dataStore.get('applicationModel')
-						.set('user', authenticatedResident);
+		this.dataStore.set('currentUser', authenticatedResident);
 	}
 }
 

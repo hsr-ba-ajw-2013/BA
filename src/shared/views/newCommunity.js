@@ -8,8 +8,7 @@ module.exports = View.extend({
 
 	}
 	, renderView: function() {
-		var applicationModel = this.getApplicationModel()
-			, user = applicationModel.get('user');
+		var user = this.getDataStore().get('currentUser');
 		if(!_.isUndefined(user)) { user = user.toJSON(); }
 
 		this.$el.html(templates.community.fresh({ user: user }));

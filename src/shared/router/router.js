@@ -21,22 +21,19 @@ module.exports = Router.extend({
 
 	, community: function community() {
 		if(this.isAuthorized()) {
-			console.log('ok, authorized');
 			this.render(this.createView(CreateCommunityView));
 		} else {
-			console.log('go to login');
 			this.navigate('', { trigger: true });
 		}
 	}
 
 
 	, isAuthorized: function isAuthorized() {
-		var applicationModel = this.dataStore.get('applicationModel')
-			, user = applicationModel.get('user')
+		var currentUser = this.dataStore.get('currentUser')
 			, authorized = false;
 
-		if(!_.isUndefined(user)) {
-			authorized = !_.isUndefined(user.get('facebookId'));
+		if(!_.isUndefined(currentUser)) {
+			authorized = !_.isUndefined(currentUser.get('facebookId'));
 		}
 
 		return authorized;

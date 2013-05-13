@@ -14,8 +14,7 @@ module.exports = View.extend({
 	}
 
 	, renderView: function() {
-		var applicationModel = this.options.dataStore.get('applicationModel')
-			, user = applicationModel.get('user');
+		var user = this.getDataStore().get('currentUser');
 		if(!_.isUndefined(user)) { user = user.toJSON(); }
 
 		this.$el.html(this.template({ user: user}));
