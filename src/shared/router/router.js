@@ -12,13 +12,35 @@ module.exports = Router.extend({
 	}
 
 	, home: function home() {
-		this.render(this.createView(HomeView));
+		if(!this.isAuthorized()) {
+			this.render(this.createView(HomeView));
+		} else {
+			this.navigate('community', { trigger: true });
+		}
 	}
 
 	, community: function community() {
-		this.render(this.createView(CreateCommunityView));
+		if(this.isAuthorized()) {
+			console.log('ok, authorized');
+			this.render(this.createView(CreateCommunityView));
+		} else {
+			console.log('go to login');
+			this.navigate('', { trigger: true });
+		}
 	}
 
+
+	, isAuthorized: function isAuthorized() {
+		var applicationModel = this.dataStore.get('applicationModel')
+			, user = applicationModel.get('user')
+			, authorized = false;
+
+		if(!_.isUndefined(user)) {
+			authorized = !_.isUndefined(user.get('facebookId'));
+		}
+
+		return authorized;
+	}
 
 	/** Function: createView
 	 * Creates an instance of the given view and sets up a reference to the
