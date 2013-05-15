@@ -8,7 +8,6 @@ REPORTER = spec
 COVERAGE_REPORTER = html-cov
 COVERALLS_REPORTER = mocha-lcov-reporter
 TEST_CMD = NODE_ENV=test ./node_modules/.bin/mocha --require test/runner.js --globals config
-COVERAGE_CMD = NODE_ENV=test ./node_modules/.bin/jscover src src-cov
 COVERALLS_CMD = NODE_ENV=test ./node_modules/.bin/jscoverage src src-cov --exclude /\.\(hbs\|otf\|eot\|svg\|ttf\|woff\|png\|ico\|html\|css\|json\)/
 TEST_LIVE_CMD = $(TEST_CMD) --growl --watch
 
@@ -16,45 +15,39 @@ SCSS_BASE = src/server/sass
 SCSS_PATH = $(SCSS_BASE)/app.scss
 CSS_PATH = src/server/public/stylesheets/app.css
 
+# .dir will be matched with the TESTS Variable
+TEST_FILES = community.dir gamification.dir home.dir resident.dir task.dir rank.dir
+# .dir replaced by .test in order to use it in %.test
+TESTS = $(TEST_FILES:.dir=.test)
+LIVE_TESTS = $(TEST_FILES:.dir=.live-test)
 
-test: test-unit test-functional
+COMPONENT_DIR = src/server/api
 
-test-unit:
-	@echo "Running Unit Tests:"
-	@$(TEST_CMD) --reporter $(REPORTER) src/lib/*/test.js
 
-test-functional:
-	@echo "Running Functional Tests:"
-	@$(TEST_CMD) --reporter $(REPORTER) test/*-test.js
+test: $(TESTS)
 
-test-unit-live:
-	@$(TEST_LIVE_CMD) --reporter $(REPORTER) src/lib/*/test.js
+# replace .test with /test.js from e.g. community.test (as argument [$@] to this function)
+# in order to run the test
+# this enables you to run `make test` as well as e.g. `make community.test`
+%.test:
+	@$(TEST_CMD) --reporter $(REPORTER) $(COMPONENT_DIR)/$(subst .test,/test.js,$@)
 
-test-functional-live:
-	@$(TEST_LIVE_CMD) --reporter $(REPORTER) test/*-test.js
+%.live-test:
+	@$(TEST_LIVE_CMD) --reporter $(REPORTER) $(COMPONENT_DIR)/$(subst .live-test,/test.js,$@)
 
 coveralls:
 	@echo -n "Running jscoverage..."
 	@$(COVERALLS_CMD)
 	@echo "done"
 
-coverage:
-	@echo -n "Running jscover..."
-	@$(COVERAGE_CMD)
-	@echo "done"
+parse-code-coverage:
+	@echo "Parsing code coverage.."
+	@$(foreach the_test, $(TESTS), $(shell COVERAGE=1 $(TEST_CMD) --reporter $(COVERALLS_REPORTER) $(COMPONENT_DIR)/$(subst .test,/test.js,$(the_test)) > coveralls_$(the_test).log))
 
-test-coverage: test coverage
-	@echo "Building Test Coverage Reports:"
-	@echo -n "Creating unit coverage report..."
-	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) src/lib/*/test.js  > unit-coverage.html
-	@echo "done"
-	@echo -n "Creating functional coverage report..."
-	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERAGE_REPORTER) test/*-test.js > functional-coverage.html
-	@echo "done"
-
-test-coveralls: test coveralls
-	@echo "Sending coverage to coveralls.io:"
-	@COVERAGE=1 $(TEST_CMD) --reporter $(COVERALLS_REPORTER) src/lib/*/test.js | ./node_modules/coveralls/bin/coveralls.js
+test-coveralls: test coveralls parse-code-coverage
+	@echo "Merging & sending them to coveralls.."
+	@./node_modules/.bin/lcov-result-merger coveralls_\*.log | ./node_modules/coveralls/bin/coveralls.js
+	@echo "Done"
 
 setup: clean deps config precompile-sass
 	@echo "Done. You should now be able to start using 'npm start'."
@@ -90,17 +83,13 @@ clean:
 	@echo "Cleaning compiled CSS"
 	@-rm $(CSS_PATH)
 
-precompile-templates:
-	@echo "Precompiling Templates"
-	@node templatePrecompiler.js
-
 precompile-sass:
 	@echo "Precompiling SASS Stylesheets"
 	@-rm $(CSS_PATH)
 	@-sass --trace -t compressed --load-path $(SCSS_BASE)/vendor --load-path $(SCSS_BASE)/vendor/foundation --load-path $(SCSS_BASE)/vendor/bourbon $(SCSS_PATH) $(CSS_PATH)
 
 precompile-sass-live:
-	@nodemon -w src/shared/sass -e scss -x "make precompile-sass -f" Makefile
+	@nodemon -w $(SCSS_BASE) -e scss -x "make precompile-sass -f" Makefile
 
 lint:
 	@node_modules/.bin/jshint index.js src/
@@ -109,4 +98,4 @@ docs:
 	-mkdir ./docs
 	@NaturalDocs -i ./src -o HTML ./docs -p ./.naturaldocs -xi ./src/public/javascripts/lib/ -s Default style
 
-.PHONY: test test-unit test-functional test-unit-live test-functional-live test-coverage setup clean precompile-sass-live lint deps config docs precompile-templates
+.PHONY: test test-unit test-unit-live test-coveralls parse-code-coverage setup clean precompile-sass-live lint deps config docs

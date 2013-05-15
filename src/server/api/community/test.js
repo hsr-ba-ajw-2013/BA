@@ -1,6 +1,6 @@
 /* global describe, it, beforeEach */
 describe('Community', function() {
-	var request = require('super-request')
+	/*var request = require('super-request')
 		, path = require('path')
 		, app = require(path.join(process.cwd(), 'index.js'))()
 		, utils = require(path.join(
@@ -178,5 +178,5 @@ describe('Community', function() {
 				});
 			});
 		});
-	});
+	});*/
 });

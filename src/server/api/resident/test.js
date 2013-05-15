@@ -1,5 +1,5 @@
 /* global describe, it, beforeEach */
-var request = require('super-request')
+/*var request = require('super-request')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()
 	, utils = require(path.join(
@@ -144,4 +144,4 @@ describe('Resident', function() {
 			});
 		});
 	});
-});
+});*/
