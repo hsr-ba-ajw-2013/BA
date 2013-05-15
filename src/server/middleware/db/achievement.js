@@ -39,7 +39,8 @@ module.exports = function init(app, db) {
 			, validate: {
 				isValidIdentifier: function(value) {
 					if(ids.indexOf(value) === -1) {
-						throw new Error("Invalid identifier '" + value + "' for type.")
+						throw new Error("Invalid identifier '" +
+							value + "' for type.");
 					}
 					return true;
 				}

@@ -2,7 +2,8 @@
 
 /* Setup Chai & ShouldJS: */
 var chai = require('chai');
-chai.should();
+should = chai.should();
+expect = chai.expect;
 
 /* Config is kept as global object during running the tests! */
 config = require('../config.test.js');

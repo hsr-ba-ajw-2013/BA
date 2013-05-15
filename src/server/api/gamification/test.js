@@ -1,9 +1,10 @@
-/* global config describe, it, before, afterEach, db */
+/* global describe, it, before, afterEach, db */
 var	path = require('path')
 	, srcPath = path.join(process.cwd(),
 		(process.env.COVERAGE ? 'src-cov' : 'src'))
 	, EventEmitter = require('events').EventEmitter
-	, observer = require(path.join(srcPath, 'server', 'api', 'gamification', 'observer'))
+	, observer = require(path.join(srcPath,
+		'server', 'api', 'gamification', 'observer'))
 	, utils = require(path.join(
 				srcPath, 'server', 'api', 'utils'))
 	, uslug = require('uslug')

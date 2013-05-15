@@ -1,4 +1,4 @@
-/* global describe, it, beforeEach */
+/* CURRENTLYNOTglobal describe, it, beforeEach */
 /*var request = require('super-request')
 	, path = require('path')
 	, app = require(path.join(process.cwd(), 'index.js'))()

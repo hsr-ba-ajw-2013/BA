@@ -1,14 +1,77 @@
-/* global describe, it, beforeEach */
+/* global describe, it, beforeEach, db, expect */
+var controller = require('./controller')
+	, test = require('../utils/test')
+	, app = test.app(db);
+
 describe('Community', function() {
-	/*var request = require('super-request')
-		, path = require('path')
-		, app = require(path.join(process.cwd(), 'index.js'))()
-		, utils = require(path.join(
-				process.cwd(), 'src', 'shared', 'utils', 'index.js'))
-		, uslug = require('uslug')
-		, doLogin = require(path.join(
-				process.cwd(), 'src', 'shared', 'test', 'passport-mock')
-			).doLogin;
+	describe('Create', function() {
+		describe('unauthorized', function() {
+			it('should throw a not authorized (401) exception', function() {
+				var success = function success() {
+						throw new Error(
+							'Should throw a not authorized (401) exception');
+					}
+					, error = function error(err) {
+						throw new Error(err);
+					}
+					, data = {
+						name: 'Test'
+					}
+					, functionScope = {
+						req: test.req()
+						, app: app
+					}
+					, scopedCreateCommunity = controller.createCommunity.bind(
+						functionScope, success, error, data);
+
+				var errors = require('../errors');
+				// Throw because throw is a reserved word.
+				expect(scopedCreateCommunity).to.Throw(
+					errors.NotAuthorizedError);
+			});
+		});
+		describe('authorized', function() {
+			var resident
+				, req;
+
+			beforeEach(function(done) {
+				var Resident = db.daoFactoryManager.getDAO('Resident');
+				Resident.create({
+					name: 'Test'
+					, facebookId: 123456789012345679
+				}).success(function success(createdResident) {
+					resident = createdResident;
+					req = test.req(resident);
+					done();
+				}).error(function error(err) {
+					done(err);
+				});
+			});
+
+			describe('without community for the user', function() {
+				it('should create the community', function(done) {
+					var success = function success() {
+							done();
+						}
+						, error = function error(err) {
+							done(err);
+						}
+						, data = {
+							name: 'Test Community'
+						}
+						, functionScope = {
+							req: req
+							, app: app
+						}
+						, scopedCreateCommunity =
+							controller.createCommunity.bind(functionScope
+								, success, error, data);
+					scopedCreateCommunity();
+				});
+			});
+		});
+	});
+	/*
 
 	describe('GET /community', function(){
 		describe('unauthorized', function() {

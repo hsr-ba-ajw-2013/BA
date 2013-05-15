@@ -1,7 +1,7 @@
 /** Class: Api.Utils
  * Contains utility functions for the REST API component.
  */
-var errors = require('./errors')
+var errors = require('../errors')
 	, crypto = require('crypto');
 
 /** Function: checkPermissionToAccess

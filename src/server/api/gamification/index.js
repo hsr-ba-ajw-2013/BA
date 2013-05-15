@@ -3,10 +3,9 @@
  * and achievements.
  */
 
-var observer = require('./observer')
+var observer = require('./observer');
 
 module.exports = function setupAchievements(app) {
 	observer(app.get('eventbus'), app.get('db'));
 
-	return model(app);
 };

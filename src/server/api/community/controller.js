@@ -123,7 +123,7 @@ function createCommunity(success, error, data) {
 		}
 		communityData.shareLink = link;
 
-		if (resident.CommunityId !== null) {
+		if (resident.CommunityId > 0) {
 			var alreadyErr = new errors.ResidentAlreadyInCommunityError(
 				'Creation of community not allowed for resident which is ' +
 				'an inhabitant of an existing community.');
