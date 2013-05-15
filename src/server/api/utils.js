@@ -1,7 +1,8 @@
 /** Class: Api.Utils
  * Contains utility functions for the REST API component.
  */
-var errors = require('./errors');
+var errors = require('./errors')
+	, crypto = require('crypto');
 
 /** Function: checkPermissionToAccess
  * Checks if a given request is authenticated. If not, an NotAuthorizedError is
@@ -23,6 +24,23 @@ function checkPermissionToAccess(req) {
 	return true;
 }
 
+/** Function: randomString
+ * Generates a random string using
+ * <crypto at http://nodejs.org/api/crypto.html>.
+ *
+ * Parameters:
+ *   (Integer) length - [Optional, default: 12] Length of the generated
+ *                                              random string.
+ *
+ * Returns:
+ *   (String) - random string
+ */
+function randomString(length) {
+	length = length || 12;
+	return crypto.pseudoRandomBytes(length).toString('hex').substr(0, length);
+}
+
 module.exports = {
 	checkPermissionToAccess: checkPermissionToAccess
+	, randomString: randomString
 };

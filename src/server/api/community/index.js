@@ -1,7 +1,16 @@
 /** Component: Community
  * The Community component is an Express.JS capable middleware which
  * encapsulates everything related to the Community domain object.
- *
+ */
+
+var controller = require('./controller')
+	, URL_PREFIX = '/community';
+
+module.exports = function initCommunityApi(api) {
+	api.post('/community', controller.createCommunity);
+};
+
+/*
 var controller = require('./controller')
 	//, model = require('./model')
 	, path = require('path')
@@ -52,7 +61,3 @@ module.exports = function communityInit(app) {
 
 	return model(app);
 };*/
-
-module.exports = function initCommunityApi(api) {
-	api.get('/community', function() { return { bla:1 }; });
-};
