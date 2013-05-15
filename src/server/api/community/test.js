@@ -1,5 +1,7 @@
 /* global describe, it, beforeEach, db, expect */
 var controller = require('./controller')
+	, utils = require('../utils')
+	, errors = require('../errors')
 	, test = require('../utils/test')
 	, app = test.app(db);
 
@@ -24,7 +26,6 @@ describe('Community', function() {
 					, scopedCreateCommunity = controller.createCommunity.bind(
 						functionScope, success, error, data);
 
-				var errors = require('../errors');
 				// Throw because throw is a reserved word.
 				expect(scopedCreateCommunity).to.Throw(
 					errors.NotAuthorizedError);
@@ -37,8 +38,8 @@ describe('Community', function() {
 			beforeEach(function(done) {
 				var Resident = db.daoFactoryManager.getDAO('Resident');
 				Resident.create({
-					name: 'Test'
-					, facebookId: 123456789012345679
+					name: utils.randomString(12)
+					, facebookId: utils.randomInt()
 				}).success(function success(createdResident) {
 					resident = createdResident;
 					req = test.req(resident);
@@ -57,7 +58,7 @@ describe('Community', function() {
 							done(err);
 						}
 						, data = {
-							name: 'Test Community'
+							name: utils.randomString(12)
 						}
 						, functionScope = {
 							req: req
@@ -67,6 +68,35 @@ describe('Community', function() {
 							controller.createCommunity.bind(functionScope
 								, success, error, data);
 					scopedCreateCommunity();
+				});
+			});
+
+			describe('with community for the user', function() {
+				it('should throw a ResidentAlreadyInCommunityError',
+					function(done) {
+						var success = function success() {
+							done('Should throw a ' +
+								'ResidentAlreadyInCommunityError');
+						}
+						, error = function error(err) {
+							err.name.should.equal('ResidentAlreadyInCommunityError');
+							err.httpStatusCode.should.equal(409);
+							done();
+						}
+						, data = {
+							name: utils.randomString(12)
+						}
+						, functionScope = {
+							req: req
+							, app: app
+						}
+						, scopedCreateCommunity =
+							controller.createCommunity.bind(functionScope
+								, success, error, data);
+						resident.CommunityId = 1;
+						resident.save().success(function saved() {
+							scopedCreateCommunity();
+						});
 				});
 			});
 		});

@@ -40,6 +40,18 @@ function randomString(length) {
 	return crypto.pseudoRandomBytes(length).toString('hex').substr(0, length);
 }
 
+/** Function: randomInt
+ * Generates a *not* cryptographically secure random integer.
+ *
+ * Most likely to be used only in tests
+ *
+ * Returns:
+ *   (Int) - random integer
+ */
+function randomInt() {
+	return Math.round(1000*(Math.random()+1));
+}
+
 /** Function: buildFormRoute
  * Uses the createExpressJsCallback of an <APIAdater at
  * http://swissmanu.github.io/barefoot/docs/files/lib/apiadapter-js.html> to
@@ -86,5 +98,6 @@ function buildFormRoute(successUrl, errorUrl, apiFunction, api) {
 module.exports = {
 	checkPermissionToAccess: checkPermissionToAccess
 	, randomString: randomString
+	, randomInt: randomInt
 	, buildFormRoute: buildFormRoute
 };
