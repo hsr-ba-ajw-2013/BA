@@ -1,14 +1,30 @@
-/* global describe, it, before, afterEach, db */
-var	path = require('path')
-	, srcPath = path.join(process.cwd(),
+/* global config, describe, it, before, afterEach */
+var	join = require('path').join
+	, srcPath = join(process.cwd(),
 		(process.env.COVERAGE ? 'src-cov' : 'src'))
 	, EventEmitter = require('events').EventEmitter
-	, observer = require(path.join(srcPath,
+	, observer = require(join(srcPath,
 		'server', 'api', 'gamification', 'observer'))
-	, utils = require(path.join(
+	, utils = require(join(
 				srcPath, 'server', 'api', 'utils'))
 	, uslug = require('uslug')
-	, Task = db.daoFactoryManager.getDAO('Task');
+	, db
+	, Task;
+
+before(function(done) {
+	require(join(srcPath, 'server', 'middleware', 'db'))(null, config,
+		function(err, connectedDb) {
+			if(err) {
+				return done(err);
+			}
+			// setup test-local variables as defined at the top of the file.
+			// those are all dependant on a synced db.
+			db = connectedDb;
+			Task = db.daoFactoryManager.getDAO('Task');
+			done();
+	});
+});
+
 
 function giveFulfilledTask(eventBus, resident, amount) {
 	if (amount === 0) {

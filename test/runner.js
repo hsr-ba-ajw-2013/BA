@@ -19,9 +19,3 @@ if (config.db.options.dialect === 'sqlite'
 		// silent fail
 	}
 }
-
-// db as well global
-var path = require('path')
-	, srcPath = path.join(process.cwd(),
-		(process.env.COVERAGE ? 'src-cov' : 'src'));
-db = require(path.join(srcPath, 'server', 'middleware', 'db'))(null, config)

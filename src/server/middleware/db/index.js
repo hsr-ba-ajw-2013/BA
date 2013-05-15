@@ -12,8 +12,10 @@ var Sequelize = require('sequelize');
  * Parameters:
  *   (Object) app - Initialized express application
  *   (Object) config - Configuration
+ *   (Function) done - In case that any code really needs to wait until the db
+ *                     is synced.
  */
-function setupDatabase(app, config) {
+function setupDatabase(app, config, done) {
 	var db = new Sequelize(
 		config.db.database
 		, config.db.username
@@ -36,10 +38,13 @@ function setupDatabase(app, config) {
 	setupTaskEntity(app, db);
 	setupAchievementEntity(app, db);
 
-	db.sync().success(function() {
+	// if done is not given, just place an empty function.
+	done = done || function() {};
 
+	db.sync().success(function() {
+		done(null, db);
 	}).error(function(err) {
-		console.log(err);
+		done(err);
 	});
 
 	return db;
