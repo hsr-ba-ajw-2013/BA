@@ -11,12 +11,13 @@
  * * <Barefoot.APIAdapter at 
  *   http://swissmanu.github.io/barefoot/docs/files/lib/apiadapter-js.html>
  */
-var setupResidentApi = require('./resident')
+var apiPrefix = '/api'
+	, setupResidentApi = require('./resident')
 	, setupCommunityApi = require('./community');
 
 function initApi(api) {
-	setupResidentApi(api);
-	setupCommunityApi(api);
+	setupResidentApi(api, apiPrefix);
+	setupCommunityApi(api, apiPrefix);
 }
 
 module.exports = initApi;

@@ -4,11 +4,19 @@
  */
 
 var controller = require('./controller')
-	, URL_PREFIX = '/community';
+	, path = require('path')
+	, utils = require('../utils')
+	, modulePrefix = '/community';
 
-module.exports = function initCommunityApi(api) {
-	api.post('/community', controller.createCommunity);
+module.exports = function initCommunityApi(api, apiPrefix) {
+	var prefix = path.join(apiPrefix, modulePrefix);
+
+	api.post(prefix, controller.createCommunity);
+
+	api.app.post(modulePrefix, utils.buildFormRoute(
+		'success', 'error', controller.createCommunity, api));
 };
+
 
 /*
 var controller = require('./controller')

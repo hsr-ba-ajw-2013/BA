@@ -3,7 +3,9 @@
  * encapsulates everything related to the Resident domain object.
  */
 var controller = require('./controller')
-	, URL_PREFIX = '/resident';
+	, path = require('path')
+	, modulePrefix = 'resident';
+
 
 /** Function: residentInit
  * Initializes Resident URLs
@@ -29,6 +31,9 @@ module.exports = function residentInit(app) {
 	return model(app);
 };*/
 
-module.exports = function initResidentApi(api) {
-	api.get(URL_PREFIX + '/:facebookid', controller.getResidentWithFacebookId);
+module.exports = function initResidentApi(api, apiPrefix) {
+	var prefix = path.join(apiPrefix, modulePrefix);
+
+	api.get(path.join(prefix, ':facebookid'),
+		controller.getResidentWithFacebookId);
 };

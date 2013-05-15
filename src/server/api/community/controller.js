@@ -133,9 +133,10 @@ function createCommunity(success, error, data) {
 		communityDao.find({ where: { name: communityData.name }})
 			.success(function findResult(community) {
 				if (community !== null) {
-					var alreadyExistsErr = new errors.CommunityAlreadyExists(
-						'A community with the name "' + communityData.name +
-						'" already exists.');
+					var alreadyExistsErr =
+						new errors.CommunityAlreadyExistsError(
+							'A community with the name "' + communityData.name +
+							'" already exists.');
 					return error(alreadyExistsErr);
 				}
 
