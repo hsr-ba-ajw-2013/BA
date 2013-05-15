@@ -38,7 +38,7 @@
 		, "moment": "~1.7.2"
 
 		, "handlebars": "1.0.10"
-		, "barefoot": "git://github.com/swissmanu/barefoot.git"
+		, "node-barefoot": "~0.0.1"
 		, "sprintf": "~0.1.0"
 	}
 
