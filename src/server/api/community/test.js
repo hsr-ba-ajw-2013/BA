@@ -50,6 +50,28 @@ describe('Community', function() {
 				});
 			});
 
+			it('should generate error when trying to pass a name longer' +
+				' than 255 chars', function(done) {
+					var success = function success() {
+							done(new Error('Name max. length should' +
+								' be 255 chars.'));
+						}
+						, error = function error() {
+							done();
+						}
+						, data = {
+							name: utils.randomString(300)
+						}
+						, functionScope = {
+							req: req
+							, app: app
+						}
+						, scopedCreateCommunity =
+							controller.createCommunity.bind(functionScope
+								, success, error, data);
+					scopedCreateCommunity();
+			});
+
 			describe('without community for the user', function() {
 				it('should create the community', function(done) {
 					var success = function success() {
@@ -131,6 +153,48 @@ describe('Community', function() {
 								name: name
 								, slug: name
 								, shareLink: name
+							}).success(function() {
+								scopedCreateCommunity();
+							}).error(function(err) {
+								done(err);
+							});
+					});
+			});
+
+			describe('with an existing community with the same slug'
+				, function() {
+					it('should append the community id to the slug'
+						, function(done) {
+							var name1 = 'test-1'
+								, name2 = 'test 1'
+								, success = function success() {
+									Community.find({where: {name: name2}})
+										.success(function found(community) {
+											var expectedSlug = name1 +
+												'-' + community.id;
+											community.name.should.equal(name2);
+											community.slug.should.equal(
+												expectedSlug);
+											done();
+										});
+								}
+								, error = function error(err) {
+									done(err);
+								}
+								, data2 = {
+									name: name2
+								}
+								, functionScope = {
+									req: req
+									, app: app
+								}
+								, scopedCreateCommunity =
+									controller.createCommunity.bind(
+										functionScope , success, error, data2);
+							Community.create({
+								name: name1
+								, slug: name1
+								, shareLink: name1
 							}).success(function() {
 								scopedCreateCommunity();
 							}).error(function(err) {
