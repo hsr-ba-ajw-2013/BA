@@ -132,7 +132,7 @@ function startExpressApp(app) {
 /** Function: setupServerRequestContext
  * Enhances the setupRequestContext function of the app.js file by adding some
  * server specific functionality to it.
- * 
+ *
  * To ensure its execution, it will be monkey-patched on export.
  *
  * This function works inside the scope of the router! So you have access to all

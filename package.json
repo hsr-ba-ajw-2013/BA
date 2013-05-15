@@ -1,6 +1,6 @@
 {
 	"name": "Roomies"
-	, "version": "0.0.4-dev"
+	, "version": "0.0.7-dev"
 	, "private": true
 	, "scripts": {
 		"start": "node index",

@@ -19,11 +19,17 @@ function setupRequestContext() {
 barefootStartOptions.setupRequestContext = setupRequestContext;
 if(Barefoot.isRunningOnServer()) {
 	// This is the only "on server" check which is necessary.
-	var barefootFactory = require('./server/barefootFactory');
+	var barefootFactory = require('./server/barefootFactory')
+		, cluster = require('./server/cluster');
 	barefootStartOptions = barefootFactory(barefootStartOptions);
+	if(module.parent === require.main) {
+		cluster(function initializeCluster() {
+			Barefoot.start(Router, barefootStartOptions);
+		});
+	}
+} else {
+	Barefoot.start(Router, barefootStartOptions);
 }
-Barefoot.start(Router, barefootStartOptions);
-
 
 
 /*
