@@ -3,7 +3,9 @@ var controller = require('./controller')
 	, utils = require('../utils')
 	, errors = require('../errors')
 	, test = require('../utils/test')
-	, app = test.app(db);
+	, app = test.app(db)
+	, Community = db.daoFactoryManager.getDAO('Community')
+	, Resident = db.daoFactoryManager.getDAO('Resident');
 
 describe('Community', function() {
 	describe('Create', function() {
@@ -36,7 +38,6 @@ describe('Community', function() {
 				, req;
 
 			beforeEach(function(done) {
-				var Resident = db.daoFactoryManager.getDAO('Resident');
 				Resident.create({
 					name: utils.randomString(12)
 					, facebookId: utils.randomInt()
@@ -72,14 +73,15 @@ describe('Community', function() {
 			});
 
 			describe('with community for the user', function() {
-				it('should throw a ResidentAlreadyInCommunityError',
-					function(done) {
+				it('should throw a ResidentAlreadyInCommunityError'
+					, function(done) {
 						var success = function success() {
 							done('Should throw a ' +
 								'ResidentAlreadyInCommunityError');
 						}
 						, error = function error(err) {
-							err.name.should.equal('ResidentAlreadyInCommunityError');
+							err.name.should.equal(
+								'ResidentAlreadyInCommunityError');
 							err.httpStatusCode.should.equal(409);
 							done();
 						}
@@ -98,6 +100,43 @@ describe('Community', function() {
 							scopedCreateCommunity();
 						});
 				});
+			});
+
+			describe('with an existing community with the same name'
+				, function() {
+					it('should throw a CommunityAlreadyExistsError'
+						, function(done) {
+							var name = utils.randomString(12)
+								, success = function success() {
+									done('Should throw a ' +
+										'CommunityAlreadyExistsError');
+								}
+								, error = function error(err) {
+									err.name.should.equal(
+										'CommunityAlreadyExistsError');
+									err.httpStatusCode.should.equal(409);
+									done();
+								}
+								, data = {
+									name: name
+								}
+								, functionScope = {
+									req: req
+									, app: app
+								}
+								, scopedCreateCommunity =
+									controller.createCommunity.bind(
+										functionScope , success, error, data);
+							Community.create({
+								name: name
+								, slug: name
+								, shareLink: name
+							}).success(function() {
+								scopedCreateCommunity();
+							}).error(function(err) {
+								done(err);
+							});
+					});
 			});
 		});
 	});
