@@ -2,7 +2,7 @@
  * Contains all API specific generic errors.
  */
 var _ = require('underscore')
-	, barefootErrors = require('barefoot')().errors
+	, barefootErrors = require('node-barefoot')().errors
 
 	/** Error: NotAuthorizedError
 	 * Indicates that a specific API call was not allowed in the current session

@@ -17,7 +17,7 @@
 
 		, "connect-flash": "~0.1.0"
 
-		, "sequelize": "git://github.com/mekanics/sequelize.git#find-para-include-fix"
+		, "sequelize": "git://github.com/sequelize/sequelize.git#c9f6924b87dcc70e4556c2c6eb7b02d947078366"
 		, "pg": "~0.15.1"
 
 		, "passport": "~0.1.16"

@@ -1,7 +1,7 @@
 /** Class: Api.Community.Errors
  *
  */
-var Barefoot = require('barefoot')()
+var Barefoot = require('node-barefoot')()
 	, errors = Barefoot.errors
 
 	/** Error: ResidentAlreadyInCommunityError

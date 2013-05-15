@@ -6,7 +6,7 @@
  * See also:
  * * <Backbone.Events at http://backbonejs.org/#Events>
  */
-var Barefoot = require('barefoot')()
+var Barefoot = require('node-barefoot')()
 	, _ = require('underscore');
 
 function EventAggregator() {

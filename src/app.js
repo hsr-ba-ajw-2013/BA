@@ -1,4 +1,4 @@
-var Barefoot = require('barefoot')()
+var Barefoot = require('node-barefoot')()
 	, EventAggregator = require('./shared/eventAggregator')
 	, ResidentModel = require('./shared/models/resident')
 	, Router = require('./shared/router')

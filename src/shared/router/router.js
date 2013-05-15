@@ -1,4 +1,4 @@
-var Barefoot = require('barefoot')()
+var Barefoot = require('node-barefoot')()
 	, Router = Barefoot.Router
 	, MainView = require('../views/main')
 	, HomeView = require('../views/home')

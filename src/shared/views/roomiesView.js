@@ -1,7 +1,7 @@
 /** Class: RoomiesView
  * Extends the plain Barefoot.View with Roomies specific functionalities.
  */
-var Barefoot = require('barefoot')()
+var Barefoot = require('node-barefoot')()
 	, RoomiesView = Barefoot.View.extend()
 	, _ = require('underscore')
 	, locales = require('../locales');
