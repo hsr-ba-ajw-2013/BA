@@ -6,7 +6,7 @@ var	path = require('path')
 	, observer = require(path.join(srcPath, 'server', 'api', 'gamification', 'observer'))
 	, db = require(path.join(srcPath, 'server', 'middleware', 'db'))(null, config)
 	, utils = require(path.join(
-				srcPath, 'server', 'utils'))
+				srcPath, 'server', 'api', 'utils'))
 	, uslug = require('uslug')
 	, Task = db.daoFactoryManager.getDAO('Task');
 
