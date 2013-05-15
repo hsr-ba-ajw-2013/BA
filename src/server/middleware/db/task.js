@@ -9,9 +9,9 @@ var Sequelize = require('sequelize');
  * Parameters:
  *     (Express) app - An Express.js application instance
  */
-function createRelationships(app) {
-	var db = app.get('db')
-		, Resident = db.daoFactoryManager.getDAO('Resident')
+function createRelationships(app, db) {
+	db = app ? app.get('db') : db;
+	var Resident = db.daoFactoryManager.getDAO('Resident')
 		, Task = db.daoFactoryManager.getDAO('Task')
 		, Community = db.daoFactoryManager.getDAO('Community');
 
@@ -38,11 +38,14 @@ module.exports = function init(app, db) {
 		name: Sequelize.STRING
 		, description: Sequelize.STRING
 		, reward: Sequelize.INTEGER
-		, fulfilledAt: Sequelize.DATE
+		, fulfilledAt: {
+			type: Sequelize.DATE
+			, allowNull: true
+		}
 		, dueDate: Sequelize.DATE
 	} , {
 		instanceMethods: {
-			isFulfill: function() {
+			isFulfilled: function() {
 				return this.fulfilledAt !== null;
 			}
 		}

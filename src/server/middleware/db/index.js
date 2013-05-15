@@ -21,18 +21,28 @@ function setupDatabase(app, config) {
 		, config.db.options
 	);
 
-	app.set('db', db);
+	// unit testing made easier
+	if (app) {
+		app.set('db', db);
+	}
 
-	var setupCommunityEntity = require('./community')(app)
-		, setupResidentEntity = require('./resident')(app)
-		, setupTaskEntity = require('./task')(app);
+	var setupCommunityEntity = require('./community')(app, db)
+		, setupResidentEntity = require('./resident')(app, db)
+		, setupTaskEntity = require('./task')(app, db)
+		, setupAchievementEntity = require('./achievement')(app, db);
 
 	setupCommunityEntity(app, db);
-	setupResidentEntity(app);
-	setupTaskEntity(app);
-	//rankRelationships(app);
+	setupResidentEntity(app, db);
+	setupTaskEntity(app, db);
+	setupAchievementEntity(app, db);
 
-	db.sync(); // Write the entity definitions down to the database:
+	db.sync().success(function() {
+
+	}).error(function(err) {
+		console.log(err);
+	});
+
+	return db;
 }
 
 module.exports = setupDatabase;

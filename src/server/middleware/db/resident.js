@@ -9,14 +9,16 @@ var Sequelize = require('sequelize');
  * Parameters:
  *     (Express) app - An Express.js application instance
  */
-function createRelationships(app) {
-	var db = app.get('db')
-		, Resident = db.daoFactoryManager.getDAO('Resident')
+function createRelationships(app, db) {
+	db = app ? app.get('db') : db;
+	var Resident = db.daoFactoryManager.getDAO('Resident')
 		, Task = db.daoFactoryManager.getDAO('Task')
-		, Community = db.daoFactoryManager.getDAO('Community');
+		, Community = db.daoFactoryManager.getDAO('Community')
+		, Achievement = db.daoFactoryManager.getDAO('Achievement');
 
-	Resident.hasMany(Task, {as: 'creator', foreignKey: 'creatorId'});
-	Resident.hasMany(Task, {as: 'fulfillor', foreignKey: 'fulfillorId'});
+	Resident.hasMany(Task, {as: 'createdTasks', foreignKey: 'creatorId'});
+	Resident.hasMany(Task, {as: 'fulfilledTasks', foreignKey: 'fulfillorId'});
+	Resident.hasMany(Achievement);
 	Resident.belongsTo(Community);
 }
 
