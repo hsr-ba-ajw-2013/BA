@@ -9,9 +9,35 @@ var join = require('path').join
 	, test = require(join(srcPath, 'server', 'api', 'utils', 'test'))
 	, should = require('chai').should()
 	, app
-	, Community
-	, Resident
+	, CommunityDao
+	, ResidentDao
 	, db;
+
+
+function createResident(done) {
+	ResidentDao.create({
+		name: utils.randomString(12)
+		, facebookId: utils.randomInt()
+	}).success(function success(createdResident) {
+		done(null, createdResident);
+	}).error(function error(err) {
+		done(err);
+	});
+}
+
+function createCommunity(done) {
+	var name = utils.randomString(12);
+	CommunityDao.create({
+		name: name
+		, slug: name
+		, shareLink: name
+	}).success(function success(createdCommunity) {
+		done(null, createdCommunity);
+	}).error(function error(err) {
+		done(err);
+	});
+}
+
 
 before(function(done) {
 	require(join(srcPath, 'server', 'middleware', 'db'))(null, config,
@@ -22,8 +48,8 @@ before(function(done) {
 			// setup test-local variables as defined at the top of the file.
 			// those are all dependant on a synced db.
 			db = connectedDb;
-			Resident = db.daoFactoryManager.getDAO('Resident');
-			Community = db.daoFactoryManager.getDAO('Community');
+			ResidentDao = db.daoFactoryManager.getDAO('Resident');
+			CommunityDao = db.daoFactoryManager.getDAO('Community');
 			app = test.app(db);
 			done();
 	});
@@ -60,15 +86,13 @@ describe('Community', function() {
 				, req;
 
 			beforeEach(function(done) {
-				Resident.create({
-					name: utils.randomString(12)
-					, facebookId: utils.randomInt()
-				}).success(function success(createdResident) {
+				createResident(function(err, createdResident) {
+					if(err) {
+						return done(err);
+					}
 					resident = createdResident;
 					req = test.req({ user: resident });
 					done();
-				}).error(function error(err) {
-					done(err);
 				});
 			});
 
@@ -97,7 +121,8 @@ describe('Community', function() {
 			it.skip('should prevent XSS injection for the name'
 				, function(done) {
 					var success = function success() {
-							done(new Error('XSS in Name should not be allowed'));
+							done(new Error('XSS in Name should not ' +
+								'be allowed'));
 						}
 						, error = function error() {
 							done();
@@ -120,6 +145,7 @@ describe('Community', function() {
 					, function(done) {
 						var success = function success() {
 								should.exist(resident.CommunityId);
+								resident.isAdmin.should.equal(true);
 								done();
 							}
 							, error = function error(err) {
@@ -194,7 +220,7 @@ describe('Community', function() {
 								, scopedCreateCommunity =
 									controller.createCommunity.bind(
 										functionScope , success, error, data);
-							Community.create({
+							CommunityDao.create({
 								name: name
 								, slug: name
 								, shareLink: name
@@ -213,7 +239,7 @@ describe('Community', function() {
 							var name1 = 'test-1'
 								, name2 = 'test 1'
 								, success = function success() {
-									Community.find({where: {name: name2}})
+									CommunityDao.find({where: {name: name2}})
 										.success(function found(community) {
 											var expectedSlug = name1 +
 												'-' + community.id;
@@ -236,7 +262,7 @@ describe('Community', function() {
 								, scopedCreateCommunity =
 									controller.createCommunity.bind(
 										functionScope , success, error, data2);
-							Community.create({
+							CommunityDao.create({
 								name: name1
 								, slug: name1
 								, shareLink: name1
@@ -269,11 +295,138 @@ describe('Community', function() {
 						, app: app
 					}
 					, scopedDeleteCommunity = controller.deleteCommunity.bind(
-						functionScope, success, error, data);
+						functionScope, success, error);
 
 				// Throw because throw is a reserved word.
-				expect(scopedCreateCommunity).to.Throw(
+				expect(scopedDeleteCommunity).to.Throw(
 					errors.NotAuthorizedError);
+			});
+		});
+
+		describe('authorized', function() {
+			var resident
+				, req;
+
+			beforeEach(function(done) {
+				createResident(function(err, createdResident) {
+					if(err) {
+						return done(err);
+					}
+					resident = createdResident;
+					req = test.req({ user: resident });
+					done();
+				});
+			});
+
+			it('should throw an exception when the resident isnot an admin'
+				, function() {
+					var success = function success() {
+						throw new Error(
+							'Should throw a forbidden (403) exception');
+					}
+					, error = function error(err) {
+						throw new Error(err);
+					}
+					, functionScope = {
+						req: test.req({
+							params: {
+								'community': 1
+							}
+						})
+						, app: app
+					}
+					, scopedDeleteCommunity = controller.deleteCommunity.bind(
+						functionScope, success, error);
+
+				// Throw because throw is a reserved word.
+				expect(scopedDeleteCommunity).to.Throw(
+					errors.ForbiddenError);
+			});
+
+			/** PrivateFunction: createAndAssignCommunity
+			 * Creates a community and assigns the resident to it.
+			 *
+			 * Parameters:
+			 *   (Integer) wrongCommunityId - if specified, will assign a wrong
+			 *                                community id to the resident
+			 *   (Function) done - Callback after creating
+			 */
+			function createAndAssignCommunity(wrongCommunityId, done) {
+				createCommunity(function(err, createdCommunity) {
+					if(err) {
+						return done(err);
+					}
+					resident.isAdmin = true;
+					resident.CommunityId = wrongCommunityId ||
+												createdCommunity.id;
+					resident.save().success(function saved() {
+						done(null, createdCommunity);
+					}).error(function error(err) {
+						done(err);
+					});
+				});
+			}
+
+			it('should throw an exception when the resident is admin but' +
+				' not for the chosen community', function(done) {
+					createAndAssignCommunity(1024, function(err) {
+						if(err) {
+							return done(err);
+						}
+						var success = function success() {
+								throw new Error(
+									'Should throw a forbidden (403)' +
+									' exception');
+							}
+							, error = function error(err) {
+								throw new Error(err);
+							}
+							, functionScope = {
+								req: test.req({
+									params: {
+										'community': 1
+									}
+								})
+								, app: app
+							}
+							, scopedDeleteCommunity =
+								controller.deleteCommunity.bind(
+									functionScope, success, error);
+
+						// Throw because throw is a reserved word.
+						expect(scopedDeleteCommunity).to.Throw(
+							errors.ForbiddenError);
+					});
+			});
+
+			it('should delete the community', function(done) {
+				createAndAssignCommunity(null, function(err, community) {
+					if(err) {
+						return done(err);
+					}
+					var success = function success() {
+							community.enabled.should.equal(false);
+							resident.isAdmin.should.equal(false);
+							done();
+						}
+						, error = function error(err) {
+							done(err);
+						}
+						, functionScope = {
+							req: test.req({
+								params: {
+									'community': community.slug
+								}
+							})
+							, app: app
+						}
+						, scopedDeleteCommunity =
+							controller.deleteCommunity.bind(
+								functionScope, success, error);
+
+					// Throw because throw is a reserved word.
+					scopedDeleteCommunity();
+				});
 			});
 		});
 	});

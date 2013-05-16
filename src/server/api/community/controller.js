@@ -105,7 +105,12 @@ function createUniqueSlug(db, communityName, communityId, done) {
  function updateResidentsCommunityMembership(resident, community, done) {
 	resident.setCommunity(community)
 		.success(function setResult() {
-			done();
+			resident.isAdmin = true;
+			resident.save().success(function setAdmin() {
+				done();
+			}).error(function setAdminError() {
+				done(new Error('Could not save administrator setting.'));
+			});
 		})
 		.error(function() {
 			done(new Error('Could not save community membership.'));
@@ -218,10 +223,23 @@ function getCommunityWithSlug(success, error, slug) {
 		});
 }
 
+/** Function: deleteCommunity
+ * Marks a community as deactivated with a specific slug.
+ *
+ * Parameters:
+ *   (Function) success - Callback on success.
+ *   (Function) error - Callback in case of an error
+ *   (String) slug - The slug of the community to look for.
+ */
+function deleteCommunity(success, error, slug) {
+
+}
+
 
 module.exports = {
 	getCommunityWithSlug: getCommunityWithSlug
 	, createCommunity: createCommunity
+	, deleteCommunity: deleteCommunity
 };
 
 

@@ -9,7 +9,7 @@ var	join = require('path').join
 				srcPath, 'server', 'api', 'utils'))
 	, uslug = require('uslug')
 	, db
-	, Task;
+	, TaskDao;
 
 before(function(done) {
 	require(join(srcPath, 'server', 'middleware', 'db'))(null, config,
@@ -20,7 +20,7 @@ before(function(done) {
 			// setup test-local variables as defined at the top of the file.
 			// those are all dependant on a synced db.
 			db = connectedDb;
-			Task = db.daoFactoryManager.getDAO('Task');
+			TaskDao = db.daoFactoryManager.getDAO('Task');
 			done();
 	});
 });
@@ -30,7 +30,7 @@ function giveFulfilledTask(eventBus, resident, amount) {
 	if (amount === 0) {
 		return;
 	}
-	Task.create({
+	TaskDao.create({
 		name: utils.randomString(12)
 		, description: utils.randomString(12)
 		, reward: 5
@@ -47,7 +47,7 @@ function giveFulfilledTask(eventBus, resident, amount) {
 
 describe('Gamification', function() {
 	describe('Tasks', function() {
-		var eventBus, resident, task, Achievement
+		var eventBus, resident, task, AchievementDao
 			, user = {
 				name: utils.randomString(12)
 				, facebookId: Math.round(1000 * (Math.random() + 1)) *
@@ -57,25 +57,25 @@ describe('Gamification', function() {
 			, communitySlug = uslug(communityName);
 
 		before(function(done) {
-			var Resident = db.daoFactoryManager.getDAO('Resident')
-				, Community = db.daoFactoryManager.getDAO('Community');
+			var ResidentDao = db.daoFactoryManager.getDAO('Resident')
+				, CommunityDao = db.daoFactoryManager.getDAO('Community');
 
 			eventBus = new EventEmitter();
 			observer(eventBus, db);
 
-			Achievement = db.daoFactoryManager.getDAO('Achievement');
+			AchievementDao = db.daoFactoryManager.getDAO('Achievement');
 
-			Resident.create(user).success(
+			ResidentDao.create(user).success(
 				function residentCreated(createdResident) {
 					resident = createdResident;
-					Community.create({
+					CommunityDao.create({
 						name: communityName
 						, slug: communitySlug
 						, shareLink: communityName
 					}).success(function(community) {
 						resident.setCommunity(community);
 
-						Task.create({
+						TaskDao.create({
 							name: utils.randomString(12)
 							, description: utils.randomString(12)
 							, reward: 5
