@@ -11,6 +11,6 @@ module.exports = View.extend({
 		this.$el.html(this.template({}));
 	}
 	, afterRender: function() {
-		this.setDocumentTitle('Welcome');
+		this.setDocumentTitle(this.translate('Welcome'));
 	}
 });

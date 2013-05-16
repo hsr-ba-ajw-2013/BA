@@ -3,25 +3,40 @@ var Barefoot = require('node-barefoot')()
 	, MainView = require('../views/main')
 	, HomeView = require('../views/home')
 	, CreateCommunityView = require('../views/community/create')
+	, ListTasksView = require('../views/task/list')
 	, _ = require('underscore');
 
 module.exports = Router.extend({
 	routes: {
 		'': 'home'
-		, 'community': 'community'
+		, 'community': 'createCommunity'
+		, 'community/create': 'createCommunity'
+
+		, 'community/:communitySlug/tasks': 'listTasks'
 	}
 
 	, home: function home() {
 		if(!this.isAuthorized()) {
 			this.render(this.createView(HomeView));
 		} else {
-			this.navigate('community', { trigger: true });
+			this.navigate('createCommunity', { trigger: true });
 		}
 	}
 
-	, community: function community() {
+	, createCommunity: function createCommunity() {
 		if(this.isAuthorized()) {
 			this.render(this.createView(CreateCommunityView));
+		} else {
+			this.navigate('', { trigger: true });
+		}
+	}
+
+
+	, listTasks: function listTasks() {
+		console.log(arguments);
+		
+		if(this.isAuthorized()) {
+			this.render(this.createView(ListTasksView));
 		} else {
 			this.navigate('', { trigger: true });
 		}
