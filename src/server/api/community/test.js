@@ -94,24 +94,26 @@ describe('Community', function() {
 			});
 
 			describe('without community for the user', function() {
-				it('should create the community', function(done) {
-					var success = function success() {
-							done();
-						}
-						, error = function error(err) {
-							done(err);
-						}
-						, data = {
-							name: utils.randomString(12)
-						}
-						, functionScope = {
-							req: req
-							, app: app
-						}
-						, scopedCreateCommunity =
-							controller.createCommunity.bind(functionScope
-								, success, error, data);
-					scopedCreateCommunity();
+				it('should create the community and assign the resident'
+					, function(done) {
+						var success = function success() {
+								resident.CommunityId.should.be.not.undefined;
+								done();
+							}
+							, error = function error(err) {
+								done(err);
+							}
+							, data = {
+								name: utils.randomString(12)
+							}
+							, functionScope = {
+								req: req
+								, app: app
+							}
+							, scopedCreateCommunity =
+								controller.createCommunity.bind(functionScope
+									, success, error, data);
+						scopedCreateCommunity();
 				});
 			});
 
