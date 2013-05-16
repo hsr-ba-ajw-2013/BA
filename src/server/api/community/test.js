@@ -97,7 +97,7 @@ describe('Community', function() {
 				it('should create the community and assign the resident'
 					, function(done) {
 						var success = function success() {
-								resident.CommunityId.should.be.not.undefined;
+								should.exist(resident.CommunityId);
 								done();
 							}
 							, error = function error(err) {
