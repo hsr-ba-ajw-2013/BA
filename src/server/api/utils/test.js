@@ -18,11 +18,16 @@
  * Returns:
  *   (Object)
  */
-function requestMock(user) {
+function requestMock(data) {
+	data = data || {};
 	return {
-		user: user
+		user: data.user
+		, params: data.params
 		, isAuthenticated: function() {
-			return !!user;
+			return !!data.user;
+		}
+		, param: function(key) {
+			return data.params[key];
 		}
 	};
 }

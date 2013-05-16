@@ -65,7 +65,7 @@ describe('Community', function() {
 					, facebookId: utils.randomInt()
 				}).success(function success(createdResident) {
 					resident = createdResident;
-					req = test.req(resident);
+					req = test.req({ user: resident });
 					done();
 				}).error(function error(err) {
 					done(err);
@@ -250,7 +250,31 @@ describe('Community', function() {
 		});
 	});
 
-	describe('Delete', function() {
+	describe.skip('Delete', function() {
+		describe('unauthorized', function() {
+			it('should throw a not authorized (401) exception', function() {
+				var success = function success() {
+						throw new Error(
+							'Should throw a not authorized (401) exception');
+					}
+					, error = function error(err) {
+						throw new Error(err);
+					}
+					, functionScope = {
+						req: test.req({
+							params: {
+								'community': 1
+							}
+						})
+						, app: app
+					}
+					, scopedDeleteCommunity = controller.deleteCommunity.bind(
+						functionScope, success, error, data);
 
+				// Throw because throw is a reserved word.
+				expect(scopedCreateCommunity).to.Throw(
+					errors.NotAuthorizedError);
+			});
+		});
 	});
 });
