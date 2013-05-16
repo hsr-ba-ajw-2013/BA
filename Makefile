@@ -83,6 +83,10 @@ clean:
 	@echo "Cleaning compiled CSS"
 	@-rm $(CSS_PATH)
 
+precompile-templates:
+	@echo "Precompiling Templates"
+	@node templatePrecompiler.js
+
 precompile-sass:
 	@echo "Precompiling SASS Stylesheets"
 	@-rm $(CSS_PATH)
