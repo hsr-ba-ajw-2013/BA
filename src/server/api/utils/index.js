@@ -16,7 +16,7 @@ var errors = require('../errors')
  */
 function checkPermissionToAccess(req) {
 	var authenticated = req.isAuthenticated();
-
+	console.log(authenticated);
 	if(!authenticated) {
 		throw new errors.NotAuthorizedError('Not Authorized!');
 	}

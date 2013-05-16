@@ -232,7 +232,7 @@ function getCommunityWithSlug(success, error, slug) {
  *   (String) slug - The slug of the community to look for.
  */
 function deleteCommunity(success, error, slug) {
-
+	/* jshint unused: false */
 }
 
 

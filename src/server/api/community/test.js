@@ -38,6 +38,31 @@ function createCommunity(done) {
 	});
 }
 
+function testNotAuthorizedException(additionalParams, additionalBinding
+	, functionToCall) {
+	//additionalParams = additionalParams || {};
+	var success = function success() {
+		console.log('fooobar');
+			throw new Error(
+				'Should throw a not authorized (401) exception');
+		}
+		, error = function error(err) {
+			console.log(err);
+			throw new Error(err);
+		}
+		, functionScope = {
+			req: test.req({
+				params: additionalParams
+			})
+			, app: app
+		}
+		, scopedFunctionToCall = functionToCall.bind(
+			functionScope, success, error, additionalBinding);
+	// Throw because 'throw' is a reserved word.
+	expect(scopedFunctionToCall).to.Throw(
+		errors.NotAuthorizedError);
+}
+
 
 before(function(done) {
 	require(join(srcPath, 'server', 'middleware', 'db'))(null, config,
@@ -59,26 +84,8 @@ describe('Community', function() {
 	describe('Create', function() {
 		describe('unauthorized', function() {
 			it('should throw a not authorized (401) exception', function() {
-				var success = function success() {
-						throw new Error(
-							'Should throw a not authorized (401) exception');
-					}
-					, error = function error(err) {
-						throw new Error(err);
-					}
-					, data = {
-						name: 'Test'
-					}
-					, functionScope = {
-						req: test.req()
-						, app: app
-					}
-					, scopedCreateCommunity = controller.createCommunity.bind(
-						functionScope, success, error, data);
-
-				// Throw because throw is a reserved word.
-				expect(scopedCreateCommunity).to.Throw(
-					errors.NotAuthorizedError);
+				testNotAuthorizedException(null, {name: 'Test'}
+					, controller.createCommunity);
 			});
 		});
 		describe('authorized', function() {
@@ -276,30 +283,21 @@ describe('Community', function() {
 		});
 	});
 
+	describe('Look up community with slug', function() {
+		describe('unauthorized', function() {
+			it('should throw a not authorized (401) exception', function() {
+				testNotAuthorizedException(null, 'testslug'
+					, controller.getCommunityWithSlug);
+			});
+		});
+		// ..
+	});
+
 	describe.skip('Delete', function() {
 		describe('unauthorized', function() {
 			it('should throw a not authorized (401) exception', function() {
-				var success = function success() {
-						throw new Error(
-							'Should throw a not authorized (401) exception');
-					}
-					, error = function error(err) {
-						throw new Error(err);
-					}
-					, functionScope = {
-						req: test.req({
-							params: {
-								'community': 1
-							}
-						})
-						, app: app
-					}
-					, scopedDeleteCommunity = controller.deleteCommunity.bind(
-						functionScope, success, error);
-
-				// Throw because throw is a reserved word.
-				expect(scopedDeleteCommunity).to.Throw(
-					errors.NotAuthorizedError);
+				testNotAuthorizedException({community: 1}, null
+					, controller.deleteCommunity);
 			});
 		});
 
