@@ -75,18 +75,23 @@ function loadLayoutTemplate() {
 	return layoutTemplate;
 }
 
-/** PrivateFunction: clientJavaScriptFile
+/** PrivateFunction: clientsideJavaScriptFile
  * Returns an object with information, where and how barefoot should server the
  * client side javascript code.
  */
-function clientJavaScriptFile() {
-	var serverOnlySource = path.join(process.cwd(), 'src', 'server');
+function clientsideJavaScriptFile() {
+	var serverOnlyFiles = path.join(process.cwd(), 'src', 'server')
+		, settings = {
+			url: '/javascripts/app.js'
+			, mainFile: path.join(process.cwd(), 'src', 'app.js')
+			, exclude: getDirectoryFiles(serverOnlyFiles, ['.js'])
+		};
 
-	return {
-		route: '/javascripts/app.js'
-		, file: path.join(process.cwd(), 'src', 'app.js')
-		, exclude: getDirectoryFiles(serverOnlySource, ['.js'])
-	};
+	if(_.has(config, 'clientsideJavaScriptOptimizations')) {
+		_.extend(settings, config.clientsideJavaScriptOptimizations);
+	}
+
+	return settings;
 }
 
 /** Function: setupMiddlewares(app)
@@ -185,7 +190,7 @@ function exporter(startOptions) {
 		app: app
 		, setupMiddlewares: setupMiddlewares
 		, setupApiAdapter: setupApiAdapter
-		, mainJavaScriptFile: clientJavaScriptFile()
+		, mainJavaScriptFile: clientsideJavaScriptFile()
 		, layoutTemplate: loadLayoutTemplate()
 		, startExpressApp: startExpressApp
 	});

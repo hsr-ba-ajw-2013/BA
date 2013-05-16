@@ -40,6 +40,12 @@ module.exports = {
 		, disableRequestLog: true
 	}
 
+	, clientsideJavaScriptOptimizations: {
+		debug: false
+		, gzip: true
+		, minify: true
+	}
+
 	, livereload: {
 		exts: [
 			"html", "css", "scss", "js", "hbs"
