@@ -15,6 +15,13 @@ function setupRequestContext() {
 	this.eventAggregator = new EventAggregator();
 }
 
+/** Function: start
+ * This function simply invokes the barefoot start function.
+ */
+var start = function start() {
+	Barefoot.start(Router, barefootStartOptions);
+}
+
 
 barefootStartOptions.setupRequestContext = setupRequestContext;
 if(Barefoot.isRunningOnServer()) {
@@ -22,22 +29,20 @@ if(Barefoot.isRunningOnServer()) {
 	var barefootFactory = require('./server/barefootFactory')
 		, cluster = require('./server/cluster');
 	barefootStartOptions = barefootFactory(barefootStartOptions);
-	if(module.parent === require.main) {
-		cluster(function initializeCluster() {
-			Barefoot.start(Router, barefootStartOptions);
-		});
+
+	// Check if the server should start in clustered mode:
+	if(barefootStartOptions.config.enableClustering) {
+		var singleClusterStart = start;
+		start = function() {
+			if(module.parent === require.main) {
+				cluster(function initializeCluster() {
+					singleClusterStart();
+				});
+			}
+		};
 	}
-} else {
-	Barefoot.start(Router, barefootStartOptions);
 }
 
 
-/*
-module.exports = main;
-
-if (module.parent === require.main) {
-	cluster(function initializeCluster() {
-		main();
-	});
-}
-*/
+/* Start the engines gentlemen! */
+start();

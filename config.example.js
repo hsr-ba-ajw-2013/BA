@@ -33,6 +33,8 @@ module.exports = {
 		port: 3000
 	}
 
+	, enableClustering: true
+
 	, logging: {
 		errorLogLevel: "info"
 		, requestLogLevel: "info"

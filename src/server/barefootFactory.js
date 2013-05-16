@@ -192,6 +192,7 @@ function exporter(startOptions) {
 		, setupApiAdapter: setupApiAdapter
 		, mainJavaScriptFile: clientsideJavaScriptFile()
 		, layoutTemplate: loadLayoutTemplate()
+		, config: config
 		, startExpressApp: startExpressApp
 	});
 
