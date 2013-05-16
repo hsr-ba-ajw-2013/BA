@@ -33,8 +33,6 @@ module.exports = Router.extend({
 
 
 	, listTasks: function listTasks() {
-		console.log(arguments);
-		
 		if(this.isAuthorized()) {
 			this.render(this.createView(ListTasksView));
 		} else {

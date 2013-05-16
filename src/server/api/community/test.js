@@ -7,6 +7,7 @@ var join = require('path').join
 	, utils = require(join(srcPath, 'server', 'api', 'utils'))
 	, errors = require(join(srcPath, 'server', 'api', 'errors'))
 	, test = require(join(srcPath, 'server', 'api', 'utils', 'test'))
+	, should = require('chai').should()
 	, app
 	, Community
 	, Resident
