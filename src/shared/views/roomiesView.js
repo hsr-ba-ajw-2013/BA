@@ -4,7 +4,8 @@
 var Barefoot = require('node-barefoot')()
 	, RoomiesView = Barefoot.View.extend()
 	, _ = require('underscore')
-	, locales = require('../locales');
+	, locales = require('../locales')
+	, templates = require('../templates');
 
 /** Function: beforeRender
  * The beforeRender hook is called before the rendering of a view takes place.
@@ -91,5 +92,6 @@ _.extend(RoomiesView.prototype, {
 	, setPlainDocumentTitle: setPlainDocumentTitle
 	, getDataStore: getDataStore
 	, translate: translate
+	, templates: templates
 });
 module.exports = RoomiesView;

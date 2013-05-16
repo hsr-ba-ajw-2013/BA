@@ -2,7 +2,7 @@ var Barefoot = require('node-barefoot')()
 	, Router = Barefoot.Router
 	, MainView = require('../views/main')
 	, HomeView = require('../views/home')
-	, CreateCommunityView = require('../views/newCommunity')
+	, CreateCommunityView = require('../views/community/create')
 	, _ = require('underscore');
 
 module.exports = Router.extend({
