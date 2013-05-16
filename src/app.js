@@ -20,7 +20,7 @@ function setupRequestContext() {
  */
 var start = function start() {
 	Barefoot.start(Router, barefootStartOptions);
-}
+};
 
 
 barefootStartOptions.setupRequestContext = setupRequestContext;
