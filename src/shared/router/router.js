@@ -32,9 +32,10 @@ module.exports = Router.extend({
 	}
 
 
-	, listTasks: function listTasks() {
+	, listTasks: function listTasks(communitySlug) {
 		if(this.isAuthorized()) {
-			this.render(this.createView(ListTasksView));
+			var listTasksView = this.createView(ListTasksView);
+			this.render(listTasksView);
 		} else {
 			this.navigate('', { trigger: true });
 		}

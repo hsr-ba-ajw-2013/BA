@@ -38,7 +38,7 @@
 		, "moment": "~1.7.2"
 
 		, "handlebars": "1.0.10"
-		, "node-barefoot": "~0.0.2"
+		, "node-barefoot": "~0.0.3"
 		, "sprintf": "~0.1.0"
 	}
 

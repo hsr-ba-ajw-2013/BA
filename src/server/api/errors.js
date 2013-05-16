@@ -2,7 +2,7 @@
  * Contains all API specific generic errors.
  */
 var _ = require('underscore')
-	, barefootErrors = require('node-barefoot')().errors
+	, errors = require('node-barefoot')().errors
 
 	/** Error: NotAuthorizedError
 	 * Indicates that a specific API call was not allowed in the current session
@@ -11,10 +11,10 @@ var _ = require('underscore')
 	 * When transported to the client, this error is represented by a 401
 	 * "Unauthorized" HTTP status code.
 	 */
-	, NotAuthorizedError = barefootErrors.createError(401, 'Unauthorized');
+	, NotAuthorizedError = errors.createError(401, 'Unauthorized');
 
-_.extend(barefootErrors, {
+_.extend(errors, {
 	NotAuthorizedError: NotAuthorizedError
 });
 
-module.exports = barefootErrors;
+module.exports = errors;

@@ -11,6 +11,7 @@ var controller = require('./controller')
 module.exports = function initCommunityApi(api, apiPrefix) {
 	var prefix = path.join(apiPrefix, modulePrefix);
 
+	api.get(path.join(prefix, ':slug'), controller.getCommunityWithSlug);
 	api.post(prefix, controller.createCommunity);
 
 	api.app.post(modulePrefix, utils.buildFormRoute(

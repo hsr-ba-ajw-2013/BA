@@ -22,7 +22,21 @@ var path = require('path')
 var /*path = require('path')*/
 	errors = require('./errors')
 	, uslug = require('uslug')
-	, utils = require('../utils');
+	, utils = require('../utils')
+	, _ = require('underscore');
+
+/** PrivateFunction: getCommunityDao
+ * Shortcut function to get the data access object for community entities.
+ *
+ * Returns:
+ *     (Object) sequelize data access object for community entities.
+ */
+function getCommunityDao() {
+	var db = this.app.get('db')
+		, communityDao = db.daoFactoryManager.getDAO('Community');
+
+	return communityDao;
+}
 
 /** PrivateFunction: createUniqueShareLink
  * Creates a random share link.
@@ -108,14 +122,14 @@ function createUniqueSlug(db, communityName, communityId, done) {
  *                   communigy.
  */
 function createCommunity(success, error, data) {
+	utils.checkPermissionToAccess(this.req);
+
 	var resident = this.req.user
 		, db = this.app.get('db')
-		, communityDao = db.daoFactoryManager.getDAO('Community')
+		, communityDao = getCommunityDao.call(this)
 		, communityData = {
 			name: data.name
 		};
-
-	utils.checkPermissionToAccess(this.req);
 
 	createUniqueShareLink(db, function(err, link) {
 		if (err) {
@@ -176,11 +190,38 @@ function createCommunity(success, error, data) {
 	});
 }
 
+/** Function: getCommunityWithSlug
+ * Looks up a community with a specific slug.
+ *
+ * Parameters:
+ *   (Function) success - Callback on success. Will pass the community data as
+ *                        first argument.
+ *   (Function) error - Callback in case of an error
+ *   (String) slug - The slug of the community to look for.
+ */
+function getCommunityWithSlug(success, error, slug) {
+	utils.checkPermissionToAccess(this.req);
 
+	var communityDao = getCommunityDao.call(this);
+
+	communityDao.find({ where: { slug: slug }})
+		.success(function findResult(community) {
+			if(!_.isNull(community)) {
+				success(community);
+			} else {
+				error(new errors.NotFoundError('Community with slug ' + slug +
+					'does not exist.'));
+			}
+		})
+		.error(function daoError(err) {
+			error(err);
+		});
+}
 
 
 module.exports = {
-	createCommunity: createCommunity
+	getCommunityWithSlug: getCommunityWithSlug
+	, createCommunity: createCommunity
 };
 
 

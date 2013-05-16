@@ -3,6 +3,8 @@
  */
 var Barefoot = require('node-barefoot')()
 	, errors = Barefoot.errors
+	, apiErrors = require('../errors')
+	, _ = require('underscore')
 
 	/** Error: ResidentAlreadyInCommunityError
 	 * An error indicating that a resident is already inhabitant of a community.
@@ -21,7 +23,9 @@ var Barefoot = require('node-barefoot')()
 	, CommunityAlreadyExistsError = errors.createError(409
 										, 'CommunityAlreadyExistsError');
 
-module.exports = {
+_.extend(errors, apiErrors, {
 	ResidentAlreadyInCommunityError: ResidentAlreadyInCommunityError
 	, CommunityAlreadyExistsError: CommunityAlreadyExistsError
-};
+});
+
+module.exports = errors;
