@@ -290,7 +290,67 @@ describe('Community', function() {
 					, controller.getCommunityWithSlug);
 			});
 		});
-		// ..
+
+		describe('authorized', function() {
+			var resident
+				, community
+				, req;
+
+			beforeEach(function(done) {
+				createResident(function(err, createdResident) {
+					if(err) {
+						return done(err);
+					}
+					resident = createdResident;
+					req = test.req({ user: resident });
+
+					createCommunity(function(err, createdCommunity) {
+						community = createdCommunity;
+						done();
+					});
+				});
+			});
+
+			it('should find and return the community', function(done) {
+				var success = function success() {
+						done();
+					}
+					, error = function error(err) {
+						throw new Error(err);
+					}
+					, functionScope = {
+						req: req
+						, app: app
+					}
+					, scopedGetCommunityWithSlug =
+						controller.getCommunityWithSlug.bind(
+							functionScope, success, error, community.slug);
+
+				scopedGetCommunityWithSlug();
+			});
+
+			it('should return a NotFound Error if the community does not exist'
+				, function(done) {
+					var success = function success() {
+						throw new Error('Should throw a NotFound Error');
+					}
+					, error = function error(err) {
+						err.name.should.equal(
+							'Not Found');
+						err.httpStatusCode.should.equal(404);
+						done();
+					}
+					, functionScope = {
+						req: req
+						, app: app
+					}
+					, scopedGetCommunityWithSlug =
+						controller.getCommunityWithSlug.bind(
+							functionScope, success, error, 'INVALID');
+
+					scopedGetCommunityWithSlug();
+			});
+		});
 	});
 
 	describe.skip('Delete', function() {
