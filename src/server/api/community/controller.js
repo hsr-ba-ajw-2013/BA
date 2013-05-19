@@ -124,7 +124,7 @@ function createUniqueSlug(db, communityName, communityId, done) {
  *   (Function) success - Callback on success
  *   (Function) error - Callback in case of an error
  *   (Object) data - An object containing the information for creation of a new
- *                   communigy.
+ *                   community.
  */
 function createCommunity(success, error, data) {
 	var resident = this.req.user
