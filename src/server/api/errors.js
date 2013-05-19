@@ -20,11 +20,21 @@ var _ = require('underscore')
 	 * When transported to the client, this error is represented by a 403
 	 * "Forbidden" HTTP status code.
 	 */
-	, ForbiddenError = errors.createError(403, 'Forbidden');
+	, ForbiddenError = errors.createError(403, 'Forbidden')
+
+	/** Error: ValidationError
+	 * Indicates that the validation of a specific object passed with an API
+	 * request failed.
+	 *
+	 * This error is represented by an HTTP status code 400 when transmitted
+	 * through the HTTP protocol.
+	 */
+	, ValidationError = errors.createError(400, 'Validation failed');
 
 _.extend(errors, {
 	NotAuthorizedError: NotAuthorizedError
 	, ForbiddenError: ForbiddenError
+	, ValidationError: ValidationError
 });
 
 module.exports = errors;

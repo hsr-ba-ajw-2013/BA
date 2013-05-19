@@ -1,4 +1,4 @@
-/** Component: Community
+/** Component: Api.Community
  * The Community component is an Express.JS capable middleware which
  * encapsulates everything related to the Community domain object.
  *
@@ -14,6 +14,7 @@
 var controller = require('./controller')
 	, basicAuthentication = require('../policy/basicAuthentication')
 	, authorizedForCommunity = require('../policy/authorizedForCommunity')
+	, taskValidators = require('../task/validators')
 	, path = require('path')
 	, utils = require('../utils')
 	, modulePrefix = '/community';
@@ -36,8 +37,12 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 	api.app.post(modulePrefix, utils.buildFormRoute(
 		'success', 'error', controller.createCommunity, api));
 
-	api.post(path.join(prefix, ':slug', 'tasks'),
-		controller.createTaskForCommunityWithSlug);
+	api.post(path.join(prefix, ':slug', 'tasks'), [
+		basicAuthentication
+		, authorizedForCommunity
+		, taskValidators.createTask
+		, controller.createTaskForCommunityWithSlug
+		]);
 };
 
 

@@ -1,4 +1,4 @@
-/** Class: Community.Controller
+/** Class: Api.Community.Controller
  * Community-related CRUD
  *
 
@@ -258,9 +258,6 @@ function getTasksForCommunityWithSlug(success, error, slug) {
 }
 
 function createTaskForCommunityWithSlug(success, error, slug, task) {
-	//utils.checkPermissionToAccess(this.req);
-	//utils.checkPermissionToAccessCommunityWithSlug(this.req, slug);
-
 	taskApi.createTask.call(this, success, error, task);
 }
 

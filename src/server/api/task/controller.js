@@ -1,4 +1,4 @@
-/** Controller: Task.Controller
+/** Controller: Api.Task.Controller
  * Task Controller
  */
 /*
@@ -40,7 +40,7 @@ function getTaskWithId(success, error, taskId) {
 	var taskDao = getTaskDao.call(this);
 
 	taskDao.find({ where: { id: taskId } })
-		.success(function findResult(task) {
+		.success(function ok(task) {
 			if(!_.isNull(task)) {
 				success(task);
 			} else {
@@ -48,28 +48,56 @@ function getTaskWithId(success, error, taskId) {
 					'does not exist.'));
 			}
 		})
-		.error(function daoError(err) {
+		.error(function nok(err) {
 			error(err);
 		});
 }
 
-function createTask(/*success, error, task*/) {
-/*
-	taskDao = getTaskDao.call(this);
+/** Function: createTask
+ * Creates a new task using the passed information.
+ *
+ * Parameters:
+ *     (Function) success - Callback if the task was created correctly. The task
+ *                          data will be returned.
+ *     (Function) error - Callback in case of an error.
+ *     (Object) task - An object containing the information about the task to 
+ *                     create.
+ */
+function createTask(success, error, task) {
+	var self = this
+		, currentUser = self.req.user;
 
-	_.defaults(task, {
-		name: ''
-		, description: ''
-		, reward: 0
-		, dueDate: null
-	});
+	currentUser.getCommunity()
+		.success(function ok(currentUsersCommunity) {
+			if(!_.isNull(currentUsersCommunity)) {
+				var taskDao = getTaskDao.call(self);
 
-	taskDao.create(task)
-		.success(function createResult(task) {
-			task.setCommunity()
-
+				taskDao.create(task)
+					.success(function createResult(task) {
+						task.setCommunity(currentUsersCommunity)
+							.success(function ok() {
+								task.setCreator(currentUser)
+									.success(function ok() {
+										success(task);
+									})
+									.error(function nok(err) {
+										error(err);
+									});
+							})
+							.error(function nok(err) {
+								error(err);
+							});
+					})
+					.error(function nok(err) {
+						error(err);
+					});
+			} else {
+				error(new errors.NotFoundError());
+			}
 		})
-*/
+		.error(function nok(err) {
+			error(err);
+		});
 }
 
 function updateTask(/*success, error, task*/) {
