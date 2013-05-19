@@ -22,19 +22,26 @@ var _ = require('underscore')
  */
 function authorizedForCommunity(success, error, communitySlug) {
 	var db = this.req.app.get('db')
-		, user = this.req.user;
-
-	user.getCommunity()
-		.success(function ok(community) {
-			if(!_.isNull(community) && community.slug === communitySlug) {
-				success();
-			} else {
-				error(new errors.NotAuthorizedError('Not Authorized!'));
-			}
-		})
-		.error(function nok(err) {
+		, user = this.req.user
+		, unauthorized = function() {
 			error(new errors.NotAuthorizedError('Not Authorized!'));
-		});
+		};
+
+	if(!_.isUndefined(user) && _.isFunction(user.getCommunity)) {
+		user.getCommunity()
+			.success(function ok(community) {
+				if(!_.isNull(community) && community.slug === communitySlug) {
+					success();
+				} else {
+					unauthorized();
+				}
+			})
+			.error(function nok(err) {
+				unauthorized();
+			});		
+	} else {
+		unauthorized();
+	}
 }
 
 module.exports = authorizedForCommunity;

@@ -5,6 +5,8 @@
  *   - req
  *   - app
  */
+var _ = require('underscore');
+
 
 /** Function: requestMock
  * Mocks a request using the provided user.
@@ -21,10 +23,11 @@
 function requestMock(data) {
 	data = data || {};
 	return {
-		user: data.user
+		app: data.app
+		, user: data.user
 		, params: data.params
 		, isAuthenticated: function() {
-			return !!data.user;
+			return !_.isUndefined(data.user);
 		}
 		, param: function(key) {
 			return data.params[key];
