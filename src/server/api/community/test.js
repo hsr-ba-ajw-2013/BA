@@ -86,29 +86,6 @@ function createAndAssignCommunity(resident, wrongCommunityId, done) {
 }
 
 
-
-function testNotAuthorizedException(functionToCall, additionalParams
-	, additionalBinding) {
-	var success = function success() {
-			throw new Error(
-				'Should throw a not authorized (401) exception');
-		}
-		, error = function error(err) {
-			throw new Error(err);
-		}
-		, functionScope = {
-			req: test.req({
-				params: additionalParams
-			})
-			, app: app
-		}
-		, scopedFunctionToCall = functionToCall.bind(
-			functionScope, success, error, additionalBinding);
-	// Throw because 'throw' is a reserved word.
-	expect(scopedFunctionToCall).to.Throw(
-		errors.NotAuthorizedError);
-}
-
 before(function(done) {
 	require(join(srcPath, 'server', 'middleware', 'db'))(null, config,
 		function(err, connectedDb) {
@@ -129,12 +106,7 @@ before(function(done) {
 describe('Community', function() {
 
 	describe('Create', function() {
-		describe('unauthorized', function() {
-			it('should throw a not authorized (401) exception', function() {
-				testNotAuthorizedException(controller.createCommunity
-					, null, {name: 'Test'});
-			});
-		});
+
 		describe('authorized', function() {
 			var resident
 				, req;
@@ -331,12 +303,6 @@ describe('Community', function() {
 	});
 
 	describe('Look up community with slug', function() {
-		describe('unauthorized', function() {
-			it('should throw a not authorized (401) exception', function() {
-				testNotAuthorizedException(controller.getCommunityWithSlug
-					, null, 'testslug');
-			});
-		});
 
 		describe('authorized', function() {
 			var resident
@@ -401,13 +367,6 @@ describe('Community', function() {
 	});
 
 	describe('Get Tasks for Community', function() {
-		describe('unauthorized', function() {
-			it('should throw a not authorized (401) exception', function() {
-				testNotAuthorizedException(
-					controller.getTasksForCommunityWithSlug
-					, null, 'testslug');
-			});
-		});
 
 		describe('authorized', function() {
 			var resident
@@ -541,12 +500,6 @@ describe('Community', function() {
 	});
 
 	describe.skip('Delete', function() {
-		describe('unauthorized', function() {
-			it('should throw a not authorized (401) exception', function() {
-				testNotAuthorizedException(controller.deleteCommunity
-					, {community: 1}, null);
-			});
-		});
 
 		describe('authorized', function() {
 			var resident

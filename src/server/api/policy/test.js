@@ -1,8 +1,9 @@
+/* global config, describe, it, before, beforeEach */
 var join = require('path').join
 	, srcPath = join(process.cwd(), (process.env.COVERAGE ? 'src-cov' : 'src'))
 	, mockFactory = require(join(srcPath, 'server', 'api', 'utils', 'test'))
 	, errors = require(join(srcPath, 'server', 'api', 'errors'))
-	, utils = require(join(srcPath, 'server', 'api', 'utils'))
+	, utils = require(join(srcPath, 'server', 'api', 'utils'));
 
 describe('BasicAuthentication', function() {
 	var basicAuthentication = require(join(
@@ -20,7 +21,7 @@ describe('BasicAuthentication', function() {
 				if(err.name === expectedError.name) {
 					done();
 				}
-			}
+			};
 
 		basicAuthentication.call(mockScope, success, error);
 	});
@@ -35,7 +36,6 @@ describe('BasicAuthentication', function() {
 	});
 
 });
-
 
 
 describe('AuthorizedForCommunity', function() {
@@ -135,7 +135,7 @@ describe('AuthorizedForCommunity', function() {
 
 				createAndAssignCommunity(createdResident
 					, function(err, createdCommunity) {
-						if(err) { 
+						if(err) {
 							return done(err);
 						}
 

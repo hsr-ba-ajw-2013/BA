@@ -21,8 +21,7 @@ var _ = require('underscore')
  *     (String) communitySlug - A community slug (a named url parameter)
  */
 function authorizedForCommunity(success, error, communitySlug) {
-	var db = this.req.app.get('db')
-		, user = this.req.user
+	var user = this.req.user
 		, unauthorized = function() {
 			error(new errors.NotAuthorizedError('Not Authorized!'));
 		};
@@ -36,9 +35,9 @@ function authorizedForCommunity(success, error, communitySlug) {
 					unauthorized();
 				}
 			})
-			.error(function nok(err) {
+			.error(function nok() {
 				unauthorized();
-			});		
+			});
 	} else {
 		unauthorized();
 	}
