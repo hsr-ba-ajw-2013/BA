@@ -19,8 +19,7 @@ var path = require('path')
 //require('util').inherits(ExceptionCreateUniqueShareLink, Error);
 */
 
-var /*path = require('path')*/
-	errors = require('./errors')
+var errors = require('./errors')
 	, uslug = require('uslug')
 	, utils = require('../utils')
 	, _ = require('underscore');
@@ -223,6 +222,46 @@ function getCommunityWithSlug(success, error, slug) {
 		});
 }
 
+/** Function: getTasksForCommunityWithSlug
+ * Returns all tasks for the community with the given slug. In case the
+ * community slug was not found or the given community does not have any tasks
+ * assigned at the moment, a NotFoundError gets returned.
+ *
+ * Parameters:
+ *   (Function) success - Callback on success. Will pass the tasks as first
+ *                        argument.
+ *   (Function) error - Callback in case of an error
+ *   (String) slug - The slug of the community to look for.
+ */
+function getTasksForCommunityWithSlug(success, error, slug) {
+	utils.checkPermissionToAccess(this.req);
+
+	var communityDao = getCommunityDao.call(this);
+
+	communityDao.find({ where: { slug: slug }})
+		.success(function findCommunity(community) {
+			if(!_.isNull(community)) {
+				community.getTasks({ order: 'id DESC' })
+					.success(function findTasks(tasks) {
+						if(!_.isNull(tasks) && tasks.length > 0) {
+							success(tasks);
+						} else {
+							error(new errors.NotFoundError());
+						}
+					})
+					.error(function daoError(err) {
+						error(err);
+					});
+			} else {
+				error(new errors.NotFoundError('Community with slug ' + slug +
+					'does not exist.'));
+			}
+		})
+		.error(function daoError(err) {
+			error(err);
+		});
+}
+
 /** Function: deleteCommunity
  * Marks a community as deactivated with a specific slug.
  *
@@ -238,6 +277,7 @@ function deleteCommunity(success, error, slug) {
 
 module.exports = {
 	getCommunityWithSlug: getCommunityWithSlug
+	, getTasksForCommunityWithSlug: getTasksForCommunityWithSlug
 	, createCommunity: createCommunity
 	, deleteCommunity: deleteCommunity
 };

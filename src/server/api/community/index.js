@@ -1,6 +1,14 @@
 /** Component: Community
  * The Community component is an Express.JS capable middleware which
  * encapsulates everything related to the Community domain object.
+ *
+ * API Routes:
+ *     GET community/:slug - Returns the community with the named url parameters
+ *                           :slug.
+ *     GET community/:slug/tasks - Returns all tasks which belong to the
+ *                                 community with the named url parameter :slug.
+ *     POST community/ - Creates a new community based upon the information
+ *                       passed with the function call.
  */
 
 var controller = require('./controller')
@@ -12,8 +20,10 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 	var prefix = path.join(apiPrefix, modulePrefix);
 
 	api.get(path.join(prefix, ':slug'), controller.getCommunityWithSlug);
-	api.post(prefix, controller.createCommunity);
+	api.get(path.join(prefix, ':slug', 'tasks'),
+		controller.getTasksForCommunityWithSlug);
 
+	api.post(prefix, controller.createCommunity);
 	api.app.post(modulePrefix, utils.buildFormRoute(
 		'success', 'error', controller.createCommunity, api));
 };
