@@ -4,9 +4,24 @@
 
 var errors = require('./errors');
 
-function index(success, error) {
+/** Function: index
+ * Show the ranking of the community
+ *
+ * Parameters:
+ *   (Function) success - Callback on success
+ *   (Function) error - Callback in case of an error
+ *   (Object) data - An object containing the information for creation of a new
+ *                   community.
+ */
+
+function index(success, error, slug) {
 	var community = this.res.locals.community
 		, db = this.app.get('db');
+
+	if (community.slug !== slug) {
+		var unauthorized = new errors.createError(401, 'Unauthorized');
+		return error(unauthorized);
+	}
 
 	community.getResidents().success(function residentsResult(residents) {
 
@@ -37,7 +52,7 @@ function index(success, error) {
 		})
 		.success(function(ranks) {
 			this.dataStore.set('ranks', ranks);
-			return success();
+			return success(ranks);
 		})
 		.error(function queryError(error) {
 			return error(errors.createError(500, 'Inernal Server Error'));
