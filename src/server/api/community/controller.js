@@ -231,8 +231,6 @@ function getCommunityWithSlug(success, error, slug) {
  *   (String) slug - The slug of the community to look for.
  */
 function getTasksForCommunityWithSlug(success, error, slug) {
-	utils.checkPermissionToAccess(this.req);
-
 	var communityDao = getCommunityDao.call(this)
 		, self = this;
 
