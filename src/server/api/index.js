@@ -13,11 +13,13 @@
  */
 var apiPrefix = '/api'
 	, setupResidentApi = require('./resident')
-	, setupCommunityApi = require('./community');
+	, setupCommunityApi = require('./community')
+	, setupTaskApi = require('./task');
 
 function initApi(api) {
 	setupResidentApi(api, apiPrefix);
 	setupCommunityApi(api, apiPrefix);
+	setupTaskApi(api, apiPrefix);
 }
 
 module.exports = initApi;

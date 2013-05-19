@@ -1,6 +1,18 @@
 /** Component: Api.Task
  * Task API Component
  */
+
+var controller = require('./controller')
+	, path = require('path')
+	//, utils = require('../utils')
+	, modulePrefix = '/task';
+
+module.exports = function initTaskApi(api, apiPrefix) {
+	var prefix = path.join(apiPrefix, modulePrefix);
+	api.get(path.join(prefix, ':id'), controller.getTaskWithId);
+};
+
+/*
 var controller = require('./controller')
 	, model = require('./model')
 	, path = require('path')
@@ -24,7 +36,7 @@ var controller = require('./controller')
  *
  * Returns:
  *   (Function) function to initialize relationships after creating all models.
- */
+ *
 module.exports = function taskInit(app) {
 	/**
 	 * /community/:slug/tasks GET -- index
@@ -33,7 +45,7 @@ module.exports = function taskInit(app) {
 	 *		/:id GET -- get
 	 *				PUT -- update
 	 *				DELETE -- del
-	 */
+	 *
 
 	app.all(TASK_PREFIX, loginRequired, communityRequired, communityIsActive);
 
@@ -53,4 +65,4 @@ module.exports = function taskInit(app) {
 	app.post(TASK_PREFIX + '/:id/edit', controller.update);
 
 	return model(app);
-};
+};*/

@@ -32,7 +32,9 @@ module.exports = Router.extend({
 	}
 
 
-	, listTasks: function listTasks(/*communitySlug*/) {
+	, listTasks: function listTasks(communitySlug) {
+		console.log(communitySlug);
+
 		if(this.isAuthorized()) {
 			var listTasksView = this.createView(ListTasksView);
 			this.render(listTasksView);
