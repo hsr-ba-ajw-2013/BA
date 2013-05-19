@@ -52,7 +52,8 @@ function appMock(db) {
 	};
 }
 
+
 module.exports = {
-	req: requestMock,
-	app: appMock
+	req: requestMock
+	, app: appMock
 };

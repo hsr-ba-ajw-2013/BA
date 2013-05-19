@@ -231,11 +231,18 @@ function getCommunityWithSlug(success, error, slug) {
  *   (String) slug - The slug of the community to look for.
  */
 function getTasksForCommunityWithSlug(success, error, slug) {
-	var communityDao = getCommunityDao.call(this);
+	utils.checkPermissionToAccess(this.req);
+
+	var communityDao = getCommunityDao.call(this)
+		, self = this;
 
 	communityDao.find({ where: { slug: slug }})
 		.success(function findCommunity(community) {
 			if(!_.isNull(community)) {
+				if(community.id !== self.req.user.CommunityId) {
+					return error(
+						new errors.ForbiddenError('Invalid Community'));
+				}
 				community.getTasks({ order: 'id DESC' })
 					.success(function findTasks(tasks) {
 						if(!_.isNull(tasks) && tasks.length > 0) {

@@ -11,6 +11,7 @@ var join = require('path').join
 	, app
 	, CommunityDao
 	, ResidentDao
+	, TaskDao
 	, db;
 
 
@@ -38,16 +39,62 @@ function createCommunity(done) {
 	});
 }
 
-function testNotAuthorizedException(additionalParams, additionalBinding
-	, functionToCall) {
-	//additionalParams = additionalParams || {};
+function createTask(resident, community, done) {
+	var name = utils.randomString(12)
+		, description = utils.randomString(100)
+		, reward = 3
+		, dueDate = new Date(new Date() + 24 * 3600)
+		, errorHandler = function(err) {
+			done(err);
+		};
+
+	TaskDao.create({
+		name: name
+		, description: description
+		, reward: reward
+		, dueDate: dueDate
+	}).success(function success(createdTask) {
+		createdTask.setCreator(resident).success(function saved() {
+			createdTask.setCommunity(community).success(function comSaved() {
+				done(null, createdTask);
+			}).error(errorHandler);
+		}).error(errorHandler);
+	}).error(errorHandler);
+}
+
+/** PrivateFunction: createAndAssignCommunity
+ * Creates a community and assigns the resident to it.
+ *
+ * Parameters:
+ *   (Integer) wrongCommunityId - if specified, will assign a wrong
+ *                                community id to the resident
+ *   (Function) done - Callback after creating
+ */
+function createAndAssignCommunity(resident, wrongCommunityId, done) {
+	createCommunity(function(err, createdCommunity) {
+		if(err) {
+			return done(err);
+		}
+		resident.isAdmin = true;
+		resident.CommunityId = wrongCommunityId ||
+									createdCommunity.id;
+		resident.save().success(function saved() {
+			done(null, createdCommunity);
+		}).error(function error(err) {
+			done(err);
+		});
+	});
+}
+
+
+
+function testNotAuthorizedException(functionToCall, additionalParams
+	, additionalBinding) {
 	var success = function success() {
-		console.log('fooobar');
 			throw new Error(
 				'Should throw a not authorized (401) exception');
 		}
 		, error = function error(err) {
-			console.log(err);
 			throw new Error(err);
 		}
 		, functionScope = {
@@ -63,7 +110,6 @@ function testNotAuthorizedException(additionalParams, additionalBinding
 		errors.NotAuthorizedError);
 }
 
-
 before(function(done) {
 	require(join(srcPath, 'server', 'middleware', 'db'))(null, config,
 		function(err, connectedDb) {
@@ -75,17 +121,19 @@ before(function(done) {
 			db = connectedDb;
 			ResidentDao = db.daoFactoryManager.getDAO('Resident');
 			CommunityDao = db.daoFactoryManager.getDAO('Community');
+			TaskDao = db.daoFactoryManager.getDAO('Task');
 			app = test.app(db);
 			done();
 	});
 });
 
 describe('Community', function() {
+
 	describe('Create', function() {
 		describe('unauthorized', function() {
 			it('should throw a not authorized (401) exception', function() {
-				testNotAuthorizedException(null, {name: 'Test'}
-					, controller.createCommunity);
+				testNotAuthorizedException(controller.createCommunity
+					, null, {name: 'Test'});
 			});
 		});
 		describe('authorized', function() {
@@ -286,8 +334,8 @@ describe('Community', function() {
 	describe('Look up community with slug', function() {
 		describe('unauthorized', function() {
 			it('should throw a not authorized (401) exception', function() {
-				testNotAuthorizedException(null, 'testslug'
-					, controller.getCommunityWithSlug);
+				testNotAuthorizedException(controller.getCommunityWithSlug
+					, null, 'testslug');
 			});
 		});
 
@@ -353,11 +401,151 @@ describe('Community', function() {
 		});
 	});
 
+	describe('Get Tasks for Community', function() {
+		describe('unauthorized', function() {
+			it('should throw a not authorized (401) exception', function() {
+				testNotAuthorizedException(
+					controller.getTasksForCommunityWithSlug
+					, null, 'testslug');
+			});
+		});
+
+		describe('authorized', function() {
+			var resident
+				, req;
+
+			beforeEach(function(done) {
+				createResident(function(err, createdResident) {
+					if(err) {
+						return done(err);
+					}
+					resident = createdResident;
+					req = test.req({ user: resident });
+					done();
+				});
+			});
+
+			it('should throw an exception if the community does not exist'
+				, function(done) {
+				var success = function success() {
+						throw new Error(
+							'Should throw a not found (404) exception');
+					}
+					, error = function error(err) {
+						err.name.should.equal(
+							'Not Found');
+						err.httpStatusCode.should.equal(404);
+						done();
+					}
+					, functionScope = {
+						req: req
+						, app: app
+					}
+					, scopedGetTasksForCommunity =
+						controller.getTasksForCommunityWithSlug.bind(
+							functionScope, success, error, 'INVALIDSLUG');
+
+				scopedGetTasksForCommunity();
+			});
+
+			it('should throw an exception if the resident is not' +
+				' within the requested community', function(done) {
+				createAndAssignCommunity(resident, 12345
+					, function(err, createdCommunity) {
+						if(err) {
+							return done(err);
+						}
+						var success = function success() {
+								throw new Error(
+									'Should throw a forbidden (403) exception');
+							}
+							, error = function error(err) {
+								err.name.should.equal(
+									'Forbidden');
+								err.httpStatusCode.should.equal(403);
+								done();
+							}
+							, functionScope = {
+								req: req
+								, app: app
+							}
+							, scopedGetTasksForCommunity =
+								controller.getTasksForCommunityWithSlug.bind(
+									functionScope, success, error
+									, createdCommunity.slug);
+
+						scopedGetTasksForCommunity();
+				});
+			});
+
+			it('should throw a not found exception if there aren\'t any tasks'
+				, function(done) {
+				createAndAssignCommunity(resident, null
+					, function(err, createdCommunity) {
+						if(err) {
+							return done(err);
+						}
+						var success = function success() {
+								throw new Error(
+									'Should throw a forbidden (403) exception');
+							}
+							, error = function error(err) {
+								err.name.should.equal(
+									'Not Found');
+								err.httpStatusCode.should.equal(404);
+								done();
+							}
+							, functionScope = {
+								req: req
+								, app: app
+							}
+							, scopedGetTasksForCommunity =
+								controller.getTasksForCommunityWithSlug.bind(
+									functionScope, success, error
+									, createdCommunity.slug);
+
+						scopedGetTasksForCommunity();
+				});
+			});
+
+			it('should return the tasks for the community', function(done) {
+				createAndAssignCommunity(resident, null
+					, function(err, createdCommunity) {
+						if(err) {
+							return done(err);
+						}
+						createTask(resident, createdCommunity
+							, function(err) {
+							if(err) {
+								return done(err);
+							}
+							var success = function success() {
+								done();
+							}
+							, error = function error(err) {
+								done(err);
+							}
+							, functionScope = {
+								req: req
+								, app: app
+							}
+							, scopedGetTasksForCommunity =
+								controller.getTasksForCommunityWithSlug.bind(
+									functionScope, success, error
+									, createdCommunity.slug);
+
+							scopedGetTasksForCommunity();
+						});
+				});
+			});
+		});
+	});
+
 	describe.skip('Delete', function() {
 		describe('unauthorized', function() {
 			it('should throw a not authorized (401) exception', function() {
-				testNotAuthorizedException({community: 1}, null
-					, controller.deleteCommunity);
+				testNotAuthorizedException(controller.deleteCommunity
+					, {community: 1}, null);
 			});
 		});
 
@@ -379,55 +567,32 @@ describe('Community', function() {
 			it('should throw an exception when the resident isnot an admin'
 				, function() {
 					var success = function success() {
-						throw new Error(
-							'Should throw a forbidden (403) exception');
-					}
-					, error = function error(err) {
-						throw new Error(err);
-					}
-					, functionScope = {
-						req: test.req({
-							params: {
-								'community': 1
-							}
-						})
-						, app: app
-					}
-					, scopedDeleteCommunity = controller.deleteCommunity.bind(
-						functionScope, success, error);
+							throw new Error(
+								'Should throw a forbidden (403) exception');
+						}
+						, error = function error(err) {
+							throw new Error(err);
+						}
+						, functionScope = {
+							req: test.req({
+								params: {
+									'community': 1
+								}
+							})
+							, app: app
+						}
+						, scopedDeleteCommunity =
+							controller.deleteCommunity.bind(
+								functionScope, success, error);
 
 				// Throw because throw is a reserved word.
 				expect(scopedDeleteCommunity).to.Throw(
 					errors.ForbiddenError);
 			});
 
-			/** PrivateFunction: createAndAssignCommunity
-			 * Creates a community and assigns the resident to it.
-			 *
-			 * Parameters:
-			 *   (Integer) wrongCommunityId - if specified, will assign a wrong
-			 *                                community id to the resident
-			 *   (Function) done - Callback after creating
-			 */
-			function createAndAssignCommunity(wrongCommunityId, done) {
-				createCommunity(function(err, createdCommunity) {
-					if(err) {
-						return done(err);
-					}
-					resident.isAdmin = true;
-					resident.CommunityId = wrongCommunityId ||
-												createdCommunity.id;
-					resident.save().success(function saved() {
-						done(null, createdCommunity);
-					}).error(function error(err) {
-						done(err);
-					});
-				});
-			}
-
 			it('should throw an exception when the resident is admin but' +
 				' not for the chosen community', function(done) {
-					createAndAssignCommunity(1024, function(err) {
+					createAndAssignCommunity(resident, 1024, function(err) {
 						if(err) {
 							return done(err);
 						}
@@ -458,7 +623,8 @@ describe('Community', function() {
 			});
 
 			it('should delete the community', function(done) {
-				createAndAssignCommunity(null, function(err, community) {
+				createAndAssignCommunity(resident, null
+					, function(err, community) {
 					if(err) {
 						return done(err);
 					}
