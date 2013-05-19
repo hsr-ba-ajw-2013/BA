@@ -10,8 +10,7 @@ var path = require('path')
 */
 
 var _ = require('underscore')
-	, errors = require('../errors')
-	, utils = require('../utils');
+	, errors = require('../errors');
 
 /** PrivateFunction: getTaskDao
  * Shortcut function to get the data access object for task entities.
@@ -38,8 +37,6 @@ function getTaskDao() {
  *     (Number) taskId - The id of the task to look up
  */
 function getTaskWithId(success, error, taskId) {
-	utils.checkPermissionToAccess(this.req);
-
 	var taskDao = getTaskDao.call(this);
 
 	taskDao.find({ where: { id: taskId } })
@@ -56,48 +53,37 @@ function getTaskWithId(success, error, taskId) {
 		});
 }
 
+function createTask(/*success, error, task*/) {
+/*
+	taskDao = getTaskDao.call(this);
+
+	_.defaults(task, {
+		name: ''
+		, description: ''
+		, reward: 0
+		, dueDate: null
+	});
+
+	taskDao.create(task)
+		.success(function createResult(task) {
+			task.setCommunity()
+
+		})
+*/
+}
+
+function updateTask(/*success, error, task*/) {
+	//var taskDao = getTaskDao.call(this);
+}
+
 module.exports = {
 	getTaskWithId: getTaskWithId
+	, createTask: createTask
+	, updateTask: updateTask
 };
 
 
 /** Function: index
- * Render list of tasks
- *
- * Parameters:
- *   (Request) req - Request
- *   (Response) res - Response
- *
-exports.index = function index(req, res) {
-	var resident = req.user;
-
-	resident.getCommunity().success(function result(community) {
-
-		if (!community) {
-			return res.redirect('/community/new');
-		}
-
-		community.getTasks({order: 'id DESC'}).success(function result(tasks) {
-			res.render('task/views/index', {
-				title: res.__('Tasks')
-				, tasks: tasks
-			});
-		});
-	});
-};
-
-/** Function: fresh
- * Render new task form
- *
- * Parameters:
- *   (Request) req - Request
- *   (Response) res - Response
- *
-exports.fresh = function fresh(req, res) {
-	res.render('task/views/fresh', {
-				title: res.__('New Task')
-			});
-};
 
 /** PrivateFunction: createTask
  * Creates a task
@@ -212,9 +198,4 @@ exports.check = function check(req, res) {
 		});
 
 };
-
-exports.get = exports.update =
-	exports.del = function(req, res) {
-		req = req;//FIXME REMOVE !! JSHINT IN YA FACE.
-		res.send(404);
 };*/

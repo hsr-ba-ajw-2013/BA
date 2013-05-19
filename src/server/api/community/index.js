@@ -12,6 +12,8 @@
  */
 
 var controller = require('./controller')
+	, basicAuthentication = require('../policy/basicAuthentication')
+	, authorizedForCommunity = require('../policy/authorizedForCommunity')
 	, path = require('path')
 	, utils = require('../utils')
 	, modulePrefix = '/community';
@@ -19,13 +21,23 @@ var controller = require('./controller')
 module.exports = function initCommunityApi(api, apiPrefix) {
 	var prefix = path.join(apiPrefix, modulePrefix);
 
-	api.get(path.join(prefix, ':slug'), controller.getCommunityWithSlug);
-	api.get(path.join(prefix, ':slug', 'tasks'),
-		controller.getTasksForCommunityWithSlug);
+	api.get(path.join(prefix, ':slug'), [
+		basicAuthentication
+		, authorizedForCommunity
+		, controller.getCommunityWithSlug]);
+
+	api.get(path.join(prefix, ':slug', 'tasks'), [
+		basicAuthentication
+		, authorizedForCommunity
+		, controller.getTasksForCommunityWithSlug]);
 
 	api.post(prefix, controller.createCommunity);
+
 	api.app.post(modulePrefix, utils.buildFormRoute(
 		'success', 'error', controller.createCommunity, api));
+
+	api.post(path.join(prefix, ':slug', 'tasks'),
+		controller.createTaskForCommunityWithSlug);
 };
 
 

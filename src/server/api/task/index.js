@@ -3,13 +3,16 @@
  */
 
 var controller = require('./controller')
+	, basicAuthentication = require('../policy/basicAuthentication')
 	, path = require('path')
-	//, utils = require('../utils')
 	, modulePrefix = '/task';
 
 module.exports = function initTaskApi(api, apiPrefix) {
 	var prefix = path.join(apiPrefix, modulePrefix);
-	api.get(path.join(prefix, ':id'), controller.getTaskWithId);
+
+	api.get(path.join(prefix, ':id'), [
+		basicAuthentication
+		, controller.getTaskWithId]);
 };
 
 /*

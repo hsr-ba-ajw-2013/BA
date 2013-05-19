@@ -2,8 +2,7 @@
  * Resident Controller
  */
 
-var errors = require('../errors')
-	, utils = require('../utils');
+var errors = require('../errors');
 
 /** Function: getResidentWithFacebookId
  * Returns a resident with a specific facebook id.
@@ -16,8 +15,6 @@ var errors = require('../errors')
 function getResidentWithFacebookId(success, error, facebookId) {
 	var db = this.app.get('db')
 		, residentDao = db.daoFactoryManager.getDAO('Resident');
-
-	utils.checkPermissionToAccess(this.req);
 
 	residentDao.find({ where: { facebookId: facebookId }})
 		.success(function results(resident) {

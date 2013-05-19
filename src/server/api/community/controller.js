@@ -20,6 +20,7 @@ var path = require('path')
 */
 
 var errors = require('./errors')
+	, taskApi = require('../task/controller')
 	, uslug = require('uslug')
 	, utils = require('../utils')
 	, _ = require('underscore');
@@ -126,8 +127,6 @@ function createUniqueSlug(db, communityName, communityId, done) {
  *                   communigy.
  */
 function createCommunity(success, error, data) {
-	utils.checkPermissionToAccess(this.req);
-
 	var resident = this.req.user
 		, db = this.app.get('db')
 		, communityDao = getCommunityDao.call(this)
@@ -204,8 +203,6 @@ function createCommunity(success, error, data) {
  *   (String) slug - The slug of the community to look for.
  */
 function getCommunityWithSlug(success, error, slug) {
-	utils.checkPermissionToAccess(this.req);
-
 	var communityDao = getCommunityDao.call(this);
 
 	communityDao.find({ where: { slug: slug }})
@@ -234,8 +231,6 @@ function getCommunityWithSlug(success, error, slug) {
  *   (String) slug - The slug of the community to look for.
  */
 function getTasksForCommunityWithSlug(success, error, slug) {
-	utils.checkPermissionToAccess(this.req);
-
 	var communityDao = getCommunityDao.call(this);
 
 	communityDao.find({ where: { slug: slug }})
@@ -262,6 +257,13 @@ function getTasksForCommunityWithSlug(success, error, slug) {
 		});
 }
 
+function createTaskForCommunityWithSlug(success, error, slug, task) {
+	//utils.checkPermissionToAccess(this.req);
+	//utils.checkPermissionToAccessCommunityWithSlug(this.req, slug);
+
+	taskApi.createTask.call(this, success, error, task);
+}
+
 /** Function: deleteCommunity
  * Marks a community as deactivated with a specific slug.
  *
@@ -278,6 +280,7 @@ function deleteCommunity(success, error, slug) {
 module.exports = {
 	getCommunityWithSlug: getCommunityWithSlug
 	, getTasksForCommunityWithSlug: getTasksForCommunityWithSlug
+	, createTaskForCommunityWithSlug: createTaskForCommunityWithSlug
 	, createCommunity: createCommunity
 	, deleteCommunity: deleteCommunity
 };
