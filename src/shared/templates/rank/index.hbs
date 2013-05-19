@@ -1,0 +1,30 @@
+<div class="row">
+		<header class="large-12 columns">
+			<h2>{{trans "Ranking"}}</h2>
+		</header>
+	</div>
+	<div class="row">
+		<div class="large-12 columns">
+			<table class="scoreboard">
+				<thead>
+					<tr>
+						<th class="resident">{{trans "Resident"}}</th>
+						<th class="points"><i class="icon-trophy"></i> {{trans "Points"}}</th>
+						<th class="badges">{{trans "Badge"}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{{#each ranks}}
+						<tr>
+							<td class="resident">
+								<img class="avatar small" src="//graph.facebook.com/{{fulfillor.facebookId}}/picture" width="25" height="25" />
+								<a href="/profile/{{fulfillor.id}}">{{fulfillor.name}}</a>
+							</td>
+							<td class="points">{{points}}</td>
+							<td class="badges">{{badges}}</td>
+						</tr>
+					{{/each}}
+				</tbody>
+			</table>
+		</div>
+	</div>
