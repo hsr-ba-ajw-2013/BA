@@ -1,4 +1,4 @@
-/* global config, describe, it, before, beforeEach, expect */
+/* global config, describe, it, before, beforeEach, expect, should */
 var join = require('path').join
 	, srcPath = join(process.cwd(),
 		(process.env.COVERAGE ? 'src-cov' : 'src'))
@@ -7,7 +7,6 @@ var join = require('path').join
 	, utils = require(join(srcPath, 'server', 'api', 'utils'))
 	, errors = require(join(srcPath, 'server', 'api', 'errors'))
 	, test = require(join(srcPath, 'server', 'api', 'utils', 'test'))
-	, should = require('chai').should()
 	, app
 	, CommunityDao
 	, ResidentDao
