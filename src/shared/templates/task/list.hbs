@@ -17,10 +17,10 @@
 			<thead>
 				<tr>
 					<th class="check"></th>
-					<th class="task"><a href="#" title="{{trans "Sort by task"}}">{{trans "Task"}}</a></th>
+					<th class="task">{{trans "Task"}}</th>
 					<th class="description">{{trans "Description"}}</th>
-					<th class="due-date"><a href="#" title="{{trans "Sort by due date"}}">{{trans "Due date"}} <i class="icon-sort-up"></i></i></a></th>
-					<th class="reward"><a href="#" title="{{trans "Sort by reward"}}">{{trans "Value"}}</a></th>
+					<th class="due-date">{{trans "Due date"}}</th>
+					<th class="reward">{{trans "Value"}}</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,7 +37,7 @@
 						</td>
 						<td class="task">{{name}}</td>
 						<td class="description">{{description}}</td>
-						<td class="due-date">{{dateFormat dueDate}}</td>
+						<td class="due-date">{{formatDate dueDate}}</td>
 						<td class="reward">{{reward}} <i class="icon-trophy"></i></td>
 					</tr>
 				{{/each}}

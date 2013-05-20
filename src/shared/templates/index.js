@@ -23,10 +23,11 @@
  * to define the locale/language, which you'd like to use.
  */
 var Handlebars = require('handlebars')
+	, moment = require('moment')
 	, _ = require('underscore')
 	, precompiledTemplates = require('./precompiledTemplates')
 	, locales = require('../locales')
-	, locale;
+	, locale
 
 
 /** PrivateFunction: safeStringHelper
@@ -66,6 +67,21 @@ function blockTranslationHelper(data, obj) {
 	return safeStringHelper(translationHelper(obj.fn(this), data));
 }
 
+/** PrivateFunction: formatDateHelper
+ * Formats a date using moment.
+ *
+ * Parameters:
+ *     (Object) context -
+ *     (Object) block -
+ *
+ * Returns:
+ *     (String) version of the date, formatted using moment.
+ */
+function formatDateHelper(context, block) {
+	var f = block.hash.format || "LL";
+	return moment(context).format(f);	
+}
+
 
 /** Function: setLocale
  * Sets the locale which should be used to render the templates.
@@ -83,6 +99,7 @@ function setLocale(newLocale) {
 Handlebars.registerHelper('safestring', safeStringHelper);
 Handlebars.registerHelper('trans', translationHelper);
 Handlebars.registerHelper('blocktrans', blockTranslationHelper);
+Handlebars.registerHelper('formatDate', formatDateHelper);
 
 _.extend(precompiledTemplates, { setLocale: setLocale });
 module.exports = precompiledTemplates;
