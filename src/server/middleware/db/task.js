@@ -11,14 +11,14 @@ var Sequelize = require('sequelize');
  */
 function createRelationships(app, db) {
 	db = app ? app.get('db') : db;
-	var Resident = db.daoFactoryManager.getDAO('Resident')
-		, Task = db.daoFactoryManager.getDAO('Task')
-		, Community = db.daoFactoryManager.getDAO('Community');
+	var residentDao = db.daoFactoryManager.getDAO('Resident')
+		, taskDao = db.daoFactoryManager.getDAO('Task')
+		, communityDao = db.daoFactoryManager.getDAO('Community');
 
 
-	Task.belongsTo(Resident, {as: 'Creator', foreignKey: 'creatorId'});
-	Task.belongsTo(Resident, {as: 'Fulfillor', foreignKey: 'fulfillorId'});
-	Task.belongsTo(Community);
+	taskDao.belongsTo(residentDao, {as: 'Creator', foreignKey: 'creatorId'});
+	taskDao.belongsTo(residentDao, {as: 'Fulfillor', foreignKey: 'fulfillorId'});
+	taskDao.belongsTo(communityDao);
 }
 
 /** Function: init

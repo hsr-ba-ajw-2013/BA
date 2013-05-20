@@ -8,7 +8,8 @@
 var _ = require('underscore')
 	, join = require('path').join
 	, srcPath = join(process.cwd(),
-		(process.env.COVERAGE ? 'src-cov' : 'src'));
+		(process.env.COVERAGE ? 'src-cov' : 'src'))
+	, utils = require(join(srcPath, 'server', 'api', 'utils'));
 
 /** Function: initDb
  * Initializes the Database in a before()-Function
@@ -30,6 +31,102 @@ function initDb(before, successHandler) {
 	});
 }
 
+/** Function: createResident
+ * Create a random resident
+ *
+ * Parameters:
+ *   (ResidentDao) residentDao - Resident Data Access Object
+ *   (Function) done - Callback
+ */
+function createResident(residentDao, done) {
+	residentDao.create({
+		name: utils.randomString(12)
+		, facebookId: utils.randomInt()
+	}).success(function success(createdResident) {
+		done(null, createdResident);
+	}).error(function error(err) {
+		done(err);
+	});
+}
+
+/** Function: createCommunity
+ * Create a random community
+ *
+ * Parameters:
+ *   (CommunityDao) communityDao - Community Data Access Object
+ *   (Function) done - Callback
+ */
+function createCommunity(communityDao, done) {
+	var name = utils.randomString(12);
+	communityDao.create({
+		name: name
+		, slug: name
+		, shareLink: name
+	}).success(function success(createdCommunity) {
+		done(null, createdCommunity);
+	}).error(function error(err) {
+		done(err);
+	});
+}
+
+/** Function: createTask
+ * Creates a random task and assignes it to the specified resident/community.
+ *
+ * Parameters:
+ *   (TaskDao) taskDao - Task Data Access Object
+ *   (Resident) resident - Resident
+ *   (Community) community - Community
+ *   (Function) done - Callback
+ */
+function createTask(taskDao, resident, community, done) {
+	var name = utils.randomString(12)
+		, description = utils.randomString(100)
+		, reward = 3
+		, dueDate = new Date(new Date() + 24 * 3600)
+		, errorHandler = function(err) {
+			done(err);
+		};
+
+	taskDao.create({
+		name: name
+		, description: description
+		, reward: reward
+		, dueDate: dueDate
+	}).success(function success(createdTask) {
+		createdTask.setCreator(resident).success(function saved() {
+			createdTask.setCommunity(community).success(function comSaved() {
+				done(null, createdTask);
+			}).error(errorHandler);
+		}).error(errorHandler);
+	}).error(errorHandler);
+}
+
+/** PrivateFunction: createAndAssignCommunity
+ * Creates a community and assigns the resident to it.
+ *
+ * Parameters:
+ *   (CommunityDao) communityDao - Community Data Access Object
+ *   (Resident) resident - Resident
+ *   (Integer) wrongCommunityId - if specified, will assign a wrong
+ *                                community id to the resident
+ *   (Function) done - Callback after creating
+ */
+function createAndAssignCommunity(communityDao, resident, wrongCommunityId
+	, done) {
+	createCommunity(communityDao, function(err, createdCommunity) {
+		if(err) {
+			return done(err);
+		}
+		resident.isAdmin = true;
+		resident.CommunityId = wrongCommunityId ||
+									createdCommunity.id;
+		resident.save().success(function saved() {
+			done(null, createdCommunity);
+		}).error(function error(err) {
+			done(err);
+		});
+	});
+}
 
 /** Function: requestMock
  * Mocks a request using the provided user.
@@ -83,4 +180,8 @@ module.exports = {
 	req: requestMock
 	, app: appMock
 	, initDb: initDb
+	, createResident: createResident
+	, createCommunity: createCommunity
+	, createTask: createTask
+	, createAndAssignCommunity: createAndAssignCommunity
 };

@@ -11,15 +11,21 @@ var Sequelize = require('sequelize');
  */
 function createRelationships(app, db) {
 	db = app ? app.get('db') : db;
-	var Resident = db.daoFactoryManager.getDAO('Resident')
-		, Task = db.daoFactoryManager.getDAO('Task')
-		, Community = db.daoFactoryManager.getDAO('Community')
-		, Achievement = db.daoFactoryManager.getDAO('Achievement');
+	var residentDao = db.daoFactoryManager.getDAO('Resident')
+		, taskDao = db.daoFactoryManager.getDAO('Task')
+		, communityDao = db.daoFactoryManager.getDAO('Community')
+		, achievementDao = db.daoFactoryManager.getDAO('Achievement');
 
-	Resident.hasMany(Task, {as: 'createdTasks', foreignKey: 'creatorId'});
-	Resident.hasMany(Task, {as: 'fulfilledTasks', foreignKey: 'fulfillorId'});
-	Resident.hasMany(Achievement);
-	Resident.belongsTo(Community);
+	residentDao.hasMany(taskDao, {
+		as: 'createdTasks'
+		, foreignKey: 'creatorId'
+	});
+	residentDao.hasMany(taskDao, {
+		as: 'fulfilledTasks'
+		, foreignKey: 'fulfillorId'
+	});
+	residentDao.hasMany(achievementDao);
+	residentDao.belongsTo(communityDao);
 }
 
 

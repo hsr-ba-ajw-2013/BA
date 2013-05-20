@@ -12,10 +12,10 @@ var Sequelize = require('sequelize');
  */
 function createRelationships(app, db) {
 	db = app ? app.get('db') : db;
-	var Achievement = db.daoFactoryManager.getDAO('Achievement')
-		, Resident = db.daoFactoryManager.getDAO('Resident');
+	var achievementDao = db.daoFactoryManager.getDAO('Achievement')
+		, residentDao = db.daoFactoryManager.getDAO('Resident');
 
-	Achievement.belongsTo(Resident);
+	achievementDao.belongsTo(residentDao);
 }
 
 /** Function: init

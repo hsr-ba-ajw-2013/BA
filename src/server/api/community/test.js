@@ -13,78 +13,6 @@ var join = require('path').join
 	, taskDao
 	, db;
 
-
-function createResident(done) {
-	residentDao.create({
-		name: utils.randomString(12)
-		, facebookId: utils.randomInt()
-	}).success(function success(createdResident) {
-		done(null, createdResident);
-	}).error(function error(err) {
-		done(err);
-	});
-}
-
-function createCommunity(done) {
-	var name = utils.randomString(12);
-	communityDao.create({
-		name: name
-		, slug: name
-		, shareLink: name
-	}).success(function success(createdCommunity) {
-		done(null, createdCommunity);
-	}).error(function error(err) {
-		done(err);
-	});
-}
-
-function createTask(resident, community, done) {
-	var name = utils.randomString(12)
-		, description = utils.randomString(100)
-		, reward = 3
-		, dueDate = new Date(new Date() + 24 * 3600)
-		, errorHandler = function(err) {
-			done(err);
-		};
-
-	taskDao.create({
-		name: name
-		, description: description
-		, reward: reward
-		, dueDate: dueDate
-	}).success(function success(createdTask) {
-		createdTask.setCreator(resident).success(function saved() {
-			createdTask.setCommunity(community).success(function comSaved() {
-				done(null, createdTask);
-			}).error(errorHandler);
-		}).error(errorHandler);
-	}).error(errorHandler);
-}
-
-/** PrivateFunction: createAndAssignCommunity
- * Creates a community and assigns the resident to it.
- *
- * Parameters:
- *   (Integer) wrongCommunityId - if specified, will assign a wrong
- *                                community id to the resident
- *   (Function) done - Callback after creating
- */
-function createAndAssignCommunity(resident, wrongCommunityId, done) {
-	createCommunity(function(err, createdCommunity) {
-		if(err) {
-			return done(err);
-		}
-		resident.isAdmin = true;
-		resident.CommunityId = wrongCommunityId ||
-									createdCommunity.id;
-		resident.save().success(function saved() {
-			done(null, createdCommunity);
-		}).error(function error(err) {
-			done(err);
-		});
-	});
-}
-
 testUtils.initDb(before, function(initializedDb) {
 	// setup test-local variables as defined at the top of the file.
 	// those are all dependant on a synced db.
@@ -104,7 +32,8 @@ describe('Community', function() {
 				, req;
 
 			beforeEach(function(done) {
-				createResident(function(err, createdResident) {
+				testUtils.createResident(residentDao
+					, function(err, createdResident) {
 					if(err) {
 						return done(err);
 					}
@@ -302,14 +231,15 @@ describe('Community', function() {
 				, req;
 
 			beforeEach(function(done) {
-				createResident(function(err, createdResident) {
+				testUtils.createResident(residentDao
+					, function(err, createdResident) {
 					if(err) {
 						return done(err);
 					}
 					resident = createdResident;
 					req = testUtils.req({ user: resident });
 
-					createCommunity(function(err, createdCommunity) {
+					testUtils.createCommunity(communityDao, function(err, createdCommunity) {
 						community = createdCommunity;
 						done();
 					});
@@ -365,7 +295,8 @@ describe('Community', function() {
 				, req;
 
 			beforeEach(function(done) {
-				createResident(function(err, createdResident) {
+				testUtils.createResident(residentDao
+					, function(err, createdResident) {
 					if(err) {
 						return done(err);
 					}
@@ -400,7 +331,7 @@ describe('Community', function() {
 
 			it('should throw an exception if the resident is not' +
 				' within the requested community', function(done) {
-				createAndAssignCommunity(resident, 12345
+				testUtils.createAndAssignCommunity(communityDao, resident, 12345
 					, function(err, createdCommunity) {
 						if(err) {
 							return done(err);
@@ -430,7 +361,7 @@ describe('Community', function() {
 
 			it('should throw a not found exception if there aren\'t any tasks'
 				, function(done) {
-				createAndAssignCommunity(resident, null
+				testUtils.createAndAssignCommunity(communityDao, resident, null
 					, function(err, createdCommunity) {
 						if(err) {
 							return done(err);
@@ -459,12 +390,12 @@ describe('Community', function() {
 			});
 
 			it('should return the tasks for the community', function(done) {
-				createAndAssignCommunity(resident, null
+				testUtils.createAndAssignCommunity(communityDao, resident, null
 					, function(err, createdCommunity) {
 						if(err) {
 							return done(err);
 						}
-						createTask(resident, createdCommunity
+						testUtils.createTask(taskDao, resident, createdCommunity
 							, function(err) {
 							if(err) {
 								return done(err);
@@ -498,7 +429,8 @@ describe('Community', function() {
 				, req;
 
 			beforeEach(function(done) {
-				createResident(function(err, createdResident) {
+				testUtils.createResident(residentDao
+					, function(err, createdResident) {
 					if(err) {
 						return done(err);
 					}
@@ -536,7 +468,8 @@ describe('Community', function() {
 
 			it('should throw an exception when the resident is admin but' +
 				' not for the chosen community', function(done) {
-					createAndAssignCommunity(resident, 1024, function(err) {
+					testUtils.createAndAssignCommunity(communityDao, resident
+						, 1024, function(err) {
 						if(err) {
 							return done(err);
 						}
@@ -567,7 +500,7 @@ describe('Community', function() {
 			});
 
 			it('should delete the community', function(done) {
-				createAndAssignCommunity(resident, null
+				testUtils.createAndAssignCommunity(communityDao, resident, null
 					, function(err, community) {
 					if(err) {
 						return done(err);

@@ -11,12 +11,12 @@ var Sequelize = require('sequelize');
  */
 function createRelationships(app, db) {
 	db = app ? app.get('db') : db;
-	var Resident = db.daoFactoryManager.getDAO('Resident')
-		, Task = db.daoFactoryManager.getDAO('Task')
-		, Community = db.daoFactoryManager.getDAO('Community');
+	var residentDao = db.daoFactoryManager.getDAO('Resident')
+		, taskDao = db.daoFactoryManager.getDAO('Task')
+		, communityDao = db.daoFactoryManager.getDAO('Community');
 
-	Community.hasMany(Task);
-	Community.hasMany(Resident);
+	communityDao.hasMany(taskDao);
+	communityDao.hasMany(residentDao);
 }
 
 /** Function: init

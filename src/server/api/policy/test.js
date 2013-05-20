@@ -47,46 +47,6 @@ describe('AuthorizedForCommunity', function() {
 		, communityDao
 		, sessionResident;
 
-	function createResident(done) {
-		residentDao.create({
-			name: utils.randomString(12)
-			, facebookId: utils.randomInt()
-		}).success(function success(createdResident) {
-			done(null, createdResident);
-		}).error(function error(err) {
-			done(err);
-		});
-	}
-
-	function createCommunity(done) {
-		var name = utils.randomString(12);
-		communityDao.create({
-			name: name
-			, slug: name
-			, shareLink: name
-		}).success(function success(createdCommunity) {
-			done(null, createdCommunity);
-		}).error(function error(err) {
-			done(err);
-		});
-	}
-
-	function createAndAssignCommunity(resident, done) {
-		createCommunity(function(err, createdCommunity) {
-			if(err) {
-				return done(err);
-			}
-			resident.isAdmin = true;
-			resident.setCommunity(createdCommunity);
-
-			resident.save().success(function saved() {
-				done(null, createdCommunity);
-			}).error(function error(err) {
-				done(err);
-			});
-		});
-	}
-
 	testUtils.initDb(before, function(initializedDb) {
 		// setup test-local variables as defined at the top of the file.
 		// those are all dependant on a synced db.
@@ -121,13 +81,14 @@ describe('AuthorizedForCommunity', function() {
 			, communitySlug;
 
 		beforeEach(function(done) {
-			createResident(function(err, createdResident) {
+			testUtils.createResident(residentDao
+				, function(err, createdResident) {
 				if(err) {
 					return done(err);
 				}
 
-				createAndAssignCommunity(createdResident
-					, function(err, createdCommunity) {
+				testUtils.createAndAssignCommunity(communityDao, createdResident
+					, null, function(err, createdCommunity) {
 						if(err) {
 							return done(err);
 						}
