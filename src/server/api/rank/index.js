@@ -1,10 +1,10 @@
-/** Component: Rank
- * The Rank component is an Express.JS capable middleware which
- * encapsulates everything related to the Rank domain object.
+/** Component: Api.Rank
+ * The Rank API component sets up the APIAdapter to interact with ranking
+ * related domain objects.
  *
  * API Routes:
- *     GET community/:slug/rank - Returns the ranking of the named url
- *                                parameters :slug
+ *     GET community/:slug/rank - Returns the ranking list for the community
+ *                                with slug :slug
  */
 
  var controller = require('./controller')
@@ -19,5 +19,5 @@ module.exports = function initRankApi(api, apiPrefix) {
 	api.get(prefix, [
 		basicAuthentication
 		, authorizedForCommunity
-		, controller.index]);
+		, controller.getRankingListForCommunity]);
 };

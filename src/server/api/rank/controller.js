@@ -1,27 +1,22 @@
-/** Class: Rank.Controller
+/** Class: Api.Rank.Controller
  * Ranking-related CRUD
  */
 
 var errors = require('./errors');
 
-/** Function: index
- * Show the ranking of the community
+/** Function: getRankingListForCommunity
+ * Show the ranking list of the community
  *
  * Parameters:
  *   (Function) success - Callback on success
  *   (Function) error - Callback in case of an error
- *   (Object) data - An object containing the information for creation of a new
- *                   community.
+ *   (String) communitySlug - The slug of the community to show the rankint list
+ *                            for.
  */
 
-function index(success, error, slug) {
+function getRankingListForCommunity(success, error, communitySlug) {
 	var community = this.res.locals.community
 		, db = this.app.get('db');
-
-	if (community.slug !== slug) {
-		var unauthorized = new errors.createError(401, 'Unauthorized');
-		return error(unauthorized);
-	}
 
 	community.getResidents().success(function residentsResult(residents) {
 
@@ -54,14 +49,13 @@ function index(success, error, slug) {
 			this.dataStore.set('ranks', ranks);
 			return success(ranks);
 		})
-		.error(function queryError(error) {
-			return error(errors.createError(500, 'Inernal Server Error'));
+		.error(function queryError(err) {
+			error(err);
 		});
 
 	});
 }
 
-
 module.exports = {
-	index: index
+	getRankingListForCommunity: getRankingListForCommunity
 };

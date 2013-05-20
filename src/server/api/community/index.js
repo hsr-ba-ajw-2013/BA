@@ -1,6 +1,6 @@
 /** Component: Api.Community
- * The Community component is an Express.JS capable middleware which
- * encapsulates everything related to the Community domain object.
+ * The Community API component sets up the APIAdapter to interact with community
+ * related domain objects.
  *
  * API Routes:
  *     GET community/:slug - Returns the community with the named url parameters
