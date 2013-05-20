@@ -5,7 +5,7 @@ var join = require('path').join
 	, controller = require(join(srcPath, 'server', 'api', 'community',
 		'controller'))
 	, utils = require(join(srcPath, 'server', 'api', 'utils'))
-	, errors = require(join(srcPath, 'server', 'api', 'errors'))
+	, errors = require(join(srcPath, 'server', 'api', 'community', 'errors'))
 	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
 	, app
 	, communityDao
@@ -41,50 +41,6 @@ describe('Community', function() {
 					req = testUtils.req({ user: resident });
 					done();
 				});
-			});
-
-			it.skip('should generate error when trying to pass a name longer' +
-				' than 255 chars', function(done) {
-					var success = function success() {
-							done(new Error('Name max. length should' +
-								' be 255 chars.'));
-						}
-						, error = function error() {
-							done();
-						}
-						, data = {
-							name: utils.randomString(300)
-						}
-						, functionScope = {
-							req: req
-							, app: app
-						}
-						, scopedCreateCommunity =
-							controller.createCommunity.bind(functionScope
-								, success, error, data);
-					scopedCreateCommunity();
-			});
-
-			it.skip('should prevent XSS injection for the name'
-				, function(done) {
-					var success = function success() {
-							done(new Error('XSS in Name should not ' +
-								'be allowed'));
-						}
-						, error = function error() {
-							done();
-						}
-						, data = {
-							name: '<script>alert("XSS!");</script>'
-						}
-						, functionScope = {
-							req: req
-							, app: app
-						}
-						, scopedCreateCommunity =
-							controller.createCommunity.bind(functionScope
-								, success, error, data);
-					scopedCreateCommunity();
 			});
 
 			describe('without community for the user', function() {
@@ -532,4 +488,57 @@ describe('Community', function() {
 			});
 		});
 	});
+
+
+	describe('Validator', function() {
+		var validators = require(
+			join(srcPath, 'server', 'api', 'community', 'validators'))
+			, validationError = new errors.ValidationError();
+
+
+		it('should throw a ValidationError when omiting a community name',
+			function(done) {
+				var success = function() { }
+					, error = function(err) {
+						if(err.name === validationError.name) {
+							done();
+						}
+					}
+					, testData = { };
+
+				validators.createCommunity(success, error, testData);
+			}
+		);
+
+		it('should throw a ValidationError when passing a name with more ' +
+			'than 255 characters length', function(done) {
+			var success = function() { }
+				, error = function(err) {
+					if(err.name === validationError.name) {
+						done();
+					}
+				}
+				, testData = {
+					name: utils.randomString(300)
+				};
+
+			validators.createCommunity(success, error, testData);
+		});
+
+		it('should sanitize the name by preventing XSS', function(done) {
+			var testData = { name: '<script>alert("XSS!");</script>' }
+				, expectedData = {
+					name: '[removed]alert&#40;"XSS!"&#41;;[removed]'
+				}
+				, success = function() {
+					if(testData.name === expectedData.name) {
+						done();
+					}
+				}
+				, error = function() { };
+
+			validators.createCommunity(success, error, testData);
+		});
+	});
+
 });
