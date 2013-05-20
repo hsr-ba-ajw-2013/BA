@@ -7,7 +7,8 @@
  *                                with slug :slug
  */
 
- var controller = require('./controller')
+var controller = require('./controller')
+	, communityTransporter = require('../community/transporter')
 	, basicAuthentication = require('../policy/basicAuthentication')
 	, authorizedForCommunity = require('../policy/authorizedForCommunity')
 	, path = require('path')
@@ -19,5 +20,6 @@ module.exports = function initRankApi(api, apiPrefix) {
 	api.get(prefix, [
 		basicAuthentication
 		, authorizedForCommunity
+		, communityTransporter
 		, controller.getRankingListForCommunity]);
 };

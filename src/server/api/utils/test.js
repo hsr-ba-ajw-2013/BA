@@ -81,7 +81,8 @@ function createCommunity(communityDao, done) {
 function createTask(taskDao, resident, community, done) {
 	var name = utils.randomString(12)
 		, description = utils.randomString(100)
-		, reward = 3
+		// between 1 and 5
+		, reward = Math.ceil(Math.random() * 5)
 		, dueDate = new Date(new Date() + 24 * 3600)
 		, errorHandler = function(err) {
 			done(err);
@@ -175,10 +176,21 @@ function appMock(db) {
 	};
 }
 
+function DataStore() {
+	this.values = {};
+}
+DataStore.prototype.set = function set(key, value) {
+	this.values[key] = value;
+}
+DataStore.prototype.get = function get(key) {
+	return this.values[key];
+}
+
 
 module.exports = {
 	req: requestMock
 	, app: appMock
+	, DataStore: DataStore
 	, initDb: initDb
 	, createResident: createResident
 	, createCommunity: createCommunity

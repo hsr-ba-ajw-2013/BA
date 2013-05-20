@@ -14,8 +14,9 @@ var errors = require('./errors');
  *                            for.
  */
 function getRankingListForCommunity(success, error/*, communitySlug*/) {
-	var community = this.res.locals.community
-		, db = this.app.get('db');
+	var community = this.community
+		, db = this.app.get('db')
+		, self = this;
 
 	community.getResidents().success(function residentsResult(residents) {
 
@@ -39,13 +40,13 @@ function getRankingListForCommunity(success, error/*, communitySlug*/) {
 			attributes: [['SUM("reward")', 'points'], 'fulfillorId']
 			, include: [{ model: Resident, as: 'Fulfillor' }]
 			, where:
-				['"Tasks"."fulfillorId" IN (' + residentIds.join(',') + ') ' +
+				['`Tasks`.`fulfillorId` IN (' + residentIds.join(',') + ') ' +
 					'AND "Tasks"."fulfilledAt" >= ?', lastWeek]
-			, group: ['"Tasks"."fulfillorId"', 'Fulfillor.id']
+			, group: ['Fulfillor.id']
 			, order: '"points" DESC'
 		})
 		.success(function(ranks) {
-			this.dataStore.set('ranks', ranks);
+			self.dataStore.set('ranks', ranks);
 			return success(ranks);
 		})
 		.error(function queryError(err) {
