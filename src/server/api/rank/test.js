@@ -1,13 +1,10 @@
-/* global config, describe, before */
-// it, beforeEach, expect, should
+/* global config, describe, before, it */
 var join = require('path').join
 	, srcPath = join(process.cwd(),
 		(process.env.COVERAGE ? 'src-cov' : 'src'))
 	, _ = require('underscore')
 	, controller = require(join(srcPath, 'server', 'api', 'rank',
 		'controller'))
-	, utils = require(join(srcPath, 'server', 'api', 'utils'))
-	, errors = require(join(srcPath, 'server', 'api', 'errors'))
 	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
 	, app
 	, communityDao

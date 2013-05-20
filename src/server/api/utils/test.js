@@ -181,10 +181,10 @@ function DataStore() {
 }
 DataStore.prototype.set = function set(key, value) {
 	this.values[key] = value;
-}
+};
 DataStore.prototype.get = function get(key) {
 	return this.values[key];
-}
+};
 
 
 module.exports = {
