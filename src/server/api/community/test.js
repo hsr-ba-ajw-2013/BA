@@ -6,16 +6,16 @@ var join = require('path').join
 		'controller'))
 	, utils = require(join(srcPath, 'server', 'api', 'utils'))
 	, errors = require(join(srcPath, 'server', 'api', 'errors'))
-	, test = require(join(srcPath, 'server', 'api', 'utils', 'test'))
+	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
 	, app
-	, CommunityDao
-	, ResidentDao
-	, TaskDao
+	, communityDao
+	, residentDao
+	, taskDao
 	, db;
 
 
 function createResident(done) {
-	ResidentDao.create({
+	residentDao.create({
 		name: utils.randomString(12)
 		, facebookId: utils.randomInt()
 	}).success(function success(createdResident) {
@@ -27,7 +27,7 @@ function createResident(done) {
 
 function createCommunity(done) {
 	var name = utils.randomString(12);
-	CommunityDao.create({
+	communityDao.create({
 		name: name
 		, slug: name
 		, shareLink: name
@@ -47,7 +47,7 @@ function createTask(resident, community, done) {
 			done(err);
 		};
 
-	TaskDao.create({
+	taskDao.create({
 		name: name
 		, description: description
 		, reward: reward
@@ -85,22 +85,14 @@ function createAndAssignCommunity(resident, wrongCommunityId, done) {
 	});
 }
 
-
-before(function(done) {
-	require(join(srcPath, 'server', 'middleware', 'db'))(null, config,
-		function(err, connectedDb) {
-			if(err) {
-				return done(err);
-			}
-			// setup test-local variables as defined at the top of the file.
-			// those are all dependant on a synced db.
-			db = connectedDb;
-			ResidentDao = db.daoFactoryManager.getDAO('Resident');
-			CommunityDao = db.daoFactoryManager.getDAO('Community');
-			TaskDao = db.daoFactoryManager.getDAO('Task');
-			app = test.app(db);
-			done();
-	});
+testUtils.initDb(before, function(initializedDb) {
+	// setup test-local variables as defined at the top of the file.
+	// those are all dependant on a synced db.
+	db = initializedDb;
+	residentDao = db.daoFactoryManager.getDAO('Resident');
+	communityDao = db.daoFactoryManager.getDAO('Community');
+	taskDao = db.daoFactoryManager.getDAO('Task');
+	app = testUtils.app(db);
 });
 
 describe('Community', function() {
@@ -117,7 +109,7 @@ describe('Community', function() {
 						return done(err);
 					}
 					resident = createdResident;
-					req = test.req({ user: resident });
+					req = testUtils.req({ user: resident });
 					done();
 				});
 			});
@@ -246,7 +238,7 @@ describe('Community', function() {
 								, scopedCreateCommunity =
 									controller.createCommunity.bind(
 										functionScope , success, error, data);
-							CommunityDao.create({
+							communityDao.create({
 								name: name
 								, slug: name
 								, shareLink: name
@@ -265,7 +257,7 @@ describe('Community', function() {
 							var name1 = 'test-1'
 								, name2 = 'test 1'
 								, success = function success() {
-									CommunityDao.find({where: {name: name2}})
+									communityDao.find({where: {name: name2}})
 										.success(function found(community) {
 											var expectedSlug = name1 +
 												'-' + community.id;
@@ -288,7 +280,7 @@ describe('Community', function() {
 								, scopedCreateCommunity =
 									controller.createCommunity.bind(
 										functionScope , success, error, data2);
-							CommunityDao.create({
+							communityDao.create({
 								name: name1
 								, slug: name1
 								, shareLink: name1
@@ -315,7 +307,7 @@ describe('Community', function() {
 						return done(err);
 					}
 					resident = createdResident;
-					req = test.req({ user: resident });
+					req = testUtils.req({ user: resident });
 
 					createCommunity(function(err, createdCommunity) {
 						community = createdCommunity;
@@ -378,7 +370,7 @@ describe('Community', function() {
 						return done(err);
 					}
 					resident = createdResident;
-					req = test.req({ user: resident });
+					req = testUtils.req({ user: resident });
 					done();
 				});
 			});
@@ -511,7 +503,7 @@ describe('Community', function() {
 						return done(err);
 					}
 					resident = createdResident;
-					req = test.req({ user: resident });
+					req = testUtils.req({ user: resident });
 					done();
 				});
 			});
@@ -526,7 +518,7 @@ describe('Community', function() {
 							throw new Error(err);
 						}
 						, functionScope = {
-							req: test.req({
+							req: testUtils.req({
 								params: {
 									'community': 1
 								}
@@ -557,7 +549,7 @@ describe('Community', function() {
 								throw new Error(err);
 							}
 							, functionScope = {
-								req: test.req({
+								req: testUtils.req({
 									params: {
 										'community': 1
 									}
@@ -589,7 +581,7 @@ describe('Community', function() {
 							done(err);
 						}
 						, functionScope = {
-							req: test.req({
+							req: testUtils.req({
 								params: {
 									'community': community.slug
 								}

@@ -1,7 +1,7 @@
 /* global config, describe, it, before, beforeEach */
 var join = require('path').join
 	, srcPath = join(process.cwd(), (process.env.COVERAGE ? 'src-cov' : 'src'))
-	, mockFactory = require(join(srcPath, 'server', 'api', 'utils', 'test'))
+	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
 	, errors = require(join(srcPath, 'server', 'api', 'errors'))
 	, utils = require(join(srcPath, 'server', 'api', 'utils'));
 
@@ -14,7 +14,7 @@ describe('BasicAuthentication', function() {
 
 		var expectedError = new errors.NotAuthorizedError()
 			, mockScope = {
-				req: mockFactory.req()
+				req: testUtils.req()
 			}
 			, success = function() { }
 			, error = function(err) {
@@ -28,7 +28,7 @@ describe('BasicAuthentication', function() {
 
 	it('should call the success callback when authorized', function(done) {
 		var mockScope = {
-				req: mockFactory.req({ user: {} })
+				req: testUtils.req({ user: {} })
 			}
 			, success = done;
 
@@ -87,29 +87,22 @@ describe('AuthorizedForCommunity', function() {
 		});
 	}
 
-
-
-	before(function setupDb(done) {
-		require(join(srcPath, 'server', 'middleware', 'db'))(null, config,
-			function(err, connectedDb) {
-				if(err) {
-					return done(err);
-				}
-
-				db = connectedDb;
-				residentDao = db.daoFactoryManager.getDAO('Resident');
-				communityDao = db.daoFactoryManager.getDAO('Community');
-				app = mockFactory.app(db);
-				done();
-		});
+	testUtils.initDb(before, function(initializedDb) {
+		// setup test-local variables as defined at the top of the file.
+		// those are all dependant on a synced db.
+		db = initializedDb;
+		residentDao = db.daoFactoryManager.getDAO('Resident');
+		communityDao = db.daoFactoryManager.getDAO('Community');
+		app = testUtils.app(db);
 	});
+
 
 	describe('in not authorized context', function() {
 		it('shoud call the error callback with a NotAuthorizedError when the ' +
 			'user is not member of the given community', function(done) {
 			var expectedError = new errors.NotAuthorizedError()
 				, mockScope = {
-					req: mockFactory.req({ app: app })
+					req: testUtils.req({ app: app })
 				}
 				, success = function() { }
 				, error = function(err) {
@@ -141,7 +134,7 @@ describe('AuthorizedForCommunity', function() {
 
 						sessionResident = createdResident;
 						communitySlug = createdCommunity.slug;
-						req = mockFactory.req({
+						req = testUtils.req({
 							app: app
 							, user: sessionResident
 						});

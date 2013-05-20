@@ -5,7 +5,30 @@
  *   - req
  *   - app
  */
-var _ = require('underscore');
+var _ = require('underscore')
+	, join = require('path').join
+	, srcPath = join(process.cwd(),
+		(process.env.COVERAGE ? 'src-cov' : 'src'));
+
+/** Function: initDb
+ * Initializes the Database in a before()-Function
+ *
+ * Parameters:
+ *   (Function) before - Before handler
+ *   (Function) successHandler - Success handler
+ */
+function initDb(before, successHandler) {
+	before(function(done) {
+		require(join(srcPath, 'server', 'middleware', 'db'))(null, config,
+			function(err, connectedDb) {
+				if(err) {
+					return done(err);
+				}
+				successHandler(connectedDb);
+				done();
+		});
+	});
+}
 
 
 /** Function: requestMock
@@ -59,4 +82,5 @@ function appMock(db) {
 module.exports = {
 	req: requestMock
 	, app: appMock
+	, initDb: initDb
 };
