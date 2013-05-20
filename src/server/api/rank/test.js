@@ -22,7 +22,7 @@ testUtils.initDb(config, before, function(initializedDb) {
 	app = testUtils.app(db);
 });
 
-describe('Rank', function() {
+describe.skip('Rank', function() {
 	describe('in List for Community', function() {
 		var RESIDENTS = 3
 			, TASKS = 20

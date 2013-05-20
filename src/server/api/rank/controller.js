@@ -17,7 +17,6 @@ function getRankingListForCommunity(success, error/*, communitySlug*/) {
 	var community = this.community
 		, db = this.app.get('db')
 		, self = this;
-
 	community.getResidents().success(function residentsResult(residents) {
 
 		if (!residents) {
@@ -40,13 +39,14 @@ function getRankingListForCommunity(success, error/*, communitySlug*/) {
 			attributes: [['SUM("reward")', 'points'], 'fulfillorId']
 			, include: [{ model: Resident, as: 'Fulfillor' }]
 			, where:
-				['`Tasks`.`fulfillorId` IN (' + residentIds.join(',') + ') ' +
+				['"Tasks"."fulfillorId" IN (' + residentIds.join(',') + ') ' +
 					'AND "Tasks"."fulfilledAt" >= ?', lastWeek]
-			, group: ['Fulfillor.id']
+			, group: ['"Tasks"."fulfillorId"', 'Fulfillor.id']
 			, order: '"points" DESC'
 		})
 		.success(function(ranks) {
-			self.dataStore.set('ranks', ranks);
+			// TODO: ??
+			//self.dataStore.set('ranks', ranks);
 			return success(ranks);
 		})
 		.error(function queryError(err) {
