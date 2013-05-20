@@ -57,13 +57,13 @@ function randomInt() {
  *                           execution of apiFunction
  *     (String) errorUrl - The url you want to redirect after a failed
  *                         execution of apiFunction
- *     (Function) apiFunction - The API function you want to execute
  *     (APIAdapter) api - An APIAdapter instance which you create your API with.
+ *     (Function)/(Array) apiFunctiosn - The API function(s) you want to execute
  *
  * Returns:
  *     (Function)
  */
-function buildFormRoute(successUrl, errorUrl, apiFunction, api) {
+function buildFormRoute(successUrl, errorUrl, api, apiFunctions) {
 	var success = function() {
 			this.res.redirect(successUrl);
 		}
@@ -71,7 +71,7 @@ function buildFormRoute(successUrl, errorUrl, apiFunction, api) {
 			var redirectTarget = errorUrl || successUrl;
 			this.res.redirect(redirectTarget);
 		}
-		, callback = api.createExpressJsCallback(success, error, apiFunction);
+		, callback = api.createExpressJsCallback(success, error, apiFunctions);
 
 	return callback;
 }
