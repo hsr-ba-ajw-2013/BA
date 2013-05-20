@@ -1,36 +1,37 @@
-/** File: Transporter
- * Shared transporter among components which lie underneath the community
- * URL namespace.
+/** Class: Api.Community.Transporter
+ * Tricky piece of code to ensure that the execution scope of the community
+ * related API routes contains an object with the current community database
+ * model.
  */
+
+var _ = require('underscore');
 
 /** Function: communityTransporter
- * Finds the community of the logged-in resident and assigns it
- * to the template locals.
- *
- * This is used for every component which lies underneath
- * the community URL namespace.
+ * Finds the community of the logged-in resident and adds it to the API
+ * exceution scope/context.
  *
  * Parameters:
- *   (Request) req - Express.js request instance
- *   (Response) res - Express.js response instance
- *   (Function) next - Next function in chain
+ *   (Function) success - Callback on success
  */
-module.exports = function communityTransporter(req, res, next) {
-	var Community = req.app.get('db').daoFactoryManager.getDAO('Community')
-		, resident = req.user;
+function communityTransporter(success) {
+	var self = this
+		, db = this.req.app.get('db')
+		, communityDao = db.daoFactoryManager.getDAO('Community')
+		, resident = this.req.user;
 
-	res.locals.community = undefined;
+	if (_.isUndefined(resident) || _.isUndefined(resident.CommunityId)) {
+		return success();
 
-	if (!resident || !resident.CommunityId) {
-		return next();
 	} else {
-		Community.find(resident.CommunityId)
-			.success( function findResult(community) {
-				res.locals.community = community;
-				return next();
+		communityDao.find(resident.CommunityId)
+			.success(function ok(community) {
+				self.community = community;
+				return success();
 			})
-			.error( function createError() {
-				return next();
+			.error( function nok() {
+				return success();
 			});
 	}
-};
+}
+
+module.exports = communityTransporter;
