@@ -2,8 +2,7 @@
 var join = require('path').join
 	, srcPath = join(process.cwd(), (process.env.COVERAGE ? 'src-cov' : 'src'))
 	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
-	, errors = require(join(srcPath, 'server', 'api', 'errors'))
-	, utils = require(join(srcPath, 'server', 'api', 'utils'));
+	, errors = require(join(srcPath, 'server', 'api', 'errors'));
 
 describe('BasicAuthentication', function() {
 	var basicAuthentication = require(join(
@@ -47,7 +46,7 @@ describe('AuthorizedForCommunity', function() {
 		, communityDao
 		, sessionResident;
 
-	testUtils.initDb(before, function(initializedDb) {
+	testUtils.initDb(config, before, function(initializedDb) {
 		// setup test-local variables as defined at the top of the file.
 		// those are all dependant on a synced db.
 		db = initializedDb;

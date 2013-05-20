@@ -18,7 +18,7 @@ var _ = require('underscore')
  *   (Function) before - Before handler
  *   (Function) successHandler - Success handler
  */
-function initDb(before, successHandler) {
+function initDb(config, before, successHandler) {
 	before(function(done) {
 		require(join(srcPath, 'server', 'middleware', 'db'))(null, config,
 			function(err, connectedDb) {

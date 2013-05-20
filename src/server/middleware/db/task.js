@@ -16,8 +16,14 @@ function createRelationships(app, db) {
 		, communityDao = db.daoFactoryManager.getDAO('Community');
 
 
-	taskDao.belongsTo(residentDao, {as: 'Creator', foreignKey: 'creatorId'});
-	taskDao.belongsTo(residentDao, {as: 'Fulfillor', foreignKey: 'fulfillorId'});
+	taskDao.belongsTo(residentDao, {
+		as: 'Creator'
+		, foreignKey: 'creatorId'
+	});
+	taskDao.belongsTo(residentDao, {
+		as: 'Fulfillor'
+		, foreignKey: 'fulfillorId'
+	});
 	taskDao.belongsTo(communityDao);
 }
 

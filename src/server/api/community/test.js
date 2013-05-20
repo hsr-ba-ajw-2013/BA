@@ -13,7 +13,7 @@ var join = require('path').join
 	, taskDao
 	, db;
 
-testUtils.initDb(before, function(initializedDb) {
+testUtils.initDb(config, before, function(initializedDb) {
 	// setup test-local variables as defined at the top of the file.
 	// those are all dependant on a synced db.
 	db = initializedDb;
@@ -239,7 +239,8 @@ describe('Community', function() {
 					resident = createdResident;
 					req = testUtils.req({ user: resident });
 
-					testUtils.createCommunity(communityDao, function(err, createdCommunity) {
+					testUtils.createCommunity(communityDao
+						, function(err, createdCommunity) {
 						community = createdCommunity;
 						done();
 					});
