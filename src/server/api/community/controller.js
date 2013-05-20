@@ -178,17 +178,17 @@ function createCommunity(success, error, data) {
 												}
 										});
 								})
-								.error(function saveError() {
-									return error();
+								.error(function saveError(err) {
+									return error(err);
 								});
 						});
 
-					}).error(function createError() {
-						return error();
+					}).error(function createError(err) {
+						return error(err);
 					});
 			})
-			.error(function findError() {
-				return error();
+			.error(function findError(err) {
+				return error(err);
 			});
 	});
 }

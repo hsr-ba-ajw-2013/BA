@@ -14,6 +14,7 @@
 var controller = require('./controller')
 	, basicAuthentication = require('../policy/basicAuthentication')
 	, authorizedForCommunity = require('../policy/authorizedForCommunity')
+	, communityValidators = require('./validators')
 	, taskValidators = require('../task/validators')
 	, path = require('path')
 	, utils = require('../utils')
@@ -32,10 +33,17 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 		, authorizedForCommunity
 		, controller.getTasksForCommunityWithSlug]);
 
-	api.post(prefix, controller.createCommunity);
+	api.post(prefix, [
+		basicAuthentication
+		, communityValidators.createCommunity
+		, controller.createCommunity
+		]);
 
 	api.app.post(modulePrefix, utils.buildFormRoute(
-		'success', 'error', controller.createCommunity, api));
+		'success', 'error', api, [
+			communityValidators.createCommunity
+			, controller.createCommunity
+		]));
 
 	api.post(path.join(prefix, ':slug', 'tasks'), [
 		basicAuthentication
