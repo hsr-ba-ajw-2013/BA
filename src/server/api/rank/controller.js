@@ -13,8 +13,7 @@ var errors = require('./errors');
  *   (String) communitySlug - The slug of the community to show the rankint list
  *                            for.
  */
-
-function getRankingListForCommunity(success, error, communitySlug) {
+function getRankingListForCommunity(success, error/*, communitySlug*/) {
 	var community = this.res.locals.community
 		, db = this.app.get('db');
 
