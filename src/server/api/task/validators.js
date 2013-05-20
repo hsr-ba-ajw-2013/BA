@@ -43,8 +43,7 @@ function createTask(success, error, communitySlug, task) {
 
 	var validationErrors = validator.getErrors();
 	if(validationErrors && validationErrors.length) {
-		console.log(validationErrors);
-		error(new errors.ValidationError());
+		error(new errors.ValidationError(validationErrors));
 	} else {
 		success();
 	}
