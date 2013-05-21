@@ -1,0 +1,15 @@
+<tr>
+	<td class="check">
+		{{#if isFulfill}}
+			<i class="icon-check"></i>
+		{{else}}
+			<a href="/community//task/{{id}}/check">
+				<i class="icon-check-empty"></i>
+			</a>
+		{{/if}}
+	</td>
+	<td class="task">{{name}}</td>
+	<td class="description">{{description}}</td>
+	<td class="due-date">{{formatDate dueDate}}</td>
+	<td class="reward">{{reward}} <i class="icon-trophy"></i></td>
+</tr>

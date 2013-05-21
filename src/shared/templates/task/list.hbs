@@ -20,27 +20,10 @@
 					<th class="task">{{trans "Task"}}</th>
 					<th class="description">{{trans "Description"}}</th>
 					<th class="due-date">{{trans "Due date"}}</th>
-					<th class="reward">{{trans "Value"}}</th>
+					<th class="reward">{{trans "Reward"}}</th>
 				</tr>
 			</thead>
 			<tbody>
-				{{#each tasks}}
-				    <tr>
-						<td class="check">
-							{{#if isFulfill}}
-								<i class="icon-check"></i>
-							{{else}}
-								<a href="/community/{{../../community.slug}}/task/{{id}}/check">
-									<i class="icon-check-empty"></i>
-								</a>
-							{{/if}}
-						</td>
-						<td class="task">{{name}}</td>
-						<td class="description">{{description}}</td>
-						<td class="due-date">{{formatDate dueDate}}</td>
-						<td class="reward">{{reward}} <i class="icon-trophy"></i></td>
-					</tr>
-				{{/each}}
 			</tbody>
 		</table>
 	</div>

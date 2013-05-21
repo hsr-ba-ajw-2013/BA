@@ -27,7 +27,7 @@ var Handlebars = require('handlebars')
 	, _ = require('underscore')
 	, precompiledTemplates = require('./precompiledTemplates')
 	, locales = require('../locales')
-	, locale
+	, locale;
 
 
 /** PrivateFunction: safeStringHelper
