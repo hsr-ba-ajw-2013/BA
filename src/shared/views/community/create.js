@@ -12,7 +12,8 @@ module.exports = View.extend({
 
 		this.$el.html(this.templates.community.create({ user: user }));
 	}
-	, afterRender: function() {
+	, afterRender: function(resolve) {
 		this.setDocumentTitle(this.translate('Create Community'));
+		resolve();
 	}
 });

@@ -12,7 +12,8 @@ module.exports = View.extend({
 
 		this.$el.html(this.templates.rank.index({ ranks: ranks }));
 	}
-	, afterRender: function() {
+	, afterRender: function(resolve) {
 		this.setDocumentTitle(this.translate('Ranking'));
+		resolve();
 	}
 });

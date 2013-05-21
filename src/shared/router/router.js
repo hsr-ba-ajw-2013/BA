@@ -19,7 +19,7 @@ module.exports = Router.extend({
 		if(!this.isAuthorized()) {
 			this.render(this.createView(HomeView));
 		} else {
-			this.navigate('createCommunity', { trigger: true });
+			this.navigate('community/create', { trigger: true });
 		}
 	}
 
@@ -33,9 +33,12 @@ module.exports = Router.extend({
 
 
 	, listTasks: function listTasks(communitySlug) {
-		console.log(communitySlug);
-
 		if(this.isAuthorized()) {
+			var TaskCollection = require('../collections/tasks')
+				, tasks = new TaskCollection();
+			tasks.url = '/api/community/' + communitySlug + '/tasks';
+			this.dataStore.set('tasks', tasks);
+
 			var listTasksView = this.createView(ListTasksView);
 			this.render(listTasksView);
 		} else {

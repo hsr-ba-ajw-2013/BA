@@ -5,20 +5,25 @@ var Barefoot = require('node-barefoot')()
 	, RoomiesView = Barefoot.View.extend()
 	, _ = require('underscore')
 	, locales = require('../locales')
-	, templates = require('../templates');
+	, templates = require('../templates')
+	, Q = require('q');
 
 /** Function: beforeRender
  * The beforeRender hook is called before the rendering of a view takes place.
  * This implementation ensures that the locale available of this view is
  * inherited down to any available subviews.
  */
-function beforeRender() {
+function beforeRender(resolve) {
 	if(_.has(this.options, 'locale')) {
 		var locale = this.options.locale;
+		this.templates.setLocale(this.options.locale);
 
-		_.each(this.subviews, function(subview) {
+		Q.when(_.each(this.subviews, function(subview) {
 			subview.options.locale = locale;
-		});
+		}))
+		.then(resolve);
+	} else {
+		resolve();
 	}
 }
 
@@ -61,7 +66,7 @@ function setPlainDocumentTitle(title) {
  * Convenient function to return the application wide DataStore.
  *
  * Returns:
- *     (<DataStore at 
+ *     (<DataStore at
  *      http://swissmanu.github.io/barefoot/docs/files/lib/datastore-js.html>)
  */
 function getDataStore() {

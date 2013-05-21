@@ -79,7 +79,7 @@ function blockTranslationHelper(data, obj) {
  */
 function formatDateHelper(context, block) {
 	var f = block.hash.format || "LL";
-	return moment(context).format(f);	
+	return moment(context).format(f);
 }
 
 
