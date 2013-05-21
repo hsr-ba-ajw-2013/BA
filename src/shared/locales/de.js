@@ -15,4 +15,10 @@ module.exports = {
 	, "You aren't in any community yet.<br/>Please tell us the desired name of your community in order to create it.": "Deine WG ist noch nicht bei Roomies registriert.<br/>Wie soll deine WG auf Roomies heissen?"
 	, "Create Community": "WG registrieren"
 	, "WG Name": "z.B. \"Partybude\" oder \"Schlaubergers\""
+
+	, "Add a new task": "Neue Aufgabe..."
+	, "Task": "Aufgabe"
+	, "Description": "Beschreibung"
+	, "Due date": "Fällig am"
+	, "Reward": "Belohnung"
 };
