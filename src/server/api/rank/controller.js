@@ -15,8 +15,8 @@ var errors = require('./errors');
  */
 function getRankingListForCommunity(success, error/*, communitySlug*/) {
 	var community = this.community
-		, db = this.app.get('db')
-		, self = this;
+		, db = this.app.get('db');
+
 	community.getResidents().success(function residentsResult(residents) {
 
 		if (!residents) {
