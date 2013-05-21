@@ -22,7 +22,7 @@ testUtils.initDb(config, before, function(initializedDb) {
 	app = testUtils.app(db);
 });
 
-describe.skip('Rank', function() {
+describe('Rank', function() {
 	describe('in List for Community', function() {
 		var RESIDENTS = 3
 			, TASKS = 20
@@ -125,7 +125,8 @@ describe.skip('Rank', function() {
 					}
 				}
 				, error = function error(err) {
-					done(err);
+					console.log(err);
+					done(new Error(err));
 				}
 				, functionScope = {
 					req: req

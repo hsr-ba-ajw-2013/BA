@@ -13,7 +13,7 @@ var errors = require('./errors');
  *   (String) communitySlug - The slug of the community to show the rankint list
  *                            for.
  */
-function getRankingListForCommunity(success, error/*, communitySlug*/) {
+function getRankingListForCommunity(success, error) {
 	var community = this.community
 		, db = this.app.get('db');
 
@@ -41,9 +41,9 @@ function getRankingListForCommunity(success, error/*, communitySlug*/) {
 			, where:
 				['"Tasks"."fulfillorId" IN (' + residentIds.join(',') + ') ' +
 					'AND "Tasks"."fulfilledAt" >= ?', lastWeek]
-			, group: ['"Tasks"."fulfillorId"', 'Fulfillor.id']
+			, group: ['Tasks.fulfillorId', 'Fulfillor.id']
 			, order: '"points" DESC'
-		})
+		}, {'raw': true})
 		.success(function(ranks) {
 			// TODO: ??
 			//self.dataStore.set('ranks', ranks);
