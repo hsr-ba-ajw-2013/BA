@@ -35,19 +35,19 @@ function setupAuth(app, config) {
 
 			residentDao.find({ where: { facebookId: profile.id } })
 				.success(function result(resident) {
-					if (!_.isNull(resident)) {
+					if (_.isNull(resident)) {
 						residentDao.create({
-							facebookId: profile.id
-							, name: profile.displayName
-						})
-						.success(function residentCreated(resident) {
-							return done(null, resident);
-						})
-						.error(function errorCreatingResident(err) {
-							return done(err);
-						});
+								facebookId: profile.id
+								, name: profile.displayName
+							})
+							.success(function residentCreated(resident) {
+								return done(null, resident);
+							})
+							.error(function errorCreatingResident(err) {
+								return done(err);
+							});
 					} else {
-						if (resident.enabled) {
+						if(resident.enabled) {
 							return done(null, resident);
 						}
 						return done('User disabled');
@@ -95,6 +95,8 @@ function setupAuth(app, config) {
 				.error(function daoError() {
 					next();
 				});
+		} else {
+			next();
 		}
 	});
 
