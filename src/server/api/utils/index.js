@@ -28,9 +28,9 @@ function randomString(length) {
  *   (Int) - random integer
  */
 function randomInt() {
-	return Math.round(1000*(Math.random()+1)) +
-		Math.round(1000*(Math.random()+1)) +
-		Math.round(1000*(Math.random()+1));
+	return Math.round(1000*(new Date().getMilliseconds())*(Math.random()+1)) +
+		Math.round(1000*(new Date().getMilliseconds())*(Math.random()+1)) +
+		Math.round(1000*(new Date().getMilliseconds())*(Math.random()+1));
 }
 
 /** Function: buildFormRoute
