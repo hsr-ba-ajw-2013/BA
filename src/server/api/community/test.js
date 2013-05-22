@@ -41,50 +41,6 @@ describe('Community', function() {
 			});
 		});
 
-		it.skip('should generate error when trying to pass a name longer' +
-			' than 255 chars', function(done) {
-				var success = function success() {
-						done(new Error('Name max. length should' +
-							' be 255 chars.'));
-					}
-					, error = function error() {
-						done();
-					}
-					, data = {
-						name: utils.randomString(300)
-					}
-					, functionScope = {
-						req: req
-						, app: app
-					}
-					, scopedCreateCommunity =
-						controller.createCommunity.bind(functionScope
-							, success, error, data);
-				scopedCreateCommunity();
-		});
-
-		it.skip('should prevent XSS injection for the name'
-			, function(done) {
-				var success = function success() {
-						done(new Error('XSS in Name should not ' +
-							'be allowed'));
-					}
-					, error = function error() {
-						done();
-					}
-					, data = {
-						name: '<script>alert("XSS!");</script>'
-					}
-					, functionScope = {
-						req: req
-						, app: app
-					}
-					, scopedCreateCommunity =
-						controller.createCommunity.bind(functionScope
-							, success, error, data);
-				scopedCreateCommunity();
-		});
-
 		describe('without community for the user', function() {
 			it('should create the community and assign the resident'
 				, function(done) {
