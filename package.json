@@ -18,7 +18,7 @@
 
 		, "connect-flash": "~0.1.0"
 
-		, "sequelize": "git://github.com/mweibel/sequelize.git#fix-sqlite-addquotes"
+		, "sequelize": "git://github.com/sequelize/sequelize.git#41c1b6aef5ab6fa82d251815071ab33c5642302a"
 		, "pg": "~0.15.1"
 
 		, "passport": "~0.1.16"
