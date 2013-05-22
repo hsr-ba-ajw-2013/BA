@@ -3,6 +3,7 @@
  * encapsulates everything related to the Resident domain object.
  */
 var controller = require('./controller')
+	, basicAuthentication = require('../policy/basicAuthentication')
 	, path = require('path')
 	, modulePrefix = 'resident';
 
