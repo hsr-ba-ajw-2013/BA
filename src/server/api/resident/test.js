@@ -7,9 +7,7 @@ var join = require('path').join
 	, utils = require(join(srcPath, 'server', 'api', 'utils'))
 	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
 	, app
-	, communityDao
 	, residentDao
-	, taskDao
 	, db;
 
 testUtils.initDb(config, before, function(initializedDb) {
@@ -17,8 +15,6 @@ testUtils.initDb(config, before, function(initializedDb) {
 	// those are all dependant on a synced db.
 	db = initializedDb;
 	residentDao = db.daoFactoryManager.getDAO('Resident');
-	communityDao = db.daoFactoryManager.getDAO('Community');
-	taskDao = db.daoFactoryManager.getDAO('Task');
 	app = testUtils.app(db);
 });
 
