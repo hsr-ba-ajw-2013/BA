@@ -1,147 +1,87 @@
-/* CURRENTLYNOTglobal describe, it, beforeEach */
-/*var request = require('super-request')
-	, path = require('path')
-	, app = require(path.join(process.cwd(), 'index.js'))()
-	, utils = require(path.join(
-			process.cwd(), 'src', 'shared', 'utils', 'index.js'))
-	, uslug = require('uslug')
-	, doLogin = require(path.join(
-			process.cwd(), 'src', 'shared', 'test', 'passport-mock')
-		).doLogin;
+/* global describe, it, beforeEach, expect, should */
+var join = require('path').join
+	, srcPath = join(process.cwd(),
+		(process.env.COVERAGE ? 'src-cov' : 'src'))
+	, controller = require(join(srcPath, 'server', 'api', 'resident',
+		'controller'))
+	, utils = require(join(srcPath, 'server', 'api', 'utils'))
+	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
+	, app
+	, communityDao
+	, residentDao
+	, taskDao
+	, db;
 
+testUtils.initDb(config, before, function(initializedDb) {
+	// setup test-local variables as defined at the top of the file.
+	// those are all dependant on a synced db.
+	db = initializedDb;
+	residentDao = db.daoFactoryManager.getDAO('Resident');
+	communityDao = db.daoFactoryManager.getDAO('Community');
+	taskDao = db.daoFactoryManager.getDAO('Task');
+	app = testUtils.app(db);
+});
 
 describe('Resident', function() {
 
-	var community;
+	var resident
+		, req;
 
-	beforeEach(function before(done) {
-		var communityName = utils.randomString(6)
-			, Community = app.get('db')
-							.daoFactoryManager
-							.getDAO('Community');
-
-		Community.create({name: communityName
-							, slug: uslug(communityName)
-							, shareLink: utils.randomString(12)})
-			.success(function createResult(theCommunity) {
-				community = theCommunity;
-				done();
-			})
-			.error(function createError(errors) {
-				done(errors);
-			});
-	});
-
-	describe('GET /community/:slug/resident/new', function(){
-
-		describe('unauthorized', function() {
-			it('should redirect to /login', function(done){
-				request(app)
-					.get('/community/' +
-							uslug(utils.randomString(42)) +'/resident/new')
-					.followRedirect(false)
-					.expect(302)
-					.expect('Location', '/login', done);
-			});
-		});
-
-		describe('authorized', function() {
-			var req = request(app);
-
-			beforeEach(function before(done) {
-				req = doLogin(app, req);
-				done();
-			});
-
-			describe('without shareLink (in the session)', function() {
-
-				it('should return with 403',
-					function(done) {
-						req.get('/community/' +
-							uslug(utils.randomString(42)) +'/resident/new')
-							.followRedirect(false)
-							.expect(403, done);
-				});
-			});
-
-			describe.skip('with shareLink (in the session)', function() {
-
-				beforeEach(function before(done) {
-					req.get('/invite/' + community.shareLink)
-						.end(function (error) {
-							if (error) {
-								return done(error);
-							}
-							return done();
-						});
-				});
-
-				it('should show /community/:slug/resident/new with 200'
-					, function(done) {
-					req.get('/community/' +
-							community.slug +'/resident/new')
-						.expect(200, done);
-				});
-			});
+	beforeEach(function(done) {
+		testUtils.createResident(residentDao
+			, function(err, createdResident) {
+			if(err) {
+				return done(err);
+			}
+			resident = createdResident;
+			req = testUtils.req({ user: resident });
+			done();
 		});
 	});
 
-	describe('POST /community/:slug/resident', function() {
-		describe('unauthorized', function() {
-
-			it('should redirect to /login', function(done){
-				request(app)
-					.post('/community/' + community.slug + '/resident')
-					.followRedirect(false)
-					.expect(302)
-					.expect('Location', '/login', done);
-			});
+	describe('get resident with facebook id', function() {
+		it('should throw a 404 error when facebook id hasn\'t been found'
+			, function(done) {
+			var success = function success() {
+					done(new Error('Should throw a 404 error'));
+				}
+				, error = function error(err) {
+					err.name.should.equal(
+						'Not Found');
+					err.httpStatusCode.should.equal(404);
+					done();
+				}
+				, facebookId = 1337
+				, functionScope = {
+					req: req
+					, app: app
+				}
+				, scopedGetResidentWithFacebookId =
+					controller.getResidentWithFacebookId.bind(functionScope
+						, success, error, facebookId);
+			scopedGetResidentWithFacebookId();
 		});
 
-		describe('authorized', function() {
-			var req = request(app);
-
-			beforeEach(function(done) {
-				req = doLogin(app, req);
-				done();
-			});
-
-			describe('without shareLink (in the session)', function() {
-
-				it('should return 403', function(done) {
-					req.post('/community/' + community.slug + '/resident')
-						.form({})
-						.expect(403, done);
-				});
-			});
-
-			describe.skip('with shareLink (in the session)', function() {
-
-				beforeEach(function before(done) {
-					req.get('/invite/' + community.shareLink)
-						.end(function (error) {
-							if (error) {
-								return done(error);
-							}
-							return done();
-						});
-				});
-
-				describe('without community for the user', function() {
-
-					it('should redirect to / ' +
-						'with 302 accepting an invitation'
-						, function(done) {
-
-						req.post('/community/' +
-									community.slug + '/resident')
-							.followRedirect(false)
-							.form({})
-							.expect(302)
-							.expect('Location', '/', done);
-					});
-				});
-			});
-		});
+		it('should return the resident when a correct facebook id' +
+			' has been submitted', function(done) {
+			var success = function success(foundResident) {
+					resident.name.should.equal(foundResident.name);
+					resident.id.should.equal(foundResident.id);
+					resident.facebookId.should.equal(foundResident.facebookId);
+					done();
+				}
+				, error = function error(err) {
+					done(err);
+				}
+				, facebookId = resident.facebookId
+				, functionScope = {
+					req: req
+					, app: app
+				}
+				, scopedGetResidentWithFacebookId =
+					controller.getResidentWithFacebookId.bind(functionScope
+						, success, error, facebookId);
+			scopedGetResidentWithFacebookId();
+		})
 	});
-});*/
+});

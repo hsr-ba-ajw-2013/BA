@@ -34,6 +34,8 @@ module.exports = function residentInit(app) {
 module.exports = function initResidentApi(api, apiPrefix) {
 	var prefix = path.join(apiPrefix, modulePrefix);
 
-	api.get(path.join(prefix, ':facebookid'),
-		controller.getResidentWithFacebookId);
+	api.get(path.join(prefix, ':facebookid'), [
+		basicAuthentication
+		, controller.getResidentWithFacebookId
+	]);
 };
