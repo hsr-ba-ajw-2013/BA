@@ -4,6 +4,17 @@ var View = require('./roomiesView')
 module.exports = View.extend({
 	el: '.fixed-navigation'
 
+	, events: {
+		"click a": "menuClick"
+	}
+
+	, menuClick: function(evt) {
+		var $el = $(evt.currentTarget)
+			, href = $el.attr('href');
+		this.options.router.navigate(href, {trigger: true});
+		return false;
+	}
+
 	, renderView: function renderView() {
 		var user = this.getDataStore().get('currentUser')
 			, community = this.getDataStore().get('community');

@@ -90,6 +90,7 @@ module.exports = Router.extend({
 			dataStore: this.dataStore
 			, apiAdapter: this.apiAdapter
 			, eventAggregator: this.eventAggregator
+			, router: this
 		});
 
 		return view;
@@ -122,12 +123,14 @@ module.exports = Router.extend({
 				, dataStore: this.dataStore
 				, apiAdapter: this.apiAdapter
 				, eventAggregator: this.eventAggregator
+				, router: this
 			});
 		} else {
 			this._mainView.options.locale = locale;
 			this._mainView.options.dataStore = this.dataStore;
 			this._mainView.options.apiAdapter = this.apiAdapter;
 			this._mainView.options.eventAggregator = this.eventAggregator;
+			this._mainView.options.router = this;
 		}
 
 		return this._mainView;
