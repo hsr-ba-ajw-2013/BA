@@ -37,16 +37,20 @@ function getTaskDao() {
  *     (Number) taskId - The id of the task to look up
  */
 function getTaskWithId(success, error, taskId) {
-	var taskDao = getTaskDao.call(this);
+	var taskDao = getTaskDao.call(this)
+		, self = this;
 
 	taskDao.find({ where: { id: taskId } })
 		.success(function ok(task) {
-			if(!_.isNull(task)) {
-				success(task);
-			} else {
-				error(new errors.NotFoundError('Task with id ' + taskId +
+			if(!task) {
+				return error(new errors.NotFoundError('Task with id ' + taskId +
 					'does not exist.'));
 			}
+			if(task.CommunityId !== self.req.user.CommunityId) {
+				return error(new errors.ForbiddenError('Task with id "'
+					+ task.id + "' is in a different community."));
+			}
+			success(task);
 		})
 		.error(function nok(err) {
 			error(err);
@@ -60,7 +64,7 @@ function getTaskWithId(success, error, taskId) {
  *     (Function) success - Callback if the task was created correctly. The task
  *                          data will be returned.
  *     (Function) error - Callback in case of an error.
- *     (Object) task - An object containing the information about the task to 
+ *     (Object) task - An object containing the information about the task to
  *                     create.
  */
 function createTask(success, error, task) {

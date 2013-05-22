@@ -129,6 +129,84 @@ function createAndAssignCommunity(communityDao, resident, wrongCommunityId
 	});
 }
 
+/** Function: createAmountOfResidents
+ * Create max amount of resident in a recursive function.
+ * If max is reached, successCallback is called.
+ *
+ * Parameters:
+ *   (Integer) i - Current resident number
+ *   (Integer) max - Max. number of residents to create
+ *   (ResidentDao) residentDao - ResidentDao
+ *   (Function) successCallback - Callback after max. is reached.
+ *   (Array) residents - [Optional] Array to store the created residents in
+ */
+function createAmountOfResidents(i, max, residentDao, successCallback, community
+	, residents) {
+	residents = residents || [];
+	createResident(residentDao
+		, function(err, createdResident) {
+		if(err) {
+			return successCallback(err);
+		}
+		var cb = function() {
+			residents[i] = createdResident;
+			if(i < max) {
+				return createAmountOfResidents(++i, max, residentDao
+					, successCallback, community, residents);
+			}
+			successCallback(null, residents);
+		};
+		if(community) {
+			createdResident.setCommunity(community).success(cb).error(successCallback);
+		} else {
+			cb();
+		}
+	});
+}
+
+/** Function: createAmountOfTasks
+ * Create max amount of tasks in a recursive function.
+ * If max is reached, successCallback is called.
+ *
+ * Parameters:
+ *   (Integer) i - Current task number
+ *   (Integer) max - Max. number of tasks to create
+ *   (TaskDao) taskDao - Task DAO
+ *   (Array) residents - Residents array to which the tasks will be evenly
+ *                       (more or less) assigned as creators.
+ *   (Function) successCallback - Callback after max. is reached.
+ *   (Array) tasks - [Optional] Array to store the created tasks in
+ */
+function createAmountOfTasks(i, max, taskDao, residents, successCallback
+	, tasks) {
+	var resident = residents[i % residents.length]
+		, fulfilledAtDate = new Date(new Date() *
+			24 * 3600 * (i % 2 + 1));
+	tasks = tasks || [];
+	resident.getCommunity().success(function(community) {
+		if(!community) {
+			successCallback('Resident needs a community assigned.');
+		}
+		testUtils.createTask(taskDao, resident, community
+			, function ok(err, createdTask) {
+			if(err) {
+				return successCallback(err);
+			}
+			createdTask.setFulfillor(resident).success(function() {
+				createdTask.fulfilledAt = fulfilledAtDate;
+				createdTask.save().success(function() {
+					tasks[i] = createdTask;
+					if(i < max) {
+						return createAmountOfTasks(++i, max, taskDao, residents
+							, successCallback, tasks);
+					}
+					successCallback(null, tasks);
+				}).error(successCallback);
+			}).error(successCallback);
+		});
+	}).error(successCallback);
+}
+
 /** Function: requestMock
  * Mocks a request using the provided user.
  * Will also mock isAuthenticated which returns true if the user
@@ -196,4 +274,6 @@ module.exports = {
 	, createCommunity: createCommunity
 	, createTask: createTask
 	, createAndAssignCommunity: createAndAssignCommunity
+	, createAmountOfResidents: createAmountOfResidents
+	, createAmountOfTasks: createAmountOfTasks
 };
