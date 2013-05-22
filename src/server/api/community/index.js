@@ -23,6 +23,12 @@ var controller = require('./controller')
 module.exports = function initCommunityApi(api, apiPrefix) {
 	var prefix = path.join(apiPrefix, modulePrefix);
 
+	// GET /apu/community/:id
+	api.get(path.join(prefix, ':id(\\d+)'), [
+		basicAuthentication
+		, authorizedForCommunity
+		, controller.getCommunityWithId]);
+
 	// GET /api/community/:slug
 	api.get(path.join(prefix, ':slug'), [
 		basicAuthentication

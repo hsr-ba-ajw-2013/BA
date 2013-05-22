@@ -18,18 +18,31 @@ var _ = require('underscore')
  * Parameters:
  *     (Function) success - Success callback
  *     (Function) error - Error callback
- *     (String) communitySlug - A community slug (a named url parameter)
+ *     (String) slugOrId - Slug or ID of a community
  */
-function authorizedForCommunity(success, error, communitySlug) {
+function authorizedForCommunity(success, error, slugOrId) {
 	var user = this.req.user
 		, unauthorized = function() {
-			error(new errors.NotAuthorizedError('Not Authorized!'));
+			error(new errors.NotAuthorizedError('Not Authorized!'))
+		}
+		, check = function(community, slugOrId) {
+			var ok = false
+				, isId = !_.isNull(slugOrId.match(/^\d*$/))
+
+			if(isId) {
+				var id = parseInt(slugOrId, 10);
+				ok = (community.id === id);
+			} else {
+				ok = (community.slug === slugOrId);
+			}
+
+			return ok;
 		};
 
 	if(!_.isUndefined(user) && _.isFunction(user.getCommunity)) {
 		user.getCommunity()
 			.success(function ok(community) {
-				if(!_.isNull(community) && community.slug === communitySlug) {
+				if(!_.isNull(community) && check(community, slugOrId)) {
 					success();
 				} else {
 					unauthorized();

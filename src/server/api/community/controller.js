@@ -1,24 +1,6 @@
 /** Class: Api.Community.Controller
  * Community-related CRUD
- *
-
-var path = require('path')
-	//, validatorsPath = path.join('..', '..', 'shared', 'validators')
-	//, createCommunityValidator = require(
-	//	path.join(validatorsPath, 'create-community'))
-	//, utils = require(path.join(
-	//		process.cwd(), 'src', 'shared', 'utils', 'index.js'))
-	, uslug = require('uslug')
-
-	, ExceptionCreateUniqueShareLink = function(message) {
-		this.message = message;
-		this.name = "ExceptionCreateUniqueShareLink";
-		Error.call(this, message);
-	};
-
-//require('util').inherits(ExceptionCreateUniqueShareLink, Error);
-*/
-
+ */
 var errors = require('./errors')
 	, taskApi = require('../task/controller')
 	, uslug = require('uslug')
@@ -193,6 +175,32 @@ function createCommunity(success, error, data) {
 	});
 }
 
+/** Function: getCommunityWithId
+ * Looks up a community with a specific ID.
+ *
+ * Parameters:
+ *   (Function) success - Callback on success. Will pass the community data as
+ *                        first argument.
+ *   (Function) error - Callback in case of an error
+ *   (String) id - The id of the community to look for.
+ */
+function getCommunityWithId(success, error, id) {
+	var communityDao = getCommunityDao.call(this);
+
+	communityDao.find({ where: { id: id }})
+		.success(function findResult(community) {
+			if(!_.isNull(community)) {
+				success(community);
+			} else {
+				error(new errors.NotFoundError('Community with id ' + id +
+					'does not exist.'));
+			}
+		})
+		.error(function daoError(err) {
+			error(err);
+		});
+}
+
 /** Function: getCommunityWithSlug
  * Looks up a community with a specific slug.
  *
@@ -280,127 +288,10 @@ function deleteCommunity(success, error, slug) {
 
 
 module.exports = {
-	getCommunityWithSlug: getCommunityWithSlug
+	getCommunityWithId: getCommunityWithId
+	, getCommunityWithSlug: getCommunityWithSlug
 	, getTasksForCommunityWithSlug: getTasksForCommunityWithSlug
 	, createTaskForCommunityWithSlug: createTaskForCommunityWithSlug
 	, createCommunity: createCommunity
 	, deleteCommunity: deleteCommunity
 };
-
-
-
-
-
-
-
-
-
-/** PrivateFunction: renderIndex
- * Renders a Community instance in a specific response object.
- *
- * Parameters:
- *    (Request) req - Request
- *    (Response) res - The response to render into
- *    (Community) community - The actual Community instance to render
- *
-var renderIndex = function renderIndex(req, res, community) {
-	res.render('community/views/index', {
-		title: res.__('Your community %s', community.name)
-	});
-};
-
-/** Function: index
- * In case the resident has no community assigned yet, it will redirect
- * to <new>.
- *
- * Parameters:
- *   (Request) req - Request
- *   (Response) res - Response
- *
-exports.index = function index(req, res) {
-	var resident = req.user;
-
-	resident.getCommunity().success(function result(community) {
-
-		if (!community) {
-			return res.redirect('./new');
-		}
-		return renderIndex(req, res, community);
-	}).error(function() {
-		return res.redirect('./new');
-	});
-
-};*/
-
-/** Function: fresh
- * Renders a form for creating a new (fresh) community.
- *
- * Parameters:
- *   (Request) req - Request
- *   (Response) res - Response
- *
-exports.fresh = function freshView(req, res) {
-	res.render('community/views/fresh', {
-		title: res.__('Create a community')
-	});
-};*/
-
-
-
-
-/** Function: create
- * Validates the POSTed form using <createCommunityValidator> as a middleware.
- * If the form has been valid, it will use the <createCommunity> function
- * to create a community.
- *
-//exports.create = [createCommunityValidator, createCommunity];
-
-/** Function: invite
- * Show the invite page. So can share the community with some roomies. YAAY :)
- *
- * /community/:slug/invite GET
- *
- * Parameters:
- *   (Request) req - Request
- *   (Response) res - Response
- *
-exports.invite = function invite(req, res) {
-	var slug = req.params.slug
-		, resident = req.user
-		, Community = req.app.get('db').daoFactoryManager.getDAO('Community');
-
-	Community.find({ where: {slug: slug}})
-		.success(function findResult(community) {
-
-			if (community !== null) {
-
-				if (resident.CommunityId !== community.id) {
-					req.flash('warning',
-								res.__('You are not allowed to send' +
-										' invites for this community!'));
-					return res.redirect('back');
-				}
-
-				return res.render('community/views/invite', {
-							title: res.__('Invite your roomies' +
-								' to the community!')
-							, shareLink: "/invite/" + community.shareLink
-						});
-			} else {
-				req.flash('error',
-							res.__('The community you wanted' +
-								' to share does not exist.'));
-				return res.redirect('/');
-			}
-		})
-		.error(function createError() {
-			return res.send(500);
-		});
-};
-
-exports.get = exports.update = exports.del =
-	function(req, res) {
-		/*jshint unused:false*
-		res.send(405);  // respond with "method not allowed"
-//};
-*/
