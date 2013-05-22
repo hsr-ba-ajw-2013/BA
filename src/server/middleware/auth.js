@@ -9,7 +9,8 @@
  */
 
 var passport = require('passport')
-	, FacebookStrategy = require('passport-facebook').Strategy;
+	, FacebookStrategy = require('passport-facebook').Strategy
+	, _ = require('underscore');
 
 /** Function: setupAuth
  * Initialize the Passport authentication provider and its Facebook strategy.
@@ -30,17 +31,19 @@ function setupAuth(app, config) {
 			, callbackURL: config.facebook.callbackUrl
 		},
 		function findOrCreate(accessToken, refreshToken, profile, done) {
-			var Resident = db.daoFactoryManager.getDAO('Resident');
+			var residentDao = db.daoFactoryManager.getDAO('Resident');
 
-			Resident.find({where: {facebookId: profile.id}})
+			residentDao.find({ where: { facebookId: profile.id } })
 				.success(function result(resident) {
-					if (!resident) {
-						Resident.create({
-							facebookId: profile.id,
-							name: profile.displayName
-						}).success(function residentCreated(resident) {
+					if (!_.isNull(resident)) {
+						residentDao.create({
+							facebookId: profile.id
+							, name: profile.displayName
+						})
+						.success(function residentCreated(resident) {
 							return done(null, resident);
-						}).error(function errorCreatingResident(err) {
+						})
+						.error(function errorCreatingResident(err) {
 							return done(err);
 						});
 					} else {
@@ -62,21 +65,37 @@ function setupAuth(app, config) {
 
 	passport.deserializeUser(function deserializeUser(id, done) {
 		var Resident = db.daoFactoryManager.getDAO('Resident');
-		Resident.find(id).success(function result(resident) {
-			if(!resident) {
-				return done("Resident not found");
-			}
-			return done(null, resident);
-		}).error(function error(err) {
-			console.log(err);
-			done(err);
-		});
+
+		Resident.find(id)
+			.success(function result(resident) {
+				if(_.isNull(resident)) {
+					return done('Resident not found');
+				}
+				return done(null, resident);
+			})
+			.error(function error(err) {
+				console.log(err);
+				done(err);
+			});
 	});
 
-	app.use(function assignUser(req, res, next) {
-		// assign user to the template
-		res.locals.user = req.user;
-		next();
+	app.use(function assignUserAndCommunity(req, res, next) {
+		var user = req.user;
+
+		if(user && user.CommunityId) {
+			var communityDao = db.daoFactoryManager.getDAO('Community');
+
+			communityDao.find({ where: { id: user.CommunityId } })
+				.success(function findResult(community) {
+					if(!_.isNull(community)) {
+						req.community = community;
+					}
+					next();
+				})
+				.error(function daoError() {
+					next();
+				});
+		}
 	});
 
 	app.get('/auth/facebook', passport.authenticate('facebook'));

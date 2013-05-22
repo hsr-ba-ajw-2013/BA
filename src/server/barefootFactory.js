@@ -13,7 +13,8 @@ var path = require('path')
 
 	, middleware = require('./middleware')
 	, api = require('./api')
-	, ResidentModel = require('../shared/models/resident');
+	, ResidentModel = require('../shared/models/resident')
+	, CommunityModel = require('../shared/models/community');
 
 // Keep a reference of the src directory:
 config.srcDir = path.join(process.cwd(), 'src');
@@ -153,14 +154,19 @@ function setupServerRequestContext() {
 	// auth middleware injects it there. Lets do some fun stuff with it and
 	// create a ResidentModel out of it.
 	var authenticatedUser = this.req.user
-		, authenticatedResident;
+		, authenticatedUsersCommunity = this.req.community
+		, userModel
+		, communityModel;
 
 	if(!_.isUndefined(authenticatedUser)) {
-		authenticatedResident = new ResidentModel(
-			authenticatedUser.selectedValues
-		);
+		userModel = new ResidentModel(authenticatedUser.selectedValues);
+		this.dataStore.set('currentUser', userModel);
+	}
 
-		this.dataStore.set('currentUser', authenticatedResident);
+	if(!_.isUndefined(authenticatedUsersCommunity)) {
+		communityModel = new CommunityModel(
+			authenticatedUsersCommunity.selectedValues);
+		this.dataStore.set('community', communityModel);
 	}
 }
 

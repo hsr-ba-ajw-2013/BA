@@ -23,11 +23,11 @@ var _ = require('underscore')
 function authorizedForCommunity(success, error, slugOrId) {
 	var user = this.req.user
 		, unauthorized = function() {
-			error(new errors.NotAuthorizedError('Not Authorized!'))
+			error(new errors.NotAuthorizedError('Not Authorized!'));
 		}
 		, check = function(community, slugOrId) {
 			var ok = false
-				, isId = !_.isNull(slugOrId.match(/^\d*$/))
+				, isId = !_.isNull(slugOrId.match(/^\d*$/));
 
 			if(isId) {
 				var id = parseInt(slugOrId, 10);

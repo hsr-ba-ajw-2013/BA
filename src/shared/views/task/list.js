@@ -17,8 +17,6 @@ module.exports = View.extend({
 		} else {
 			resolve();
 		}
-
-		//
 	}
 
 	, renderView: function() {
