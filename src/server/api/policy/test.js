@@ -34,6 +34,20 @@ describe('BasicAuthentication', function() {
 		basicAuthentication.call(mockScope, success);
 	});
 
+	it('should add the user to the request', function(done) {
+		var username = 'Tester'
+			, mockScope = {
+				req: testUtils.req({ user: { name: username } })
+			}
+			, success = function() {
+				if(mockScope.req.user.name === username) {
+					done();
+				}
+			};
+
+		basicAuthentication.call(mockScope, success);
+	});
+
 });
 
 
@@ -77,7 +91,7 @@ describe('AuthorizedForCommunity', function() {
 
 	describe('in authorized context', function() {
 		var req
-			, communitySlug;
+			, community;
 
 		beforeEach(function(done) {
 			testUtils.createResident(residentDao
@@ -93,7 +107,7 @@ describe('AuthorizedForCommunity', function() {
 						}
 
 						sessionResident = createdResident;
-						communitySlug = createdCommunity.slug;
+						community = createdCommunity;
 						req = testUtils.req({
 							app: app
 							, user: sessionResident
@@ -104,8 +118,8 @@ describe('AuthorizedForCommunity', function() {
 			});
 		});
 
-		it('should call the success callback when the user is member of the ' +
-			'community', function(done) {
+		it('should give positive result when user is member of the ' +
+			'community identified by an ID', function(done) {
 			var mockScope = {
 					req: req
 				}
@@ -113,7 +127,34 @@ describe('AuthorizedForCommunity', function() {
 				, error = function() { };
 
 			authorizedForCommunity.call(
-				mockScope, success, error, communitySlug);
+				mockScope, success, error, community.id);
+		});
+
+		it('should give positive result when user is member of the ' +
+			'community identified by a slug', function(done) {
+			var mockScope = {
+					req: req
+				}
+				, success = done
+				, error = function() { };
+
+			authorizedForCommunity.call(
+				mockScope, success, error, community.slug);
+		});
+
+		it('should add the users community to the request', function(done) {
+			var mockScope = {
+				req: req
+			}
+			, success = function() {
+				if(mockScope.req.community.id === community.id) {
+					done();
+				}
+			}
+			, error = function() { };
+
+			authorizedForCommunity.call(
+				mockScope, success, error, community.slug);
 		});
 
 	});

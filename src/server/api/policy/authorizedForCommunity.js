@@ -11,9 +11,10 @@ var _ = require('underscore')
  * Checks if the current session user is member of the community with the given
  * community slug.
  *
- * If the user is member, success is called so the processing of the request can
- * proceed. If not, a <NotAuthorizedError> is passed by calling the error
- * callback function.
+ * If the user is a member, the community database object is stored in the
+ * current request object and success is called so the processing of the
+ * request can proceed. If not, a <NotAuthorizedError> is passed by calling the
+ * error callback function.
  *
  * Parameters:
  *     (Function) success - Success callback
@@ -21,13 +22,14 @@ var _ = require('underscore')
  *     (String) slugOrId - Slug or ID of a community
  */
 function authorizedForCommunity(success, error, slugOrId) {
-	var user = this.req.user
+	var self = this
+		, user = self.req.user
 		, unauthorized = function() {
 			error(new errors.NotAuthorizedError('Not Authorized!'));
 		}
 		, check = function(community, slugOrId) {
 			var ok = false
-				, isId = !_.isNull(slugOrId.match(/^\d*$/));
+				, isId = !_.isNull((''+slugOrId).match(/^\d*$/));
 
 			if(isId) {
 				var id = parseInt(slugOrId, 10);
@@ -43,6 +45,7 @@ function authorizedForCommunity(success, error, slugOrId) {
 		user.getCommunity()
 			.success(function ok(community) {
 				if(!_.isNull(community) && check(community, slugOrId)) {
+					self.req.community = community;
 					success();
 				} else {
 					unauthorized();
