@@ -5,7 +5,7 @@
 		</div>
 		<section class="nav-section">
 			<ul class="left">
-				{{#if user}}
+				{{#if user }}{{#if community }}
 					<li>
 						<a href="/community/{{community.slug}}/tasks" title="{{trans "Tasks"}}">
 							<i class="icon-tasks icon-large"></i>
@@ -24,7 +24,7 @@
 							<span class="item-label"> {{trans "Invite" }}</span>
 						</a>
 					</li>
-				{{/if}}
+				{{/if}}{{/if}}
 			</ul>
 			{{#if user}}
 			<ul class="right">
