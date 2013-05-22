@@ -7,6 +7,9 @@ var join = require('path').join
 	, utils = require(join(srcPath, 'server', 'api', 'utils'))
 	, errors = require(join(srcPath, 'server', 'api', 'community', 'errors'))
 	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
+	, validators = require(
+		join(srcPath, 'server', 'api', 'community', 'validators'))
+	, validationError = new errors.ValidationError()
 	, app
 	, communityDao
 	, residentDao
@@ -480,20 +483,16 @@ describe('Community', function() {
 
 
 	describe('Validator', function() {
-		var validators = require(
-			join(srcPath, 'server', 'api', 'community', 'validators'))
-			, validationError = new errors.ValidationError();
-
-
-		it('should throw a ValidationError when omiting a community name',
+		it('should throw a ValidationError when omitting a community name',
 			function(done) {
-				var success = function() { }
-					, error = function(err) {
-						if(err.name === validationError.name) {
-							done();
-						}
+				var success = function() {
+						done(new Error('Should throw a ValidationError'));
 					}
-					, testData = { };
+					, error = function(err) {
+						err.name.should.equal(validationError.name);
+						done();
+					}
+					, testData = {};
 
 				validators.createCommunity(success, error, testData);
 			}
@@ -501,11 +500,12 @@ describe('Community', function() {
 
 		it('should throw a ValidationError when passing a name with more ' +
 			'than 255 characters length', function(done) {
-			var success = function() { }
+			var success = function() {
+					done(new Error('Should throw a ValidationError'));
+				}
 				, error = function(err) {
-					if(err.name === validationError.name) {
-						done();
-					}
+					err.name.should.equal(validationError.name);
+					done();
 				}
 				, testData = {
 					name: utils.randomString(300)
@@ -515,16 +515,19 @@ describe('Community', function() {
 		});
 
 		it('should sanitize the name by preventing XSS', function(done) {
-			var testData = { name: '<script>alert("XSS!");</script>' }
+			var testData = {
+					name: '<script>alert("XSS!");</script>'
+				}
 				, expectedData = {
 					name: '[removed]alert&#40;"XSS!"&#41;;[removed]'
 				}
 				, success = function() {
-					if(testData.name === expectedData.name) {
-						done();
-					}
+					testData.name.should.equal(expectedData.name);
+					done();
 				}
-				, error = function() { };
+				, error = function() {
+					done(new Error('Should not throw a ValidationError'));
+				};
 
 			validators.createCommunity(success, error, testData);
 		});

@@ -4,6 +4,7 @@
 
 var controller = require('./controller')
 	, basicAuthentication = require('../policy/basicAuthentication')
+	, taskValidators = require('./validators')
 	, path = require('path')
 	, modulePrefix = '/task';
 
@@ -12,6 +13,7 @@ module.exports = function initTaskApi(api, apiPrefix) {
 
 	api.get(path.join(prefix, ':id'), [
 		basicAuthentication
+		, taskValidators.createTask
 		, controller.getTaskWithId]);
 };
 

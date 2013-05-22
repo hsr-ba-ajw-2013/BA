@@ -83,7 +83,8 @@ function createTask(taskDao, resident, community, done) {
 		, description = utils.randomString(100)
 		// between 1 and 5
 		, reward = Math.ceil(Math.random() * 5)
-		, dueDate = new Date(new Date() + 24 * 3600)
+		, dueDate = new Date(new Date().getTime() +
+							(24 * 3600 * 1000))
 		, errorHandler = function(err) {
 			done(err);
 		};
@@ -181,8 +182,8 @@ function createAmountOfResidents(i, max, residentDao, successCallback, community
 function createAmountOfTasks(i, max, taskDao, residents, successCallback
 	, tasks) {
 	var resident = residents[i % residents.length]
-		, fulfilledAtDate = new Date(new Date() *
-			24 * 3600 * (i % 2 + 1));
+		, fulfilledAtDate = new Date(new Date().getTime() +
+								(24 * 3600 * 1000 * (i % 2 + 1)));
 	tasks = tasks || [];
 	resident.getCommunity().success(function(community) {
 		if(!community) {

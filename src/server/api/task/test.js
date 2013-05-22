@@ -4,7 +4,12 @@ var join = require('path').join
 		(process.env.COVERAGE ? 'src-cov' : 'src'))
 	, controller = require(join(srcPath, 'server', 'api', 'task',
 		'controller'))
+	, validators = require(join(srcPath, 'server', 'api', 'task',
+		'validators'))
+	, errors = require(join(srcPath, 'server', 'api', 'errors'))
+	, validationError = new errors.ValidationError()
 	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
+	, utils = require(join(srcPath, 'server', 'api', 'utils'))
 	, app
 	, communityDao
 	, residentDao
@@ -92,6 +97,290 @@ describe('Task', function() {
 							, success, error, taskId);
 				scopedGetTaskWithId();
 			});
+		});
+
+		it('should return the task when the task is found & the resident is' +
+			' in the same community', function(done) {
+			testUtils.createTask(taskDao, residents[0], community
+				, function(err, createdTask) {
+				if(err) {
+					return done(err);
+				}
+				var success = function success() {
+						done();
+					}
+					, error = function error(err) {
+						done(err);
+					}
+					, taskId = createdTask.id
+					, functionScope = {
+						req: testUtils.req({ user: residents[0] })
+						, app: app
+					}
+					, scopedGetTaskWithId =
+						controller.getTaskWithId.bind(functionScope
+							, success, error, taskId);
+				scopedGetTaskWithId();
+			});
+		});
+	});
+
+	describe('Validator', function() {
+		describe('Constraints', function() {
+			it('should throw a ValidationError for each omitted required field'
+				, function(done) {
+				var success = function() {
+						done(new Error('Should throw a ValidationError'));
+					}
+					, error = function(err) {
+						err.name.should.equal(validationError.name);
+						err.httpStatusCode.should.equal(
+							validationError.httpStatusCode);
+						err.message.should.have.length(3);
+						done();
+					}
+					, testData = {};
+
+				validators.createTask(success, error, null, testData);
+			});
+
+			it('should throw a ValidationError with a name > 255 chars'
+				, function(done) {
+				var success = function() {
+						done(new Error('Should throw a ValidationError'));
+					}
+					, error = function(err) {
+						err.name.should.equal(validationError.name);
+						err.httpStatusCode.should.equal(
+							validationError.httpStatusCode);
+						err.message.should.have.length(1);
+						done();
+					}
+					, testData = {
+						name: utils.randomString(256)
+						, reward: 3
+						, dueDate: new Date(new Date().getTime() +
+									(24 * 3600 * 1000))
+					};
+
+				validators.createTask(success, error, null, testData);
+			});
+
+			it('should throw a ValidationError with a reward < 1'
+				, function(done) {
+				var success = function() {
+						done(new Error('Should throw a ValidationError'));
+					}
+					, error = function(err) {
+						err.name.should.equal(validationError.name);
+						err.httpStatusCode.should.equal(
+							validationError.httpStatusCode);
+						err.message.should.have.length(1);
+						done();
+					}
+					, testData = {
+						name: utils.randomString(12)
+						, reward: 0
+						, dueDate: new Date(new Date().getTime() +
+									(24 * 3600 * 1000))
+					};
+
+				validators.createTask(success, error, null, testData);
+			});
+
+			it('should throw a ValidationError with a reward > 5'
+				, function(done) {
+				var success = function() {
+						done(new Error('Should throw a ValidationError'));
+					}
+					, error = function(err) {
+						err.name.should.equal(validationError.name);
+						err.httpStatusCode.should.equal(
+							validationError.httpStatusCode);
+						err.message.should.have.length(1);
+						done();
+					}
+					, testData = {
+						name: utils.randomString(12)
+						, reward: 6
+						, dueDate: new Date(new Date().getTime() +
+									(24 * 3600 * 1000))
+					};
+
+				validators.createTask(success, error, null, testData);
+			});
+
+			it('should throw a ValidationError with a reward which is not an' +
+				' integer', function(done) {
+				var success = function() {
+						done(new Error('Should throw a ValidationError'));
+					}
+					, error = function(err) {
+						err.name.should.equal(validationError.name);
+						err.httpStatusCode.should.equal(
+							validationError.httpStatusCode);
+						err.message.should.have.length(1);
+						done();
+					}
+					, testData = {
+						name: utils.randomString(12)
+						, reward: 'asdf'
+						, dueDate: new Date(new Date().getTime() +
+									(24 * 3600 * 1000))
+					};
+
+				validators.createTask(success, error, null, testData);
+			});
+
+			it('should throw a ValidationError with a dueDate not in the' +
+				' future', function(done) {
+				var success = function() {
+						done(new Error('Should throw a ValidationError'));
+					}
+					, error = function(err) {
+						err.name.should.equal(validationError.name);
+						err.httpStatusCode.should.equal(
+							validationError.httpStatusCode);
+						err.message.should.have.length(1);
+						done();
+					}
+					, testData = {
+						name: utils.randomString(12)
+						, reward: 3
+						, dueDate: new Date(new Date().getTime() -
+									(24 * 3600 * 1000))
+					};
+
+				validators.createTask(success, error, null, testData);
+			});
+
+			it('should throw a ValidationError with a dueDate not being' +
+				' a parsable date', function(done) {
+				var success = function() {
+						done(new Error('Should throw a ValidationError'));
+					}
+					, error = function(err) {
+						err.name.should.equal(validationError.name);
+						err.httpStatusCode.should.equal(
+							validationError.httpStatusCode);
+						err.message.should.have.length(1);
+						done();
+					}
+					, testData = {
+						name: utils.randomString(12)
+						, reward: 3
+						, dueDate: 'asdf'
+					};
+
+				validators.createTask(success, error, null, testData);
+			});
+
+			it('should throw a ValidationError with a description longer' +
+				' than 255 chars', function(done) {
+				var success = function() {
+						done(new Error('Should throw a ValidationError'));
+					}
+					, error = function(err) {
+						err.name.should.equal(validationError.name);
+						err.httpStatusCode.should.equal(
+							validationError.httpStatusCode);
+						err.message.should.have.length(1);
+						done();
+					}
+					, testData = {
+						name: utils.randomString(12)
+						, reward: 3
+						, dueDate: new Date(new Date().getTime() +
+											(24 * 3600 * 1000))
+						, description: utils.randomString(256)
+					};
+
+				validators.createTask(success, error, null, testData);
+			});
+		});
+
+		describe('Sanitize', function() {
+			it('should sanitize the name & description by preventing XSS'
+				, function(done) {
+				var testData = {
+						name: '<script>alert("XSS!");</script>'
+						, reward: '3'
+						, dueDate: new Date(new Date().getTime() +
+										(24 * 3600 * 1000))
+						, description: '<script>alert("XSS!");</script>'
+					}
+					, expectedData = {
+						name: '[removed]alert&#40;"XSS!"&#41;;[removed]'
+						, reward: 3
+						, description: '[removed]alert&#40;"XSS!"&#41' +
+							';;[removed]'
+					}
+					, success = function() {
+						for(var key in expectedData) {
+							testData[key].should.equal(expectedData[key]);
+						}
+						done();
+					}
+					, error = function(err) {
+						done(err);
+					};
+
+				validators.createTask(success, error, null, testData);
+			});
+		});
+	});
+
+	describe('create task', function() {
+		it('should return a not found error, if the resident is not within a' +
+			' community', function(done) {
+			var success = function success() {
+					done(new Error('Should throw a 404 not found error'));
+				}
+				, error = function error(err) {
+					err.name.should.equal('Not Found');
+					err.httpStatusCode.should.equal(404);
+					done();
+				}
+				, data = {
+					name: utils.randomString(12)
+					, description: utils.randomString(100)
+					, reward: 5
+					, dueDate: new Date(new Date().getTime() +
+										(24 * 3600 * 1000))
+				}
+				, functionScope = {
+					req: testUtils.req({ user: residents[1] })
+					, app: app
+				}
+				, scopedCreateTask =
+					controller.createTask.bind(functionScope
+						, success, error, data);
+			scopedCreateTask();
+		});
+
+		it('should create the task if the resident is in a community and ' +
+			'the data is correct', function(done) {
+			var success = function success() {
+					done();
+				}
+				, error = function error(err) {
+					done(err);
+				}
+				, data = {
+					name: utils.randomString(12)
+					, description: utils.randomString(100)
+					, reward: 5
+					, dueDate: new Date(new Date().getTime() +
+										(24 * 3600 * 1000))
+				}
+				, functionScope = {
+					req: req
+					, app: app
+				}
+				, scopedCreateTask =
+					controller.createTask.bind(functionScope
+						, success, error, data);
+			scopedCreateTask();
 		});
 	});
 });

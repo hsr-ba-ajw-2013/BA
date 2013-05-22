@@ -34,8 +34,10 @@ function giveFulfilledTask(eventBus, resident, amount) {
 		name: utils.randomString(12)
 		, description: utils.randomString(12)
 		, reward: 5
-		, dueDate: new Date(new Date() + 24 * 3600)
-		, fulfilledAt: new Date(new Date() + 24 * 2800)
+		, dueDate: new Date(new Date().getTime() +
+							(24 * 3600 * 1000))
+		, fulfilledAt: new Date(new Date().getTime() +
+							(24 * 3600 * 1000))
 		, CommunityId: resident.CommunityId
 	}).success(function(createdTask) {
 		createdTask.setFulfillor(resident).success(function() {
@@ -79,7 +81,8 @@ describe('Gamification', function() {
 							name: utils.randomString(12)
 							, description: utils.randomString(12)
 							, reward: 5
-							, dueDate: new Date(new Date() + 24 * 3600)
+							, dueDate: new Date(new Date().getTime() +
+											(24 * 3600 * 1000))
 						}).success(function(createdTask) {
 							task = createdTask;
 							task.setCommunity(community)
@@ -112,7 +115,8 @@ describe('Gamification', function() {
 		it('should give an achievement upon first task done', function(done) {
 			// due to the asynchronous nature of event-bus, we need to
 			// listen to another event.
-			task.fulfilledAt = new Date(new Date() + 24 * 2900);
+			task.fulfilledAt = new Date(new Date().getTime() +
+									(24 * 3600 * 1000));
 			task.save().success(function saved() {
 				task.setFulfillor(resident).success(function fulfillorSet() {
 					eventBus.on('achievement:added:first-task', function() {

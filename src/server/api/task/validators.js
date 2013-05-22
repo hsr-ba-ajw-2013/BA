@@ -24,20 +24,20 @@ function createTask(success, error, communitySlug, task) {
 	task = task || {};
 
 	validator.check(task.name
-		, 'Names length needs to be within 1 and 255')
+		, 'Name length needs to be within 1 and 255')
 		.len(1, 255);
 	validator.check(task.reward
 		, 'Reward should have an integer value between 1 and 5')
 		.isInt().min(1).max(5);
 	validator.check(task.dueDate
 		, 'Due date needs to be a date in the future')
-		.isDate();
+		.isDate().isAfter();
 	validator.check(task.description
-		, 'Descriptions lenght needs to be within 0 and 255')
+		, 'Description length needs to be within 0 and 255')
 		.len(0, 255);
 
 	task.name = sanitize(task.name).xss().trim();
-	task.reward = sanitize(task.reward).xss().trim();
+	task.reward = sanitize(task.reward).toInt();
 	task.dueDate = sanitize(task.dueDate).xss().trim();
 	task.description = sanitize(task.description).xss().trim();
 
