@@ -1,10 +1,9 @@
-/* global config, describe, it, before, beforeEach, expect, should */
+/* global config, describe, it, before, beforeEach */
 var join = require('path').join
 	, srcPath = join(process.cwd(),
 		(process.env.COVERAGE ? 'src-cov' : 'src'))
 	, controller = require(join(srcPath, 'server', 'api', 'task',
 		'controller'))
-	, utils = require(join(srcPath, 'server', 'api', 'utils'))
 	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
 	, app
 	, communityDao
@@ -94,5 +93,5 @@ describe('Task', function() {
 				scopedGetTaskWithId();
 			});
 		});
-	})
+	});
 });

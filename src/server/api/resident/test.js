@@ -1,10 +1,9 @@
-/* global describe, it, beforeEach, expect, should */
+/* global describe, it, beforeEach, config, before */
 var join = require('path').join
 	, srcPath = join(process.cwd(),
 		(process.env.COVERAGE ? 'src-cov' : 'src'))
 	, controller = require(join(srcPath, 'server', 'api', 'resident',
 		'controller'))
-	, utils = require(join(srcPath, 'server', 'api', 'utils'))
 	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
 	, app
 	, residentDao
@@ -78,6 +77,6 @@ describe('Resident', function() {
 					controller.getResidentWithFacebookId.bind(functionScope
 						, success, error, facebookId);
 			scopedGetResidentWithFacebookId();
-		})
+		});
 	});
 });

@@ -50,8 +50,8 @@ describe('Rank', function() {
 						}
 						tasks = createdTasks;
 						done();
-					}, community);
-				});
+					});
+				}, community);
 			});
 		});
 

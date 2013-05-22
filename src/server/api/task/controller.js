@@ -47,8 +47,8 @@ function getTaskWithId(success, error, taskId) {
 					'does not exist.'));
 			}
 			if(task.CommunityId !== self.req.user.CommunityId) {
-				return error(new errors.ForbiddenError('Task with id "'
-					+ task.id + "' is in a different community."));
+				return error(new errors.ForbiddenError('Task with id "' +
+					task.id + '" is in a different community.'));
 			}
 			success(task);
 		})

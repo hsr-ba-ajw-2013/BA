@@ -157,7 +157,8 @@ function createAmountOfResidents(i, max, residentDao, successCallback, community
 			successCallback(null, residents);
 		};
 		if(community) {
-			createdResident.setCommunity(community).success(cb).error(successCallback);
+			createdResident.setCommunity(community).success(cb)
+			.error(successCallback);
 		} else {
 			cb();
 		}
@@ -185,9 +186,9 @@ function createAmountOfTasks(i, max, taskDao, residents, successCallback
 	tasks = tasks || [];
 	resident.getCommunity().success(function(community) {
 		if(!community) {
-			successCallback('Resident needs a community assigned.');
+			successCallback(new Error('Resident needs a community assigned.'));
 		}
-		testUtils.createTask(taskDao, resident, community
+		createTask(taskDao, resident, community
 			, function ok(err, createdTask) {
 			if(err) {
 				return successCallback(err);
