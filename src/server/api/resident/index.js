@@ -39,4 +39,9 @@ module.exports = function initResidentApi(api, apiPrefix) {
 		basicAuthentication
 		, controller.getResidentWithFacebookId
 	]);
+
+	api.get(path.join(prefix, ':facebookid', 'profile'), [
+		basicAuthentication
+		, controller.getProfileWithFacebookId
+	]);
 };

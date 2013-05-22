@@ -29,11 +29,56 @@ function getResidentWithFacebookId(success, error, facebookId) {
 		});
 }
 
+
+function getAchievements(resident, cb) {
+	resident.getAchievements().success(function(achievements) {
+		cb(achievements);
+	});
+}
+
+function getFulfilledTasksPointSum(resident, cb) {
+	resident.getFulfilledTasks({attributes: ['SUM(`reward`) AS totalreward']})
+	.success(function(sum) {
+		cb(sum[0].totalreward);
+	});
+}
+
+function getProfileWithFacebookId(success, error, facebookId) {
+	var db = this.app.get('db')
+		, residentDao = db.daoFactoryManager.getDAO('Resident')
+		, user = this.req.user;
+
+	residentDao.find({ where: {facebookId: facebookId }})
+		.success(function(resident) {
+			resident.getCommunity().success(function(community) {
+				getAchievements(resident,
+					function(achievements) {
+						getFulfilledTasksPointSum(resident,
+							function(pointsSum) {
+								success({
+									resident: resident
+									, displayDangerZone:
+										resident.id === user.id &&
+										resident.isAdmin
+									, community: community
+									, achievements: achievements
+									, achievementsCount: achievements.length
+									, pointsSum: pointsSum || 0
+								});
+						});
+					});
+			}).error(function(err) {
+				error(err);
+			});
+	}).error(function(err) {
+		error(err);
+	});
+}
+
 module.exports = {
 	getResidentWithFacebookId: getResidentWithFacebookId
+	, getProfileWithFacebookId: getProfileWithFacebookId
 };
-
-
 
 
 

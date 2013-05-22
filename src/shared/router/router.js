@@ -13,6 +13,8 @@ module.exports = Router.extend({
 		, 'community/create': 'createCommunity'
 
 		, 'community/:communitySlug/tasks': 'listTasks'
+
+		, 'resident/:facebookId/profile': 'profile'
 	}
 
 	, home: function home() {
@@ -41,6 +43,21 @@ module.exports = Router.extend({
 
 			var listTasksView = this.createView(ListTasksView);
 			this.render(listTasksView);
+		} else {
+			this.navigate('', { trigger: true });
+		}
+	}
+
+	, profile: function profile(facebookId) {
+		if (this.isAuthorized()) {
+			var ResidentProfileModel = require('../models/residentprofile')
+				, residentProfile = new ResidentProfileModel();
+
+			residentProfile.url = 'api/resident/' + facebookId + '/profile';
+			this.dataStore.set('residentProfile', residentProfile);
+
+			//var profileView = this.createView(Profile);
+			//this.render(profileView);
 		} else {
 			this.navigate('', { trigger: true });
 		}
