@@ -6,6 +6,12 @@ var Barefoot = require('node-barefoot')()
 	, ListTasksView = require('../views/task/list')
 	, _ = require('underscore');
 
+if(Barefoot.isRunningOnServer()) {
+	var debug = require('debug')('roomies:shared:router');
+} else {
+	var debug = function() {};
+}
+
 module.exports = Router.extend({
 	routes: {
 		'': 'home'
@@ -18,6 +24,7 @@ module.exports = Router.extend({
 	}
 
 	, home: function home() {
+		debug('home');
 		if(!this.isAuthorized()) {
 			this.render(this.createView(HomeView));
 		} else {
@@ -26,6 +33,7 @@ module.exports = Router.extend({
 	}
 
 	, createCommunity: function createCommunity() {
+		debug('create community');
 		if(this.isAuthorized()) {
 			this.render(this.createView(CreateCommunityView));
 		} else {
@@ -35,6 +43,7 @@ module.exports = Router.extend({
 
 
 	, listTasks: function listTasks(communitySlug) {
+		debug('list tasks');
 		if(this.isAuthorized()) {
 			var TaskCollection = require('../collections/tasks')
 				, tasks = new TaskCollection();
@@ -49,6 +58,7 @@ module.exports = Router.extend({
 	}
 
 	, profile: function profile(facebookId) {
+		debug('resident profile');
 		if (this.isAuthorized()) {
 			var ResidentProfileModel = require('../models/residentprofile')
 				, residentProfile = new ResidentProfileModel();
@@ -65,6 +75,7 @@ module.exports = Router.extend({
 
 
 	, isAuthorized: function isAuthorized() {
+		debug('is authorized');
 		var currentUser = this.dataStore.get('currentUser')
 			, authorized = false;
 
@@ -92,6 +103,7 @@ module.exports = Router.extend({
 			, eventAggregator: this.eventAggregator
 			, router: this
 		});
+		debug('create view `%s`', view.toString());
 
 		return view;
 	}
@@ -115,6 +127,7 @@ module.exports = Router.extend({
 	 *     (<MainView>)
 	 */
 	, mainView: function mainView() {
+		debug('setup main view');
 		var locale = this.getLocale();
 
 		if(_.isUndefined(this._mainView)) {
@@ -147,6 +160,7 @@ module.exports = Router.extend({
 	 *     (<RoomiesView>) view - The view which should be rendered.
 	 */
 	, render: function render(view) {
+		debug('render');
 		/* jshint camelcase:false */    // Ensures that jshint ignores __super__
 		var locale = this.getLocale();
 		view.options.locale = locale;

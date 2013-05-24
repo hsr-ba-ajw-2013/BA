@@ -16,4 +16,8 @@ module.exports = View.extend({
 		this.setDocumentTitle(this.translate('Create Community'));
 		resolve();
 	}
+
+	, toString: function toString() {
+		return 'Community.CreateView';
+	}
 });

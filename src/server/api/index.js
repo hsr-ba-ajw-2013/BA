@@ -15,9 +15,11 @@ var apiPrefix = '/api'
 	, setupResidentApi = require('./resident')
 	, setupCommunityApi = require('./community')
 	, setupTaskApi = require('./task')
-	, setupRankApi = require('./rank');
+	, setupRankApi = require('./rank')
+	, debug = require('debug')('roomies:api:index');
 
 function initApi(api) {
+	debug('init api');
 	setupResidentApi(api, apiPrefix);
 	setupCommunityApi(api, apiPrefix);
 	setupTaskApi(api, apiPrefix);

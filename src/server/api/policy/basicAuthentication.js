@@ -6,7 +6,8 @@
  * If the current request is authenticated correctly, the api call will proceed,
  * otherwise a <NotAuthorizedError> will be created and returned.
  */
-var errors = require('../errors');
+var errors = require('../errors')
+	, debug = require('debug')('roomies:api:community:policy:basic-authentication');
 
 /** Function: checkPermissionToAccess
  * Checks the isAuthenticated flag from the request object.
@@ -20,6 +21,7 @@ var errors = require('../errors');
  *     (Function) error - Error callback
  */
 function checkPermissionToAccess(success, error) {
+	debug('check permission to access');
 	var authenticated = this.req.isAuthenticated();
 
 	if(authenticated) {

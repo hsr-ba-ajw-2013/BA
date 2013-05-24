@@ -4,6 +4,7 @@ var Barefoot = require('node-barefoot')()
 	, CommunityModel = require('./shared/models/community')
 	, TasksCollection = require('./shared/collections/tasks')
 	, Router = require('./shared/router')
+	, debug = require('debug')('roomies:app')
 	, barefootStartOptions = {};
 
 /** Function: setupRequestContext
@@ -13,6 +14,7 @@ var Barefoot = require('node-barefoot')()
  * This function works with the scope of the router!
  */
 function setupRequestContext() {
+	debug('setup request context');
 	this.dataStore.registerModel('ResidentModel', ResidentModel);
 	this.dataStore.registerModel('CommunityModel', CommunityModel);
 	this.dataStore.registerCollection('TasksCollection', TasksCollection);
@@ -23,6 +25,7 @@ function setupRequestContext() {
  * This function simply invokes the barefoot start function.
  */
 var start = function start() {
+	debug('start barefoot');
 	Barefoot.start(Router, barefootStartOptions);
 };
 

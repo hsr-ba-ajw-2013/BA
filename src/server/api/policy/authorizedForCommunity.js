@@ -5,6 +5,7 @@
  */
 
 var _ = require('underscore')
+	, debug = require('debug')('roomies:api:policy:authorized-for-community')
 	, errors = require('../errors');
 
 /** Function: authorizedForCommunity
@@ -22,6 +23,7 @@ var _ = require('underscore')
  *     (String) slugOrId - Slug or ID of a community
  */
 function authorizedForCommunity(success, error, slugOrId) {
+	debug('authorized for community check');
 	var self = this
 		, user = self.req.user
 		, unauthorized = function() {

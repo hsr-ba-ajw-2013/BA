@@ -39,4 +39,9 @@ module.exports = View.extend({
 		this.setDocumentTitle(this.translate('Tasks'));
 		resolve();
 	}
+
+
+	, toString: function toString() {
+		return 'Task.ListView';
+	}
 });

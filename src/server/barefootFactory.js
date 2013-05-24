@@ -10,7 +10,7 @@ var path = require('path')
 	, app = express()
 	, configFileName = path.join(process.cwd(), 'config.' + app.settings.env)
 	, config = require(configFileName)
-
+	, debug = require('debug')('roomies:barefoot-factory')
 	, middleware = require('./middleware')
 	, api = require('./api')
 	, ResidentModel = require('../shared/models/resident')
@@ -119,6 +119,7 @@ function setupMiddlewares(app) {
  *                               configuration.
  */
 function setupApiAdapter(apiAdapter) {
+	debug('setup api adapter');
 	api(apiAdapter);
 }
 
@@ -150,6 +151,7 @@ function startExpressApp(app) {
  * http://swissmanu.github.io/barefoot/docs/files/lib/datastore-js.html>
  */
 function setupServerRequestContext() {
+	debug('setup server request context');
 	// We should probably have a user property in the req object since the
 	// auth middleware injects it there. Lets do some fun stuff with it and
 	// create a ResidentModel out of it.

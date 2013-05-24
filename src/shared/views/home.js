@@ -14,4 +14,8 @@ module.exports = View.extend({
 		this.setDocumentTitle(this.translate('Welcome'));
 		resolve();
 	}
+
+	, toString: function toString() {
+		return 'MenuView';
+	}
 });

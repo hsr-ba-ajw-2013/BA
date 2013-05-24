@@ -5,6 +5,7 @@ var errors = require('./errors')
 	, taskApi = require('../task/controller')
 	, uslug = require('uslug')
 	, utils = require('../utils')
+	, debug = require('debug')('roomies:api:community:controller')
 	, _ = require('underscore');
 
 /** PrivateFunction: getCommunityDao
@@ -185,6 +186,7 @@ function createCommunity(success, error, data) {
  *   (String) id - The id of the community to look for.
  */
 function getCommunityWithId(success, error, id) {
+	debug('get community with id');
 	var communityDao = getCommunityDao.call(this);
 
 	communityDao.find({ where: { id: id }})
@@ -211,6 +213,7 @@ function getCommunityWithId(success, error, id) {
  *   (String) slug - The slug of the community to look for.
  */
 function getCommunityWithSlug(success, error, slug) {
+	debug('get community with slug');
 	var communityDao = getCommunityDao.call(this);
 
 	communityDao.find({ where: { slug: slug }})
@@ -239,6 +242,7 @@ function getCommunityWithSlug(success, error, slug) {
  *   (String) slug - The slug of the community to look for.
  */
 function getTasksForCommunityWithSlug(success, error, slug) {
+	debug('get tasks for community with slug');
 	var communityDao = getCommunityDao.call(this)
 		, self = this;
 

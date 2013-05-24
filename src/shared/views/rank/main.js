@@ -16,4 +16,8 @@ module.exports = View.extend({
 		this.setDocumentTitle(this.translate('Ranking'));
 		resolve();
 	}
+
+	, toString: function toString() {
+		return 'Rank.MainView';
+	}
 });

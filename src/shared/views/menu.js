@@ -28,4 +28,8 @@ module.exports = View.extend({
 			, community: community
 		}));
 	}
+
+	, toString: function toString() {
+		return 'MenuView';
+	}
 });
