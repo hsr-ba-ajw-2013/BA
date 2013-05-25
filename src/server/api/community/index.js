@@ -50,7 +50,7 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 
 	// POST /community
 	api.app.post(modulePrefix, utils.buildFormRoute(
-		'success', 'error', api, [
+		'/community', '/community/create', api, [
 			communityValidators.createCommunity
 			, controller.createCommunity
 		]));
