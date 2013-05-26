@@ -7,7 +7,8 @@
  * otherwise a <NotAuthorizedError> will be created and returned.
  */
 var errors = require('../errors')
-	, debug = require('debug')('roomies:api:community:policy:basic-authentication');
+	, debug = require('debug')('roomies:api:community:policy:' +
+								'basic-authentication');
 
 /** Function: checkPermissionToAccess
  * Checks the isAuthenticated flag from the request object.
