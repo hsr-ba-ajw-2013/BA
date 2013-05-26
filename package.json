@@ -39,7 +39,7 @@
 		, "moment": "~1.7.2"
 
 		, "handlebars": "1.0.10"
-		, "node-barefoot": "~0.0.7"
+		, "node-barefoot": "~0.0.8"
 		, "sprintf": "~0.1.0"
 		, "q": "~0.9.3"
 	}
