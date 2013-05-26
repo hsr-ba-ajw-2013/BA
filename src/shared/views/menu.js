@@ -1,3 +1,4 @@
+/* global $ */
 var View = require('./roomiesView')
 	, _ = require('underscore');
 
