@@ -21,7 +21,7 @@ var controller = require('./controller')
 module.exports = function initCommunityApi(api, apiPrefix) {
 	var prefix = apiPrefix + modulePrefix;
 
-	// GET /apu/community/:id
+	// GET /api/community/:id
 	api.get(prefix + '/:id(\\d+)', [
 		basicAuthentication
 		, authorizedForCommunity
