@@ -6,6 +6,7 @@ var Barefoot = require('node-barefoot')()
 	, ListTasksView = require('../views/task/list')
 	, TaskFormView = require('../views/task/form')
 	, NotFoundView = require('../views/error/not-found')
+	, Profile = require('../views/resident/profile')
 	, _ = require('underscore');
 
 if(Barefoot.isRunningOnServer()) {
@@ -83,11 +84,11 @@ module.exports = Router.extend({
 			var ResidentProfileModel = require('../models/residentprofile')
 				, residentProfile = new ResidentProfileModel();
 
-			residentProfile.url = 'api/resident/' + facebookId + '/profile';
+			residentProfile.url = '/api/resident/' + facebookId + '/profile';
 			this.dataStore.set('residentProfile', residentProfile);
 
-			//var profileView = this.createView(Profile);
-			//this.render(profileView);
+			var profileView = this.createView(Profile);
+			this.render(profileView);
 		} else {
 			this.navigate('', { trigger: true });
 		}
