@@ -19,7 +19,8 @@ module.exports = View.extend({
 	}
 
 	, renderView: function() {
-		var residentProfile = this.options.dataStore.get('residentProfile');
+		var residentProfile = this.options.dataStore.get('residentProfile')
+			.toJSON();
 		this.$el.html(this.templates.resident.profile(residentProfile));
 	}
 
