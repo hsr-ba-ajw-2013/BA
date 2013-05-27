@@ -28,7 +28,13 @@ module.exports = Router.extend({
 		if(!this.isAuthorized()) {
 			this.render(this.createView(HomeView));
 		} else {
-			this.navigate('community/create', { trigger: true });
+			var community = this.dataStore.get('community');
+			if(!community) {
+				this.navigate('community/create', { trigger: true });
+			} else {
+				this.navigate('community/' + community.get('slug') +
+					'/tasks', { trigger: true });
+			}
 		}
 	}
 

@@ -6,9 +6,21 @@ module.exports = View.extend({
 	, initialize: function() {
 
 	}
+
+	, beforeRender: function(resolve) {
+		var community = this.getDataStore().get('community');
+		if(community) {
+			this.options.router.navigate('/community/' + community.get('slug') +
+				'/tasks', {trigger: true});
+		}
+		resolve();
+	}
+
 	, renderView: function() {
 		var user = this.getDataStore().get('currentUser');
-		if(!_.isUndefined(user)) { user = user.toJSON(); }
+		if(!_.isUndefined(user)) {
+			user = user.toJSON();
+		}
 
 		this.$el.html(this.templates.community.create({ user: user }));
 	}
