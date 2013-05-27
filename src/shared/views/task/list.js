@@ -20,17 +20,22 @@ module.exports = View.extend({
 	}
 
 	, renderView: function() {
-		this.$el.html(this.templates.task.list({}));
+		var community = this.options.dataStore.get('community').toJSON();
+		this.$el.html(this.templates.task.list({
+			community: community
+		}));
 		this.renderTasks();
 	}
 
 	, renderTasks: function() {
 		var self = this
 			, tasks = this.options.dataStore.get('tasks')
-			, tableBody = this.$('table.tasks tbody', this.$el);
+			, tableBody = this.$('table.tasks tbody', this.$el)
+			, community = this.options.dataStore.get('community').toJSON();
 
 		_.each(tasks.models, function(task) {
 			var data = task.toJSON();
+			data.community = community;
 			tableBody.append(self.templates.task.listItem(data));
 		});
 	}

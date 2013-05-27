@@ -1,9 +1,9 @@
 <tr>
 	<td class="check">
-		{{#if isFulfill}}
+		{{#if isFulfilled}}
 			<i class="icon-check"></i>
 		{{else}}
-			<a href="/community//task/{{id}}/check">
+			<a href="/community/{{community.slug}}/task/{{id}}/check">
 				<i class="icon-check-empty"></i>
 			</a>
 		{{/if}}

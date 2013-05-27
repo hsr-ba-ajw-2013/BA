@@ -71,6 +71,17 @@ function registerHelpers(app) {
 		var f = block.hash.format || "LL";
 		return moment(context).format(f);
 	});
+	hbs.registerHelper('debug', function debug(optionalValue) {
+		console.log("Current Context");
+		console.log("====================");
+		console.log(this);
+
+		if (optionalValue) {
+			console.log("Value");
+			console.log("====================");
+			console.log(optionalValue);
+		}
+	});
 }
 
 /** Function: viewInit

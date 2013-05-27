@@ -8,12 +8,13 @@ var Handlebars = require('handlebars')
 	, fs = require('fs')
 	, templatesSource = path.join(__dirname, 'src', 'shared', 'templates')
 	, templatesDestination = path.join(templatesSource, 'precompiledTemplates.js')
+	, templatesHelpers = path.join(__dirname, 'src', 'utils', 'helpers.js')
 	, precompiledTemplates = {};
 
 /** Function: recursiveCompilationCrawler
  * Crawls a directory and its subdirectories recursivly. It looks for .hbs
  * files and precompiles their content using Handlebars.JS.
- * 
+ *
  * Parameters:
  *     (String) subdirectory - The directory to crawl
  *     (Object) precompiledTemplates - Already precompiled templates.
@@ -95,5 +96,9 @@ if(_.keys(precompiledTemplates).length > 0) {
 			   '	, template = Handlebars.template;\n'
 		, templateModule = recursiveExporter(precompiledTemplates, stub);
 
-	fs.writeFileSync(templatesDestination, templateModule, 'utf8');	
+	helpers = fs.readFileSync(templatesHelpers, {encoding: 'utf-8' })
+		.replace(/\n+/g, '');
+	templateModule += helpers;
+
+	fs.writeFileSync(templatesDestination, templateModule, 'utf8');
 }
