@@ -19,6 +19,6 @@ module.exports = View.extend({
 
 
 	, toString: function toString() {
-		return 'Task.ListView';
+		return 'Task.FormView';
 	}
 });

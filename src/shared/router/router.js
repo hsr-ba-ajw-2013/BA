@@ -5,6 +5,7 @@ var Barefoot = require('node-barefoot')()
 	, CreateCommunityView = require('../views/community/create')
 	, ListTasksView = require('../views/task/list')
 	, TaskFormView = require('../views/task/form')
+	, NotFoundView = require('../views/error/not-found')
 	, _ = require('underscore');
 
 if(Barefoot.isRunningOnServer()) {
@@ -23,6 +24,8 @@ module.exports = Router.extend({
 		, 'community/:communitySlug/task/new': 'createTask'
 
 		, 'resident/:facebookId/profile': 'profile'
+
+		, '*path': 'notFound'
 	}
 
 	, home: function home() {
@@ -88,6 +91,11 @@ module.exports = Router.extend({
 		} else {
 			this.navigate('', { trigger: true });
 		}
+	}
+
+	, notFound: function notFound() {
+		debug('page not found');
+		this.render(this.createView(NotFoundView));
 	}
 
 

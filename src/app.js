@@ -4,8 +4,13 @@ var Barefoot = require('node-barefoot')()
 	, CommunityModel = require('./shared/models/community')
 	, TasksCollection = require('./shared/collections/tasks')
 	, Router = require('./shared/router')
-	, debug = require('debug')('roomies:app')
 	, barefootStartOptions = {};
+
+if(Barefoot.isRunningOnServer()) {
+	var debug = require('debug')('roomies:app');
+} else {
+	var debug = function() {};
+}
 
 /** Function: setupRequestContext
  * Called by barefoot to set up the context when processing a route on the

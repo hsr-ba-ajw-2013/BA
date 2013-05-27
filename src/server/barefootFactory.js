@@ -14,10 +14,21 @@ var path = require('path')
 	, middleware = require('./middleware')
 	, api = require('./api')
 	, ResidentModel = require('../shared/models/resident')
-	, CommunityModel = require('../shared/models/community');
+	, CommunityModel = require('../shared/models/community')
+	, domain = require('domain')
+	, serverDomain = domain.create();
 
 // Keep a reference of the src directory:
 config.srcDir = path.join(process.cwd(), 'src');
+
+serverDomain.on('error', function(err) {
+	// Warning: According to http://nodejs.org/api/domain.html this is
+	// a very bad idea because it won't resurrect. Might be better
+	// to do in the cluster module & automatically restart the crashed
+	// worker.
+	// for now this is okay as Roomies is not a NASA Software.
+	console.log(err);
+});
 
 
 /** PrivateFunction: getDirectoryFiles
@@ -127,9 +138,12 @@ function setupApiAdapter(apiAdapter) {
  * This callback is used by barefoot to start the server application.
  */
 function startExpressApp(app) {
-	app.listen(config.http.port, function listening(){
-		app.configure('development', function developmentLog() {
-			console.log("Express server listening on port " + config.http.port);
+	serverDomain.run(function() {
+		app.listen(config.http.port, function listening(){
+			app.configure('development', function developmentLog() {
+				console.log("Express server listening on port " +
+					config.http.port);
+			});
 		});
 	});
 
