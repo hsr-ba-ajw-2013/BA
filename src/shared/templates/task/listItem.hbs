@@ -1,12 +1,12 @@
 <tr>
 	<td class="check">
-		{{#if isFulfilled}}
+		{{#ifnotequal fulfilledAt}}
 			<i class="icon-check"></i>
 		{{else}}
 			<a href="/community/{{community.slug}}/task/{{id}}/check">
 				<i class="icon-check-empty"></i>
 			</a>
-		{{/if}}
+		{{/ifnotequal}}
 	</td>
 	<td class="task">{{name}}</td>
 	<td class="description">{{description}}</td>

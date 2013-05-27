@@ -125,6 +125,40 @@ function debugHelper(optionalValue) {
 	}
 }
 
+/** Function: ifEqualHelper
+ * Checks if a == b
+ */
+function ifEqualHelper(a, b, options) {
+	if(typeof a === 'function') {
+		a = a();
+	}
+	if(!options) {
+		options = b;
+		b = null;
+	}
+	if(a === b) {
+		return options.fn(this);
+	}
+	return options.inverse(this);
+}
+
+/** Function: ifNotEqualHelper
+ * Checks if a !== b
+ */
+function ifNotEqualHelper(a, b, options) {
+	if(typeof a === 'function') {
+		a = a();
+	}
+	if(!options) {
+		options = b;
+		b = null;
+	}
+	if(a !== b) {
+		return options.fn(this);
+	}
+	return options.inverse(this);
+}
+
 /** Function: setLocale
  * Sets the locale which should be used to render the templates.
  *
@@ -143,6 +177,8 @@ Handlebars.registerHelper('trans', translationHelper);
 Handlebars.registerHelper('blocktrans', blockTranslationHelper);
 Handlebars.registerHelper('formatDate', formatDateHelper);
 Handlebars.registerHelper('url', urlHelper);
+Handlebars.registerHelper('ifequal', ifEqualHelper);
+Handlebars.registerHelper('ifnotequal', ifNotEqualHelper);
 Handlebars.registerHelper('debug', debugHelper);
 
 _.extend(precompiledTemplates, { setLocale: setLocale });
