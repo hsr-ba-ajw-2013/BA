@@ -1,12 +1,25 @@
+/* global $ */
 var View = require('../roomiesView')
 	, _ = require('underscore');
 
 module.exports = View.extend({
 	el: '#main'
+
+	, events: {
+		'click .create-task': "createTaskClick"
+	}
+
 	, initialize: function() {
 		var tasks = this.options.dataStore.get('tasks');
 		this.tasks = tasks;
 		tasks.on('sync', this.renderTasks.bind(this));
+	}
+
+	, createTaskClick: function(evt) {
+		var $el = $(evt.currentTarget)
+			, href = $el.attr('href');
+		this.options.router.navigate(href, {trigger: true});
+		return false;
 	}
 
 	, beforeRender: function(resolve) {
