@@ -3,6 +3,7 @@ var Barefoot = require('node-barefoot')()
 	, ResidentModel = require('./shared/models/resident')
 	, CommunityModel = require('./shared/models/community')
 	, TasksCollection = require('./shared/collections/tasks')
+	, ResidentProfileModel = require('./shared/models/residentprofile')
 	, Router = require('./shared/router')
 	, barefootStartOptions = {};
 
@@ -23,6 +24,7 @@ function setupRequestContext() {
 	this.dataStore.registerModel('ResidentModel', ResidentModel);
 	this.dataStore.registerModel('CommunityModel', CommunityModel);
 	this.dataStore.registerCollection('TasksCollection', TasksCollection);
+	this.dataStore.registerModel('ResidentProfileModel', ResidentProfileModel);
 	this.eventAggregator = new EventAggregator();
 }
 
