@@ -24,6 +24,7 @@
  */
 var Handlebars = require('handlebars')
 	, moment = require('moment')
+	, url = require('url')
 	, _ = require('underscore')
 	, precompiledTemplates = require('./precompiledTemplates')
 	, locales = require('../locales')
@@ -57,6 +58,7 @@ function translationHelper(text, options) {
 
 
 /** PrivateFunction: blockTranslationHelper
+ * Will translate a block of text/html and does not escape the content.
  */
 function blockTranslationHelper(data, obj) {
 	if (!obj) {
@@ -79,9 +81,49 @@ function blockTranslationHelper(data, obj) {
  */
 function formatDateHelper(context, block) {
 	var f = block.hash.format || "LL";
+	if(!context) {
+		return 'INVALID DATE';
+	}
 	return moment(context).format(f);
 }
 
+/** Function: urlHelper
+ * URL-Formatting
+ *
+ * Parameters:
+ *   (String) path - URL Path
+ *   (Object) data - Data containing host & protocol
+ *
+ * Returns:
+ *   (String) url
+ */
+function urlHelper(path, data) {
+	var urlData = {
+		protocol: data.protocol
+		, host: data.host
+		, pathname: path
+	};
+
+	return url.format(urlData);
+}
+
+/** Function: debugHelper
+ * Debugs the context & an optional value.
+ *
+ * Parameters:
+ *   (Object) optionalValue
+ */
+function debugHelper(optionalValue) {
+	console.log("Current Context");
+	console.log("====================");
+	console.log(this);
+
+	if (optionalValue) {
+		console.log("Value");
+		console.log("====================");
+		console.log(optionalValue);
+	}
+}
 
 /** Function: setLocale
  * Sets the locale which should be used to render the templates.
@@ -100,6 +142,8 @@ Handlebars.registerHelper('safestring', safeStringHelper);
 Handlebars.registerHelper('trans', translationHelper);
 Handlebars.registerHelper('blocktrans', blockTranslationHelper);
 Handlebars.registerHelper('formatDate', formatDateHelper);
+Handlebars.registerHelper('url', urlHelper);
+Handlebars.registerHelper('debug', debugHelper);
 
 _.extend(precompiledTemplates, { setLocale: setLocale });
 module.exports = precompiledTemplates;

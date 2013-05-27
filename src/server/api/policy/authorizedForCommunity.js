@@ -27,6 +27,7 @@ function authorizedForCommunity(success, error, slugOrId) {
 	var self = this
 		, user = self.req.user
 		, unauthorized = function() {
+			debug('...error');
 			error(new errors.NotAuthorizedError('Not Authorized!'));
 		}
 		, check = function(community, slugOrId) {
@@ -40,6 +41,7 @@ function authorizedForCommunity(success, error, slugOrId) {
 				ok = (community.slug === slugOrId);
 			}
 
+			debug('..ok? %s', ok);
 			return ok;
 		};
 
@@ -48,6 +50,7 @@ function authorizedForCommunity(success, error, slugOrId) {
 			.success(function ok(community) {
 				if(!_.isNull(community) && check(community, slugOrId)) {
 					self.req.community = community;
+					debug('...ok');
 					success();
 				} else {
 					unauthorized();

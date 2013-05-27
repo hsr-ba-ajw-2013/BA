@@ -26,8 +26,10 @@ function checkPermissionToAccess(success, error) {
 	var authenticated = this.req.isAuthenticated();
 
 	if(authenticated) {
+		debug('...ok');
 		success();
 	} else {
+		debug('...error');
 		error(new errors.NotAuthorizedError('Not Authorized!'));
 	}
 }

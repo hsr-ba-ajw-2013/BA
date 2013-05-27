@@ -4,17 +4,34 @@
 
 var controller = require('./controller')
 	, basicAuthentication = require('../policy/basicAuthentication')
+	, authorizedForCommunity = require('../policy/authorizedForCommunity')
 	, taskValidators = require('./validators')
-	, path = require('path')
-	, modulePrefix = '/task';
+	, utils = require('../utils')
+	, modulePrefix = '/community/:slug/task';
 
 module.exports = function initTaskApi(api, apiPrefix) {
-	var prefix = path.join(apiPrefix, modulePrefix);
+	var prefix = apiPrefix + modulePrefix;
 
-	api.get(path.join(prefix, ':id'), [
+	api.get(prefix + '/:id', [
 		basicAuthentication
 		, taskValidators.createTask
 		, controller.getTaskWithId]);
+
+	// POST /community/:slug/task
+	api.app.post(modulePrefix, utils.buildFormRoute(
+		modulePrefix + 's', modulePrefix + '/new', api, [
+			basicAuthentication
+			, authorizedForCommunity
+			, taskValidators.createTask
+			, controller.createTask
+		]));
+	// POST /api/community/:slug/tasks
+	api.post(prefix, [
+		basicAuthentication
+		, authorizedForCommunity
+		, taskValidators.createTask
+		, controller.createTaskForCommunityWithSlug
+		]);
 };
 
 /*

@@ -4,6 +4,7 @@ var Barefoot = require('node-barefoot')()
 	, HomeView = require('../views/home')
 	, CreateCommunityView = require('../views/community/create')
 	, ListTasksView = require('../views/task/list')
+	, TaskFormView = require('../views/task/form')
 	, _ = require('underscore');
 
 if(Barefoot.isRunningOnServer()) {
@@ -19,6 +20,7 @@ module.exports = Router.extend({
 		, 'community/create': 'createCommunity'
 
 		, 'community/:communitySlug/tasks': 'listTasks'
+		, 'community/:communitySlug/task/new': 'createTask'
 
 		, 'resident/:facebookId/profile': 'profile'
 	}
@@ -60,6 +62,15 @@ module.exports = Router.extend({
 			this.render(listTasksView);
 		} else {
 			this.navigate('', { trigger: true });
+		}
+	}
+
+	, createTask: function createTask() {
+		debug('create task');
+		if(this.isAuthorized()) {
+			this.render(this.createView(TaskFormView));
+		} else {
+			this.navigate('', {trigger: true});
 		}
 	}
 

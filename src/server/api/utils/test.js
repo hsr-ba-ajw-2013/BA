@@ -226,6 +226,7 @@ function requestMock(data) {
 	return {
 		app: data.app
 		, user: data.user
+		, community: data.community
 		, params: data.params
 		, isAuthenticated: function() {
 			return !_.isUndefined(data.user);

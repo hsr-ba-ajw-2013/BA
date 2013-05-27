@@ -15,28 +15,26 @@ var controller = require('./controller')
 	, basicAuthentication = require('../policy/basicAuthentication')
 	, authorizedForCommunity = require('../policy/authorizedForCommunity')
 	, communityValidators = require('./validators')
-	, taskValidators = require('../task/validators')
-	, path = require('path')
 	, utils = require('../utils')
 	, modulePrefix = '/community';
 
 module.exports = function initCommunityApi(api, apiPrefix) {
-	var prefix = path.join(apiPrefix, modulePrefix);
+	var prefix = apiPrefix + modulePrefix;
 
 	// GET /apu/community/:id
-	api.get(path.join(prefix, ':id(\\d+)'), [
+	api.get(prefix + '/:id(\\d+)', [
 		basicAuthentication
 		, authorizedForCommunity
 		, controller.getCommunityWithId]);
 
 	// GET /api/community/:slug
-	api.get(path.join(prefix, ':slug'), [
+	api.get(prefix + '/:slug', [
 		basicAuthentication
 		, authorizedForCommunity
 		, controller.getCommunityWithSlug]);
 
 	// GET /api/community/:slug/tasks
-	api.get(path.join(prefix, ':slug', 'tasks'), [
+	api.get(prefix + '/:slug/tasks', [
 		basicAuthentication
 		, authorizedForCommunity
 		, controller.getTasksForCommunityWithSlug]);
@@ -54,12 +52,4 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 			communityValidators.createCommunity
 			, controller.createCommunity
 		]));
-
-	// POST /api/community/:slug/tasks
-	api.post(path.join(prefix, ':slug', 'tasks'), [
-		basicAuthentication
-		, authorizedForCommunity
-		, taskValidators.createTask
-		, controller.createTaskForCommunityWithSlug
-		]);
 };

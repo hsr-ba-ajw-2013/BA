@@ -8,7 +8,6 @@ var Handlebars = require('handlebars')
 	, fs = require('fs')
 	, templatesSource = path.join(__dirname, 'src', 'shared', 'templates')
 	, templatesDestination = path.join(templatesSource, 'precompiledTemplates.js')
-	, templatesHelpers = path.join(__dirname, 'src', 'utils', 'helpers.js')
 	, precompiledTemplates = {};
 
 /** Function: recursiveCompilationCrawler
@@ -95,10 +94,6 @@ if(_.keys(precompiledTemplates).length > 0) {
 	var stub = 'var Handlebars = require(\'handlebars\')\n' +
 			   '	, template = Handlebars.template;\n'
 		, templateModule = recursiveExporter(precompiledTemplates, stub);
-
-	helpers = fs.readFileSync(templatesHelpers, {encoding: 'utf-8' })
-		.replace(/\n+/g, '');
-	templateModule += helpers;
 
 	fs.writeFileSync(templatesDestination, templateModule, 'utf8');
 }

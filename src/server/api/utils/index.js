@@ -64,8 +64,9 @@ function randomInt() {
  *     (Function)
  */
 function buildFormRoute(successUrl, errorUrl, api, apiFunctions) {
-	var success = function() {
-			this.res.redirect(successUrl);
+	var success = function(redirectUrl) {
+			redirectUrl = redirectUrl || successUrl;
+			this.res.redirect(redirectUrl);
 		}
 		, error = function() {
 			var redirectTarget = errorUrl || successUrl;

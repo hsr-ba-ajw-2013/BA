@@ -9,8 +9,7 @@ var path = require('path')
 	, moment = require('moment');
 */
 
-var _ = require('underscore')
-	, errors = require('../errors');
+var errors = require('../errors');
 
 /** PrivateFunction: getTaskDao
  * Shortcut function to get the data access object for task entities.
@@ -67,41 +66,31 @@ function getTaskWithId(success, error, taskId) {
  *     (Object) task - An object containing the information about the task to
  *                     create.
  */
-function createTask(success, error, task) {
+function createTask(success, error, communitySlug, task) {
 	var self = this
-		, currentUser = self.req.user;
-
-	currentUser.getCommunity()
-		.success(function ok(currentUsersCommunity) {
-			if(!_.isNull(currentUsersCommunity)) {
-				var taskDao = getTaskDao.call(self);
-
-				taskDao.create(task)
-					.success(function createResult(task) {
-						task.setCommunity(currentUsersCommunity)
-							.success(function ok() {
-								task.setCreator(currentUser)
-									.success(function ok() {
-										success(task);
-									})
-									.error(function nok(err) {
-										error(err);
-									});
-							})
-							.error(function nok(err) {
-								error(err);
-							});
-					})
-					.error(function nok(err) {
-						error(err);
-					});
-			} else {
-				error(new errors.NotFoundError());
-			}
-		})
-		.error(function nok(err) {
+		, currentUser = self.req.user
+		, community = self.req.community;
+	var taskDao = getTaskDao.call(self);
+	taskDao.create(task)
+		.success(function createResult(task) {
+			task.setCommunity(community)
+				.success(function ok() {
+					task.setCreator(currentUser)
+						.success(function ok() {
+							success('/community/' + community.slug +
+								'/tasks');
+						})
+						.error(function nok(err) {
+							error(err);
+						});
+				})
+				.error(function nok(err) {
+					error(err);
+				});
+		}).error(function nok(err) {
 			error(err);
-		});
+		}
+	);
 }
 
 function updateTask(/*success, error, task*/) {

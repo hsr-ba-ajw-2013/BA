@@ -331,32 +331,6 @@ describe('Task', function() {
 	});
 
 	describe('create task', function() {
-		it('should return a not found error, if the resident is not within a' +
-			' community', function(done) {
-			var success = function success() {
-					done(new Error('Should throw a 404 not found error'));
-				}
-				, error = function error(err) {
-					err.name.should.equal('Not Found');
-					err.httpStatusCode.should.equal(404);
-					done();
-				}
-				, data = {
-					name: utils.randomString(12)
-					, description: utils.randomString(100)
-					, reward: 5
-					, dueDate: new Date(new Date().getTime() +
-										(24 * 3600 * 1000))
-				}
-				, functionScope = {
-					req: testUtils.req({ user: residents[1] })
-					, app: app
-				}
-				, scopedCreateTask =
-					controller.createTask.bind(functionScope
-						, success, error, data);
-			scopedCreateTask();
-		});
 
 		it('should create the task if the resident is in a community and ' +
 			'the data is correct', function(done) {
@@ -374,12 +348,15 @@ describe('Task', function() {
 										(24 * 3600 * 1000))
 				}
 				, functionScope = {
-					req: req
+					req: req = testUtils.req({
+						user: residents[0]
+						, community: community
+					})
 					, app: app
 				}
 				, scopedCreateTask =
 					controller.createTask.bind(functionScope
-						, success, error, data);
+						, success, error, community.slug, data);
 			scopedCreateTask();
 		});
 	});
