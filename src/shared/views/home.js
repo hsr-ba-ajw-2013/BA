@@ -16,6 +16,6 @@ module.exports = View.extend({
 	}
 
 	, toString: function toString() {
-		return 'MenuView';
+		return 'HomeView';
 	}
 });
