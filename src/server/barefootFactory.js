@@ -29,6 +29,7 @@ serverDomain.on('error', function(err) {
 	// worker.
 	// for now this is okay as Roomies is not a NASA Software.
 	console.log(err);
+	console.log(err.stack);
 });
 
 

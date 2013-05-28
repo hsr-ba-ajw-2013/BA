@@ -21,11 +21,18 @@ var Barefoot = require('node-barefoot')()
 	 * Represented by an HTTP status code 409 "Conflict"
 	 */
 	, CommunityAlreadyExistsError = errors.createError(409
-										, 'CommunityAlreadyExistsError');
+										, 'CommunityAlreadyExistsError')
+
+	/** Error: NoTasksFoundError
+	 * When there aren't any tasks for the community, return this error
+	 * to be easily catcheable by the client.
+	 */
+	, NoTasksFoundError = errors.createError(404, 'NoTasksFoundError');
 
 _.extend(errors, apiErrors, {
 	ResidentAlreadyInCommunityError: ResidentAlreadyInCommunityError
 	, CommunityAlreadyExistsError: CommunityAlreadyExistsError
+	, NoTasksFoundError: NoTasksFoundError
 });
 
 module.exports = errors;

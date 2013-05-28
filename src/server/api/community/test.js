@@ -325,7 +325,7 @@ describe('Community', function() {
 						}
 						, error = function error(err) {
 							err.name.should.equal(
-								'Not Found');
+								'NoTasksFoundError');
 							err.httpStatusCode.should.equal(404);
 							done();
 						}

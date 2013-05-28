@@ -258,7 +258,9 @@ function getTasksForCommunityWithSlug(success, error, slug) {
 						if(!_.isNull(tasks) && tasks.length > 0) {
 							success(tasks);
 						} else {
-							error(new errors.NotFoundError());
+							error(new errors.NoTasksFoundError(
+								'No tasks found for community with slug `' +
+								slug + '`.'));
 						}
 					})
 					.error(function daoError(err) {

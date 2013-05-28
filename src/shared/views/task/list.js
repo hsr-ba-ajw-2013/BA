@@ -24,9 +24,14 @@ module.exports = View.extend({
 
 	, beforeRender: function(resolve) {
 		if(this.tasks.models.length === 0) {
-			this.tasks.fetch({success: function() {
-				resolve();
-			}});
+			this.tasks.fetch({
+				success: function() {
+					resolve();
+				}
+				, error: function fetchError() {
+					resolve();
+				}
+			});
 		} else {
 			resolve();
 		}
@@ -46,11 +51,15 @@ module.exports = View.extend({
 			, tableBody = this.$('table.tasks tbody', this.$el)
 			, community = this.options.dataStore.get('community').toJSON();
 
-		_.each(tasks.models, function(task) {
-			var data = task.toJSON();
-			data.community = community;
-			tableBody.append(self.templates.task.listItem(data));
-		});
+		if(tasks.models.length === 0) {
+			tableBody.append(self.templates.task.noTasks());
+		} else {
+			_.each(tasks.models, function(task) {
+				var data = task.toJSON();
+				data.community = community;
+				tableBody.append(self.templates.task.listItem(data));
+			});
+		}
 	}
 
 	, afterRender: function(resolve) {
