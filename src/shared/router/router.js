@@ -6,6 +6,7 @@ var Barefoot = require('node-barefoot')()
 	, InviteCommunityView = require('../views/community/invite')
 	, ListTasksView = require('../views/task/list')
 	, TaskFormView = require('../views/task/form')
+	, ListRankingView = require('../views/rank/list')
 	, NotFoundView = require('../views/error/not-found')
 	, Profile = require('../views/resident/profile')
 	, _ = require('underscore');
@@ -27,6 +28,8 @@ module.exports = Router.extend({
 
 		, 'community/:communitySlug/tasks': 'listTasks'
 		, 'community/:communitySlug/task/new': 'createTask'
+
+		, 'community/:communitySlug/rank': 'listRanking'
 
 		, 'resident/:facebookId/profile': 'profile'
 
@@ -88,6 +91,20 @@ module.exports = Router.extend({
 		debug('create task');
 		if(this.isAuthorized()) {
 			this.render(this.createView(TaskFormView));
+		} else {
+			this.navigate('', {trigger: true});
+		}
+	}
+
+	, listRanking: function listRanking(communitySlug) {
+		debug('list ranking');
+		if(this.isAuthorized()) {
+			var RankCollection = require('../collections/ranks')
+				, ranks = new RankCollection();
+			ranks.url = '/api/community/' + communitySlug + '/ranks';
+			this.dataStore.set('ranks', ranks);
+
+			this.render(this.createView(ListRankingView));
 		} else {
 			this.navigate('', {trigger: true});
 		}

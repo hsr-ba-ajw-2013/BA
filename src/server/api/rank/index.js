@@ -3,7 +3,7 @@
  * related domain objects.
  *
  * API Routes:
- *     GET community/:slug/rank - Returns the ranking list for the community
+ *     GET community/:slug/ranks - Returns the ranking list for the community
  *                                with slug :slug
  */
 
@@ -11,11 +11,12 @@ var controller = require('./controller')
 	, basicAuthentication = require('../policy/basicAuthentication')
 	, authorizedForCommunity = require('../policy/authorizedForCommunity')
 	, path = require('path')
-	, modulePrefix = '/community/:slug/rank';
+	, modulePrefix = '/community/:slug/ranks';
 
 module.exports = function initRankApi(api, apiPrefix) {
 	var prefix = path.join(apiPrefix, modulePrefix);
 
+	// GET /api/community/:slug/ranks
 	api.get(prefix, [
 		basicAuthentication
 		, authorizedForCommunity

@@ -14,11 +14,11 @@ var errors = require('./errors');
  *                            for.
  */
 function getRankingListForCommunity(success, error) {
-	var community = this.community
+	var self = this
+		, community = self.req.community
 		, db = this.app.get('db');
 
 	community.getResidents().success(function residentsResult(residents) {
-
 		if (!residents) {
 			var noResidentInCommunityError =
 				new errors.NoResidentInCommunityError(
@@ -45,8 +45,6 @@ function getRankingListForCommunity(success, error) {
 			, order: '"points" DESC'
 		}, {'raw': true})
 		.success(function(ranks) {
-			// TODO: ??
-			//self.dataStore.set('ranks', ranks);
 			return success(ranks);
 		})
 		.error(function queryError(err) {
