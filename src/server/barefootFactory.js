@@ -15,6 +15,7 @@ var path = require('path')
 	, api = require('./api')
 	, ResidentModel = require('../shared/models/resident')
 	, CommunityModel = require('../shared/models/community')
+	, AppContextModel = require('../shared/models/appcontext')
 	, domain = require('domain')
 	, serverDomain = domain.create();
 
@@ -139,12 +140,19 @@ function setupApiAdapter(apiAdapter) {
  */
 function startExpressApp(app) {
 	serverDomain.run(function() {
-		app.listen(config.http.port, function listening(){
+		var cb = function() {
 			app.configure('development', function developmentLog() {
 				console.log("Express server listening on port " +
 					config.http.port);
 			});
-		});
+		};
+		if(config.http.protocol === 'https') {
+			require('https').createServer(app).listen(config.http.port
+				, config.http.hostname, cb);
+		} else {
+			require('http').createServer(app).listen(config.http.port
+				, config.http.hostname, cb);
+		}
 	});
 
 	return app;
@@ -184,6 +192,11 @@ function setupServerRequestContext() {
 			authenticatedUsersCommunity.selectedValues);
 		this.dataStore.set('community', communityModel);
 	}
+
+	var appContext = new AppContextModel({
+		config: this.app.locals.config
+	});
+	this.dataStore.set('AppContextModel', appContext);
 }
 
 

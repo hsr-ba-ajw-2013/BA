@@ -3,6 +3,7 @@ var Barefoot = require('node-barefoot')()
 	, MainView = require('../views/main')
 	, HomeView = require('../views/home')
 	, CreateCommunityView = require('../views/community/create')
+	, InviteCommunityView = require('../views/community/invite')
 	, ListTasksView = require('../views/task/list')
 	, TaskFormView = require('../views/task/form')
 	, NotFoundView = require('../views/error/not-found')
@@ -12,7 +13,9 @@ var Barefoot = require('node-barefoot')()
 if(Barefoot.isRunningOnServer()) {
 	var debug = require('debug')('roomies:shared:router');
 } else {
-	var debug = function() {};
+	var debug = function(str) {
+		console.info(str);
+	};
 }
 
 module.exports = Router.extend({
@@ -20,11 +23,14 @@ module.exports = Router.extend({
 		'': 'home'
 		, 'community': 'createCommunity'
 		, 'community/create': 'createCommunity'
+		, 'community/:communitySlug/invite': 'inviteCommunity'
 
 		, 'community/:communitySlug/tasks': 'listTasks'
 		, 'community/:communitySlug/task/new': 'createTask'
 
 		, 'resident/:facebookId/profile': 'profile'
+
+		, 'logout': 'logout'
 
 		, '*path': 'notFound'
 	}
@@ -48,6 +54,15 @@ module.exports = Router.extend({
 		debug('create community');
 		if(this.isAuthorized()) {
 			this.render(this.createView(CreateCommunityView));
+		} else {
+			this.navigate('', { trigger: true });
+		}
+	}
+
+	, inviteCommunity: function inviteCommunity() {
+		debug('invite community');
+		if(this.isAuthorized()) {
+			this.render(this.createView(InviteCommunityView));
 		} else {
 			this.navigate('', { trigger: true });
 		}
@@ -97,6 +112,13 @@ module.exports = Router.extend({
 	, notFound: function notFound() {
 		debug('page not found');
 		this.render(this.createView(NotFoundView));
+	}
+
+	, logout: function logout() {
+		debug('logout');
+		this.navigate('/logout', {trigger: true});
+		/* global window */
+		window.location.reload();
 	}
 
 
@@ -155,7 +177,6 @@ module.exports = Router.extend({
 	, mainView: function mainView() {
 		debug('setup main view');
 		var locale = this.getLocale();
-
 		if(_.isUndefined(this._mainView)) {
 			this._mainView = new MainView({
 				locale: locale

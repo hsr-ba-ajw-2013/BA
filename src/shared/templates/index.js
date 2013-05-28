@@ -25,6 +25,7 @@
 var Handlebars = require('handlebars')
 	, moment = require('moment')
 	, url = require('url')
+	, querystring = require('querystring')
 	, _ = require('underscore')
 	, precompiledTemplates = require('./precompiledTemplates')
 	, locales = require('../locales')
@@ -92,19 +93,24 @@ function formatDateHelper(context, block) {
  *
  * Parameters:
  *   (String) path - URL Path
- *   (Object) data - Data containing host & protocol
+ *   (Object) config - Config containing host, port & protocol
+ *   (Boolean) urlEncode - Set to true, it will urlencode
  *
  * Returns:
  *   (String) url
  */
-function urlHelper(path, data) {
+function urlHelper(path, config, urlEncode) {
 	var urlData = {
-		protocol: data.protocol
-		, host: data.host
+		protocol: config.protocol
+		, hostname: config.hostname
+		, port: config.port
 		, pathname: path
 	};
-
-	return url.format(urlData);
+	var formattedUrl = url.format(urlData);
+	if(urlEncode === true) {
+		return querystring.stringify({u: formattedUrl}).substr(2);
+	}
+	return formattedUrl;
 }
 
 /** Function: debugHelper

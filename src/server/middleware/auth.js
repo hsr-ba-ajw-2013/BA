@@ -128,6 +128,10 @@ function setupAuth(app, config) {
 			res.redirect(redirectUrl);
 		})(req, res, next);
 	});
+	app.get('/logout', function(req, res) {
+		req.logout();
+		res.redirect('/');
+	});
 
 	app.set('passport', passport);
 

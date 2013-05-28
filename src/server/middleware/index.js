@@ -2,8 +2,9 @@
  * Initializes all middlewares
  */
 
-var	//, clientConfig = require('./client-config')
-	connectDomain = require('./connect-domain')
+var	auth = require('./auth')
+	, clientConfig = require('./client-config')
+	, connectDomain = require('./connect-domain')
 	, db = require('./db')
 	//, flash = require('./flash')
 	//, handler = require('./handler')
@@ -13,7 +14,6 @@ var	//, clientConfig = require('./client-config')
 	//, livereload = require('./livereload')
 	, logger = require('./logger')
 	//, templateData = require('./template-data')
-	, auth = require('./auth')
 	//, router = require('./router')
 	, expressStatic = require('./static')
 	//, validator = require('./validator')
@@ -50,7 +50,7 @@ function setupMiddleware(app, config) {
 	connectDomain(app, config);
 
 	//handler(app, config);
-	//clientConfig(app, config);
+	clientConfig(app, config);
 	//livereload(app, config);
 	//router(app, config);
 }
