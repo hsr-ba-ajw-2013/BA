@@ -37,7 +37,7 @@ module.exports = function initTaskApi(api, apiPrefix) {
 		basicAuthentication
 		, authorizedForCommunity
 		, taskValidators.createTask
-		, controller.createTaskForCommunityWithSlug
+		, controller.createTask
 	]);
 };
 

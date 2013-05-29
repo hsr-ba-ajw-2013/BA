@@ -1,7 +1,28 @@
-var View = require('../roomiesView');
+var View = require('../roomiesView')
+	, API_PREFIX = '/api';
 
 module.exports = View.extend({
 	el: '#main'
+
+	, events: {
+		'submit .task-create-form': 'submitCreateTask'
+	}
+
+	, submitCreateTask: function() {
+		/* global $ */
+		var $form = $('.task-create-form')
+			, action = $form.attr('action')
+			, self = this;
+
+		$.post(API_PREFIX + action, $form.serialize())
+		.done(function(redirectUri) {
+			self.options.router.navigate(redirectUri, {trigger: true});
+		})
+		.fail(function() {
+			console.error(arguments);
+		});
+		return false;
+	}
 
 	, renderView: function() {
 		var community = this.options.dataStore.get('community');
