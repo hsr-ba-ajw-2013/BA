@@ -17,6 +17,12 @@ module.exports = function initTaskApi(api, apiPrefix) {
 		, taskValidators.createTask
 		, controller.getTaskWithId]);
 
+	// GET /api/community/:slug/tasks
+	api.get(prefix + 's', [
+		basicAuthentication
+		, authorizedForCommunity
+		, controller.getTasksForCommunityWithSlug]);
+
 	// POST /community/:slug/task
 	api.app.post(modulePrefix, utils.buildFormRoute(
 		modulePrefix + 's', modulePrefix + '/new', api, [
@@ -24,14 +30,15 @@ module.exports = function initTaskApi(api, apiPrefix) {
 			, authorizedForCommunity
 			, taskValidators.createTask
 			, controller.createTask
-		]));
+		]
+	));
 	// POST /api/community/:slug/tasks
 	api.post(prefix, [
 		basicAuthentication
 		, authorizedForCommunity
 		, taskValidators.createTask
 		, controller.createTaskForCommunityWithSlug
-		]);
+	]);
 };
 
 /*

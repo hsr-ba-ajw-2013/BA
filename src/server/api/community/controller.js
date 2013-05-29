@@ -230,56 +230,6 @@ function getCommunityWithSlug(success, error, slug) {
 		});
 }
 
-/** Function: getTasksForCommunityWithSlug
- * Returns all tasks for the community with the given slug. In case the
- * community slug was not found or the given community does not have any tasks
- * assigned at the moment, a NotFoundError gets returned.
- *
- * Parameters:
- *   (Function) success - Callback on success. Will pass the tasks as first
- *                        argument.
- *   (Function) error - Callback in case of an error
- *   (String) slug - The slug of the community to look for.
- */
-function getTasksForCommunityWithSlug(success, error, slug) {
-	debug('get tasks for community with slug');
-	var communityDao = getCommunityDao.call(this)
-		, self = this;
-
-	communityDao.find({ where: { slug: slug }})
-		.success(function findCommunity(community) {
-			if(!_.isNull(community)) {
-				if(community.id !== self.req.user.CommunityId) {
-					return error(
-						new errors.ForbiddenError('Invalid Community'));
-				}
-				community.getTasks({ order: 'id DESC' })
-					.success(function findTasks(tasks) {
-						if(!_.isNull(tasks) && tasks.length > 0) {
-							success(tasks);
-						} else {
-							error(new errors.NoTasksFoundError(
-								'No tasks found for community with slug `' +
-								slug + '`.'));
-						}
-					})
-					.error(function daoError(err) {
-						error(err);
-					});
-			} else {
-				error(new errors.NotFoundError('Community with slug ' + slug +
-					'does not exist.'));
-			}
-		})
-		.error(function daoError(err) {
-			error(err);
-		});
-}
-
-function createTaskForCommunityWithSlug(success, error, slug, task) {
-	taskApi.createTask.call(this, success, error, task);
-}
-
 /** Function: deleteCommunity
  * Marks a community as deactivated with a specific slug.
  *
@@ -296,8 +246,6 @@ function deleteCommunity(success, error, slug) {
 module.exports = {
 	getCommunityWithId: getCommunityWithId
 	, getCommunityWithSlug: getCommunityWithSlug
-	, getTasksForCommunityWithSlug: getTasksForCommunityWithSlug
-	, createTaskForCommunityWithSlug: createTaskForCommunityWithSlug
 	, createCommunity: createCommunity
 	, deleteCommunity: deleteCommunity
 };

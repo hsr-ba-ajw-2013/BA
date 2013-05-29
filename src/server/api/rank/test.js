@@ -56,7 +56,10 @@ describe('Rank', function() {
 		});
 
 		it('should display the correct ranking', function(done) {
-			var req = testUtils.req({ user: residents[0] });
+			var req = testUtils.req({
+				user: residents[0]
+				, community: community
+			});
 			var success = function success(ranks) {
 					var previousRank
 						, ok = true;
@@ -85,7 +88,6 @@ describe('Rank', function() {
 				, functionScope = {
 					req: req
 					, app: app
-					, community: community
 					, dataStore: new testUtils.DataStore()
 				}
 				, scopedRanking =

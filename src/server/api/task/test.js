@@ -114,13 +114,112 @@ describe('Task', function() {
 					}
 					, taskId = createdTask.id
 					, functionScope = {
-						req: testUtils.req({ user: residents[0] })
+						req: req
 						, app: app
 					}
 					, scopedGetTaskWithId =
 						controller.getTaskWithId.bind(functionScope
 							, success, error, taskId);
 				scopedGetTaskWithId();
+			});
+		});
+	});
+
+	describe('Get Tasks for Community', function() {
+
+		it('should throw an exception if the community does not exist'
+			, function(done) {
+			var success = function success() {
+					throw new Error(
+						'Should throw a not found (404) exception');
+				}
+				, error = function error(err) {
+					err.name.should.equal(
+						'Not Found');
+					err.httpStatusCode.should.equal(404);
+					done();
+				}
+				, functionScope = {
+					req: req
+					, app: app
+				}
+				, scopedGetTasksForCommunity =
+					controller.getTasksForCommunityWithSlug.bind(
+						functionScope, success, error, 'INVALIDSLUG');
+
+			scopedGetTasksForCommunity();
+		});
+
+		it('should throw an exception if the resident is not' +
+			' within the requested community', function(done) {
+				var success = function success() {
+						throw new Error(
+							'Should throw a forbidden (403) exception');
+					}
+					, error = function error(err) {
+						err.name.should.equal(
+							'Forbidden');
+						err.httpStatusCode.should.equal(403);
+						done();
+					}
+					, functionScope = {
+						req: testUtils.req({ user: residents[1] })
+						, app: app
+					}
+					, scopedGetTasksForCommunity =
+						controller.getTasksForCommunityWithSlug.bind(
+							functionScope, success, error
+							, community.slug);
+
+				scopedGetTasksForCommunity();
+		});
+
+		it('should throw a not found exception if there aren\'t any tasks'
+			, function(done) {
+				var success = function success() {
+						throw new Error(
+							'Should throw a forbidden (403) exception');
+					}
+					, error = function error(err) {
+						err.name.should.equal(
+							'NoTasksFoundError');
+						err.httpStatusCode.should.equal(404);
+						done();
+					}
+					, functionScope = {
+						req: req
+						, app: app
+					}
+					, scopedGetTasksForCommunity =
+						controller.getTasksForCommunityWithSlug.bind(
+							functionScope, success, error
+							, community.slug);
+
+				scopedGetTasksForCommunity();
+		});
+
+		it('should return the tasks for the community', function(done) {
+			testUtils.createTask(taskDao, residents[0], community
+				, function(err) {
+				if(err) {
+					return done(err);
+				}
+				var success = function success() {
+					done();
+				}
+				, error = function error(err) {
+					done(err);
+				}
+				, functionScope = {
+					req: req
+					, app: app
+				}
+				, scopedGetTasksForCommunity =
+					controller.getTasksForCommunityWithSlug.bind(
+						functionScope, success, error
+						, community.slug);
+
+				scopedGetTasksForCommunity();
 			});
 		});
 	});

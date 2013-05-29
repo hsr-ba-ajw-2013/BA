@@ -33,12 +33,6 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 		, authorizedForCommunity
 		, controller.getCommunityWithSlug]);
 
-	// GET /api/community/:slug/tasks
-	api.get(prefix + '/:slug/tasks', [
-		basicAuthentication
-		, authorizedForCommunity
-		, controller.getTasksForCommunityWithSlug]);
-
 	// POST /api/community
 	api.post(prefix, [
 		basicAuthentication
