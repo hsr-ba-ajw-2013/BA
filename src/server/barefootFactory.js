@@ -116,7 +116,7 @@ function clientsideJavaScriptFile() {
  *     (Object) app - An Express.JS app
  */
 function setupMiddlewares(app) {
-	console.log('Setting up Express.JS Middleware');
+	debug('Setting up Express.JS Middleware');
 	middleware(app, config);
 
 	/*
@@ -143,14 +143,15 @@ function startExpressApp(app) {
 	serverDomain.run(function() {
 		var cb = function() {
 			app.configure('development', function developmentLog() {
-				console.log("Express server listening on port " +
-					config.http.port);
+				debug('Express server listening on port ' + config.http.port);
 			});
 		};
 		if(config.http.protocol === 'https') {
+			debug('Running on https');
 			require('https').createServer(app).listen(config.http.port
 				, config.http.hostname, cb);
 		} else {
+			debug('Running on plain old http');
 			require('http').createServer(app).listen(config.http.port
 				, config.http.hostname, cb);
 		}
