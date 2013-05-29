@@ -1,4 +1,4 @@
-/* global config, describe, it, before, beforeEach, expect, should */
+/* global config, describe, it, before, beforeEach, should */
 var join = require('path').join
 	, srcPath = join(process.cwd(),
 		(process.env.COVERAGE ? 'src-cov' : 'src'))
@@ -243,9 +243,8 @@ describe('Community', function() {
 		});
 	});
 
-	describe.skip('Delete', function() {
-		var resident
-			, req;
+	describe('Delete', function() {
+		var resident;
 
 		beforeEach(function(done) {
 			testUtils.createResident(residentDao
@@ -254,25 +253,26 @@ describe('Community', function() {
 					return done(err);
 				}
 				resident = createdResident;
-				req = testUtils.req({ user: resident });
 				done();
 			});
 		});
 
 		it('should throw an exception when the resident isnot an admin'
-			, function() {
+			, function(done) {
 				var success = function success() {
-						throw new Error(
-							'Should throw a forbidden (403) exception');
+						done('Should throw a forbidden (403) exception');
 					}
 					, error = function error(err) {
-						throw new Error(err);
+						err.name.should.equal('Forbidden');
+						err.httpStatusCode.should.equal(403);
+						done();
 					}
 					, functionScope = {
 						req: testUtils.req({
 							params: {
-								'community': 1
+								'slug': 1
 							}
+							, user: resident
 						})
 						, app: app
 					}
@@ -280,9 +280,7 @@ describe('Community', function() {
 						controller.deleteCommunity.bind(
 							functionScope, success, error);
 
-			// Throw because throw is a reserved word.
-			expect(scopedDeleteCommunity).to.Throw(
-				errors.ForbiddenError);
+			scopedDeleteCommunity();
 		});
 
 		it('should throw an exception when the resident is admin but' +
@@ -293,18 +291,21 @@ describe('Community', function() {
 						return done(err);
 					}
 					var success = function success() {
-							throw new Error(
+							done(
 								'Should throw a forbidden (403)' +
 								' exception');
 						}
 						, error = function error(err) {
-							throw new Error(err);
+							err.name.should.equal('Forbidden');
+							err.httpStatusCode.should.equal(403);
+							done();
 						}
 						, functionScope = {
 							req: testUtils.req({
 								params: {
-									'community': 1
+									'slug': 1
 								}
+								, user: resident
 							})
 							, app: app
 						}
@@ -312,9 +313,7 @@ describe('Community', function() {
 							controller.deleteCommunity.bind(
 								functionScope, success, error);
 
-					// Throw because throw is a reserved word.
-					expect(scopedDeleteCommunity).to.Throw(
-						errors.ForbiddenError);
+					scopedDeleteCommunity();
 				});
 		});
 
@@ -325,26 +324,36 @@ describe('Community', function() {
 					return done(err);
 				}
 				var success = function success() {
-						community.enabled.should.equal(false);
-						resident.isAdmin.should.equal(false);
-						done();
+						community.reload()
+							.success(function reloadSuccess() {
+								community.enabled.should.equal(false);
+								resident.isAdmin.should.equal(false);
+								done();
+							})
+							.error(function reloadError(err) {
+								return done(err);
+							});
+
 					}
 					, error = function error(err) {
 						done(err);
 					}
+					, data = {
+						slug: community.slug
+					}
 					, functionScope = {
 						req: testUtils.req({
 							params: {
-								'community': community.slug
+								'slug': community.slug
 							}
+							, user: resident
 						})
 						, app: app
 					}
 					, scopedDeleteCommunity =
 						controller.deleteCommunity.bind(
-							functionScope, success, error);
+							functionScope, success, error, data);
 
-				// Throw because throw is a reserved word.
 				scopedDeleteCommunity();
 			});
 		});

@@ -60,6 +60,12 @@ function getRankingListForCommunity(success, error) {
 			, today = new Date()
 			, lastWeek = new Date(today.getTime()-1000*60*60*24*7);
 
+//TODO:
+//SELECT SUM("Tasks"."reward") AS "points", "Residents"."id"
+//FROM "Residents"
+//LEFT JOIN "Tasks" ON "Residents"."id" = "Tasks"."fulfillorId"
+//GROUP BY "Residents"."id"
+
 		taskDao.findAll({
 			attributes: [['SUM("reward")', 'points'], 'fulfillorId']
 			, include: [{ model: residentDao, as: 'Fulfillor' }]

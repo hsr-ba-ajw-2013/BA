@@ -229,16 +229,92 @@ function getCommunityWithSlug(success, error, slug) {
 		});
 }
 
+/** PrivateFunction: setCommunityDisabled
+ * Set the property 'enabled' of a given community to false
+ *
+ * Parameters:
+ *   (Object) community - the community to disable
+ *   (Function) done - Callback for continuing the job.
+ *                     On error, the first argument contains
+ *                     the error object.
+ */
+function setCommunityDisabled(community, done) {
+	community.enabled = false;
+
+	community.save()
+		.success(function saveSuccess() {
+			done();
+		})
+		.error(function saveError() {
+			done(new Error('Could not save community.'));
+		});
+}
+
+/** PrivateFunction: removeResidentAdminRights
+ * Set the property 'isAdmin' of a given resident to false
+ *
+ * Parameters:
+ *   (Object) resident - the resident to remove the admin rights
+ *   (Function) done - Callback for continuing the job.
+ *                     On error, the first argument contains
+ *                     the error object.
+ */
+function removeResidentAdminRights(resident, done) {
+	resident.isAdmin = false;
+
+	resident.save()
+		.success(function saveSuccess() {
+			done();
+		})
+		.error(function saveError() {
+			done(new Error('Could not save resident.'));
+		});
+}
+
 /** Function: deleteCommunity
  * Marks a community as deactivated with a specific slug.
  *
  * Parameters:
  *   (Function) success - Callback on success.
  *   (Function) error - Callback in case of an error
- *   (String) slug - The slug of the community to look for.
+ *   (Object) data - An object containing the information for deleting a
+ *                   community.
  */
-function deleteCommunity(success, error, slug) {
-	/* jshint unused: false */
+function deleteCommunity(success, error, data) {
+	debug('delete community with slug');
+	var resident = this.req.user;
+
+	if (!resident.isAdmin) {
+		return error(new errors.ForbiddenError('Not Authorized!'));
+	}
+
+	resident.getCommunity()
+		.success(function getResult(residentCommunity) {
+			if (residentCommunity &&
+				data.slug === residentCommunity.slug) {
+				setCommunityDisabled(residentCommunity, function(err) {
+					if(err) {
+						return error(err);
+					}
+
+					removeResidentAdminRights(resident,
+						function(err) {
+							if(err) {
+								error(err);
+							} else {
+								success();
+							}
+						}
+					);
+				});
+
+			} else {
+				error(new errors.ForbiddenError('Not Authorized!'));
+			}
+		})
+		.error(function getError(err) {
+			error(err);
+		});
 }
 
 

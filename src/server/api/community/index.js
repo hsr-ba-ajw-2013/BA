@@ -43,7 +43,19 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 	// POST /community
 	api.app.post(modulePrefix, utils.buildFormRoute(
 		'/community', '/community/create', api, [
-			communityValidators.createCommunity
+			basicAuthentication
+			, communityValidators.createCommunity
 			, controller.createCommunity
 		]));
+
+	// DELETE /api/community/:slug
+	api.del(modulePrefix, [
+		basicAuthentication
+		, controller.deleteCommunity]);
+
+	// DELETE /community/:slug
+	api.app.del(modulePrefix, utils.buildFormRoute(
+		'', '', api, [
+		basicAuthentication
+		, controller.deleteCommunity]));
 };
