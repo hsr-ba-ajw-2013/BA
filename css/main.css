@@ -1,0 +1,55 @@
+body {
+	font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+	width: 700px;
+	margin: 0 auto;
+	font-size: 14px;
+	background: url('../image/noisybackground.png');
+}
+
+a {
+	color: #000080;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
+}
+
+header {
+	text-align: center;
+	margin-top: 50px;
+	margin-bottom: 25px;
+	border-bottom: 1px dashed black;
+}
+header, section {
+	padding: 0 10px;
+}
+h1, h2 {
+	font-family: Georgia, Times, "Times New Roman", serif;
+	margin: 0;
+}
+h1 {
+	font-size: 40px;
+}
+h2 {
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+.authors {
+	font-size: 14px;
+	margin-bottom: 20px;
+}
+
+h3 {
+	margin: 25px 0 5px 0;
+}
+
+ul.icons-ul {
+	padding: 0;
+	margin: 0 0 0 24px;
+}
+li.seperator {
+	margin-top: 5px;
+}
+.icon-li {
+	color: #000080;
+}
