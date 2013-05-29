@@ -2,3 +2,4 @@ precompiledTemplates.js
 *.css
 .git
 *.sass
+package.json
