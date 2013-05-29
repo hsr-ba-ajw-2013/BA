@@ -2,7 +2,6 @@
  * Community-related CRUD
  */
 var errors = require('./errors')
-	, taskApi = require('../task/controller')
 	, uslug = require('uslug')
 	, utils = require('../utils')
 	, debug = require('debug')('roomies:api:community:controller')
