@@ -4,6 +4,32 @@
 
 var errors = require('./errors');
 
+/** PrivateFunction: getTaskDao
+ * Shortcut function to get the data access object for task entities.
+ *
+ * Returns:
+ *     (Object) sequelize data access object for task entities.
+ */
+function getTaskDao() {
+	var db = this.app.get('db')
+		, taskDao = db.daoFactoryManager.getDAO('Task');
+
+	return taskDao;
+}
+
+/** PrivateFunction: getResidentDao
+ * Shortcut function to get the data access object for resident entities.
+ *
+ * Returns:
+ *     (Object) sequelize data access object for resident entities.
+ */
+function getResidentDao() {
+	var db = this.app.get('db')
+		, residentDao = db.daoFactoryManager.getDAO('Resident');
+
+	return residentDao;
+}
+
 /** Function: getRankingListForCommunity
  * Show the ranking list of the community
  *
@@ -15,8 +41,7 @@ var errors = require('./errors');
  */
 function getRankingListForCommunity(success, error) {
 	var self = this
-		, community = self.req.community
-		, db = this.app.get('db');
+		, community = self.req.community;
 
 	community.getResidents().success(function residentsResult(residents) {
 		if (!residents) {
@@ -30,14 +55,14 @@ function getRankingListForCommunity(success, error) {
 			return curResident.id;
 		});
 
-		var Task = db.daoFactoryManager.getDAO('Task')
-			, Resident = db.daoFactoryManager.getDAO('Resident')
+		var taskDao = getTaskDao.call(self)
+			, residentDao = getResidentDao.call(self)
 			, today = new Date()
 			, lastWeek = new Date(today.getTime()-1000*60*60*24*7);
 
-		Task.findAll({
+		taskDao.findAll({
 			attributes: [['SUM("reward")', 'points'], 'fulfillorId']
-			, include: [{ model: Resident, as: 'Fulfillor' }]
+			, include: [{ model: residentDao, as: 'Fulfillor' }]
 			, where:
 				['"Tasks"."fulfillorId" IN (' + residentIds.join(',') + ') ' +
 					'AND "Tasks"."fulfilledAt" >= ?', lastWeek]
