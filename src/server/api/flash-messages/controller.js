@@ -41,7 +41,6 @@ function setupObservers(app) {
 	var eventBus = app.get('eventbus');
 
 	for(var evt in eventsMap) {
-		console.log(evt);
 		eventBus.on(evt, _mapEvents.bind(this, evt));
 	}
 }
