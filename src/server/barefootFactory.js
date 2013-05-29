@@ -201,7 +201,7 @@ function setupServerRequestContext() {
 	});
 	this.dataStore.set('AppContextModel', appContext);
 
-	this.dataStore.set('FlashModel', new FlashModel(this.req.flash()));
+	this.dataStore.set('FlashModel', new FlashModel());
 }
 
 
