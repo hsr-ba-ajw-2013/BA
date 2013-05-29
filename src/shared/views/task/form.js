@@ -12,7 +12,12 @@ module.exports = View.extend({
 		/* global $ */
 		var $form = $('.task-create-form')
 			, action = $form.attr('action')
-			, self = this;
+			, self = this
+			, $loader = $form.find('.loader')
+			, $submitButton = $form.find('.button.success');
+
+		$loader.show();
+		$submitButton.addClass('disabled').attr('disabled', true);
 
 		$.post(API_PREFIX + action, $form.serialize())
 		.done(function(redirectUri) {
@@ -20,6 +25,10 @@ module.exports = View.extend({
 		})
 		.fail(function() {
 			console.error(arguments);
+		})
+		.always(function() {
+			$loader.hide();
+			$submitButton.removeClass('disabled').attr('disabled', false);
 		});
 		return false;
 	}
