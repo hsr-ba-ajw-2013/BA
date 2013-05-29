@@ -21,6 +21,6 @@ function taskDone(db, eventBus, resident, task) {
 	});
 }
 
-module.exports = function setupObserver(eventBus, db) {
-	eventBus.on('task:done', taskDone.bind(this, db, eventBus));
+module.exports = {
+	taskDone: taskDone
 };

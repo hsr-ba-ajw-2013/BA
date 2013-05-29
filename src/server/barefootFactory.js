@@ -16,6 +16,7 @@ var path = require('path')
 	, ResidentModel = require('../shared/models/resident')
 	, CommunityModel = require('../shared/models/community')
 	, AppContextModel = require('../shared/models/appcontext')
+	, FlashModel = require('../shared/models/flash')
 	, domain = require('domain')
 	, serverDomain = domain.create();
 
@@ -199,6 +200,8 @@ function setupServerRequestContext() {
 		config: this.app.locals.config
 	});
 	this.dataStore.set('AppContextModel', appContext);
+
+	this.dataStore.set('FlashModel', new FlashModel(this.req.flash()));
 }
 
 

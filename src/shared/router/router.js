@@ -225,6 +225,9 @@ module.exports = Router.extend({
 	 */
 	, render: function render(view) {
 		debug('render');
+
+		this.trigger('render');
+
 		/* jshint camelcase:false */    // Ensures that jshint ignores __super__
 		var locale = this.getLocale();
 		view.options.locale = locale;

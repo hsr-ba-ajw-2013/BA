@@ -5,8 +5,8 @@
 var	auth = require('./auth')
 	, clientConfig = require('./client-config')
 	, connectDomain = require('./connect-domain')
+	, eventBus = require('./event-bus')
 	, db = require('./db')
-	//, flash = require('./flash')
 	//, handler = require('./handler')
 	, http = require('./http')
 	, locale = require('./locale')
@@ -38,10 +38,11 @@ function setupMiddleware(app, config) {
 	logger(app, config);
 	//TODO: csrf
 
+	eventBus(app, config);
+
 	db(app, config);
 	http(app, config);
 	locale(app, config);
-	//flash(app, config);
 	//validator(app, config);
 	auth(app, config);
 

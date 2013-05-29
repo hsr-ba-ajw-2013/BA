@@ -3,11 +3,12 @@ var	join = require('path').join
 	, srcPath = join(process.cwd(),
 		(process.env.COVERAGE ? 'src-cov' : 'src'))
 	, EventEmitter = require('events').EventEmitter
-	, observer = require(join(srcPath,
-		'server', 'api', 'gamification', 'observer'))
+	, setupAchievements = require(join(srcPath,
+		'server', 'api', 'gamification'))
 	, utils = require(join(
 				srcPath, 'server', 'api', 'utils'))
 	, uslug = require('uslug')
+	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
 	, db
 	, TaskDao;
 
@@ -63,7 +64,9 @@ describe('Gamification', function() {
 				, CommunityDao = db.daoFactoryManager.getDAO('Community');
 
 			eventBus = new EventEmitter();
-			observer(eventBus, db);
+			setupAchievements({
+				app: testUtils.app(db, eventBus)
+			});
 
 			AchievementDao = db.daoFactoryManager.getDAO('Achievement');
 

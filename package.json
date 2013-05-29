@@ -16,8 +16,6 @@
 
 		, "express-hbs": "~0.1.3"
 
-		, "connect-flash": "~0.1.0"
-
 		, "sequelize": "git://github.com/sequelize/sequelize.git#41c1b6aef5ab6fa82d251815071ab33c5642302a"
 		, "pg": "~0.15.1"
 

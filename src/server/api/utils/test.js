@@ -237,6 +237,16 @@ function requestMock(data) {
 	};
 }
 
+/** Function: eventBusMock
+ * Mock event bus which does actually nothing.
+ */
+function eventBusMock() {
+	return {
+		emit: function() {}
+		, on: function() {}
+	};
+}
+
 /** Function: appMock
  * Express.js App Mocking. Defines a `get` function which returns only
  * the db so far.
@@ -247,11 +257,13 @@ function requestMock(data) {
  * Returns:
  *   (Object)
  */
-function appMock(db) {
+function appMock(db, eventBus) {
 	return {
 		get: function(key) {
 			if(key === 'db') {
 				return db;
+			} else if(key === 'eventbus') {
+				return eventBus || eventBusMock();
 			}
 		}
 	};
@@ -271,6 +283,7 @@ DataStore.prototype.get = function get(key) {
 module.exports = {
 	req: requestMock
 	, app: appMock
+	, eventBus : eventBusMock
 	, DataStore: DataStore
 	, initDb: initDb
 	, createResident: createResident

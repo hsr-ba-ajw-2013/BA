@@ -12,17 +12,21 @@
  *   http://swissmanu.github.io/barefoot/docs/files/lib/apiadapter-js.html>
  */
 var apiPrefix = '/api'
-	, setupResidentApi = require('./resident')
 	, setupCommunityApi = require('./community')
+	, setupFlashMessagesApi = require('./flash-messages')
+	, setupAchievements = require('./gamification')
 	, setupTaskApi = require('./task')
 	, setupRankApi = require('./rank')
+	, setupResidentApi = require('./resident')
 	, debug = require('debug')('roomies:api:index');
 
 function initApi(api) {
 	debug('init api');
-	setupResidentApi(api, apiPrefix);
 	setupCommunityApi(api, apiPrefix);
+	setupFlashMessagesApi(api, apiPrefix);
+	setupAchievements(api, apiPrefix);
 	setupTaskApi(api, apiPrefix);
+	setupResidentApi(api, apiPrefix);
 	setupRankApi(api, apiPrefix);
 }
 

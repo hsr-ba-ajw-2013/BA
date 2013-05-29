@@ -5,7 +5,9 @@
 
 var observer = require('./observer');
 
-module.exports = function setupAchievements(app) {
-	observer(app.get('eventbus'), app.get('db'));
-
+module.exports = function setupAchievements(api) {
+	var app = api.app
+		, db = app.get('db')
+		, eventBus = app.get('eventbus');
+	eventBus.on('task:done', observer.taskDone.bind(this, db, eventBus));
 };

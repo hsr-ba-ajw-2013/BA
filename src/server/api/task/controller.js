@@ -79,7 +79,6 @@ function getTasksForCommunityWithSlug(success, error, slug) {
 	debug('get tasks for community with slug');
 	var communityDao = getCommunityDao.call(this)
 		, self = this;
-
 	communityDao.find({ where: { slug: slug }})
 		.success(function findCommunity(community) {
 			if(!_.isNull(community)) {
@@ -132,6 +131,8 @@ function createTask(success, error, communitySlug, task) {
 				.success(function ok() {
 					task.setCreator(currentUser)
 						.success(function ok() {
+							self.app.get('eventbus').emit('task:created'
+								, task);
 							success('/community/' + community.slug +
 								'/tasks');
 						})

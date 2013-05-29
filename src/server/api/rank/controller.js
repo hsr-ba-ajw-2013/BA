@@ -74,7 +74,7 @@ function getRankingListForCommunity(success, error) {
 					'AND "Tasks"."fulfilledAt" >= ?', lastWeek]
 			, group: ['Tasks.fulfillorId', 'Fulfillor.id']
 			, order: '"points" DESC'
-		})
+		}, {raw: true})
 		.success(function(ranks) {
 			return success(ranks);
 		})

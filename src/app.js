@@ -4,6 +4,7 @@ var Barefoot = require('node-barefoot')()
 	, CommunityModel = require('./shared/models/community')
 	, TasksCollection = require('./shared/collections/tasks')
 	, RanksCollection = require('./shared/collections/ranks')
+	, FlashModel = require('./shared/models/flash')
 	, ResidentProfileModel = require('./shared/models/residentprofile')
 	, AppContextModel = require('./shared/models/appcontext')
 	, Router = require('./shared/router')
@@ -23,12 +24,16 @@ if(Barefoot.isRunningOnServer()) {
  */
 function setupRequestContext() {
 	debug('setup request context');
-	this.dataStore.registerModel('ResidentModel', ResidentModel);
-	this.dataStore.registerModel('CommunityModel', CommunityModel);
+
 	this.dataStore.registerCollection('TasksCollection', TasksCollection);
 	this.dataStore.registerCollection('RanksCollection', RanksCollection);
+
+	this.dataStore.registerModel('ResidentModel', ResidentModel);
+	this.dataStore.registerModel('CommunityModel', CommunityModel);
 	this.dataStore.registerModel('ResidentProfileModel', ResidentProfileModel);
 	this.dataStore.registerModel('AppContextModel', AppContextModel);
+	this.dataStore.registerCollection('FlashModel', FlashModel);
+
 	this.eventAggregator = new EventAggregator();
 }
 
