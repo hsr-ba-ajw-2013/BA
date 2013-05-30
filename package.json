@@ -16,7 +16,7 @@
 
 		, "express-hbs": "~0.1.3"
 
-		, "sequelize": "git://github.com/sequelize/sequelize.git#41c1b6aef5ab6fa82d251815071ab33c5642302a"
+		, "sequelize": "git://github.com/mekanics/sequelize.git#2018a75bd5c89d84bc64cc86034a27151c81bc78"
 		, "pg": "~0.15.1"
 
 		, "passport": "~0.1.16"
