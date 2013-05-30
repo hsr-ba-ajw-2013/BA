@@ -6,12 +6,6 @@ body {
 	background: url('../image/noisybackground.png');
 }
 
-@media (max-width: 600px) {
-	body {
-		width: 500px;
-	}
-}
-
 a {
 	color: #000080;
 	text-decoration: none;
@@ -58,4 +52,20 @@ li.seperator {
 }
 .icon-li {
 	color: #000080;
+}
+
+
+@media (max-width: 767px) {
+	body {
+		width: 100%;
+		margin-bottom: 10px;
+	}
+
+	h1 {
+		font-size: 35px;
+	}
+
+	header {
+		margin: 10px;
+	}
 }
