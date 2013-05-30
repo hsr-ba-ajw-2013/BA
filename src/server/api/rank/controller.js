@@ -51,28 +51,18 @@ function getRankingListForCommunity(success, error) {
 			return error(noResidentInCommunityError);
 		}
 
-		var residentIds = residents.map(function getResidentIds(curResident) {
-			return curResident.id;
-		});
-
 		var taskDao = getTaskDao.call(self)
-			, residentDao = getResidentDao.call(self)
+			, residentDao = getResidentDao.call(self);/*
 			, today = new Date()
 			, lastWeek = new Date(today.getTime()-1000*60*60*24*7);
-
-//TODO:
-//SELECT SUM("Tasks"."reward") AS "points", "Residents"."id"
-//FROM "Residents"
-//LEFT JOIN "Tasks" ON "Residents"."id" = "Tasks"."fulfillorId"
-//GROUP BY "Residents"."id"
-
-		taskDao.findAll({
-			attributes: [['SUM("reward")', 'points'], 'fulfillorId']
-			, include: [{ model: residentDao, as: 'Fulfillor' }]
-			, where:
-				['"Tasks"."fulfillorId" IN (' + residentIds.join(',') + ') ' +
-					'AND "Tasks"."fulfilledAt" >= ?', lastWeek]
-			, group: ['Tasks.fulfillorId', 'Fulfillor.id']
+			*/
+		residentDao.findAll({
+			attributes: [['COALESCE(SUM("fulfilledTasks"."reward"),0)'
+					, 'points']
+				, 'Residents.facebookId'
+				, 'Residents.name']
+			, include: [{ model: taskDao, as: 'fulfilledTasks'}]
+			, group: ['Residents.id']
 			, order: '"points" DESC'
 		}, {raw: true})
 		.success(function(ranks) {

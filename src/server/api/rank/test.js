@@ -82,7 +82,6 @@ describe('Rank', function() {
 					}
 				}
 				, error = function error(err) {
-					console.log(err);
 					done(new Error(err));
 				}
 				, functionScope = {
