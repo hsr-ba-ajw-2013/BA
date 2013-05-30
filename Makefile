@@ -8,7 +8,7 @@ REPORTER = spec
 COVERAGE_REPORTER = html-cov
 COVERALLS_REPORTER = mocha-lcov-reporter
 TEST_CMD = NODE_ENV=test ./node_modules/.bin/mocha --require test/runner.js --globals config
-COVERALLS_CMD = NODE_ENV=test ./node_modules/.bin/jscoverage src src-cov --exclude /\.\(hbs\|otf\|eot\|svg\|ttf\|woff\|png\|ico\|html\|css\|json\)/
+COVERALLS_CMD = NODE_ENV=test ./node_modules/.bin/jscoverage src src-cov --exclude /\.\(hbs\|otf\|eot\|svg\|ttf\|woff\|gif\|png\|ico\|html\|css\|json\)/
 TEST_LIVE_CMD = $(TEST_CMD) --growl --watch
 
 SCSS_BASE = src/server/sass
