@@ -82,17 +82,26 @@ function createUniqueSlug(db, communityName, communityId, done) {
 }
 
 /** PrivateFunction: updateResidentsCommunityMembership
+ * Sets the community of the given resident.
  *
+ * Parameters:
+ *     (Object) resident - The resident to update
+ *     (Object) community - The community to be set for the resident
+ *     (Function) done - Called on completion. If an error happend, the first
+ *                       argument will be the regarding error object.
  */
  function updateResidentsCommunityMembership(resident, community, done) {
 	resident.setCommunity(community)
 		.success(function setResult() {
 			resident.isAdmin = true;
-			resident.save().success(function setAdmin() {
-				done();
-			}).error(function setAdminError() {
-				done(new Error('Could not save administrator setting.'));
-			});
+			resident.save()
+				.success(function setAdmin() {
+					done();
+				})
+				.error(function setAdminError() {
+					done(new Error('Could not save administrator setting.'));
+				}
+			);
 		})
 		.error(function() {
 			done(new Error('Could not save community membership.'));
