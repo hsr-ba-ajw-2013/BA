@@ -155,43 +155,6 @@ Group: Server  {
       File: View  (server/middleware/view.js)
       }  # Group: Middleware
 
-   Group: OLD lib  {
-
-      File: Cluster  (server/OLD lib/cluster/index.js)
-
-      Group: Community  {
-
-         File: Community  (server/OLD lib/community/index.js)
-         File: Community.Controller  (server/OLD lib/community/controller.js)
-         File: Community.Model  (server/OLD lib/community/model.js)
-         File: Transporter  (server/OLD lib/community/transporter.js)
-         }  # Group: Community
-
-      File: FacebookChannel  (server/OLD lib/facebook-channel/index.js)
-      File: FacebookChannel.Controller  (server/OLD lib/facebook-channel/controller.js)
-      File: Home  (server/OLD lib/home/index.js)
-      File: Home.Controller  (server/OLD lib/home/controller.js)
-      File: Login  (server/OLD lib/login/index.js)
-      File: Login.Controller  (server/OLD lib/login/controller.js)
-      File: Rank  (server/OLD lib/rank/index.js)
-      File: Rank.Controller  (server/OLD lib/rank/controller.js)
-
-      Group: Resident  {
-
-         File: Resident  (server/OLD lib/resident/index.js)
-         File: Resident.Controller  (server/OLD lib/resident/controller.js)
-         File: Resident.Model  (server/OLD lib/resident/model.js)
-         }  # Group: Resident
-
-      Group: Task  {
-
-         File: Task  (server/OLD lib/task/index.js)
-         File: Task.Controller  (server/OLD lib/task/controller.js)
-         File: Task.Model  (server/OLD lib/task/model.js)
-         }  # Group: Task
-
-      }  # Group: OLD lib
-
    File: public/.../lib/jquery-1.9.1.js  (server/public/javascripts/lib/jquery-1.9.1.js)
    }  # Group: Server
 
@@ -199,18 +162,6 @@ Group: Shared  {
 
    File: EventAggregator  (shared/eventAggregator.js)
    File: Locales  (shared/locales/index.js)
-
-   Group: OLD.shared  {
-
-      File: CreateCommunityValidator  (shared/OLD.shared/validators/create-community.js)
-      File: CreateTaskValidator  (shared/OLD.shared/validators/create-task.js)
-      File: Exception401  (shared/OLD.shared/exceptions/401.js)
-      File: LoginRequired  (shared/OLD.shared/policies/login-required.js)
-      File: PassportMock  (shared/OLD.shared/test/passport-mock.js)
-      File: StrategyMock  (shared/OLD.shared/test/strategy-mock.js)
-      File: Utils  (shared/OLD.shared/utils/index.js)
-      }  # Group: OLD.shared
-
    File: RoomiesView  (shared/views/roomiesView.js)
    File: router/router.js  (shared/router/router.js)
    File: Templates  (shared/templates/index.js)
@@ -224,7 +175,6 @@ Group: Index  {
    Function Index: Functions
    Model Index: Models
    Private Function Index: Private Functions
-   Exception Index: Exceptions
    Module Index: Module
    Component Index: Components
    }  # Group: Index
