@@ -1,4 +1,4 @@
-/** Policy: AuthorizedForCommunity
+/** Policy: Api.Policy.AuthorizedForCommunity
  * Stack this policy on any route which contains a community slug as first
  * named url parameter to check, if the current user is authorized to access
  * data of the regarding community.

@@ -1,5 +1,5 @@
-/** Class: Api.Community.Controller
- * Community-related CRUD
+/** Class: Api.FlashMessages.Controller
+ * API Controller for interacting flash messages.
  */
 var debug = require('debug')('roomies:api:flash-messages:controller')
 	, eventsMap = {

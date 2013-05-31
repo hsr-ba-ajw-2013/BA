@@ -1,4 +1,4 @@
-/** Class: TwentyPointsAchievement
+/** Class: Api.Gamification.Achievements.TwentyPointsAchievement
  * Achievement given upon twenty points achieved
  */
 

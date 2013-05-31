@@ -1,9 +1,9 @@
+/** Class: Api.Gamification.Rules.NPointsRule
+ * When reward points are given, call cb with "true".
+ */
 var util = require('util')
 	, BaseRule = require('./base');
 
-/** Class: NPointsRule
- * When reward points are given, call cb with "true".
- */
 function NPointsRule(points) {
 	this.points = points;
 	BaseRule.call(this);

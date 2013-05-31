@@ -1,4 +1,4 @@
-/** Component: Gamification
+/** Component: Api.Gamification
  * This component handles the whole gamification of roomies using the event-bus
  * and achievements.
  */

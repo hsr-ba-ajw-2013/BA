@@ -1,4 +1,4 @@
-/** Interface: BaseRule
+/** Class: Api.Gamification.Rules.BaseRule
  * Interface for doing rules.
  */
 function BaseRule() {

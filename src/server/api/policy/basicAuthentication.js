@@ -1,4 +1,4 @@
-/** Policy: Api.BasicAuthentication
+/** Policy: Api.Policy.BasicAuthentication
  * This is the simplest of all possible security policies. It checks the
  * the isAuthenticated flag in the request object which is usally set by the
  * authentication middleware

@@ -1,5 +1,5 @@
-/** Module: Gamification.Rules
- * Available rules
+/** Component: Api.Gamification.Gamification.Rules
+ * Bundles all available rules for evaluating achievements.
  */
 
 exports.NTasksRule = require('./n-tasks');

@@ -1,4 +1,4 @@
-/** Class: TenTasksAchievement
+/** Class: Api.Gamification.Achievements.TenTasksAchievement
  * Achievement given upon ten tasks done
  */
 

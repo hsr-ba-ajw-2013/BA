@@ -1,4 +1,4 @@
-/** Class: FirstTaskAchievement
+/** Class: Api.Gamification.Achievements.FirstTaskAchievement
  * Achievement given upon first task done
  */
 

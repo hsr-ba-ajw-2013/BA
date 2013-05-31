@@ -1,4 +1,4 @@
-/** Module: Observer
+/** Class: Api.Gamification.Observer
  * Observer of various events to process.
  */
 

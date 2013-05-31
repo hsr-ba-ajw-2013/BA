@@ -1,4 +1,4 @@
-/** Module: Api.Community.Validators
+/** Class: Api.Community.Validators
  * Validator functions for the Community domain object.
  */
 

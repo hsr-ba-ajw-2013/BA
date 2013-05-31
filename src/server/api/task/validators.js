@@ -1,4 +1,4 @@
-/** Module: Api.Task.Validators
+/** Class: Api.Task.Validators
  * Create task validator
  */
 

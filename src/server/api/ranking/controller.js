@@ -1,5 +1,6 @@
 /** Class: Api.Ranking.Controller
- * Ranking-related CRUD
+ * This API controller provides access to residents under the aspect of getting
+ * their scores in their community.
  */
 
 var debug = require('debug')('roomies:api:ranking:controller')
@@ -58,6 +59,10 @@ function getRankingListForCommunity(success, error) {
 			return error(err);
 		}
 
+		/* AnonymousFunction: afterResidentsSearch
+		 * After fetching all residents of a commnuity, this function loads
+		 * all them again, but sorted by their point score.
+		 */
 		, afterResidentsSearch = function afterResidentsSearch(residents) {
 			debug('after residents search');
 
@@ -84,8 +89,7 @@ function getRankingListForCommunity(success, error) {
 				return success(rankings);
 			})
 			.error(forwardError);
-
-		}
+		};
 
 	community.getResidents({ where: { enabled: true } })
 		.success(afterResidentsSearch)

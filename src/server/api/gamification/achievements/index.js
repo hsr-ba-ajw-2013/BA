@@ -1,5 +1,5 @@
-/** Module: Gamification.Achievements
- * Enabled Achievements
+/** Component: Api.Gamification.Achievements
+ * Bundles all enabled achievements.
  */
 
 var FirstTaskAchievement = require('./first-task')

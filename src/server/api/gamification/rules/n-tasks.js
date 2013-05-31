@@ -1,9 +1,11 @@
+/** Class: Api.Gamification.Rules.NTasksRule
+ * When number of tasks are done, call cb with "true".
+ */
+
 var util = require('util')
 	, BaseRule = require('./base');
 
-/** Class: NTasksRule
- * When number of tasks are done, call cb with "true".
- */
+
 function NTasksRule(number) {
 	this.number = number;
 	BaseRule.call(this);

@@ -1,4 +1,4 @@
-/** Interface: BaseAchievement
+/** Class: Api.Gamification.Achievements.BaseAchievement
  * Base Interface for Achievements
  */
 
