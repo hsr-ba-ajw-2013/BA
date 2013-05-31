@@ -1,5 +1,6 @@
 /** Class: Api.Community.Controller
- * Community-related CRUD
+ * This controller contains plain CRUD logic for interacting with the community
+ * domain objects. It is part of the API.
  */
 var errors = require('./errors')
 	, uslug = require('uslug')
@@ -96,8 +97,8 @@ function createUniqueSlug(db, communityName, communityId, done) {
  *     (Function) done - Called on completion. If an error happend, the first
  *                       argument will be the regarding error object.
  */
- function updateResidentsCommunityMembership(resident, community, done) {
- 	debug('update residents community membership');
+function updateResidentsCommunityMembership(resident, community, done) {
+	debug('update residents community membership');
 
 	resident.setCommunity(community)
 		.success(function setResult() {
@@ -115,6 +116,54 @@ function createUniqueSlug(db, communityName, communityId, done) {
 			done(new Error('Could not save community membership.'));
 		});
  }
+
+ /** PrivateFunction: setCommunityDisabled
+ * Set the property 'enabled' of a given community to false
+ *
+ * Parameters:
+ *   (Object) community - the community to disable
+ *   (Function) done - Callback for continuing the job.
+ *                     On error, the first argument contains
+ *                     the error object.
+ */
+function setCommunityDisabled(community, done) {
+	debug('set community disabled');
+
+	community.enabled = false;
+
+	community.save()
+		.success(function saveSuccess() {
+			done();
+		})
+		.error(function saveError() {
+			done(new Error('Could not save community.'));
+		});
+}
+
+/** PrivateFunction: removeResidentFromCommunity
+ * Set the property 'isAdmin' of a given resident to false and resets the
+ * communityId property to 0.
+ *
+ * Parameters:
+ *   (Object) resident - The resident to remove from its community
+ *   (Function) done - Callback for continuing the job.
+ *                     On error, the first argument contains
+ *                     the error object.
+ */
+function removeResidentFromCommunity(resident, done) {
+	debug('remove resident from community');
+
+	resident.isAdmin = false;
+	resident.CommunityId = 0;
+
+	resident.save()
+		.success(function saveSuccess() {
+			done();
+		})
+		.error(function saveError() {
+			done(new Error('Could not save resident.'));
+		});
+}
 
 /** Function: createCommunity
  * Creates a community using the given data
@@ -260,7 +309,7 @@ function getCommunityWithId(success, error, id) {
 					'Community with id ' + id + 'does not exist.')
 				);
 			}
-		}
+		};
 
 	communityDao.find({ where: { id: id, enabled: true }})
 		.success(afterCommunitySearch)
@@ -278,6 +327,7 @@ function getCommunityWithId(success, error, id) {
  */
 function getCommunityWithSlug(success, error, slug) {
 	debug('get community with slug');
+
 	var communityDao = getCommunityDao.call(this);
 
 	communityDao.find({ where: { slug: slug, enabled: true }})
@@ -294,95 +344,86 @@ function getCommunityWithSlug(success, error, slug) {
 		});
 }
 
-/** PrivateFunction: setCommunityDisabled
- * Set the property 'enabled' of a given community to false
- *
- * Parameters:
- *   (Object) community - the community to disable
- *   (Function) done - Callback for continuing the job.
- *                     On error, the first argument contains
- *                     the error object.
- */
-function setCommunityDisabled(community, done) {
-	community.enabled = false;
-
-	community.save()
-		.success(function saveSuccess() {
-			done();
-		})
-		.error(function saveError() {
-			done(new Error('Could not save community.'));
-		});
-}
-
-/** PrivateFunction: removeResidentFromCommunity
- * Set the property 'isAdmin' of a given resident to false and resets the
- * communityId property to 0.
- *
- * Parameters:
- *   (Object) resident - The resident to remove from its community
- *   (Function) done - Callback for continuing the job.
- *                     On error, the first argument contains
- *                     the error object.
- */
-function removeResidentFromCommunity(resident, done) {
-	resident.isAdmin = false;
-	resident.CommunityId = 0;
-
-	resident.save()
-		.success(function saveSuccess() {
-			done();
-		})
-		.error(function saveError() {
-			done(new Error('Could not save resident.'));
-		});
-}
-
 /** Function: deleteCommunity
- * Marks a community as deactivated with a specific slug.
+ * Marks the community with the slug from data.slug as disabled which means it
+ * is actually deactivated.
  *
  * Parameters:
- *   (Function) success - Callback on success.
+ *   (Function) success - Callback on success
  *   (Function) error - Callback in case of an error
- *   (Object) data - An object containing the information for deleting a
- *                   community.
+ *   (Object) data - Information about the community to delete
  */
 function deleteCommunity(success, error, data) {
 	debug('delete community with slug');
-	var resident = this.req.user
-		, self = this;
+
+	var self = this
+		, resident = self.req.user
+		, eventbus = self.app.get('eventbus')
+
+		/* AnonymousFunction: forwardError
+		 * Forwards an error object using the error callback argument
+		 */
+		, forwardError = function forwardError(err) {
+			debug('forward error');
+			return error(err);
+		}
+
+		/* AnonymousFunction: afterCommunitySearch
+		 * After looking for a community, this function tries to setting the
+		 * community to disabled.
+		 */
+		, afterCommunitySearch = function afterCommunitySearch(community) {
+			debug('after community search');
+
+			if (community && data.slug === community.slug) {
+				setCommunityDisabled(community, afterSettingCommunityDisabled);
+			} else {
+				return forwardError(
+					new errors.ForbiddenError('Not Authorized!'));
+			}
+		}
+
+		/* AnonymousFunction: afterSettingCommunityDisabled
+		 * Tries to remove the current resident from the community which should
+		 * be deleted.
+		 */
+		, afterSettingCommunityDisabled =
+			function afterSettingCommunityDisabled(err) {
+				debug('after setting community disabled');
+
+				if(err) {
+					return forwardError(err);
+				}
+
+				removeResidentFromCommunity(
+					resident
+					, afterRemoveResidentFromCommunity
+				);
+		}
+
+		/* AnonymousFunction: afterCommunitySearch
+		 * If no error occured, this function emits a "community:deleted" event
+		 * on the event bus and calls the success callback argument.
+		 */
+		, afterRemoveResidentFromCommunity =
+			function afterRemoveResidentFromCommunity(err) {
+				debug('after remove residents from community');
+
+				if(err) {
+					return forwardError(err);
+				}
+
+				eventbus.emit('community:deleted');
+				success('/');
+		};
 
 	if (!resident.isAdmin) {
-		return error(new errors.ForbiddenError('Not Authorized!'));
+		return forwardError(new errors.ForbiddenError('Not Authorized!'));
 	}
 
 	resident.getCommunity({where: {enabled: true}})
-		.success(function getResult(residentCommunity) {
-			if (residentCommunity &&
-				data.slug === residentCommunity.slug) {
-				setCommunityDisabled(residentCommunity, function(err) {
-					if(err) {
-						return error(err);
-					}
-
-					removeResidentFromCommunity(resident,
-						function(err) {
-							if(err) {
-								return error(err);
-							}
-							self.app.get('eventbus').emit('community:deleted');
-							success('/');
-						}
-					);
-				});
-
-			} else {
-				error(new errors.ForbiddenError('Not Authorized!'));
-			}
-		})
-		.error(function getError(err) {
-			error(err);
-		});
+		.success(afterCommunitySearch)
+		.error(forwardError);
 }
 
 
