@@ -252,7 +252,7 @@ function createCommunity(success, error, data) {
 						}
 
 						eventbus.emit('community:created', community);
-						success(community);
+						success(community.dataValues);
 					}
 				);
 		};
@@ -302,7 +302,7 @@ function getCommunityWithId(success, error, id) {
 		 */
 		, afterCommunitySearch = function afterCommunitySearch(community) {
 			if(!_.isNull(community)) {
-				success(community);
+				success(community.dataValues);
 			} else {
 				forwardError(new errors.NotFoundError(
 					'Community with id ' + id + 'does not exist.')
@@ -332,7 +332,7 @@ function getCommunityWithSlug(success, error, slug) {
 	communityDao.find({ where: { slug: slug, enabled: true }})
 		.success(function findResult(community) {
 			if(!_.isNull(community)) {
-				success(community);
+				success(community.dataValues);
 			} else {
 				error(new errors.NotFoundError('Community with slug ' + slug +
 					'does not exist.'));
@@ -446,7 +446,7 @@ function getCommunityWithShareLink(success, error, shareLink) {
 	communityDao.find({ where: {shareLink: shareLink, enabled: true}})
 		.success(function findResult(community) {
 			if (community !== null) {
-				success(community);
+				success(community.dataValues);
 			} else {
 				error(new errors.InvalidShareLink('Share link invalid'));
 			}

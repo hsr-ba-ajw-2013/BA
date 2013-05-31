@@ -18,7 +18,7 @@ function getResidentWithFacebookId(success, error, facebookId) {
 	residentDao.find({ where: { facebookId: facebookId, enabled: true }})
 		.success(function results(resident) {
 			if(resident !== null) {
-				success(resident);
+				success(resident.dataValues);
 			} else {
 				error(new errors.NotFoundError('FacebookId not found!'));
 			}

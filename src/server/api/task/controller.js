@@ -62,7 +62,7 @@ function getTaskWithId(success, error, taskId) {
 				return error(new errors.ForbiddenError('Task with id "' +
 					task.id + '" is in a different community.'));
 			}
-			success(task);
+			success(task.dataValues);
 		})
 		.error(function nok(err) {
 			error(err);
@@ -85,6 +85,7 @@ function getTasksForCommunityWithSlug(success, error, slug) {
 
 	var communityDao = getCommunityDao.call(this)
 		, self = this;
+
 	communityDao.find({ where: { slug: slug, enabled: true }})
 		.success(function findCommunity(community) {
 			if(!_.isNull(community)) {
@@ -95,6 +96,10 @@ function getTasksForCommunityWithSlug(success, error, slug) {
 				community.getTasks({ order: 'id DESC' })
 					.success(function findTasks(tasks) {
 						if(!_.isNull(tasks) && tasks.length > 0) {
+							for(var i in tasks) {
+								tasks[i] = tasks[i].dataValues;
+							}
+
 							success(tasks);
 						} else {
 							error(new errors.NoTasksFoundError(
@@ -139,10 +144,13 @@ function createTask(success, error, communitySlug, task) {
 			task.setCommunity(community)
 				.success(function ok() {
 					task.setCreator(currentUser)
-						.success(function ok() {
-							self.app.get('eventbus').emit('task:created'
-								, task);
-							success(task);
+						.success(function ok(createdTask) {
+							var createdTaskData = createdTask.dataValues;
+
+							self.app.get('eventbus').emit(
+								'task:created'
+								, createdTaskData);
+							success(createdTaskData);
 						})
 						.error(function nok(err) {
 							error(err);
@@ -200,10 +208,10 @@ function updateTask(success, error, communitySlug, taskId, updateData) {
 			task.name = updateData.name || task.name;
 			task.description = updateData.description || task.description;
 			task.reward = updateData.reward || task.reward;
-			task.fullfilledAt = updateData.fullfilledAt || task.fullfilledAt;
+			task.fulfilledAt = updateData.fulfilledAt || task.fulfilledAt;
 			task.dueDate = updateData.dueDate || task.dueDate;
 			task.updatedAt = new Date();
-			task.fullfillorId = updateData.fullfillorId || task.fullfillorId;
+			task.fulfillorId = updateData.fulfillorId || task.fulfillorId;
 
 			task.save()
 				.success(afterTaskSave)
@@ -215,8 +223,11 @@ function updateTask(success, error, communitySlug, taskId, updateData) {
 		 */
 		, afterTaskSave = function afterTaskSave(task) {
 			debug('after task save');
-			eventbus.emit('task:updated', task);
-			success(task);
+
+			var taskData = task.dataValues;
+
+			eventbus.emit('task:updated', taskData);
+			success(taskData);
 		};
 
 	taskDao.find({ where: { id: taskId }})

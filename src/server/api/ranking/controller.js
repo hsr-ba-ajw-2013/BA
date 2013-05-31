@@ -86,6 +86,9 @@ function getRankingListForCommunity(success, error) {
 				, order: '"points" DESC'
 			}, { raw: true })
 			.success(function(rankings) {
+				for(var i in rankings) {
+					rankings[i] = rankings[i].dataValues;
+				}
 				return success(rankings);
 			})
 			.error(forwardError);
