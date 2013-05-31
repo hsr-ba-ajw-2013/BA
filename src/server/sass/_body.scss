@@ -6,3 +6,11 @@ body {
 .spacer-left-small {
 	margin-left: 3px;
 }
+
+/* Remove FF dotted focus borders */
+a:focus {
+	outline:none;
+}
+a::-moz-focus-inner {
+	border:0;
+}
