@@ -3,13 +3,13 @@ var View = require('./roomiesView')
 	, _ = require('underscore');
 
 module.exports = View.extend({
-	el: '.fixed-navigation'
+	el: 'header#menu'
 
 	, events: {
-		"click a": "menuClick"
+		"click a": "onClickMenuItem"
 	}
 
-	, menuClick: function(evt) {
+	, onClickMenuItem: function onClickMenuItem(evt) {
 		var $el = $(evt.currentTarget)
 			, href = $el.attr('href');
 		this.options.router.navigate(href, {trigger: true});

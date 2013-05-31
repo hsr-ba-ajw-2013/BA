@@ -2,6 +2,9 @@ $color-neutral: white;
 $color-accent-1: #1A3143;
 $color-accent-2: #A4000F;
 
+$anchor-font-color: lighten($color-accent-1, 15%);
+$anchor-font-color-hover: lighten($color-accent-1, 25%);
+
 $color-success: #5aa50f;
 $color-error: #a60000;
 $color-warning: #b0ab0d;

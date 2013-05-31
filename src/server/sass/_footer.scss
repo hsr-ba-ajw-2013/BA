@@ -1,0 +1,15 @@
+footer {
+	font-size: 80%;
+	text-align: center;
+	border-top: 1px dotted lighten(#333, 70%);
+	margin-top: 20px;
+	padding-top: 20px;
+
+	a, {
+		color: lighten(#333, 70%);
+
+		&:hover {
+			color: #666666;
+		}
+	}
+}

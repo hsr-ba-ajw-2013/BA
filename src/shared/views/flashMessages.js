@@ -1,7 +1,7 @@
 var View = require('./roomiesView');
 
 module.exports = View.extend({
-	el: '.flash-messages'
+	el: '#flash-messages'
 
 	, initialize: function() {
 		this.messages = this.options.dataStore.get('FlashModel');
