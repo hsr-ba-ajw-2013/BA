@@ -14,6 +14,8 @@ var errors = require('./errors')
  *     (Object) sequelize data access object for community entities.
  */
 function getCommunityDao() {
+	debug('get community DAO');
+
 	var db = this.app.get('db')
 		, communityDao = db.daoFactoryManager.getDAO('Community');
 
@@ -31,6 +33,8 @@ function getCommunityDao() {
  *                                              already exists
  */
 function createUniqueShareLink(db, done, tries) {
+	debug('create unique share link');
+
 	var Community = db.daoFactoryManager.getDAO('Community')
 		, link = utils.randomString(12);
 
@@ -65,6 +69,8 @@ function createUniqueShareLink(db, done, tries) {
  *                     the error object.
  */
 function createUniqueSlug(db, communityName, communityId, done) {
+	debug('create unique slug');
+
 	var slug = uslug(communityName)
 		, Community = db.daoFactoryManager.getDAO('Community');
 
@@ -91,6 +97,8 @@ function createUniqueSlug(db, communityName, communityId, done) {
  *                       argument will be the regarding error object.
  */
  function updateResidentsCommunityMembership(resident, community, done) {
+ 	debug('update residents community membership');
+
 	resident.setCommunity(community)
 		.success(function setResult() {
 			resident.isAdmin = true;
@@ -118,6 +126,8 @@ function createUniqueSlug(db, communityName, communityId, done) {
  *                   community.
  */
 function createCommunity(success, error, data) {
+	debug('create community');
+
 	var self = this
 		, resident = self.req.user
 		, db = self.app.get('db')
@@ -131,6 +141,7 @@ function createCommunity(success, error, data) {
 		 * Forwards an error object using the error callback argument
 		 */
 		, forwardError = function forwardError(err) {
+			debug('forward error');
 			return error(err);
 		}
 
@@ -139,6 +150,8 @@ function createCommunity(success, error, data) {
 		 * community if not already existing.
 		 */
 		, afterCommunitySearch = function afterCommunitySearch(community) {
+			debug('after community search');
+
 			if (community !== null) {
 				var alreadyExistsErr =
 					new errors.CommunityAlreadyExistsError(
@@ -157,6 +170,8 @@ function createCommunity(success, error, data) {
 		 * created. The slug is then saved into the community.
 		 */
 		, afterCommunityCreate = function afterCommunityCreate(community) {
+			debug('after community create');
+
 			createUniqueSlug(db, community.name, community.id
 				, function(err, slug) {
 					if(err) {
@@ -177,6 +192,8 @@ function createCommunity(success, error, data) {
 		 */
 		, afterUpdateCommunitySlug =
 			function afterUpdateCommunitySlug(community) {
+				debug('after update community slug');
+
 				updateResidentsCommunityMembership(
 					resident
 					, community
@@ -222,20 +239,32 @@ function createCommunity(success, error, data) {
  */
 function getCommunityWithId(success, error, id) {
 	debug('get community with id');
-	var communityDao = getCommunityDao.call(this);
 
-	communityDao.find({ where: { id: id, enabled: true }})
-		.success(function findResult(community) {
+	var communityDao = getCommunityDao.call(this)
+
+		/* AnonymousFunction: forwardError
+		 * Forwards an error object using the error callback argument
+		 */
+		, forwardError = function forwardError(err) {
+			return error(err);
+		}
+
+		/* AnonymousFunction: afterCommunitySearch
+		 * Calls the success or error callback after searching for a community.
+		 */
+		, afterCommunitySearch = function afterCommunitySearch(community) {
 			if(!_.isNull(community)) {
 				success(community);
 			} else {
-				error(new errors.NotFoundError('Community with id ' + id +
-					'does not exist.'));
+				forwardError(new errors.NotFoundError(
+					'Community with id ' + id + 'does not exist.')
+				);
 			}
-		})
-		.error(function daoError(err) {
-			error(err);
-		});
+		}
+
+	communityDao.find({ where: { id: id, enabled: true }})
+		.success(afterCommunitySearch)
+		.error(forwardError);
 }
 
 /** Function: getCommunityWithSlug
@@ -287,10 +316,11 @@ function setCommunityDisabled(community, done) {
 }
 
 /** PrivateFunction: removeResidentFromCommunity
- * Set the property 'isAdmin' of a given resident to false
+ * Set the property 'isAdmin' of a given resident to false and resets the
+ * communityId property to 0.
  *
  * Parameters:
- *   (Object) resident - the resident to remove the admin rights
+ *   (Object) resident - The resident to remove from its community
  *   (Function) done - Callback for continuing the job.
  *                     On error, the first argument contains
  *                     the error object.
