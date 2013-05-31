@@ -1,7 +1,7 @@
 <form class="task-create-form large-12 columns" action="{{action}}" method="post">
 	<div class="row">
 		<div class="large-12 columns">
-			<h2 class="">{{title}}</h2>
+			<h2>{{trans title}}</h2>
 		</div>
 	</div>
 
@@ -25,9 +25,7 @@
 			<input type="number" name="reward" id="reward" placeholder="{{trans "1 to 5 points"}}" min="1" max="5"{{#if task}} value="{{task.reward}}"{{/if}} />
 		</div>
 		<div class="large-3 columns hide-for-small hint">
-			{{#blocktrans}}
-				How many <i class="icon-trophy"></i> points should the roommate receive, who completed the task?
-			{{/blocktrans}}
+			{{trans "How many points should the roommate receive, who completed the task?" }}
 		</div>
 	</div>
 

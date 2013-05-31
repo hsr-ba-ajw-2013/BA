@@ -18,12 +18,24 @@ module.exports = {
 
 	, "Add a new task": "Neue Aufgabe..."
 	, "Task": "Aufgabe"
+	, "Create Task": "Aufgabe hinzufügen"
 	, "Description": "Beschreibung"
 	, "Due date": "Fällig am"
 	, "Reward": "Belohnung"
+	, "to go shopping": "Einkaufszentrum besuchen"
+	, "1 to 5 points": "1 bis 5 Punkte"
+	, "2/22/2014": "14.06.2013"
+	, "Don't forget the steaks!": "Steaks fürs BBQ nicht vergessen!"
+	, "Give a brief description of the task.": "Kurzbeschreibung der Aufgabe."
+	, "How many points should the roommate receive, who completed the task?": "Wieviele Punkte sollen zur Belohnung vergeben werden?"
+	, "Is this task due on a specific day?": "Muss diese Aufgabe zu einem bestimmten Tag erledigt sein?"
+	, "Leave a note for this task, if necessary.": "Hier ist Platz für Notizen, falls nötig."
+	, "Save task": "Aufgabe speichern"
 
 	, "Community settings": "WG Informationen"
 	, "Profile": "Profil"
 	, "You're in the community named: %s": "Du bist Mitglied der WG \"%s\""
 	, "Delete the community": "WG löschen"
+
+	, "Share following URL with your roommates to organize your life in communes with roomies.": "Teile folgende Adresse mit deinen Mitbewohnern und Mitbewohnerinnen, um euer WG-Leben mit Roomies zu organisieren"
 };
