@@ -4,9 +4,10 @@
 		<h5 class="subheader">
 			{{#blocktrans}}You aren't in any community yet.<br/>Please tell us the desired name of your community in order to create it.{{/blocktrans}}
 		</h5>
-		<form action="/community" method="post">
+		<form action="/community" method="post" class="community-create-form">
 			<input type="text" name="name" placeholder="{{trans "WG Name"}}" class="large-8 columns">
-			<input type="submit" value="{{trans "Create Community"}}" class="button large-3 columns">
+			<input type="submit" value="{{trans "Create Community"}}" class="button success large-3 columns spacer-left-small">
+			<img src="/images/loader.gif" alt="{{trans "Loading"}}" class="loader spacer-left-small"/>
 		</form>
 	</section>
 </div>

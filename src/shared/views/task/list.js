@@ -38,9 +38,9 @@ module.exports = View.extend({
 	}
 
 	, renderView: function() {
-		var community = this.options.dataStore.get('community').toJSON();
+		var community = this.options.dataStore.get('community');
 		this.$el.html(this.templates.task.list({
-			community: community
+			community: community.toJSON()
 		}));
 		this.renderTasks();
 	}

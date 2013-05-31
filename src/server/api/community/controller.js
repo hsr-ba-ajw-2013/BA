@@ -36,7 +36,7 @@ function createUniqueShareLink(db, done, tries) {
 
 	tries = tries || 1;
 
-	Community.find({ where: { shareLink: link }})
+	Community.find({ where: { shareLink: link, enabled: true }})
 		.success(function findResult(community) {
 			if (community) {
 				if (tries - 1 <= 0) {
@@ -68,7 +68,7 @@ function createUniqueSlug(db, communityName, communityId, done) {
 	var slug = uslug(communityName)
 		, Community = db.daoFactoryManager.getDAO('Community');
 
-	Community.count({ where: { slug: slug }})
+	Community.count({ where: { slug: slug, enabled: true }})
 		.success(function countResult(c) {
 			if (c !== 0) {
 				slug = uslug(communityName + " " + communityId);
@@ -114,7 +114,8 @@ function createCommunity(success, error, data) {
 		, communityDao = getCommunityDao.call(this)
 		, communityData = {
 			name: data.name
-		};
+		}
+		, self = this;
 
 	createUniqueShareLink(db, function(err, link) {
 		if (err) {
@@ -129,7 +130,7 @@ function createCommunity(success, error, data) {
 			return error(alreadyErr);
 		}
 
-		communityDao.find({ where: { name: communityData.name }})
+		communityDao.find({ where: { name: communityData.name, enabled: true }})
 			.success(function findResult(community) {
 				if (community !== null) {
 					var alreadyExistsErr =
@@ -138,10 +139,8 @@ function createCommunity(success, error, data) {
 							'" already exists.');
 					return error(alreadyExistsErr);
 				}
-
 				communityDao.create(communityData)
 					.success(function createResult(community) {
-
 						createUniqueSlug(db, community.name, community.id
 							, function(err, slug) {
 								if(err) {
@@ -150,15 +149,18 @@ function createCommunity(success, error, data) {
 
 								community.slug = slug;
 								community.save()
-									.success(function saved() {
-										updateResidentsCommunityMembership(
-											resident, community, function(err) {
-												if(err) {
-													error(err);
-												} else {
-													success();
-												}
-										});
+								.success(function saved() {
+									updateResidentsCommunityMembership(
+										resident, community, function(err) {
+											if(err) {
+												return error(err);
+											}
+											self.app.get('eventbus')
+												.emit('community:created'
+													, community);
+											success('/community/' +
+												community.slug + '/tasks');
+									});
 								})
 								.error(function saveError(err) {
 									return error(err);
@@ -188,7 +190,7 @@ function getCommunityWithId(success, error, id) {
 	debug('get community with id');
 	var communityDao = getCommunityDao.call(this);
 
-	communityDao.find({ where: { id: id }})
+	communityDao.find({ where: { id: id, enabled: true }})
 		.success(function findResult(community) {
 			if(!_.isNull(community)) {
 				success(community);
@@ -215,7 +217,7 @@ function getCommunityWithSlug(success, error, slug) {
 	debug('get community with slug');
 	var communityDao = getCommunityDao.call(this);
 
-	communityDao.find({ where: { slug: slug }})
+	communityDao.find({ where: { slug: slug, enabled: true }})
 		.success(function findResult(community) {
 			if(!_.isNull(community)) {
 				success(community);
@@ -250,7 +252,7 @@ function setCommunityDisabled(community, done) {
 		});
 }
 
-/** PrivateFunction: removeResidentAdminRights
+/** PrivateFunction: removeResidentFromCommunity
  * Set the property 'isAdmin' of a given resident to false
  *
  * Parameters:
@@ -259,8 +261,9 @@ function setCommunityDisabled(community, done) {
  *                     On error, the first argument contains
  *                     the error object.
  */
-function removeResidentAdminRights(resident, done) {
+function removeResidentFromCommunity(resident, done) {
 	resident.isAdmin = false;
+	resident.CommunityId = 0;
 
 	resident.save()
 		.success(function saveSuccess() {
@@ -282,13 +285,14 @@ function removeResidentAdminRights(resident, done) {
  */
 function deleteCommunity(success, error, data) {
 	debug('delete community with slug');
-	var resident = this.req.user;
+	var resident = this.req.user
+		, self = this;
 
 	if (!resident.isAdmin) {
 		return error(new errors.ForbiddenError('Not Authorized!'));
 	}
 
-	resident.getCommunity()
+	resident.getCommunity({where: {enabled: true}})
 		.success(function getResult(residentCommunity) {
 			if (residentCommunity &&
 				data.slug === residentCommunity.slug) {
@@ -297,13 +301,13 @@ function deleteCommunity(success, error, data) {
 						return error(err);
 					}
 
-					removeResidentAdminRights(resident,
+					removeResidentFromCommunity(resident,
 						function(err) {
 							if(err) {
-								error(err);
-							} else {
-								success();
+								return error(err);
 							}
+							self.app.get('eventbus').emit('community:deleted');
+							success('/');
 						}
 					);
 				});

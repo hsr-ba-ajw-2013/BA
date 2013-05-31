@@ -33,30 +33,31 @@ function setupAuth(app, config) {
 		function findOrCreate(accessToken, refreshToken, profile, done) {
 			var residentDao = db.daoFactoryManager.getDAO('Resident');
 
-			residentDao.find({ where: { facebookId: profile.id } })
-				.success(function result(resident) {
-					if (_.isNull(resident)) {
-						residentDao.create({
-								facebookId: profile.id
-								, name: profile.displayName
-							})
-							.success(function residentCreated(resident) {
-								return done(null, resident);
-							})
-							.error(function errorCreatingResident(err) {
-								return done(err);
-							});
-					} else {
-						if(resident.enabled) {
+			residentDao.find({ where: {
+				facebookId: profile.id
+				, enabled: true
+			} }).success(function result(resident) {
+				if (_.isNull(resident)) {
+					residentDao.create({
+							facebookId: profile.id
+							, name: profile.displayName
+						})
+						.success(function residentCreated(resident) {
 							return done(null, resident);
-						}
-						return done('User disabled');
+						})
+						.error(function errorCreatingResident(err) {
+							return done(err);
+						});
+				} else {
+					if(resident.enabled) {
+						return done(null, resident);
 					}
-				}).error(function error(err) {
-					return done(err);
-				});
-			}
-		)
+					return done('User disabled');
+				}
+			}).error(function error(err) {
+				return done(err);
+			});
+		})
 	);
 
 	passport.serializeUser(function serializeUser(resident, done) {

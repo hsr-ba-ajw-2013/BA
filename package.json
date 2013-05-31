@@ -16,7 +16,7 @@
 
 		, "express-hbs": "~0.1.3"
 
-		, "sequelize": "git://github.com/mekanics/sequelize.git#2018a75bd5c89d84bc64cc86034a27151c81bc78"
+		, "sequelize": "git://github.com/mweibel/sequelize.git#mekanics-mweibel-fix"
 		, "pg": "~0.15.1"
 
 		, "passport": "~0.1.16"

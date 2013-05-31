@@ -241,6 +241,31 @@ describe('Community', function() {
 
 				scopedGetCommunityWithSlug();
 		});
+
+		it('should return a NotFound Error if the community is not enabled'
+			, function(done) {
+				community.enabled = false;
+				community.save().success(function() {
+					var success = function success() {
+						throw new Error('Should throw a NotFound Error');
+					}
+					, error = function error(err) {
+						err.name.should.equal(
+							'Not Found');
+						err.httpStatusCode.should.equal(404);
+						done();
+					}
+					, functionScope = {
+						req: req
+						, app: app
+					}
+					, scopedGetCommunityWithSlug =
+						controller.getCommunityWithSlug.bind(
+							functionScope, success, error, community.slug);
+
+					scopedGetCommunityWithSlug();
+				});
+		});
 	});
 
 	describe('Delete', function() {
@@ -328,6 +353,7 @@ describe('Community', function() {
 							.success(function reloadSuccess() {
 								community.enabled.should.equal(false);
 								resident.isAdmin.should.equal(false);
+								resident.CommunityId.should.equal(0);
 								done();
 							})
 							.error(function reloadError(err) {

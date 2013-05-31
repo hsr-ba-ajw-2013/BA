@@ -55,26 +55,24 @@ module.exports = Router.extend({
 
 	, createCommunity: function createCommunity() {
 		debug('create community');
-		if(this.isAuthorized()) {
+		if(!this.redirectIfNotAuthorized()) {
 			this.render(this.createView(CreateCommunityView));
-		} else {
-			this.navigate('', { trigger: true });
 		}
 	}
 
 	, inviteCommunity: function inviteCommunity() {
 		debug('invite community');
-		if(this.isAuthorized()) {
+		if(!this.redirectIfNotAuthorized() &&
+			!this.redirectIfInValidCommunity()) {
 			this.render(this.createView(InviteCommunityView));
-		} else {
-			this.navigate('', { trigger: true });
 		}
 	}
 
 
 	, listTasks: function listTasks(communitySlug) {
 		debug('list tasks');
-		if(this.isAuthorized()) {
+		if(!this.redirectIfNotAuthorized() &&
+			!this.redirectIfInValidCommunity()) {
 			var TaskCollection = require('../collections/tasks')
 				, tasks = new TaskCollection();
 			tasks.url = '/api/community/' + communitySlug + '/tasks';
@@ -82,37 +80,34 @@ module.exports = Router.extend({
 
 			var listTasksView = this.createView(ListTasksView);
 			this.render(listTasksView);
-		} else {
-			this.navigate('', { trigger: true });
 		}
 	}
 
 	, createTask: function createTask() {
 		debug('create task');
-		if(this.isAuthorized()) {
+		if(!this.redirectIfNotAuthorized() &&
+			!this.redirectIfInValidCommunity()) {
 			this.render(this.createView(TaskFormView));
-		} else {
-			this.navigate('', {trigger: true});
 		}
 	}
 
 	, listRanking: function listRanking(communitySlug) {
 		debug('list ranking');
-		if(this.isAuthorized()) {
+		if(!this.redirectIfNotAuthorized() &&
+			!this.redirectIfInValidCommunity()) {
 			var RankCollection = require('../collections/ranks')
 				, ranks = new RankCollection();
 			ranks.url = '/api/community/' + communitySlug + '/ranks';
 			this.dataStore.set('ranks', ranks);
 
 			this.render(this.createView(ListRankingView));
-		} else {
-			this.navigate('', {trigger: true});
 		}
 	}
 
 	, profile: function profile(facebookId) {
 		debug('resident profile');
-		if (this.isAuthorized()) {
+		if(!this.redirectIfNotAuthorized() &&
+			!this.redirectIfInValidCommunity()) {
 			var ResidentProfileModel = require('../models/residentprofile')
 				, residentProfile = new ResidentProfileModel();
 
@@ -121,8 +116,6 @@ module.exports = Router.extend({
 
 			var profileView = this.createView(Profile);
 			this.render(profileView);
-		} else {
-			this.navigate('', { trigger: true });
 		}
 	}
 
@@ -149,6 +142,32 @@ module.exports = Router.extend({
 		}
 
 		return authorized;
+	}
+
+	/** Function: redirectIfNotAuthorized
+	 * If the client is not authorized it will redirect. Otherwise it returns
+	 * false to indicate that the calling method can continue work.
+	 */
+	, redirectIfNotAuthorized: function redirectIfNotAuthorized() {
+		if(!this.isAuthorized()) {
+			this.navigate('', {trigger: true});
+			return true;
+		}
+		return false;
+	}
+
+	/** Function: redirectIfInvalidCommunity
+	 * If the client is not in a community or not in an enabled community
+	 * it will redirect. Otherwise it returns false to indicate that the
+	 * calling method can continue work.
+	 */
+	, redirectIfInValidCommunity: function redirectIfInValidCommunity() {
+		var community = this.dataStore.get('community');
+		if(!community) {
+			this.navigate('/community/create', {trigger: true});
+			return true;
+		}
+		return false;
 	}
 
 	/** Function: createView

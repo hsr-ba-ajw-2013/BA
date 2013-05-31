@@ -1,10 +1,37 @@
 var View = require('../roomiesView')
-	, _ = require('underscore');
+	, _ = require('underscore')
+	, API_PREFIX = '/api';
 
 module.exports = View.extend({
 	el: '#main'
-	, initialize: function() {
 
+	, events: {
+		'submit .community-create-form': 'submitCreateCommunity'
+	}
+
+	, submitCreateCommunity: function() {
+		/* global $ */
+		var $form = $('.community-create-form')
+			, action = $form.attr('action')
+			, self = this
+			, $loader = $form.find('.loader')
+			, $submitButton = $form.find('.button.success');
+
+		$loader.show();
+		$submitButton.addClass('disabled').attr('disabled', true);
+
+		$.post(API_PREFIX + action, $form.serialize())
+		.done(function(redirectUri) {
+			self.options.router.navigate(redirectUri, {trigger: true});
+		})
+		.fail(function() {
+			console.error(arguments);
+		})
+		.always(function() {
+			$loader.hide();
+			$submitButton.removeClass('disabled').attr('disabled', false);
+		});
+		return false;
 	}
 
 	, beforeRender: function(resolve) {

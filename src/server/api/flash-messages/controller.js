@@ -6,9 +6,18 @@ var debug = require('debug')('roomies:api:flash-messages:controller')
 		"task:created": {
 			type: "success"
 			, text: "Task created successfully"
-		}, "task:done": {
+		}
+		, "task:done": {
 			type: "success"
 			, text: "Task marked as done successfully"
+		}
+		, "community:created": {
+			type: "success"
+			, text: "Community created successfully"
+		}
+		, "community:deleted": {
+			type: "info"
+			, text: "Community has been deleted"
 		}
 	}
 	, messages = {};

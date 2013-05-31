@@ -124,7 +124,9 @@ describe('AuthorizedForCommunity', function() {
 					req: req
 				}
 				, success = done
-				, error = function() { };
+				, error = function(err) {
+					done(err);
+				};
 
 			authorizedForCommunity.call(
 				mockScope, success, error, community.id);
@@ -136,7 +138,9 @@ describe('AuthorizedForCommunity', function() {
 					req: req
 				}
 				, success = done
-				, error = function() { };
+				, error = function(err) {
+					done(err);
+				};
 
 			authorizedForCommunity.call(
 				mockScope, success, error, community.slug);
@@ -147,11 +151,12 @@ describe('AuthorizedForCommunity', function() {
 				req: req
 			}
 			, success = function() {
-				if(mockScope.req.community.id === community.id) {
-					done();
-				}
+				mockScope.req.community.id.should.equal(community.id);
+				done();
 			}
-			, error = function() { };
+			, error = function(err) {
+				done(err);
+			};
 
 			authorizedForCommunity.call(
 				mockScope, success, error, community.slug);

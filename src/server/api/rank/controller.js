@@ -43,7 +43,8 @@ function getRankingListForCommunity(success, error) {
 	var self = this
 		, community = self.req.community;
 
-	community.getResidents().success(function residentsResult(residents) {
+	community.getResidents({where: {enabled: true }})
+	.success(function residentsResult(residents) {
 		if (!residents) {
 			var noResidentInCommunityError =
 				new errors.NoResidentInCommunityError(

@@ -49,13 +49,13 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 		]));
 
 	// DELETE /api/community/:slug
-	api.del(modulePrefix, [
+	api.del(prefix, [
 		basicAuthentication
 		, controller.deleteCommunity]);
 
 	// DELETE /community/:slug
 	api.app.del(modulePrefix, utils.buildFormRoute(
-		'', '', api, [
+		'/', '/', api, [
 		basicAuthentication
 		, controller.deleteCommunity]));
 };

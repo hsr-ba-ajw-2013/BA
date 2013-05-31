@@ -190,10 +190,12 @@ function setupServerRequestContext() {
 		this.dataStore.set('currentUser', userModel);
 	}
 
-	if(!_.isUndefined(authenticatedUsersCommunity)) {
+	if(!_.isUndefined(authenticatedUsersCommunity) &&
+		authenticatedUsersCommunity.enabled === true) {
 		communityModel = new CommunityModel(
 			authenticatedUsersCommunity.selectedValues);
 		this.dataStore.set('community', communityModel);
+		console.log('foobar');
 	}
 
 	var appContext = new AppContextModel({

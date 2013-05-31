@@ -16,7 +16,7 @@ function getResidentWithFacebookId(success, error, facebookId) {
 	var db = this.app.get('db')
 		, residentDao = db.daoFactoryManager.getDAO('Resident');
 
-	residentDao.find({ where: { facebookId: facebookId }})
+	residentDao.find({ where: { facebookId: facebookId, enabled: true }})
 		.success(function results(resident) {
 			if(resident !== null) {
 				success(resident);
@@ -48,9 +48,10 @@ function getProfileWithFacebookId(success, error, facebookId) {
 		, residentDao = db.daoFactoryManager.getDAO('Resident')
 		, user = this.req.user;
 
-	residentDao.find({ where: {facebookId: facebookId }})
+	residentDao.find({ where: {facebookId: facebookId, enabled: true }})
 		.success(function(resident) {
-			resident.getCommunity().success(function(community) {
+			resident.getCommunity({where: {enabled: true}})
+			.success(function(community) {
 				getAchievements(resident,
 					function(achievements) {
 						getFulfilledTasksPointSum(resident,
