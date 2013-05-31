@@ -109,19 +109,85 @@ function createUniqueSlug(db, communityName, communityId, done) {
  *                   community.
  */
 function createCommunity(success, error, data) {
-	var resident = this.req.user
-		, db = this.app.get('db')
-		, communityDao = getCommunityDao.call(this)
+	var self = this
+		, resident = self.req.user
+		, db = self.app.get('db')
+		, eventbus = self.app.get('eventbus')
+		, communityDao = getCommunityDao.call(self)
 		, communityData = {
 			name: data.name
 		}
-		, self = this;
 
-	createUniqueShareLink(db, function(err, link) {
+		/* AnonymousFunction: forwardError
+		 * Forwards an error object using the error callback argument
+		 */
+		, forwardError = function forwardError(err) {
+			return error(err);
+		}
+
+		/* AnonymousFunction: afterCommunitySearch
+		 * After looking for an existing community, this function creates a new
+		 * community if not already existing.
+		 */
+		, afterCommunitySearch = function afterCommunitySearch(community) {
+			if (community !== null) {
+				var alreadyExistsErr =
+					new errors.CommunityAlreadyExistsError(
+						'A community with the name "' + communityData.name +
+						'" already exists.');
+				return forwardError(alreadyExistsErr);
+			}
+
+			communityDao.create(communityData)
+				.success(afterCommunityCreate)
+				.error(forwardError);
+		}
+
+		/* AnonymousFunction: afterCommunityCreate
+		 * After successfull creation of a community, a community slug is
+		 * created. The slug is then saved into the community.
+		 */
+		, afterCommunityCreate = function afterCommunityCreate(community) {
+			createUniqueSlug(db, community.name, community.id
+				, function(err, slug) {
+					if(err) {
+						return forwardError(err);
+					}
+
+					community.slug = slug;
+					community.save()
+						.success(afterUpdateCommunitySlug)
+						.error(forwardError);
+				});
+		}
+
+		/* AnonymousFunction: afterUpdateCommunitySlug
+		 * After the successful update of the community with its new slug, this
+		 * function emits a "community:created" event on the eventbus and the
+		 * success callback argument is called.
+		 */
+		, afterUpdateCommunitySlug =
+			function afterUpdateCommunitySlug(community) {
+				updateResidentsCommunityMembership(
+					resident
+					, community
+					, function(err) {
+						if(err) {
+							return forwardError(err);
+						}
+
+						eventbus.emit('community:created', community);
+						success('/community/' + community.slug + '/tasks');
+					}
+				);
+		};
+
+
+	createUniqueShareLink(db, function(err, shareLink) {
 		if (err) {
 			return error(err);
 		}
-		communityData.shareLink = link;
+		communityData.shareLink = shareLink;
 
 		if (resident.CommunityId > 0) {
 			var alreadyErr = new errors.ResidentAlreadyInCommunityError(
@@ -131,49 +197,8 @@ function createCommunity(success, error, data) {
 		}
 
 		communityDao.find({ where: { name: communityData.name, enabled: true }})
-			.success(function findResult(community) {
-				if (community !== null) {
-					var alreadyExistsErr =
-						new errors.CommunityAlreadyExistsError(
-							'A community with the name "' + communityData.name +
-							'" already exists.');
-					return error(alreadyExistsErr);
-				}
-				communityDao.create(communityData)
-					.success(function createResult(community) {
-						createUniqueSlug(db, community.name, community.id
-							, function(err, slug) {
-								if(err) {
-									return error(err);
-								}
-
-								community.slug = slug;
-								community.save()
-								.success(function saved() {
-									updateResidentsCommunityMembership(
-										resident, community, function(err) {
-											if(err) {
-												return error(err);
-											}
-											self.app.get('eventbus')
-												.emit('community:created'
-													, community);
-											success('/community/' +
-												community.slug + '/tasks');
-									});
-								})
-								.error(function saveError(err) {
-									return error(err);
-								});
-						});
-
-					}).error(function createError(err) {
-						return error(err);
-					});
-			})
-			.error(function findError(err) {
-				return error(err);
-			});
+			.success(afterCommunitySearch)
+			.error(forwardError);
 	});
 }
 
