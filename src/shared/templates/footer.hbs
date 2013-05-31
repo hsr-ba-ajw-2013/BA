@@ -1,1 +1,5 @@
-<a href="/logout" title="{{trans "Logout"}}"><i class="icon-signout"></i> {{trans "Logout" }}</a>
+{{#if user}}
+<div>
+<a href="/logout" title="{{trans "Logout"}}" id="logout"><i class="icon-signout"></i> {{trans "Logout" }}</a>
+</div>
+{{/if}}

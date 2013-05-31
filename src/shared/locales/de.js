@@ -1,6 +1,9 @@
 module.exports = {
 	"Login required": "Anmeldung erforderlich"
+	, "Welcome": "Willkommen"
 	, "Welcome at Roomies!": "Willkommen bei Roomies!"
+	, "Please login with your Facebook account in order to use Roomies.": "Bitte melde dich mit Facebook an, um Roomies zu verwenden."
+	, "Login with Facebook": "Mit Facebook anmelden"
 	, "Your community %s": "Du wohnst in der WG \"%s\""
 	, "Community created successfully.": "WG erfolgreich registriert."
 	, "Username": "Benutzername"

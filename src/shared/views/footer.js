@@ -6,7 +6,7 @@ module.exports = View.extend({
 	el: 'footer'
 
 	, events: {
-		"click a.logout": "onClickLogout"
+		"click a#logout": "onClickLogout"
 	}
 
 	, onClickLogout: function onClickLogout(event) {
