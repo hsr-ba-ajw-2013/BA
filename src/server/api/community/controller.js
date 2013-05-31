@@ -251,8 +251,8 @@ function createCommunity(success, error, data) {
 							return forwardError(err);
 						}
 
-						eventBus.emit('community:created', community);
-						success('/community/' + community.slug + '/tasks');
+						eventbus.emit('community:created', community);
+						success(community);
 					}
 				);
 		};
@@ -412,15 +412,15 @@ function deleteCommunity(success, error, data) {
 					return forwardError(err);
 				}
 
-				eventBus.emit('community:deleted');
-				success('/');
+				eventbus.emit('community:deleted');
+				success();
 		};
 
 	if (!resident.isAdmin) {
 		return forwardError(new errors.ForbiddenError('Not Authorized!'));
 	}
 
-	resident.getCommunity({where: {enabled: true}})
+	resident.getCommunity({ where: { enabled: true } })
 		.success(afterCommunitySearch)
 		.error(forwardError);
 }

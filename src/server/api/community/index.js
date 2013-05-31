@@ -40,37 +40,45 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 		, controller.createCommunity
 	]);
 
-	// POST /community
-	api.app.post(modulePrefix, utils.buildFormRoute(
-		'/community', '/community/create', api, [
-			basicAuthentication
-			, communityValidators.createCommunity
-			, controller.createCommunity
-	]));
-
-	// GET /api/community/join/:shareLink
-	api.get(apiPrefix + '/join' + modulePrefix + '/:shareLink', [
-			basicAuthentication
-			, controller.getCommunityWithShareLink
-	]);
-
-	// POST /community/:slug/resident
-	// there's no /api-prefixed version of this url
-	api.app.post(modulePrefix + '/:slug/resident', utils.buildFormRoute(
-		'/community', '/community/create', api, [
-			basicAuthentication
-			, controller.joinCommunity
-	]));
-
 	// DELETE /api/community/:slug
 	api.del(prefix, [
 		basicAuthentication
 		, controller.deleteCommunity]);
 
+
+
+	// POST /community
+	// This makes the createCommunity API function accessible for old-school
+	// form submits
+	api.app.post(modulePrefix, utils.buildFormRoute(
+		function success(community, redirect) {
+			redirect('/community');
+		}
+		, function error(err, redirect) {
+			redirect('/community/create');
+		}
+		, api
+		, [
+			basicAuthentication
+			, communityValidators.createCommunity
+			, controller.createCommunity
+		]
+	));
+
 	// DELETE /community/:slug
+	// This makes the deleteCommunity API function accessible for old-school
+	// form submits
 	api.app.del(modulePrefix, utils.buildFormRoute(
-		'/', '/', api, [
-		basicAuthentication
-		, controller.deleteCommunity
-	]));
+		function success(community, redirect) {
+			redirect('/');
+		}
+		, function error(community, redirect) {
+			redirect('/');
+		}
+		, api
+		, [
+			basicAuthentication
+			, controller.deleteCommunity
+		]
+	));
 };

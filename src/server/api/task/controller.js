@@ -1,7 +1,7 @@
 /** Controller: Api.Task.Controller
- * Task Controller
+ * The Task API controller encapsulates logic for interacting with task domain
+ * objects.
  */
-
 var errors = require('./errors')
 	, debug = require('debug')('roomies:api:task:controller')
 	, _  = require('underscore');
@@ -13,6 +13,8 @@ var errors = require('./errors')
  *     (Object) sequelize data access object for task entities.
  */
 function getTaskDao() {
+	debug('get task dao');
+
 	var db = this.app.get('db')
 		, taskDao = db.daoFactoryManager.getDAO('Task');
 
@@ -26,6 +28,8 @@ function getTaskDao() {
  *     (Object) sequelize data access object for community entities.
  */
 function getCommunityDao() {
+	debug('get community dao');
+
 	var db = this.app.get('db')
 		, communityDao = db.daoFactoryManager.getDAO('Community');
 
@@ -44,6 +48,7 @@ function getCommunityDao() {
  */
 function getTaskWithId(success, error, taskId) {
 	debug('get task with id `%i`', taskId);
+
 	var taskDao = getTaskDao.call(this)
 		, self = this;
 
@@ -77,6 +82,7 @@ function getTaskWithId(success, error, taskId) {
  */
 function getTasksForCommunityWithSlug(success, error, slug) {
 	debug('get tasks for community with slug');
+
 	var communityDao = getCommunityDao.call(this)
 		, self = this;
 	communityDao.find({ where: { slug: slug, enabled: true }})
@@ -121,10 +127,13 @@ function getTasksForCommunityWithSlug(success, error, slug) {
  *                     create.
  */
 function createTask(success, error, communitySlug, task) {
+	debug('create task');
+
 	var self = this
 		, currentUser = self.req.user
-		, community = self.req.community;
-	var taskDao = getTaskDao.call(self);
+		, community = self.req.community
+		, taskDao = getTaskDao.call(self);
+
 	taskDao.create(task)
 		.success(function createResult(task) {
 			task.setCommunity(community)
@@ -133,8 +142,7 @@ function createTask(success, error, communitySlug, task) {
 						.success(function ok() {
 							self.app.get('eventbus').emit('task:created'
 								, task);
-							success('/community/' + community.slug +
-								'/tasks');
+							success(task);
 						})
 						.error(function nok(err) {
 							error(err);
@@ -149,8 +157,71 @@ function createTask(success, error, communitySlug, task) {
 	);
 }
 
-function updateTask(/*success, error, task*/) {
-	//var taskDao = getTaskDao.call(this);
+/** Function: updateTask
+ * Updates a task of a given community with the regarding taskId. The data
+ * contained in updateData.
+ *
+ * Parameters:
+ *     (Function) success - Callback if the task was updated correctly. The task
+ *                          data will be returned.
+ *     (Function) error - Callback in case of an error.
+ *     (String) communitySlug - Slug of the community the task belongs to
+ *     (Number) taskId - ID of the task to update
+ *     (Object) updateData - An object containing the information about the task
+ *                           to update.
+ **/
+function updateTask(success, error, communitySlug, taskId, updateData) {
+	debug('update task');
+
+	var taskDao = getTaskDao.call(this)
+		, eventbus = this.app.get('eventbus')
+
+		/* AnonymousFunction: forwardError
+		 * Forwards an error object using the error callback argument
+		 */
+		, forwardError = function forwardError(err) {
+			debug('forward error');
+			return error(err);
+		}
+
+		/* AnonymousFunction: forwardError
+		 * After searching the task matching the one from the input parameter,
+		 * this function ensures that all necessary data is saved to the
+		 * database.
+		 */
+		, afterTaskSearch = function afterTaskSearch(task) {
+			debug('after task search');
+
+			if(!task) {
+				forwardError(new errors.NotFoundError('Task with id ' + taskId +
+					'does not exist.'));
+			}
+
+			task.name = updateData.name || task.name;
+			task.description = updateData.description || task.description;
+			task.reward = updateData.reward || task.reward;
+			task.fullfilledAt = updateData.fullfilledAt || task.fullfilledAt;
+			task.dueDate = updateData.dueDate || task.dueDate;
+			task.updatedAt = new Date();
+			task.fullfillorId = updateData.fullfillorId || task.fullfillorId;
+
+			task.save()
+				.success(afterTaskSave)
+				.error(forwardError);
+		}
+
+		/* AnonymousFunction: afterTaskSave
+		 * Emits a "task:updated" event and calls the success callback argument.
+		 */
+		, afterTaskSave = function afterTaskSave(task) {
+			debug('after task save');
+			eventbus.emit('task:updated', task);
+			success(task);
+		};
+
+	taskDao.find({ where: { id: taskId }})
+		.success(afterTaskSearch)
+		.error(forwardError);
 }
 
 module.exports = {

@@ -459,4 +459,71 @@ describe('Task', function() {
 			scopedCreateTask();
 		});
 	});
+
+	describe('update task', function() {
+		var existingTask;
+
+		before(function(done) {
+			var success = function success(task) {
+					existingTask = task;
+					done();
+				}
+				, error = function error(err) {
+					done(err);
+				}
+				, data = {
+					name: utils.randomString(12)
+					, description: utils.randomString(100)
+					, reward: 5
+					, dueDate: new Date(new Date().getTime()+(24 * 3600 * 1000))
+				}
+				, functionScope = {
+					req: req = testUtils.req({
+						user: residents[0]
+						, community: community
+					})
+					, app: app
+				};
+
+				controller.createTask.call(
+					functionScope
+					, success
+					, error
+					, community.slug
+					, data);
+		});
+
+		it('should update an existing task', function(done) {
+			var updateData = {
+					name: utils.randomString(12)
+					, description: utils.randomString(200)
+					, reward: 1
+				}
+				, success = function success(task) {
+					if(task.name === updateData.name &&
+						task.description === updateData.description &&
+						task.reward === updateData.reward) {
+						done();
+					}
+				}
+				, error = function error(err) {
+					done(err);
+				}
+				, functionScope = {
+					req: req = testUtils.req({
+						user: residents[0]
+						, community: community
+					})
+					, app: app
+				};
+
+				controller.updateTask.call(
+					functionScope
+					, success
+					, error
+					, community.slug
+					, existingTask.id
+					, updateData);
+		});
+	});
 });

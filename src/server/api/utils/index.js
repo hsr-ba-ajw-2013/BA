@@ -38,8 +38,8 @@ function randomInt() {
  * http://swissmanu.github.io/barefoot/docs/files/lib/apiadapter-js.html> to
  * create a plain express js route for a specific api controller function.
  *
- * The success and error callback will redirect to the given successUrl or
- * errorUrl.
+ * Use the success or error argument to inject an URL factory function in case
+ * the regarding API function succeeds or fails.
  *
  * This factory function is helpful if you want to make an API functionality
  * accessible for form POST requests.
@@ -52,27 +52,50 @@ function randomInt() {
  * Preparing a route with <buildFormRoute>, you can handle this request and
  * redirect the user to an error or success page afterwards.
  *
+ * > api.app.post(modulePrefix, utils.buildFormRoute(
+ * >     function success(task, redirect) {
+ * >         redirect('/community/' + task.community.slug + '/tasks');
+ * >     }
+ * >     , function error(err, redirect) {
+ * >         redirect('/community/' + this.req.param('slug') + '/tasks/new');
+ * >     }
+ * >     , api
+ * >     , [
+ * >         , taskValidators.createTask
+ * >         , controller.createTask
+ * >     ]
+ * > ));
+ *
  * Parameters:
- *     (String) successUrl - The url you want to redirect after a successful
- *                           execution of apiFunction
- *     (String) errorUrl - The url you want to redirect after a failed
- *                         execution of apiFunction
+ *     (Function) success - A callback with the return value of the API function
+ *                          as first argument, and a redirect function as second
+ *                          argument.
+ *     (Function) error - A callback with the error object of the API function
+ *                          as first argument, and a redirect function as second
+ *                          argument.
  *     (APIAdapter) api - An APIAdapter instance which you create your API with.
  *     (Function)/(Array) apiFunctiosn - The API function(s) you want to execute
  *
  * Returns:
  *     (Function)
  */
-function buildFormRoute(successUrl, errorUrl, api, apiFunctions) {
-	var success = function(redirectUrl) {
-			redirectUrl = redirectUrl || successUrl;
-			this.res.redirect(redirectUrl);
+function buildFormRoute(success, error, api, apiFunctions) {
+	var redirect = function redirect(targetUrl) {
+			this.res.redirect(targetUrl);
 		}
-		, error = function() {
-			var redirectTarget = errorUrl || successUrl;
-			this.res.redirect(redirectTarget);
+		, successWrapper = function successWrapper(apiReturnValue) {
+			var routerScope = this;
+			success.call(this, apiReturnValue, redirect.bind(routerScope));
 		}
-		, callback = api.createExpressJsCallback(success, error, apiFunctions);
+		, errorWrapper = function errorWrapper(apiError) {
+			var routerScope = this;
+			error.call(this, apiError, redirect.bind(routerScope));
+		}
+		, callback = api.createExpressJsCallback(
+			successWrapper
+			, errorWrapper
+			, apiFunctions
+		);
 
 	return callback;
 }
