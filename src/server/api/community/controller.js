@@ -180,7 +180,7 @@ function createCommunity(success, error, data) {
 	var self = this
 		, resident = self.req.user
 		, db = self.app.get('db')
-		, eventBus = self.app.get('eventbus')
+		, eventbus = self.app.get('eventbus')
 		, communityDao = getCommunityDao.call(self)
 		, communityData = {
 			name: data.name
@@ -357,7 +357,7 @@ function deleteCommunity(success, error, data) {
 
 	var self = this
 		, resident = self.req.user
-		, eventBus = self.app.get('eventbus')
+		, eventbus = self.app.get('eventbus')
 
 		/* AnonymousFunction: forwardError
 		 * Forwards an error object using the error callback argument
