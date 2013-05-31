@@ -195,7 +195,6 @@ function setupServerRequestContext() {
 		communityModel = new CommunityModel(
 			authenticatedUsersCommunity.selectedValues);
 		this.dataStore.set('community', communityModel);
-		console.log('foobar');
 	}
 
 	var appContext = new AppContextModel({

@@ -6,7 +6,7 @@ var Barefoot = require('node-barefoot')()
 	, InviteCommunityView = require('../views/community/invite')
 	, ListTasksView = require('../views/task/list')
 	, TaskFormView = require('../views/task/form')
-	, ListRankingView = require('../views/rank/list')
+	, ListRankingView = require('../views/ranking/list')
 	, NotFoundView = require('../views/error/not-found')
 	, Profile = require('../views/resident/profile')
 	, _ = require('underscore');
@@ -29,7 +29,7 @@ module.exports = Router.extend({
 		, 'community/:communitySlug/tasks': 'listTasks'
 		, 'community/:communitySlug/task/new': 'createTask'
 
-		, 'community/:communitySlug/rank': 'listRanking'
+		, 'community/:communitySlug/rankings': 'listRanking'
 
 		, 'resident/:facebookId/profile': 'profile'
 
@@ -95,10 +95,10 @@ module.exports = Router.extend({
 		debug('list ranking');
 		if(!this.redirectIfNotAuthorized() &&
 			!this.redirectIfInValidCommunity()) {
-			var RankCollection = require('../collections/ranks')
-				, ranks = new RankCollection();
-			ranks.url = '/api/community/' + communitySlug + '/ranks';
-			this.dataStore.set('ranks', ranks);
+			var RankingCollection = require('../collections/rankings')
+				, rankings = new RankingCollection();
+			rankings.url = '/api/community/' + communitySlug + '/rankings';
+			this.dataStore.set('rankings', rankings);
 
 			this.render(this.createView(ListRankingView));
 		}

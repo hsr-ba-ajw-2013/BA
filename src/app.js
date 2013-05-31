@@ -3,7 +3,7 @@ var Barefoot = require('node-barefoot')()
 	, ResidentModel = require('./shared/models/resident')
 	, CommunityModel = require('./shared/models/community')
 	, TasksCollection = require('./shared/collections/tasks')
-	, RanksCollection = require('./shared/collections/ranks')
+	, RankingsCollection = require('./shared/collections/rankings')
 	, FlashModel = require('./shared/models/flash')
 	, ResidentProfileModel = require('./shared/models/residentprofile')
 	, AppContextModel = require('./shared/models/appcontext')
@@ -26,7 +26,7 @@ function setupRequestContext() {
 	debug('setup request context');
 
 	this.dataStore.registerCollection('TasksCollection', TasksCollection);
-	this.dataStore.registerCollection('RanksCollection', RanksCollection);
+	this.dataStore.registerCollection('RankingsCollection', RankingsCollection);
 
 	this.dataStore.registerModel('ResidentModel', ResidentModel);
 	this.dataStore.registerModel('CommunityModel', CommunityModel);
@@ -48,7 +48,6 @@ var start = function start() {
 
 barefootStartOptions.setupRequestContext = setupRequestContext;
 if(Barefoot.isRunningOnServer()) {
-	// This is the only "on server" check which is necessary.
 	var barefootFactory = require('./server/barefootFactory')
 		, cluster = require('./server/cluster');
 	barefootStartOptions = barefootFactory(barefootStartOptions);

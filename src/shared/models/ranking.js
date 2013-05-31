@@ -1,10 +1,10 @@
 var Barefoot = require('node-barefoot')()
 	, Model = Barefoot.Model
-	, RankModel = Model.extend({
+	, RankingModel = Model.extend({
 		url: function () {
 			return 'api/community/' +
 				this.community.slug +
-				'/rank'; }
+				'/rankings'; }
 	});
 
-module.exports = RankModel;
+module.exports = RankingModel;

@@ -16,7 +16,7 @@ var apiPrefix = '/api'
 	, setupFlashMessagesApi = require('./flash-messages')
 	, setupAchievements = require('./gamification')
 	, setupTaskApi = require('./task')
-	, setupRankApi = require('./rank')
+	, setupRankingApi = require('./ranking')
 	, setupResidentApi = require('./resident')
 	, debug = require('debug')('roomies:api:index');
 
@@ -27,7 +27,7 @@ function initApi(api) {
 	setupAchievements(api, apiPrefix);
 	setupTaskApi(api, apiPrefix);
 	setupResidentApi(api, apiPrefix);
-	setupRankApi(api, apiPrefix);
+	setupRankingApi(api, apiPrefix);
 }
 
 module.exports = initApi;

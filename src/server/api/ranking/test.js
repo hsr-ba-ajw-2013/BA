@@ -3,7 +3,7 @@ var join = require('path').join
 	, srcPath = join(process.cwd(),
 		(process.env.COVERAGE ? 'src-cov' : 'src'))
 	, _ = require('underscore')
-	, controller = require(join(srcPath, 'server', 'api', 'rank',
+	, controller = require(join(srcPath, 'server', 'api', 'ranking',
 		'controller'))
 	, testUtils = require(join(srcPath, 'server', 'api', 'utils', 'test'))
 	, app
@@ -22,8 +22,8 @@ testUtils.initDb(config, before, function(initializedDb) {
 	app = testUtils.app(db);
 });
 
-describe('Rank', function() {
-	describe('in List for Community', function() {
+describe('Ranking', function() {
+	describe('for community', function() {
 		var RESIDENTS = 3
 			, TASKS = 20
 			, residents = []
@@ -55,7 +55,7 @@ describe('Rank', function() {
 			});
 		});
 
-		it('should display the correct ranking', function(done) {
+		it('should return expected rankings', function(done) {
 			var req = testUtils.req({
 				user: residents[0]
 				, community: community
