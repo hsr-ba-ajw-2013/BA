@@ -53,22 +53,16 @@ function authorizedForCommunity(success, error, slugOrId) {
 					debug('...ok');
 					success();
 				} else {
-					console.log("1", self.req.community);
 					delete self.req.community;
-					console.log("2", self.req.community);
 					unauthorized();
 				}
 			})
 			.error(function nok() {
-				console.log("3", self.req.community);
 				delete self.req.community;
-				console.log("4", self.req.community);
 				unauthorized();
 			});
 	} else {
-		console.log("4", self.req.community);
 		delete self.req.community;
-		console.log("6", self.req.community);
 		unauthorized();
 	}
 }

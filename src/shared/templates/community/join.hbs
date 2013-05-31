@@ -1,23 +1,18 @@
 <div class="row">
-	<section class="large-centered large-6 columns center">
+	<div class="center text-center large-12 columns">
 		<h4>{{trans "Hi %s" user.name}}</h4>
 		<h5 class="subheader">
-			{{trans "You have an invitation for the community '%s'" community.name}}
+			{{trans "You have an invitation for the community '%s'" name}}
 		</h5>
-		<form action="/community/{{community.slug}}/resident" method="post">
-
-			<div class="row">
-				<div class="small-10 large-10 columns">
-					<label class="inline">{{trans "Do you want to join the community?"}}</label>
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="small-10 large-10 columns">
-					<input type="submit" value="{{trans "Join"}}" class="button large-3 columns">
+		<form action="/community/{{slug}}/resident" method="post">
+			<p>{{trans "Do you want to join the community?"}}</p>
+			<input type="hidden" name="shareLink" value="{{shareLink}}"/>
+			<div class="row button-bar">
+				<div class="small-12 large-offset-2 large-9 columns relative">
+					<input type="submit" value="{{trans "Join"}}" class="button large-3 columns"/>
 				</div>
 			</div>
 
 		</form>
-	</section>
+	</div>
 </div>

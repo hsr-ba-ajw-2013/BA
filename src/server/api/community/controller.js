@@ -180,7 +180,7 @@ function createCommunity(success, error, data) {
 	var self = this
 		, resident = self.req.user
 		, db = self.app.get('db')
-		, eventbus = self.app.get('eventbus')
+		, eventBus = self.app.get('eventbus')
 		, communityDao = getCommunityDao.call(self)
 		, communityData = {
 			name: data.name
@@ -251,12 +251,11 @@ function createCommunity(success, error, data) {
 							return forwardError(err);
 						}
 
-						eventbus.emit('community:created', community);
+						eventBus.emit('community:created', community);
 						success('/community/' + community.slug + '/tasks');
 					}
 				);
 		};
-
 
 	createUniqueShareLink(db, function(err, shareLink) {
 		if (err) {
@@ -358,7 +357,7 @@ function deleteCommunity(success, error, data) {
 
 	var self = this
 		, resident = self.req.user
-		, eventbus = self.app.get('eventbus')
+		, eventBus = self.app.get('eventbus')
 
 		/* AnonymousFunction: forwardError
 		 * Forwards an error object using the error callback argument
@@ -413,7 +412,7 @@ function deleteCommunity(success, error, data) {
 					return forwardError(err);
 				}
 
-				eventbus.emit('community:deleted');
+				eventBus.emit('community:deleted');
 				success('/');
 		};
 
@@ -427,9 +426,81 @@ function deleteCommunity(success, error, data) {
 }
 
 
+/** Function: getCommunityWithShareLink
+ * Gets community from a shareLink
+ *
+ * Parameters:
+ *   (Function) success - Callback on success.
+ *   (Function) error - Callback in case of an error
+ *   (String) shareLink - The community's shareLink
+ */
+function getCommunityWithShareLink(success, error, shareLink) {
+	var resident = this.req.user
+		, communityDao = getCommunityDao.call(this);
+
+	if (resident.isInACommunity()) {
+		return error(new errors.ResidentAlreadyInCommunityError(
+			'You already are in a community'));
+	}
+
+	communityDao.find({ where: {shareLink: shareLink, enabled: true}})
+		.success(function findResult(community) {
+			if (community !== null) {
+				success(community);
+			} else {
+				error(new errors.InvalidShareLink('Share link invalid'));
+			}
+		})
+		.error(function createError(err) {
+			error(err);
+		});
+}
+
+/** Function: joinCommunity
+ * Joins a community
+ *
+ * Parameters:
+ *   (Function) success - Callback on success.
+ *   (Function) error - Callback in case of an error
+ *   (String) slug - The community's slug
+ *   (Object) data - POST data
+ */
+function joinCommunity(success, error, slug, data) {
+	debug('join community');
+	var shareLink = data.shareLink
+	, resident = this.req.user
+	, communityDao = getCommunityDao.call(this)
+	, eventBus = this.app.get('eventbus');
+
+	communityDao.find({ where: {
+		slug: slug
+		, shareLink: shareLink
+		, enabled: true
+	}}).success( function findResult(community) {
+		if(!community) {
+			return error(
+				new errors.ValidationError('Combination of params wrong'));
+		}
+		resident.setCommunity(community)
+			.success(function setResult() {
+				eventBus.emit('community:joined');
+				return success();
+			})
+			.error(function(err) {
+				return error(err);
+			});
+
+	})
+	.error(function createError(err) {
+		return error(err);
+	});
+}
+
 module.exports = {
 	getCommunityWithId: getCommunityWithId
 	, getCommunityWithSlug: getCommunityWithSlug
 	, createCommunity: createCommunity
 	, deleteCommunity: deleteCommunity
+	, joinCommunity: joinCommunity
+	, getCommunityWithShareLink: getCommunityWithShareLink
 };

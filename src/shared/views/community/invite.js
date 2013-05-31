@@ -8,10 +8,11 @@ module.exports = View.extend({
 
 	, renderView: function() {
 		var community = this.getDataStore().get('community').toJSON()
-			, config = this.getDataStore().get('AppContextModel').get('config');
+			, config = this.getDataStore().get('AppContextModel').get('config')
+			, shareLink = '/join/' + community.shareLink;
 
 		this.$el.html(this.templates.community.invite({
-			community: community
+			shareLink: shareLink
 			, config: config
 		}));
 	}

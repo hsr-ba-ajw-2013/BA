@@ -21,11 +21,19 @@ var Barefoot = require('node-barefoot')()
 	 * Represented by an HTTP status code 409 "Conflict"
 	 */
 	, CommunityAlreadyExistsError = errors.createError(409
-										, 'CommunityAlreadyExistsError');
+										, 'CommunityAlreadyExistsError')
+
+	/** Error: InvalidShareLink
+	 * Error to indicate that the share link is invalid
+	 *
+	 * Represented by an HTTP status code 400 "Bad Request"
+	 */
+	, InvalidShareLink = errors.createError(400, "InvalidShareLink");
 
 _.extend(errors, apiErrors, {
 	ResidentAlreadyInCommunityError: ResidentAlreadyInCommunityError
 	, CommunityAlreadyExistsError: CommunityAlreadyExistsError
+	, InvalidShareLink: InvalidShareLink
 });
 
 module.exports = errors;

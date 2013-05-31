@@ -38,7 +38,7 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 		basicAuthentication
 		, communityValidators.createCommunity
 		, controller.createCommunity
-		]);
+	]);
 
 	// POST /community
 	api.app.post(modulePrefix, utils.buildFormRoute(
@@ -46,7 +46,21 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 			basicAuthentication
 			, communityValidators.createCommunity
 			, controller.createCommunity
-		]));
+	]));
+
+	// GET /api/community/join/:shareLink
+	api.get(apiPrefix + '/join' + modulePrefix + '/:shareLink', [
+			basicAuthentication
+			, controller.getCommunityWithShareLink
+	]);
+
+	// POST /community/:slug/resident
+	// there's no /api-prefixed version of this url
+	api.app.post(modulePrefix + '/:slug/resident', utils.buildFormRoute(
+		'/community', '/community/create', api, [
+			basicAuthentication
+			, controller.joinCommunity
+	]));
 
 	// DELETE /api/community/:slug
 	api.del(prefix, [
@@ -57,5 +71,6 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 	api.app.del(modulePrefix, utils.buildFormRoute(
 		'/', '/', api, [
 		basicAuthentication
-		, controller.deleteCommunity]));
+		, controller.deleteCommunity
+	]));
 };

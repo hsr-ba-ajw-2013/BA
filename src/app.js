@@ -6,7 +6,7 @@ var Barefoot = require('node-barefoot')()
 	, RankingsCollection = require('./shared/collections/rankings')
 	, FlashModel = require('./shared/models/flash')
 	, ResidentProfileModel = require('./shared/models/residentprofile')
-	, AppContextModel = require('./shared/models/appcontext')
+	, AppContextModel = require('./shared/models/appContext')
 	, Router = require('./shared/router')
 	, barefootStartOptions = {};
 

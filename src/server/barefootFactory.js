@@ -15,7 +15,7 @@ var path = require('path')
 	, api = require('./api')
 	, ResidentModel = require('../shared/models/resident')
 	, CommunityModel = require('../shared/models/community')
-	, AppContextModel = require('../shared/models/appcontext')
+	, AppContextModel = require('../shared/models/appContext')
 	, FlashModel = require('../shared/models/flash')
 	, domain = require('domain')
 	, serverDomain = domain.create();
@@ -195,6 +195,7 @@ function setupServerRequestContext() {
 		communityModel = new CommunityModel(
 			authenticatedUsersCommunity.selectedValues);
 		this.dataStore.set('community', communityModel);
+		console.log('foobar');
 	}
 
 	var appContext = new AppContextModel({

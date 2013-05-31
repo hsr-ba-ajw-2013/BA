@@ -4,6 +4,7 @@ var Barefoot = require('node-barefoot')()
 	, HomeView = require('../views/home')
 	, CreateCommunityView = require('../views/community/create')
 	, InviteCommunityView = require('../views/community/invite')
+	, JoinCommunityView = require('../views/community/join')
 	, ListTasksView = require('../views/task/list')
 	, TaskFormView = require('../views/task/form')
 	, ListRankingView = require('../views/ranking/list')
@@ -24,12 +25,15 @@ module.exports = Router.extend({
 		'': 'home'
 		, 'community': 'createCommunity'
 		, 'community/create': 'createCommunity'
+
 		, 'community/:communitySlug/invite': 'inviteCommunity'
+		, 'join/:shareLink': 'joinCommunity'
 
 		, 'community/:communitySlug/tasks': 'listTasks'
 		, 'community/:communitySlug/task/new': 'createTask'
 
 		, 'community/:communitySlug/rankings': 'listRanking'
+
 
 		, 'resident/:facebookId/profile': 'profile'
 
@@ -68,6 +72,16 @@ module.exports = Router.extend({
 		}
 	}
 
+	, joinCommunity: function joinCommunity(shareLink) {
+		debug('join community');
+		if(!this.redirectIfNotAuthorized()) {
+			var CommunityModel = require('../models/community')
+				, community = new CommunityModel();
+			community.url = '/api/join/community/' + shareLink;
+			this.dataStore.set('community', community);
+			this.render(this.createView(JoinCommunityView));
+		}
+	}
 
 	, listTasks: function listTasks(communitySlug) {
 		debug('list tasks');
