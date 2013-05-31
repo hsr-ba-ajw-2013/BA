@@ -17,6 +17,11 @@ Timestamp: Generated on dd.mm.yyyy
 #   yyyy  - Four digit year.  2006 is "2006"
 #   year  - Four digit year.  2006 is "2006"
 
+# These are indexes you deleted, so Natural Docs will not add them again
+# unless you remove them from this line.
+
+Don't Index: Variables, Classes
+
 
 # --------------------------------------------------------------------------
 # 
@@ -38,106 +43,178 @@ Timestamp: Generated on dd.mm.yyyy
 # --------------------------------------------------------------------------
 
 
-Group: Components  {
+File: app.js  (app.js)
 
-   Group: Home  {
+Group: Server  {
 
-      File: Component  (no auto-title, lib/home/index.js)
-      File: Controller  (no auto-title, lib/home/controller.js)
-      }  # Group: Home
+   Group: Api  {
 
-   Group: Community  {
+      File: Api  (server/api/index.js)
+      File: Api.Utils.Test  (server/api/utils/test.js)
+      File: ErrorCollectingValidator  (no auto-title, server/api/errorCollectingValidator.js)
+      File: Errors  (no auto-title, server/api/errors.js)
 
-      File: Component  (no auto-title, lib/community/index.js)
-      File: Controller  (no auto-title, lib/community/controller.js)
-      File: Model  (no auto-title, lib/community/model.js)
-      File: Transporter  (lib/community/transporter.js)
-      }  # Group: Community
+      Group: FlashMessages  {
 
-   Group: Resident  {
+         File: FlashMessages  (no auto-title, server/api/flash-messages/index.js)
+         File: Controller  (no auto-title, server/api/flash-messages/controller.js)
+         }  # Group: FlashMessages
 
-      File: Component  (no auto-title, lib/resident/index.js)
-      File: Controller  (no auto-title, lib/resident/controller.js)
-      File: Model  (no auto-title, lib/resident/model.js)
-      }  # Group: Resident
+      Group: Resident  {
 
-   Group: Task  {
+         File: Controller  (no auto-title, server/api/resident/controller.js)
+         File: Resident  (server/api/resident/index.js)
+         }  # Group: Resident
 
-      File: Component  (no auto-title, lib/task/index.js)
-      File: Controller  (no auto-title, lib/task/controller.js)
-      File: Model  (no auto-title, lib/task/model.js)
-      }  # Group: Task
+      File: Utils  (no auto-title, server/api/utils/index.js)
 
-   Group: FacebookChannel  {
+      Group: Policies  {
 
-      File: Component  (no auto-title, lib/facebook-channel/index.js)
-      File: Controller  (no auto-title, lib/facebook-channel/controller.js)
-      }  # Group: FacebookChannel
+         File: CheckPermissionToAccess  (no auto-title, server/api/policy/basicAuthentication.js)
+         File: AuthorizedForCommunity  (no auto-title, server/api/policy/authorizedForCommunity.js)
+         }  # Group: Policies
 
-   Group: Login  {
+      Group: Community  {
 
-      File: Component  (no auto-title, lib/login/index.js)
-      File: Controller  (no auto-title, lib/login/controller.js)
-      }  # Group: Login
+         File: Community  (server/api/community/index.js)
+         File: Controller  (no auto-title, server/api/community/controller.js)
+         File: Errors  (no auto-title, server/api/community/errors.js)
+         File: Validators  (no auto-title, server/api/community/validators.js)
+         }  # Group: Community
 
-   File: Cluster  (lib/cluster/index.js)
-   }  # Group: Components
+      Group: Gamification  {
 
-Group: Middleware  {
+         File: Gamification  (server/api/gamification/index.js)
+         File: Observer  (no auto-title, server/api/gamification/observer.js)
 
-   File: Browserify  (lib/middleware/browserify.js)
-   File: ClientConfig  (lib/middleware/client-config.js)
-   File: ConnectDomain  (lib/middleware/connect-domain.js)
-   File: Database  (lib/middleware/db.js)
-   File: Flash  (lib/middleware/flash.js)
-   File: Handler  (lib/middleware/handler.js)
-   File: HTTP  (lib/middleware/http.js)
-   File: i18n  (lib/middleware/i18n.js)
-   File: Livereload  (lib/middleware/livereload.js)
-   File: Logger  (lib/middleware/logger.js)
-   File: Middleware  (no auto-title, lib/middleware/index.js)
-   File: Passport  (lib/middleware/passport.js)
-   File: Router  (lib/middleware/router.js)
-   File: Static  (lib/middleware/static.js)
-   File: TemplateData  (lib/middleware/template-data.js)
-   File: Validator  (no auto-title, lib/middleware/validator.js)
-   File: View  (lib/middleware/view.js)
-   }  # Group: Middleware
+         Group: Achievements  {
+
+            File: Achievements  (server/api/gamification/achievements/index.js)
+            File: BaseAchievement  (no auto-title, server/api/gamification/achievements/base.js)
+            File: FirstTaskAchievement  (no auto-title, server/api/gamification/achievements/first-task.js)
+            File: TenTasksAchievement  (no auto-title, server/api/gamification/achievements/ten-tasks.js)
+            File: TwentyPointsAchievement  (no auto-title, server/api/gamification/achievements/twenty-points.js)
+            }  # Group: Achievements
+
+         Group: Rules  {
+
+            File: BaseRule  (no auto-title, server/api/gamification/rules/base.js)
+            File: NPointsRule  (no auto-title, server/api/gamification/rules/n-points.js)
+            File: NTasksRule  (no auto-title, server/api/gamification/rules/n-tasks.js)
+            File: Rules  (server/api/gamification/rules/index.js)
+            }  # Group: Rules
+
+         }  # Group: Gamification
+
+      Group: Ranking  {
+
+         File: Controller  (no auto-title, server/api/ranking/controller.js)
+         File: Errors  (no auto-title, server/api/ranking/errors.js)
+         File: Ranking  (server/api/ranking/index.js)
+         }  # Group: Ranking
+
+      Group: Task  {
+
+         File: Controller  (no auto-title, server/api/task/controller.js)
+         File: Errors  (no auto-title, server/api/task/errors.js)
+         File: Task  (server/api/task/index.js)
+         File: Validators  (no auto-title, server/api/task/validators.js)
+         }  # Group: Task
+
+      }  # Group: Api
+
+   File: BarefootFactory  (server/barefootFactory.js)
+   File: Cluster  (server/cluster.js)
+
+   Group: Middleware  {
+
+      File: Auth  (server/middleware/auth.js)
+      File: ClientConfig  (server/middleware/client-config.js)
+      File: ConnectDomain  (server/middleware/connect-domain.js)
+
+      Group: Db  {
+
+         File: Achievement  (server/middleware/db/achievement.js)
+         File: Community.Model  (server/middleware/db/community.js)
+         File: Database  (server/middleware/db/index.js)
+         File: Resident.Model  (server/middleware/db/resident.js)
+         File: Task.Model  (server/middleware/db/task.js)
+         }  # Group: Db
+
+      File: EventBus  (server/middleware/event-bus.js)
+      File: Handler  (server/middleware/handler.js)
+      File: HTTP  (server/middleware/http.js)
+      File: Livereload  (server/middleware/livereload.js)
+      File: Locale  (server/middleware/locale.js)
+      File: Logger  (server/middleware/logger.js)
+      File: Middleware  (server/middleware/index.js)
+      File: Router  (server/middleware/router.js)
+      File: Static  (server/middleware/static.js)
+      File: TemplateData  (server/middleware/template-data.js)
+      File: Validator  (server/middleware/validator.js)
+      File: View  (server/middleware/view.js)
+      }  # Group: Middleware
+
+   Group: OLD lib  {
+
+      File: Cluster  (server/OLD lib/cluster/index.js)
+
+      Group: Community  {
+
+         File: Community  (server/OLD lib/community/index.js)
+         File: Community.Controller  (server/OLD lib/community/controller.js)
+         File: Community.Model  (server/OLD lib/community/model.js)
+         File: Transporter  (server/OLD lib/community/transporter.js)
+         }  # Group: Community
+
+      File: FacebookChannel  (server/OLD lib/facebook-channel/index.js)
+      File: FacebookChannel.Controller  (server/OLD lib/facebook-channel/controller.js)
+      File: Home  (server/OLD lib/home/index.js)
+      File: Home.Controller  (server/OLD lib/home/controller.js)
+      File: Login  (server/OLD lib/login/index.js)
+      File: Login.Controller  (server/OLD lib/login/controller.js)
+      File: Rank  (server/OLD lib/rank/index.js)
+      File: Rank.Controller  (server/OLD lib/rank/controller.js)
+
+      Group: Resident  {
+
+         File: Resident  (server/OLD lib/resident/index.js)
+         File: Resident.Controller  (server/OLD lib/resident/controller.js)
+         File: Resident.Model  (server/OLD lib/resident/model.js)
+         }  # Group: Resident
+
+      Group: Task  {
+
+         File: Task  (server/OLD lib/task/index.js)
+         File: Task.Controller  (server/OLD lib/task/controller.js)
+         File: Task.Model  (server/OLD lib/task/model.js)
+         }  # Group: Task
+
+      }  # Group: OLD lib
+
+   File: public/.../lib/jquery-1.9.1.js  (server/public/javascripts/lib/jquery-1.9.1.js)
+   }  # Group: Server
 
 Group: Shared  {
 
-   Group: Test  {
+   File: EventAggregator  (shared/eventAggregator.js)
+   File: Locales  (shared/locales/index.js)
 
-      File: PassportMock  (no auto-title, shared/test/passport-mock.js)
-      File: StrategyMock  (shared/test/strategy-mock.js)
-      }  # Group: Test
+   Group: OLD.shared  {
 
-   Group: Validators  {
+      File: CreateCommunityValidator  (shared/OLD.shared/validators/create-community.js)
+      File: CreateTaskValidator  (shared/OLD.shared/validators/create-task.js)
+      File: Exception401  (shared/OLD.shared/exceptions/401.js)
+      File: LoginRequired  (shared/OLD.shared/policies/login-required.js)
+      File: PassportMock  (shared/OLD.shared/test/passport-mock.js)
+      File: StrategyMock  (shared/OLD.shared/test/strategy-mock.js)
+      File: Utils  (shared/OLD.shared/utils/index.js)
+      }  # Group: OLD.shared
 
-      File: CreateCommunityValidator  (shared/validators/create-community.js)
-      File: CreateTaskValidator  (shared/validators/create-task.js)
-      }  # Group: Validators
-
-   Group: Exceptions  {
-
-      File: Exception401  (shared/exceptions/401.js)
-      }  # Group: Exceptions
-
-   Group: Policies  {
-
-      File: LoginRequired  (no auto-title, shared/policies/login-required.js)
-      }  # Group: Policies
-
-   Group: Utils  {
-
-      File: Utils  (shared/utils/index.js)
-      }  # Group: Utils
-
+   File: RoomiesView  (shared/views/roomiesView.js)
+   File: router/router.js  (shared/router/router.js)
+   File: Templates  (shared/templates/index.js)
    }  # Group: Shared
-
-File: barefootFactory.js  (barefootFactory.js)
-File: Rank  (lib/rank/index.js)
-File: Rank.Controller  (lib/rank/controller.js)
 
 Group: Index  {
 
