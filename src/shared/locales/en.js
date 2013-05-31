@@ -26,4 +26,9 @@ module.exports = {
 	, "Due date needs to be a date in the future.": "Due date needs to be a date in the future."
 	, "Description needs to be within 0 and 255 chars.": "Description needs to be within 0 and 255 chars."
 	, "Task successfully added.": "Task successfully added."
+
+	, "Community settings": "Community Settings"
+	, "Profile": "Profile"
+	, "You're in the community named: %s": "You're member of the \"%s\" community"
+	, "Delete this community": "Delete Community"
 };

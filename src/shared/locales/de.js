@@ -21,4 +21,9 @@ module.exports = {
 	, "Description": "Beschreibung"
 	, "Due date": "Fällig am"
 	, "Reward": "Belohnung"
+
+	, "Community settings": "WG Informationen"
+	, "Profile": "Profil"
+	, "You're in the community named: %s": "Du bist Mitglied der WG \"%s\""
+	, "Delete the community": "WG löschen"
 };

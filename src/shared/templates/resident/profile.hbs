@@ -35,14 +35,18 @@
 {{#if displayDangerZone}}
 <div class="row">
 	<div class="large-12 columns">
-		<h3>Community settings</h3>
-		<div class="danger-zone">
-			<p class="left">{{trans "You're in the community named: %s" community.name}}</p>
-			<form action="/community" method="POST">
-				<input type="submit" value="{{trans "Delete the community"}}" class="button attention large-2 columns right">
-				<input type="hidden" name="_method" value="DELETE" />
-				<input type="hidden" name="slug" value="{{community.slug}}" />
-			</form>
+		<div class="panel radius">
+			<h3 class="subheader">{{trans "Community settings"}}</h3>
+			<div class="danger-zone">
+				<p>{{trans "You're in the community named: %s" community.name}}</p>
+				<div class="row">
+					<form action="/community" method="POST" class="columns">
+						<input type="submit" value="{{trans "Delete the community"}}" class="button attention large-2 small-12">
+						<input type="hidden" name="_method" value="DELETE" />
+						<input type="hidden" name="slug" value="{{community.slug}}" />
+					</form>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

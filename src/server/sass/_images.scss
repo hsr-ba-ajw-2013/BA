@@ -1,6 +1,7 @@
 .avatar {
 	vertical-align: middle;
 	width: 100%;
+	margin-bottom: 20px;
 
 	&.small {
 		@include border-radius(3px);
