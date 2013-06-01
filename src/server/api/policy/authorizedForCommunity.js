@@ -37,7 +37,9 @@ function authorizedForCommunity(success, error, slugOrId) {
 			if(isId) {
 				var id = parseInt(slugOrId, 10);
 				ok = (community.id === id);
-			} else {
+			}
+			// if the slug is an integer.
+			if(!ok || !isId) {
 				ok = (community.slug === slugOrId);
 			}
 

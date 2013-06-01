@@ -44,10 +44,11 @@ module.exports = function initTaskApi(api, apiPrefix) {
 	// submits
 	api.app.post(modulePrefix, utils.buildFormRoute(
 		function success(task, redirect) {
-			redirect('/community/' + task.community.slug + '/tasks');
+			redirect('/community/' + this.req.param('slug') + '/tasks');
 		}
 		, function error(err, redirect) {
-			redirect('/community/' + this.req.param('slug') + '/tasks/new');
+			api.app.get('eventbus').emit('validation:error', err.message);
+			redirect('/community/' + this.req.param('slug') + '/task/new');
 		}
 		, api
 		, [

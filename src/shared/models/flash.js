@@ -6,6 +6,9 @@ var Barefoot = require('node-barefoot')()
 			return this.has('error') || this.has('warning') ||
 				this.has('info') || this.has('success');
 		}
+		, toString: function() {
+			return 'FlashModel';
+		}
 	});
 
 module.exports = FlashModel;

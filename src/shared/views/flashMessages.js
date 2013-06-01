@@ -5,35 +5,60 @@ module.exports = View.extend({
 
 	, initialize: function() {
 		this.messages = this.options.dataStore.get('FlashModel');
-		this.options.router.on('render', this.fetchMessages.bind(this));
-	}
-
-	, fetchMessages: function() {
 		var self = this;
-		this.messages.fetch({
-			success: function() {
-				self.renderView();
-			}
+		this.messages.on('sync', this.syncView.bind(this));
+		this.options.router.on('route', function clearMessagesOnRoute() {
+			self.messages.clear();
 		});
+		this.options.router.on('render', this.fetchMessages.bind(this));
+		this.options.eventAggregator.on('view:flashmessage'
+			, this.renderMessages.bind(this));
 	}
 
-	, renderView: function() {
-		var self = this
-			, flashModel = this.options.dataStore.get('FlashModel')
-			, ul = this.$el.children('ul');
+	, fetchMessages: function fetchMessages() {
+		this.messages.fetch();
+	}
+
+	, beforeRender: function beforeRender(resolve) {
+		if(!this.messages.hasMessages()) {
+			this.messages.fetch({
+				success: function successFetch() {
+					resolve();
+				}
+			});
+		} else {
+			resolve();
+		}
+	}
+
+	, renderView: function renderView() {
+		var flashModel = this.messages;
 
 		if(flashModel.hasMessages()) {
-			var html = self.templates.flashMessages({
-					messages: flashModel.toJSON()
-				});
-			if(ul.length) {
-				ul.replaceWith(html);
-			} else {
-				this.$el.append(html);
-			}
+			this.renderMessages(flashModel.toJSON());
 			flashModel.clear();
 		} else {
-			ul.remove();
+			this.clearMessages();
+		}
+	}
+
+	, clearMessages: function clearMessages() {
+		this.$el.children('ul').remove();
+	}
+
+	, syncView: function syncView(model) {
+		this.renderMessages(model.toJSON());
+	}
+
+	, renderMessages: function renderMessages(messages) {
+		var ul = this.$el.children('ul')
+			, html = this.templates.flashMessages({
+				messages: messages
+			});
+		if(ul.length) {
+			ul.replaceWith(html);
+		} else {
+			this.$el.append(html);
 		}
 	}
 

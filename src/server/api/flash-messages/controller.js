@@ -1,7 +1,9 @@
 /** Class: Api.FlashMessages.Controller
  * API Controller for interacting flash messages.
  */
-var debug = require('debug')('roomies:api:flash-messages:controller')
+
+var _ = require('underscore')
+	, debug = require('debug')('roomies:api:flash-messages:controller')
 	, eventsMap = {
 		"task:created": {
 			type: "success"
@@ -19,16 +21,31 @@ var debug = require('debug')('roomies:api:flash-messages:controller')
 			type: "info"
 			, text: "Community has been deleted"
 		}
+		, "validation:error": {
+			type: "error"
+		}
 	}
-	, messages = {};
+	, _messages = {};
 
-function _mapEvents(evt) {
+function _mapEvents(evt, eventData) {
 	debug('got event `%s`', evt);
-	var msg = eventsMap[evt];
-	if(messages[msg.type]) {
-		messages[msg.type].push(msg.text);
+	var msg = eventsMap[evt]
+		, text = msg.text;
+	if(eventData && !msg.text) {
+		text = eventData;
+	}
+	if(_messages[msg.type]) {
+		if(_.isArray(text)) {
+			_messages[msg.type].concat(text);
+		} else {
+			_messages[msg.type].push(text);
+		}
 	} else {
-		messages[msg.type] = [msg.text];
+		if(_.isArray(text)) {
+			_messages[msg.type] = text;
+		} else {
+			_messages[msg.type] = [text];
+		}
 	}
 }
 
@@ -41,8 +58,8 @@ function _mapEvents(evt) {
  */
 function getFlashMessages(success) {
 	debug('get flash messages');
-	var msgs = messages;
-	messages = {};
+	var msgs = _messages;
+	_messages = {};
 	success(msgs);
 }
 
@@ -50,7 +67,9 @@ function setupObservers(app) {
 	var eventBus = app.get('eventbus');
 
 	for(var evt in eventsMap) {
-		eventBus.on(evt, _mapEvents.bind(this, evt));
+		if(eventsMap.hasOwnProperty(evt)) {
+			eventBus.on(evt, _mapEvents.bind(this, evt));
+		}
 	}
 }
 

@@ -52,9 +52,10 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 	// form submits
 	api.app.post(modulePrefix, utils.buildFormRoute(
 		function success(community, redirect) {
-			redirect('/community');
+			redirect('/community/' + community.slug + '/tasks');
 		}
 		, function error(err, redirect) {
+			api.app.get('eventbus').emit('validation:error', err.message);
 			redirect('/community/create');
 		}
 		, api

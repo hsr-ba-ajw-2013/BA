@@ -2,9 +2,6 @@ var View = require('../roomiesView');
 
 module.exports = View.extend({
 	el: '#main'
-	, initialize: function() {
-
-	}
 
 	, renderView: function() {
 		var community = this.getDataStore().get('community').toJSON()

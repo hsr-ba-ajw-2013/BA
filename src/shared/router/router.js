@@ -34,7 +34,6 @@ module.exports = Router.extend({
 
 		, 'community/:communitySlug/rankings': 'listRanking'
 
-
 		, 'resident/:facebookId/profile': 'profile'
 
 		, 'logout': 'logout'

@@ -10,8 +10,7 @@ module.exports = View.extend({
 	}
 
 	, submitCreateCommunity: function() {
-		/* global $ */
-		var $form = $('.community-create-form')
+		var $form = this.$('.community-create-form')
 			, action = $form.attr('action')
 			, self = this
 			, $loader = $form.find('.loader')
@@ -20,13 +19,17 @@ module.exports = View.extend({
 		$loader.show();
 		$submitButton.addClass('disabled').attr('disabled', true);
 
-		$.post(API_PREFIX + action, $form.serialize())
+		this.$.post(API_PREFIX + action, $form.serialize())
 		.done(function(community) {
-			self.options.router.navigate('/community/' + community.slug +
-				'/tasks', {trigger: true});
+			// hard reload
+			/* global window */
+			window.location = '/community/' + community.slug + '/tasks';
 		})
-		.fail(function() {
-			console.error(arguments);
+		.fail(function(response) {
+			var messages = response.responseText.split(',');
+			self.options.eventAggregator.trigger('view:flashmessage', {
+				error: messages
+			});
 		})
 		.always(function() {
 			$loader.hide();

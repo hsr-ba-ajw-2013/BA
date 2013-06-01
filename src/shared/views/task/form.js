@@ -25,8 +25,11 @@ module.exports = View.extend({
 			self.options.router.navigate('/community/' + community.get('slug') +
 				'/tasks', {trigger: true});
 		})
-		.fail(function() {
-			console.error(arguments);
+		.fail(function(response) {
+			var messages = response.responseText.split(',');
+			self.options.eventAggregator.trigger('view:flashmessage', {
+				error: messages
+			});
 		})
 		.always(function() {
 			$loader.hide();
