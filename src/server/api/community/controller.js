@@ -437,12 +437,10 @@ function deleteCommunity(success, error, data) {
 function getCommunityWithShareLink(success, error, shareLink) {
 	var resident = this.req.user
 		, communityDao = getCommunityDao.call(this);
-
 	if (resident.isInACommunity()) {
 		return error(new errors.ResidentAlreadyInCommunityError(
 			'You already are in a community'));
 	}
-
 	communityDao.find({ where: {shareLink: shareLink, enabled: true}})
 		.success(function findResult(community) {
 			if (community !== null) {
@@ -484,7 +482,7 @@ function joinCommunity(success, error, slug, data) {
 		resident.setCommunity(community)
 			.success(function setResult() {
 				eventBus.emit('community:joined');
-				return success();
+				return success(community.dataValues);
 			})
 			.error(function(err) {
 				return error(err);

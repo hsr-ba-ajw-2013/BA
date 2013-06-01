@@ -21,6 +21,10 @@ var _ = require('underscore')
 			type: "info"
 			, text: "Community has been deleted"
 		}
+		, "community:joined": {
+			type: "success"
+			, text: "Community has been joined"
+		}
 		, "validation:error": {
 			type: "error"
 		}

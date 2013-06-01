@@ -26,7 +26,6 @@ module.exports = View.extend({
 	, renderView: function() {
 		var community = this.community
 			, user = this.getDataStore().get('currentUser');
-
 		this.$el.html(this.templates.community.join({
 			user: user.toJSON()
 			, name: community.get('name')

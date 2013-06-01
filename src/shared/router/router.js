@@ -163,6 +163,9 @@ module.exports = Router.extend({
 	 */
 	, redirectIfNotAuthorized: function redirectIfNotAuthorized() {
 		if(!this.isAuthorized()) {
+			// FIXME: client/server independant?
+			var req = this.apiAdapter.req;
+			req.session.redirectUrl = req.originalUrl;
 			this.navigate('', {trigger: true});
 			return true;
 		}

@@ -45,7 +45,26 @@ module.exports = function initCommunityApi(api, apiPrefix) {
 		basicAuthentication
 		, controller.deleteCommunity]);
 
+	// GET /api/join/community/:shareLink
+	api.get(apiPrefix + '/join' + modulePrefix + '/:shareLink', [
+			basicAuthentication
+			, controller.getCommunityWithShareLink
+	]);
 
+	// POST /community/:slug/resident
+	// there's no /api-prefixed version of this url
+	api.app.post(modulePrefix + '/:slug/resident', utils.buildFormRoute(
+		function success(community, redirect) {
+			redirect('/community/' + community.slug + '/tasks');
+		}
+		, function error(err, redirect) {
+			api.app.get('eventbus').emit('validation:error', err.message);
+			redirect('/community/create');
+		}
+		, api, [
+		basicAuthentication
+		, controller.joinCommunity
+	]));
 
 	// POST /community
 	// This makes the createCommunity API function accessible for old-school
