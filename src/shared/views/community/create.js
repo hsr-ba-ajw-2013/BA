@@ -21,8 +21,9 @@ module.exports = View.extend({
 		$submitButton.addClass('disabled').attr('disabled', true);
 
 		$.post(API_PREFIX + action, $form.serialize())
-		.done(function(redirectUri) {
-			self.options.router.navigate(redirectUri, {trigger: true});
+		.done(function(community) {
+			self.options.router.navigate('/community/' + community.slug +
+				'/tasks', {trigger: true});
 		})
 		.fail(function() {
 			console.error(arguments);
