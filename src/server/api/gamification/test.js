@@ -108,10 +108,10 @@ describe('Gamification', function() {
 						done();
 					})
 				.error(function(err) {
-					console.log(err);
+					throw new Error(err);
 				});
 			}).error(function(err) {
-				console.log(err);
+				throw new Error(err);
 			});
 		});
 

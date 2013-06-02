@@ -27,10 +27,10 @@ BaseAchievement.prototype.giveAchievement =
 		achievement.setResident(resident).success(function addedToResident() {
 			cb(true, self.identifier);
 		}).error(function(err) {
-			console.log(err);
+			throw new Error(err);
 		});
 	}).error(function(err) {
-		console.log(err);
+		throw new Error(err);
 	});
 };
 
