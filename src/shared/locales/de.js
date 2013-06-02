@@ -43,4 +43,27 @@ module.exports = {
 	, "Delete the community": "WG löschen"
 
 	, "Share following URL with your roommates to organize your life in communes with roomies.": "Teile folgende Adresse mit deinen Mitbewohnern und Mitbewohnerinnen, um euer WG-Leben mit Roomies zu organisieren"
+
+	, "Loading": "Laden"
+
+	, "Share following URL with your roommates to organize your life in communes with roomies.": "Teile den folgenden Link mit deinen WG-Kollegen, um Roomies mit ihnen zu benutzen."
+	, "Join my Community!": "Trete meiner WG bei!"
+
+	, "Hi %s": "Hallo %s"
+	, "You have an invitation for the community '%s'": "Du hast eine Einladung für die WG '%s'"
+	, "Join": "Beitreten"
+	, "Not Found": "Nicht gefunden"
+	, "This page does not exist": "Die angeforderte Seite existiert nicht"
+	, "Resident": "Bewohner"
+	, "Points": "Punkte"
+	, "Points:": "Punkte:"
+	, "Badges:": "Auszeichungen:"
+	, "Badges": "Auszeichungen"
+	, "first-task": "Erste Aufgabe erledigt"
+	, "ten-tasks": "Zehn Aufgaben erledigt"
+	, "twenty-points": "Zwanzig Punkte bekommen"
+	, "Community settings": "WG Einstellungen"
+	, "You're in the community named: %s": "Du bist in der WG mit dem Namen: %s"
+	, "Delete the community": "WG löschen"
+	, "Note": "Notiz"
 };

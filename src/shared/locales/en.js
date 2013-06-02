@@ -31,4 +31,7 @@ module.exports = {
 	, "Profile": "Profile"
 	, "You're in the community named: %s": "You're member of the \"%s\" community"
 	, "Delete this community": "Delete Community"
+	, "first-task": "First task done"
+	, "ten-tasks": "Ten tasks done"
+	, "twenty-points": "Twenty points received"
 };
