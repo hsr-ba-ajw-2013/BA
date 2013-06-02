@@ -8,18 +8,10 @@ var	auth = require('./auth')
 	, connectTimeout = require('./connect-timeout')
 	, eventBus = require('./event-bus')
 	, db = require('./db')
-	//, handler = require('./handler')
 	, http = require('./http')
 	, locale = require('./locale')
-	//, i18n = require('./i18n')
-	//, livereload = require('./livereload')
 	, logger = require('./logger')
-	//, templateData = require('./template-data')
-	//, router = require('./router')
-	, expressStatic = require('./static')
-	//, validator = require('./validator')
-	//, view = require('./view');
-	;
+	, expressStatic = require('./static');
 
 /** Function: setupMiddleware
  * Calls the required middlewares
@@ -35,27 +27,21 @@ var	auth = require('./auth')
 function setupMiddleware(app, config) {
 	connectTimeout(app, config);
 	expressStatic(app, config);
-	//templateData(app, config);
-	//view(app, config);
+
 	logger(app, config);
-	//TODO: csrf
 
 	eventBus(app, config);
 
 	db(app, config);
 	http(app, config);
 	locale(app, config);
-	//validator(app, config);
 	auth(app, config);
 
 	// important: the whole application doesn't work
 	// if connect-domain is in front of http.
 	connectDomain(app, config);
 
-	//handler(app, config);
 	clientConfig(app, config);
-	//livereload(app, config);
-	//router(app, config);
 }
 
 module.exports = setupMiddleware;
