@@ -2,9 +2,11 @@
  * Observer of various events to process.
  */
 
-var achievements = require('./achievements').achievements;
+var achievements = require('./achievements').achievements
+	, debug = require('debug')('roomies:server:api:gamification');
 
-function taskDone(db, eventBus, resident, task) {
+function taskDone(db, eventbus, resident, task) {
+	debug('task marked as done');
 	// Different events could create different arguments, pack them together
 	// in a data map.
 	var data = {
@@ -15,7 +17,7 @@ function taskDone(db, eventBus, resident, task) {
 		achievement.giveAchievementIfMatches(db, data,
 			function(matches, identifier) {
 				if(matches) {
-					eventBus.emit('achievement:added:' + identifier);
+					eventbus.emit('achievement:added:' + identifier);
 				}
 		});
 	});

@@ -27,5 +27,9 @@ FirstTaskAchievement.prototype.giveAchievementIfMatches =
 		});
 };
 
+FirstTaskAchievement.prototype.toString = function() {
+	return 'FirstTaskAchievement';
+};
+
 
 module.exports = FirstTaskAchievement;

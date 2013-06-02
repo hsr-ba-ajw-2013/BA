@@ -3,11 +3,13 @@
  * and achievements.
  */
 
-var observer = require('./observer');
+var observer = require('./observer')
+	, debug = require('debug')('roomies:server:api:gamification');
 
 module.exports = function setupAchievements(api) {
+	debug('setup achievements');
 	var app = api.app
 		, db = app.get('db')
-		, eventBus = app.get('eventbus');
-	eventBus.on('task:done', observer.taskDone.bind(this, db, eventBus));
+		, eventbus = app.get('eventbus');
+	eventbus.on('task:done', observer.taskDone.bind(this, db, eventbus));
 };

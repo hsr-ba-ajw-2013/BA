@@ -27,5 +27,9 @@ TenTasksAchievement.prototype.giveAchievementIfMatches =
 		});
 };
 
+TenTasksAchievement.prototype.toString = function() {
+	return 'TenTasksAchievement';
+};
+
 
 module.exports = TenTasksAchievement;

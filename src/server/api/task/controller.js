@@ -183,6 +183,9 @@ function updateTask(success, error, communitySlug, taskId, updateData) {
 
 	var taskDao = getTaskDao.call(this)
 		, eventbus = this.app.get('eventbus')
+		, self = this
+		, taskIsFulfilled
+		, updatedTaskIsFulfilled
 
 		/* AnonymousFunction: forwardError
 		 * Forwards an error object using the error callback argument
@@ -205,6 +208,8 @@ function updateTask(success, error, communitySlug, taskId, updateData) {
 					'does not exist.'));
 			}
 
+			taskIsFulfilled = task.isFulfilled();
+
 			task.name = updateData.name || task.name;
 			task.description = updateData.description || task.description;
 			task.reward = updateData.reward || task.reward;
@@ -212,6 +217,8 @@ function updateTask(success, error, communitySlug, taskId, updateData) {
 			task.dueDate = updateData.dueDate || task.dueDate;
 			task.updatedAt = new Date();
 			task.fulfillorId = updateData.fulfillorId || task.fulfillorId;
+
+			updatedTaskIsFulfilled = task.isFulfilled();
 
 			task.save()
 				.success(afterTaskSave)
@@ -227,6 +234,10 @@ function updateTask(success, error, communitySlug, taskId, updateData) {
 			var taskData = task.dataValues;
 
 			eventbus.emit('task:updated', taskData);
+			if(!taskIsFulfilled && updatedTaskIsFulfilled) {
+				eventbus.emit('task:done', self.req.user, task);
+			}
+
 			success(taskData);
 		};
 

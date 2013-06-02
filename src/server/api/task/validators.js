@@ -19,27 +19,27 @@ var ErrorCollectingValidator = require('../errorCollectingValidator')
  *   (Object) task - The information about a task object to validate and
  *                   sanitize.
  */
-function createTask(success, error, communitySlug, task) {
+function createTask(success, error, communitySlug, taskIdOrData, dataOrNone) {
 	var validator = new ErrorCollectingValidator();
-	task = task || {};
+	var data = dataOrNone || taskIdOrData || {};
 
-	validator.check(task.name
+	validator.check(data.name
 		, 'Name length needs to be within 1 and 255')
 		.len(1, 255);
-	validator.check(task.reward
+	validator.check(data.reward
 		, 'Reward should have an integer value between 1 and 5')
 		.isInt().min(1).max(5);
-	validator.check(task.dueDate
+	validator.check(data.dueDate
 		, 'Due date needs to be a date in the future')
 		.isDate().isAfter();
-	validator.check(task.description
+	validator.check(data.description
 		, 'Description length needs to be within 0 and 255')
 		.len(0, 255);
 
-	task.name = sanitize(task.name).xss().trim();
-	task.reward = sanitize(task.reward).toInt();
-	task.dueDate = sanitize(task.dueDate).xss().trim();
-	task.description = sanitize(task.description).xss().trim();
+	data.name = sanitize(data.name).xss().trim();
+	data.reward = sanitize(data.reward).toInt();
+	data.dueDate = sanitize(data.dueDate).xss().trim();
+	data.description = sanitize(data.description).xss().trim();
 
 	var validationErrors = validator.getErrors();
 	if(validationErrors && validationErrors.length) {

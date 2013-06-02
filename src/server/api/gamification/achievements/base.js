@@ -2,6 +2,8 @@
  * Base Interface for Achievements
  */
 
+ var debug = require('debug')('roomies:server:api:gamification');
+
 function BaseAchievement() {
 }
 
@@ -13,6 +15,9 @@ BaseAchievement.prototype.giveAchievementIfMatches =
 
 BaseAchievement.prototype.giveAchievement =
 	function giveAchievement(db, resident, cb) {
+	debug('giving achievement `' + this.toString() + '`');
+
+
 	var Achievement = db.daoFactoryManager.getDAO('Achievement')
 		, self = this;
 
@@ -27,6 +32,10 @@ BaseAchievement.prototype.giveAchievement =
 	}).error(function(err) {
 		console.log(err);
 	});
+};
+
+BaseAchievement.prototype.toString = function() {
+	return 'BaseAchievement';
 };
 
 module.exports = BaseAchievement;

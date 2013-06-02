@@ -72,7 +72,9 @@ module.exports = View.extend({
 		var self = this
 			, tasks = this.getDataStore().get('tasks')
 			, tableBody = this.$('table.tasks tbody', this.$el)
-			, community = this.getDataStore().get('community').toJSON();
+			, community = this.getDataStore().get('community').toJSON()
+			, resident = this.getDataStore().get('currentUser')
+			, now = new Date();
 
 		if(tasks.models.length === 0) {
 			tableBody.append(self.templates.task.noTasks());
@@ -80,6 +82,8 @@ module.exports = View.extend({
 			_.each(tasks.models, function(task) {
 				var data = task.toJSON();
 				data.community = community;
+				data.resident = resident;
+				data.now = now;
 				tableBody.append(self.templates.task.listItem(data));
 			});
 		}

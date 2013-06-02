@@ -13,6 +13,10 @@ var _ = require('underscore')
 			type: "success"
 			, text: "Task marked as done successfully"
 		}
+		, "task:updated": {
+			type: "success"
+			, text: "Task updated successfully"
+		}
 		, "community:created": {
 			type: "success"
 			, text: "Community created successfully"

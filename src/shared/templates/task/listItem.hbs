@@ -4,7 +4,14 @@
 			<i class="icon-check"></i>
 		{{else}}
 			<form class="reset-style" action="/community/{{community.slug}}/tasks/{{id}}" data-task-id="{{id}}" method="post">
-				<input type="hidden" name="method" value="put"/>
+				<input type="hidden" name="_method" value="put"/>
+
+				<input type="hidden" name="name" value="{{name}}"/>
+				<input type="hidden" name="reward" value="{{reward}}"/>
+				<input type="hidden" name="dueDate" value="{{formatDate dueDate}}"/>
+				<input type="hidden" name="fulfillorId" value="{{resident.id}}"/>
+				<input type="hidden" name="fulfilledAt" value="{{formatDate now}}"/>
+
 				<button type="submit" class="reset-style">
 					<i class="icon-check-empty"></i>
 				</button>

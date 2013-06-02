@@ -27,5 +27,8 @@ TwentyPointsAchievement.prototype.giveAchievementIfMatches =
 		});
 };
 
+TwentyPointsAchievement.prototype.toString = function() {
+	return 'TwentyPointsAchievement';
+};
 
 module.exports = TwentyPointsAchievement;
