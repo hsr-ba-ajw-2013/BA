@@ -3,6 +3,9 @@ var Barefoot = require('node-barefoot')()
 	, RankModel = require('../models/ranking')
 	, RankingCollection = Collection.extend({
 		model: RankModel
+		, toString: function toString() {
+			return 'RankingCollection';
+		}
 	});
 
 module.exports = RankingCollection;

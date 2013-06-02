@@ -5,6 +5,9 @@ var Barefoot = require('node-barefoot')()
 			return 'api/community/' +
 				this.community.slug +
 				'/rankings'; }
+		, toString: function toString() {
+			return 'RankingModel';
+		}
 	});
 
 module.exports = RankingModel;

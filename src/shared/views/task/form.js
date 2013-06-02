@@ -1,5 +1,6 @@
 var View = require('../roomiesView')
-	, API_PREFIX = '/api';
+	, API_PREFIX = '/api'
+	, TaskModel = require('../../models/task');
 
 module.exports = View.extend({
 	el: '#main'
@@ -20,8 +21,11 @@ module.exports = View.extend({
 		$submitButton.addClass('disabled').attr('disabled', true);
 
 		$.post(API_PREFIX + action, $form.serialize())
-		.done(function() {
-			var community = self.options.dataStore.get('community');
+		.done(function(task) {
+			var community = self.getDataStore().get('community');
+			self.getDataStore().get('tasks').add(new TaskModel(task), {
+				at: 0
+			});
 			self.options.router.navigate('/community/' + community.get('slug') +
 				'/tasks', {trigger: true});
 		})
@@ -39,7 +43,7 @@ module.exports = View.extend({
 	}
 
 	, renderView: function() {
-		var community = this.options.dataStore.get('community');
+		var community = this.getDataStore().get('community');
 		this.$el.html(this.templates.task.form({
 			action: '/community/' + community.get('slug') +
 				'/task'

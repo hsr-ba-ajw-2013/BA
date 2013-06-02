@@ -3,6 +3,9 @@ var Barefoot = require('node-barefoot')()
 	, CommunityModel = Model.extend({
 		urlRoot: '/api/community'
 		, idAttribute: 'id'
+		, toString: function toString() {
+			return 'CommunityModel';
+		}
 	});
 
 module.exports = CommunityModel;

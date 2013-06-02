@@ -5,6 +5,9 @@ var Barefoot = require('node-barefoot')()
 			return 'api/resident/' +
 				this.resident.facebookId +
 				'/profile'; }
+		, toString: function toString() {
+			return 'ResidentProfileModel';
+		}
 	});
 
 module.exports = ResidentProfileModel;

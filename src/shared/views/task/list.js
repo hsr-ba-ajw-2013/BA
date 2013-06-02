@@ -6,13 +6,36 @@ module.exports = View.extend({
 	el: '#main'
 
 	, events: {
-		'click .create-task': "createTaskClick"
+		'click .create-task': 'createTaskClick'
+		, 'click .check a': 'markTaskDoneClick'
 	}
 
 	, initialize: function() {
-		var tasks = this.options.dataStore.get('tasks');
-		this.tasks = tasks;
-		tasks.on('sync', this.renderTasks.bind(this));
+		this.tasks = this.getDataStore().get('tasks');
+		this.tasks.on('sync', this.renderTasks.bind(this));
+	}
+
+	, markTaskDoneClick: function markTaskDoneClick(evt) {
+		var $el = this.$(evt.currentTarget)
+			, taskId = $el.data('task-id')
+			, task = this.tasks.get(taskId)
+			, resident = this.getDataStore().get('currentUser');
+
+		try {
+			task.save({
+				fulfilledAt: new Date()
+				, fulfillorId: resident.id
+			}, {
+				success: function() {
+					var $td = $el.parent();
+					$td.html('<i class="icon-check"></i>');
+				}
+			});
+		} catch(err) {
+			console.error(err);
+		}
+
+		return false;
 	}
 
 	, createTaskClick: function(evt) {
@@ -38,7 +61,7 @@ module.exports = View.extend({
 	}
 
 	, renderView: function() {
-		var community = this.options.dataStore.get('community');
+		var community = this.getDataStore().get('community');
 		this.$el.html(this.templates.task.list({
 			community: community.toJSON()
 		}));
@@ -47,9 +70,9 @@ module.exports = View.extend({
 
 	, renderTasks: function() {
 		var self = this
-			, tasks = this.options.dataStore.get('tasks')
+			, tasks = this.getDataStore().get('tasks')
 			, tableBody = this.$('table.tasks tbody', this.$el)
-			, community = this.options.dataStore.get('community').toJSON();
+			, community = this.getDataStore().get('community').toJSON();
 
 		if(tasks.models.length === 0) {
 			tableBody.append(self.templates.task.noTasks());

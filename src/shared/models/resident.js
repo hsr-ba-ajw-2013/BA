@@ -3,6 +3,9 @@ var Barefoot = require('node-barefoot')()
 	, ResidentModel = Model.extend({
 		urlRoot: '/api/resident'
 		, idAttribute: 'facebookId'
+		, toString: function toString() {
+			return 'ResidentModel';
+		}
 	});
 
 module.exports = ResidentModel;

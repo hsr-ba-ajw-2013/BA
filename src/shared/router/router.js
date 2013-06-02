@@ -86,11 +86,18 @@ module.exports = Router.extend({
 		debug('list tasks');
 		if(!this.redirectIfNotAuthorized() &&
 			!this.redirectIfInValidCommunity()) {
-			var TaskCollection = require('../collections/tasks')
-				, tasks = new TaskCollection();
-			tasks.url = '/api/community/' + communitySlug + '/tasks';
-			this.dataStore.set('tasks', tasks);
+			var tasks = this.dataStore.get('tasks')
+				, url = '/api/community/' + communitySlug + '/tasks';
 
+			if(tasks) {
+				tasks.url = url;
+			} else {
+				var TasksCollection = require('../collections/tasks');
+				tasks = new TasksCollection();
+				tasks.url = url;
+				this.dataStore.set('tasks', tasks);
+				tasks.fetch();
+			}
 			var listTasksView = this.createView(ListTasksView);
 			this.render(listTasksView);
 		}

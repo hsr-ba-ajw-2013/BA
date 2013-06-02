@@ -3,7 +3,7 @@
 		{{#ifnotequal fulfilledAt}}
 			<i class="icon-check"></i>
 		{{else}}
-			<a href="/community/{{community.slug}}/task/{{id}}/check">
+			<a href="/community/{{community.slug}}/task/{{id}}/check" data-task-id="{{id}}">
 				<i class="icon-check-empty"></i>
 			</a>
 		{{/ifnotequal}}

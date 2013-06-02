@@ -3,6 +3,9 @@ var Barefoot = require('node-barefoot')()
 	, TaskModel = require('../models/task')
 	, TaskCollection = Collection.extend({
 		model: TaskModel
+		, toString: function toString() {
+			return 'TaskCollection';
+		}
 	});
 
 module.exports = TaskCollection;
