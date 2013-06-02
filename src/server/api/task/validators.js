@@ -51,4 +51,5 @@ function createTask(success, error, communitySlug, taskIdOrData, dataOrNone) {
 
 module.exports = {
 	createTask: createTask
+	, updateTask: updateTask
 };

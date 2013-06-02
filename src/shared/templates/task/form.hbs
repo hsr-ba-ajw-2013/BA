@@ -1,4 +1,4 @@
-<form class="task-create-form large-12 columns" action="{{action}}" method="post">
+<form class="task-form large-12 columns" action="{{action}}" method="post">
 	<div class="row">
 		<div class="large-12 columns">
 			<h2>{{trans title}}</h2>
@@ -34,7 +34,7 @@
 			<label for="dueDate" class="inline">{{trans "Due date"}}</label>
 		</div>
 		<div class="small-9 large-7 columns">
-			<input type="date" name="dueDate" id="dueDate" placeholder="{{trans "2/22/2014"}}"{{#if task}} value="{{dateFormat task.dueDate}}"{{/if}} />
+			<input type="date" name="dueDate" id="dueDate" placeholder="{{trans "2/22/2014"}}"{{#if task}} value="{{formatDate task.dueDate}}"{{/if}} />
 		</div>
 		<div class="large-3 columns hide-for-small hint">
 			{{trans "Is this task due on a specific day?"}}

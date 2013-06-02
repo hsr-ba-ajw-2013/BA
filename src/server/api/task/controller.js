@@ -46,7 +46,7 @@ function getCommunityDao() {
  *                        the error object itself.
  *     (Number) taskId - The id of the task to look up
  */
-function getTaskWithId(success, error, taskId) {
+function getTaskWithId(success, error, slug, taskId) {
 	debug('get task with id `%i`', taskId);
 
 	var taskDao = getTaskDao.call(this)

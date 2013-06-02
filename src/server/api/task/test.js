@@ -68,7 +68,7 @@ describe('Task', function() {
 				}
 				, scopedGetTaskWithId =
 					controller.getTaskWithId.bind(functionScope
-						, success, error, taskId);
+						, success, error, community.slug, taskId);
 			scopedGetTaskWithId();
 		});
 
@@ -94,7 +94,7 @@ describe('Task', function() {
 					}
 					, scopedGetTaskWithId =
 						controller.getTaskWithId.bind(functionScope
-							, success, error, taskId);
+							, success, error, community.slug, taskId);
 				scopedGetTaskWithId();
 			});
 		});
@@ -119,7 +119,7 @@ describe('Task', function() {
 					}
 					, scopedGetTaskWithId =
 						controller.getTaskWithId.bind(functionScope
-							, success, error, taskId);
+							, success, error, community.slug, taskId);
 				scopedGetTaskWithId();
 			});
 		});

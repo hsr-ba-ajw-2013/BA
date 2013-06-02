@@ -6,7 +6,8 @@ module.exports = View.extend({
 	el: '#main'
 
 	, events: {
-		'click .create-task': 'createTaskClick'
+		'click .create-task': "createTaskClick"
+		, 'click .edit-task': "editTaskClick"
 		, 'submit .check form': 'markTaskDoneSubmit'
 	}
 
@@ -44,6 +45,16 @@ module.exports = View.extend({
 	, createTaskClick: function(evt) {
 		var $el = $(evt.currentTarget)
 			, href = $el.attr('href');
+
+		this.options.dataStore.set('task', undefined);
+		this.options.router.navigate(href, {trigger: true});
+		return false;
+	}
+
+	, editTaskClick: function(evt) {
+		var $el = $(evt.currentTarget)
+			, href = $el.attr('href');
+
 		this.options.router.navigate(href, {trigger: true});
 		return false;
 	}

@@ -14,7 +14,6 @@ module.exports = function initTaskApi(api, apiPrefix) {
 
 	api.get(prefix + '/:id', [
 		basicAuthentication
-		, taskValidators.createTask
 		, controller.getTaskWithId]);
 
 	// GET /api/community/:slug/tasks
@@ -42,7 +41,7 @@ module.exports = function initTaskApi(api, apiPrefix) {
 	// POST /api/community/:slug/tasks/:id
 	api.put(prefix + '/:id', updateTaskCallbacks);
 
-	// POST /community/:slug/task
+	// POST /community/:slug/tasks
 	// This makes the createTask API function accessible for old-scool form
 	// submits
 	api.app.post(modulePrefix, utils.buildFormRoute(
@@ -70,6 +69,27 @@ module.exports = function initTaskApi(api, apiPrefix) {
 		}
 		, api
 		, updateTaskCallbacks
+	));
+
+	// POST /community/:slug/tasks/:id
+	// This makes the createTask API function accessible for old-scool form
+	// submits
+	api.app.post(modulePrefix + '/:id', utils.buildFormRoute(
+		function success(task, redirect) {
+			redirect('/community/' + this.req.param('slug') + '/tasks');
+		}
+		, function error(err, redirect) {
+			api.app.get('eventbus').emit('validation:error', err.message);
+			redirect('/community/' + this.req.param('slug') +
+				'/task/' + this.req.param('id'));
+		}
+		, api
+		, [
+			basicAuthentication
+			, authorizedForCommunity
+			, taskValidators.createTask
+			, controller.updateTask
+		]
 	));
 
 };

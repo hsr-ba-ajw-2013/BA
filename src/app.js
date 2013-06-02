@@ -34,6 +34,7 @@ function setupRequestContext() {
 
 	this.dataStore.registerModel('ResidentModel', ResidentModel);
 	this.dataStore.registerModel('CommunityModel', CommunityModel);
+	this.dataStore.registerModel('TaskModel', TaskModel);
 	this.dataStore.registerModel('ResidentProfileModel', ResidentProfileModel);
 	this.dataStore.registerModel('AppContextModel', AppContextModel);
 	this.dataStore.registerModel('FlashModel', FlashModel);

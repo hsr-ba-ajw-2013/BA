@@ -30,7 +30,9 @@ module.exports = Router.extend({
 		, 'join/:shareLink': 'joinCommunity'
 
 		, 'community/:communitySlug/tasks': 'listTasks'
+
 		, 'community/:communitySlug/tasks/new': 'createTask'
+		, 'community/:communitySlug/tasks/:taskId/edit': 'editTask'
 
 		, 'community/:communitySlug/rankings': 'listRanking'
 
@@ -111,6 +113,24 @@ module.exports = Router.extend({
 		}
 	}
 
+	, editTask: function editTask(communitySlug, taskId) {
+		debug('edit task with id: ' + taskId);
+		if(!this.redirectIfNotAuthorized() &&
+			!this.redirectIfInValidCommunity()) {
+
+			var TaskModel = require('../models/task')
+				, task = new TaskModel();
+
+			task.url = '/api/community/' + communitySlug + '/task/' + taskId;
+
+			this.dataStore.set('task', task);
+
+			if (!this.redirectIfTaskNotEditable()) {
+				this.render(this.createView(TaskFormView));
+			}
+		}
+	}
+
 	, listRanking: function listRanking(communitySlug) {
 		debug('list ranking');
 		if(!this.redirectIfNotAuthorized() &&
@@ -188,6 +208,22 @@ module.exports = Router.extend({
 		var community = this.dataStore.get('community');
 		if(!community) {
 			this.navigate('/community/create', {trigger: true});
+			return true;
+		}
+		return false;
+	}
+
+	/** Function: redirectIfTaskNotEditable
+	 * If the client is not in a community or not in an enabled community
+	 * it will redirect. Otherwise it returns false to indicate that the
+	 * calling method can continue work.
+	 */
+	, redirectIfTaskNotEditable: function redirectIfTaskNotEditable() {
+		var task = this.dataStore.get('task')
+			, community = this.dataStore.get('community');
+		if(!task || task.isFulfilled) {
+			this.navigate('/community/' +
+				community.slug + '/tasks', {trigger: true});
 			return true;
 		}
 		return false;

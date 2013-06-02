@@ -5,13 +5,27 @@ var View = require('../roomiesView')
 module.exports = View.extend({
 	el: '#main'
 
-	, events: {
-		'submit .task-create-form': 'submitCreateTask'
+	, initialize: function() {
+		var task = this.options.dataStore.get('task');
+
+		this.title = 'Create Task';
+		this.task = undefined;
+
+		if (task) {
+			this.task = task;
+			task.on('sync', this.renderView.bind(this));
+
+			this.title = 'Edit Task';
+		}
 	}
 
-	, submitCreateTask: function() {
+	, events: {
+		'submit .task-form': 'submitTask'
+	}
+
+	, submitTask: function() {
 		/* global $ */
-		var $form = $('.task-create-form')
+		var $form = $('.task-form')
 			, action = $form.attr('action')
 			, self = this
 			, $loader = $form.find('.loader')
@@ -45,17 +59,56 @@ module.exports = View.extend({
 		return false;
 	}
 
+	, submitCreateTask: function() {
+		this.submitTask.bind(this);
+	}
+
+	, submitEditTask: function() {
+		this.submitTask.bind(this);
+	}
+
+	, beforeRender: function(resolve) {
+		if(this.task) {
+			this.task.fetch({
+				success: function() {
+					resolve();
+				}
+				, error: function fetchError() {
+					resolve();
+				}
+			});
+		} else {
+			resolve();
+		}
+	}
+
 	, renderView: function() {
-		var community = this.getDataStore().get('community');
+		var community = this.getDataStore().get('community')
+			, action = '/community/' + community.get('slug') +
+				'/task'
+			, task;
+
+		if (this.task) {
+			action = action + '/' + this.task.id;
+			task = this.task.toJSON();
+		}
+
 		this.$el.html(this.templates.task.form({
-			action: '/community/' + community.get('slug') +
-				'/tasks'
-			, title: this.translate('Create Task')
+			action: action
+			, title: this.translate(this.title)
+			, task: task
 		}));
 	}
 
 	, afterRender: function(resolve) {
-		this.setDocumentTitle(this.translate('Create Task'));
+		this.setDocumentTitle(this.translate(this.title));
+
+		if(this.task) {
+			var $form = $('.task-form');
+			$form.append('<input type="hidden" name="id" value="' +
+				this.task.id + '">');
+		}
+
 		resolve();
 	}
 
