@@ -34,8 +34,7 @@ module.exports = View.extend({
 		$loader.show();
 		$submitButton.addClass('disabled').attr('disabled', true);
 
-		$.post(API_PREFIX + action, $form.serialize())
-		.done(function(task) {
+		var doneFnc = function(task) {
 			var community = self.getDataStore().get('community')
 				, tasks = self.getDataStore().get('tasks');
 			if(tasks) {
@@ -45,17 +44,32 @@ module.exports = View.extend({
 			}
 			self.options.router.navigate('/community/' + community.get('slug') +
 				'/tasks', {trigger: true});
-		})
-		.fail(function(response) {
+		}
+
+		, failFnc = function(response) {
 			var messages = response.responseText.split(',');
 			self.options.eventAggregator.trigger('view:flashmessage', {
 				error: messages
 			});
-		})
-		.always(function() {
+		}
+
+		,alwaysFnc = function() {
 			$loader.hide();
 			$submitButton.removeClass('disabled').attr('disabled', false);
-		});
+		};
+
+		if (this.task) {
+			$.put(API_PREFIX + action, $form.serialize())
+				.done(doneFnc)
+				.fail(failFnc)
+				.always(alwaysFnc);
+		} else {
+			$.post(API_PREFIX + action, $form.serialize())
+				.done(doneFnc)
+				.fail(failFnc)
+				.always(alwaysFnc);
+		}
+
 		return false;
 	}
 

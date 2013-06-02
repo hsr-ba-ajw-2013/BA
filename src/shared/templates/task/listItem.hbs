@@ -18,15 +18,16 @@
 			</form>
 		{{/ifnotequal}}
 	</td>
-	<td class="task">{{name}}</td>
+	<td class="task">
+		{{#ifnotequal fulfilledAt}}
+			{{name}}
+		{{else}}
+			<a class="edit-task" href="/community/{{community.slug}}/tasks/{{id}}/edit">
+				{{name}}
+			</a>
+		{{/ifnotequal}}
+	</td>
 	<td class="description">{{description}}</td>
 	<td class="due-date">{{formatDate dueDate}}</td>
 	<td class="reward">{{reward}} <i class="icon-trophy"></i></td>
-	<td class="action">
-		{{^if isFulfilled}}
-		<a class="edit-task" href="/community/{{community.slug}}/tasks/{{id}}/edit">
-			<i class="icon-edit"></i>
-		</a>
-		{{/if}}
-	</td>
 </tr>
