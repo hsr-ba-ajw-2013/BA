@@ -16,7 +16,8 @@ module.exports = View.extend({
 	}
 
 	, markTaskDoneSubmit: function markTaskDoneSubmit(evt) {
-		var $el = this.$(evt.currentTarget)
+		var self = this
+			, $el = this.$(evt.currentTarget)
 			, taskId = $el.data('task-id')
 			, task = this.tasks.get(taskId)
 			, resident = this.getDataStore().get('currentUser');
@@ -29,6 +30,8 @@ module.exports = View.extend({
 				success: function() {
 					var $td = $el.parent();
 					$td.html('<i class="icon-check"></i>');
+					self.options.eventAggregator.trigger(
+						'view:update-flashmessages');
 				}
 			});
 		} catch(err) {
@@ -71,20 +74,22 @@ module.exports = View.extend({
 	, renderTasks: function() {
 		var self = this
 			, tasks = this.getDataStore().get('tasks')
-			, tableBody = this.$('table.tasks tbody', this.$el)
+			, $tableBody = this.$('table.tasks tbody', this.$el)
 			, community = this.getDataStore().get('community').toJSON()
 			, resident = this.getDataStore().get('currentUser')
 			, now = new Date();
 
+		$tableBody.empty();
+
 		if(tasks.models.length === 0) {
-			tableBody.append(self.templates.task.noTasks());
+			$tableBody.append(self.templates.task.noTasks());
 		} else {
 			_.each(tasks.models, function(task) {
 				var data = task.toJSON();
 				data.community = community;
 				data.resident = resident;
 				data.now = now;
-				tableBody.append(self.templates.task.listItem(data));
+				$tableBody.append(self.templates.task.listItem(data));
 			});
 		}
 	}

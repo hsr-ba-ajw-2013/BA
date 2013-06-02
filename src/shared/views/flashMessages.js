@@ -13,6 +13,8 @@ module.exports = View.extend({
 		this.options.router.on('render', this.fetchMessages.bind(this));
 		this.options.eventAggregator.on('view:flashmessage'
 			, this.renderMessages.bind(this));
+		this.options.eventAggregator.on('view:update-flashmessages'
+			, this.fetchMessages.bind(this));
 	}
 
 	, fetchMessages: function fetchMessages() {
