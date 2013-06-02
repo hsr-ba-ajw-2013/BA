@@ -7,7 +7,7 @@ var controller = require('./controller')
 	, authorizedForCommunity = require('../policy/authorizedForCommunity')
 	, taskValidators = require('./validators')
 	, utils = require('../utils')
-	, modulePrefix = '/community/:slug/task';
+	, modulePrefix = '/community/:slug/tasks';
 
 module.exports = function initTaskApi(api, apiPrefix) {
 	var prefix = apiPrefix + modulePrefix;
@@ -18,7 +18,7 @@ module.exports = function initTaskApi(api, apiPrefix) {
 		, controller.getTaskWithId]);
 
 	// GET /api/community/:slug/tasks
-	api.get(prefix + 's', [
+	api.get(prefix, [
 		basicAuthentication
 		, authorizedForCommunity
 		, controller.getTasksForCommunityWithSlug]);
@@ -32,7 +32,7 @@ module.exports = function initTaskApi(api, apiPrefix) {
 	]);
 
 	// POST /api/community/:slug/tasks/:id
-	api.post(prefix + 's/:id', [
+	api.post(prefix + '/:id', [
 		basicAuthentication
 		, authorizedForCommunity
 		, taskValidators.createTask

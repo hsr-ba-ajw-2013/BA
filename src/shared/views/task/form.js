@@ -22,10 +22,13 @@ module.exports = View.extend({
 
 		$.post(API_PREFIX + action, $form.serialize())
 		.done(function(task) {
-			var community = self.getDataStore().get('community');
-			self.getDataStore().get('tasks').add(new TaskModel(task), {
-				at: 0
-			});
+			var community = self.getDataStore().get('community')
+				, tasks = self.getDataStore().get('tasks');
+			if(tasks) {
+				tasks.add(new TaskModel(task), {
+					at: 0
+				});
+			}
 			self.options.router.navigate('/community/' + community.get('slug') +
 				'/tasks', {trigger: true});
 		})
@@ -46,7 +49,7 @@ module.exports = View.extend({
 		var community = this.getDataStore().get('community');
 		this.$el.html(this.templates.task.form({
 			action: '/community/' + community.get('slug') +
-				'/task'
+				'/tasks'
 			, title: this.translate('Create Task')
 		}));
 	}

@@ -3,9 +3,12 @@
 		{{#ifnotequal fulfilledAt}}
 			<i class="icon-check"></i>
 		{{else}}
-			<a href="/community/{{community.slug}}/task/{{id}}/check" data-task-id="{{id}}">
-				<i class="icon-check-empty"></i>
-			</a>
+			<form class="reset-style" action="/community/{{community.slug}}/tasks/{{id}}" data-task-id="{{id}}" method="post">
+				<input type="hidden" name="method" value="put"/>
+				<button type="submit" class="reset-style">
+					<i class="icon-check-empty"></i>
+				</button>
+			</form>
 		{{/ifnotequal}}
 	</td>
 	<td class="task">{{name}}</td>

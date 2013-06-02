@@ -5,6 +5,7 @@
 var	auth = require('./auth')
 	, clientConfig = require('./client-config')
 	, connectDomain = require('./connect-domain')
+	, connectTimeout = require('./connect-timeout')
 	, eventBus = require('./event-bus')
 	, db = require('./db')
 	//, handler = require('./handler')
@@ -32,6 +33,7 @@ var	auth = require('./auth')
  *     (Object) config - Configuration
  */
 function setupMiddleware(app, config) {
+	connectTimeout(app, config);
 	expressStatic(app, config);
 	//templateData(app, config);
 	//view(app, config);

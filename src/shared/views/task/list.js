@@ -7,7 +7,7 @@ module.exports = View.extend({
 
 	, events: {
 		'click .create-task': 'createTaskClick'
-		, 'click .check a': 'markTaskDoneClick'
+		, 'submit .check form': 'markTaskDoneSubmit'
 	}
 
 	, initialize: function() {
@@ -15,7 +15,7 @@ module.exports = View.extend({
 		this.tasks.on('sync', this.renderTasks.bind(this));
 	}
 
-	, markTaskDoneClick: function markTaskDoneClick(evt) {
+	, markTaskDoneSubmit: function markTaskDoneSubmit(evt) {
 		var $el = this.$(evt.currentTarget)
 			, taskId = $el.data('task-id')
 			, task = this.tasks.get(taskId)

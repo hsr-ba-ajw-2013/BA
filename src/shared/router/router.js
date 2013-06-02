@@ -30,7 +30,7 @@ module.exports = Router.extend({
 		, 'join/:shareLink': 'joinCommunity'
 
 		, 'community/:communitySlug/tasks': 'listTasks'
-		, 'community/:communitySlug/task/new': 'createTask'
+		, 'community/:communitySlug/tasks/new': 'createTask'
 
 		, 'community/:communitySlug/rankings': 'listRanking'
 
