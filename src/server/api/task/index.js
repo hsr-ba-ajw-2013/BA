@@ -81,7 +81,7 @@ module.exports = function initTaskApi(api, apiPrefix) {
 		, function error(err, redirect) {
 			api.app.get('eventbus').emit('validation:error', err.message);
 			redirect('/community/' + this.req.param('slug') +
-				'/task/' + this.req.param('id'));
+				'/tasks/' + this.req.param('id'));
 		}
 		, api
 		, [

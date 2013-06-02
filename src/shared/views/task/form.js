@@ -85,7 +85,7 @@ module.exports = View.extend({
 	, renderView: function() {
 		var community = this.getDataStore().get('community')
 			, action = '/community/' + community.get('slug') +
-				'/task'
+				'/tasks'
 			, task;
 
 		if (this.task) {

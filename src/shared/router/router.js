@@ -121,7 +121,7 @@ module.exports = Router.extend({
 			var TaskModel = require('../models/task')
 				, task = new TaskModel();
 
-			task.url = '/api/community/' + communitySlug + '/task/' + taskId;
+			task.url = '/api/community/' + communitySlug + '/tasks/' + taskId;
 
 			this.dataStore.set('task', task);
 
