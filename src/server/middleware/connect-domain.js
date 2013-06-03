@@ -1,4 +1,4 @@
-/** Component: ConnectDomain
+/** Module: ConnectDomain
  * Node.js Domains for asynchronous error handling using <connect-domain at
  * https://github.com/baryshev/connect-domain>.
  *

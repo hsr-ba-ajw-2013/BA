@@ -1,4 +1,4 @@
-/** Component: ClientConfig
+/** Module: ClientConfig
  * Passes configured variables to the template.
  */
 

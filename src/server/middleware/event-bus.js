@@ -1,4 +1,4 @@
-/** Component: EventBus
+/** Module: EventBus
  * Application-wide event bus
  */
 

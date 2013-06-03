@@ -1,4 +1,4 @@
-/** Component: ConnectTimeout
+/** Module: ConnectTimeout
  * HTTP Timeout support from <connect-timeout at
  * https://github.com/LearnBoost/connect-timeout>.
  */
@@ -6,7 +6,7 @@
 var connectTimeout = require('connect-timeout');
 
 /** Function: connectTimeoutInit
- * Initialiazes <connect-timeout
+ * Initializes <connect-timeout
  * at https://github.com/LearnBoost/connect-timeout>.
  *
  * Parameters:
