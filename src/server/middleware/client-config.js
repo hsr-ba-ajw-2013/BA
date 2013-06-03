@@ -11,7 +11,7 @@
  */
 module.exports = function clientConfigInit(app, config) {
 	app.locals.config = {
-		port: config.http.displayedPort
+		port: config.http.displayedPort || config.http.port
 		, hostname: config.http.displayedHostname
 		, protocol: config.http.protocol
 	};
