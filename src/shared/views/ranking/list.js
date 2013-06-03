@@ -4,6 +4,17 @@ var View = require('../roomiesView')
 module.exports = View.extend({
 	el: '#main'
 
+	, events: {
+		"click a": "onClickResident"
+	}
+
+	, onClickResident: function onClickResident(evt) {
+		var $el = $(evt.currentTarget)
+			, href = $el.attr('href');
+		this.options.router.navigate(href, {trigger: true});
+		return false;
+	}
+
 	, initialize: function initialize() {
 		var rankings = this.options.dataStore.get('rankings');
 		this.rankings = rankings;
