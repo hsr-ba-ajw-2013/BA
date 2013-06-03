@@ -29,6 +29,7 @@ module.exports = View.extend({
 				, fulfillorId: resident.id
 			}, {
 				success: function() {
+					self.tasks.remove(task)
 					var $td = $el.parent();
 					$td.html('<i class="icon-check"></i>');
 					self.options.eventAggregator.trigger(
