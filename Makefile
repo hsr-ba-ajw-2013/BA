@@ -49,7 +49,7 @@ test-coveralls: test coveralls parse-code-coverage
 	@./node_modules/.bin/lcov-result-merger coveralls_\*.log | ./node_modules/coveralls/bin/coveralls.js
 	@echo "Done"
 
-setup: clean deps config precompile-sass
+setup: clean deps config precompile-sass precompile-templates
 	@echo "Done. You should now be able to start using 'npm start'."
 
 deps:

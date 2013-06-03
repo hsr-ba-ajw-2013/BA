@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/zsh
 #
 # Configuration & Setup for Roomies
 #
@@ -23,6 +23,10 @@ install() {
 
 	echo -n "Creating postgres DB or running migration..."
 	db
+	echo "done"
+
+	echo -n "Updating zshrc..."
+	update_zshrc
 	echo "done"
 
 	echo "Finished. Please run 'npm start' now."
@@ -110,6 +114,7 @@ module.exports = {
 }
 ENDCONF
 ) > config.development.js
+	cat config.development.js > config.production.js
 }
 
 db() {
@@ -164,6 +169,19 @@ ENDCONF
 	rm config/config.json
 	rmdir config
 	echo "done"
+}
+
+update_zshrc() {
+	if ! grep -Fxq "DISABLE_AUTO_UPDATE=true" ~/.zshrc
+	then
+		echo 'DISABLE_AUTO_UPDATE=true' >> ~/.zshrc
+	fi
+	if ! grep -Fxq 'export NODE_ENV="production"' ~/.zshrc
+	then
+		echo 'export NODE_ENV="production"' >> ~/.zshrc
+	fi
+
+	source ~/.zshrc
 }
 
 install
