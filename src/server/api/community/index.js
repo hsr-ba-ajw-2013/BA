@@ -7,8 +7,17 @@
  *                           :slug.
  *     GET community/:slug/tasks - Returns all tasks which belong to the
  *                                 community with the named url parameter :slug.
+ *     GET community/:id - Returns a community from the specified id
  *     POST community/ - Creates a new community based upon the information
  *                       passed with the function call.
+ *     DELETE community/:slug - Marks a community as deleted
+ *     GET join/community/:shareLink - Joins the specified community
+ *
+ * Form Routes:
+ *     POST /community/:slug/resident - Joins a community
+ *     POST /community - Create a community
+ *     DELETE /community/:slug - Deletes a community
+ *
  */
 
 var controller = require('./controller')

@@ -49,31 +49,6 @@ Group: Server  {
 
    Group: Api  {
 
-      File: Api  (server/api/index.js)
-      File: Api.Utils.Test  (server/api/utils/test.js)
-      File: ErrorCollectingValidator  (no auto-title, server/api/errorCollectingValidator.js)
-      File: Errors  (no auto-title, server/api/errors.js)
-
-      Group: FlashMessages  {
-
-         File: FlashMessages  (no auto-title, server/api/flash-messages/index.js)
-         File: Controller  (no auto-title, server/api/flash-messages/controller.js)
-         }  # Group: FlashMessages
-
-      Group: Resident  {
-
-         File: Controller  (no auto-title, server/api/resident/controller.js)
-         File: Resident  (server/api/resident/index.js)
-         }  # Group: Resident
-
-      File: Utils  (no auto-title, server/api/utils/index.js)
-
-      Group: Policies  {
-
-         File: CheckPermissionToAccess  (no auto-title, server/api/policy/basicAuthentication.js)
-         File: AuthorizedForCommunity  (no auto-title, server/api/policy/authorizedForCommunity.js)
-         }  # Group: Policies
-
       Group: Community  {
 
          File: Community  (server/api/community/index.js)
@@ -81,6 +56,12 @@ Group: Server  {
          File: Errors  (no auto-title, server/api/community/errors.js)
          File: Validators  (no auto-title, server/api/community/validators.js)
          }  # Group: Community
+
+      Group: FlashMessages  {
+
+         File: FlashMessages  (no auto-title, server/api/flash-messages/index.js)
+         File: Controller  (no auto-title, server/api/flash-messages/controller.js)
+         }  # Group: FlashMessages
 
       Group: Gamification  {
 
@@ -101,10 +82,16 @@ Group: Server  {
             File: BaseRule  (no auto-title, server/api/gamification/rules/base.js)
             File: NPointsRule  (no auto-title, server/api/gamification/rules/n-points.js)
             File: NTasksRule  (no auto-title, server/api/gamification/rules/n-tasks.js)
-            File: Rules  (server/api/gamification/rules/index.js)
+            File: Rules  (no auto-title, server/api/gamification/rules/index.js)
             }  # Group: Rules
 
          }  # Group: Gamification
+
+      Group: Policies  {
+
+         File: CheckPermissionToAccess  (no auto-title, server/api/policy/basicAuthentication.js)
+         File: AuthorizedForCommunity  (no auto-title, server/api/policy/authorizedForCommunity.js)
+         }  # Group: Policies
 
       Group: Ranking  {
 
@@ -112,6 +99,12 @@ Group: Server  {
          File: Errors  (no auto-title, server/api/ranking/errors.js)
          File: Ranking  (server/api/ranking/index.js)
          }  # Group: Ranking
+
+      Group: Resident  {
+
+         File: Controller  (no auto-title, server/api/resident/controller.js)
+         File: Resident  (no auto-title, server/api/resident/index.js)
+         }  # Group: Resident
 
       Group: Task  {
 
@@ -121,6 +114,15 @@ Group: Server  {
          File: Validators  (no auto-title, server/api/task/validators.js)
          }  # Group: Task
 
+      Group: Utils  {
+
+         File: Utils  (no auto-title, server/api/utils/index.js)
+         File: Test  (no auto-title, server/api/utils/test.js)
+         }  # Group: Utils
+
+      File: Api  (server/api/index.js)
+      File: ErrorCollectingValidator  (no auto-title, server/api/errorCollectingValidator.js)
+      File: Errors  (no auto-title, server/api/errors.js)
       }  # Group: Api
 
    File: BarefootFactory  (server/barefootFactory.js)
@@ -131,6 +133,7 @@ Group: Server  {
       File: Auth  (server/middleware/auth.js)
       File: ClientConfig  (server/middleware/client-config.js)
       File: ConnectDomain  (server/middleware/connect-domain.js)
+      File: ConnectTimeout  (server/middleware/connect-timeout.js)
 
       Group: Db  {
 
@@ -142,25 +145,19 @@ Group: Server  {
          }  # Group: Db
 
       File: EventBus  (server/middleware/event-bus.js)
-      File: Handler  (server/middleware/handler.js)
       File: HTTP  (server/middleware/http.js)
-      File: Livereload  (server/middleware/livereload.js)
       File: Locale  (server/middleware/locale.js)
       File: Logger  (server/middleware/logger.js)
       File: Middleware  (server/middleware/index.js)
-      File: Router  (server/middleware/router.js)
       File: Static  (server/middleware/static.js)
-      File: TemplateData  (server/middleware/template-data.js)
-      File: Validator  (server/middleware/validator.js)
-      File: View  (server/middleware/view.js)
       }  # Group: Middleware
 
-   File: public/.../lib/jquery-1.9.1.js  (server/public/javascripts/lib/jquery-1.9.1.js)
    }  # Group: Server
 
 Group: Shared  {
 
    File: EventAggregator  (shared/eventAggregator.js)
+   File: forms.js  (shared/forms.js)
    File: Locales  (shared/locales/index.js)
    File: RoomiesView  (shared/views/roomiesView.js)
    File: router/router.js  (shared/router/router.js)

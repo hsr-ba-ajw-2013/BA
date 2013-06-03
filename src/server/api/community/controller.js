@@ -141,8 +141,8 @@ function setCommunityDisabled(community, done) {
 }
 
 /** PrivateFunction: removeResidentsFromCommunity
- * Set the property 'isAdmin' of a given resident to false and resets the
- * communityId property to 0.
+ * Removes all residents of the given community & sets the isAdmin property
+ * of them to false.
  *
  * Parameters:
  *   (Object) community - The community which has been disabled

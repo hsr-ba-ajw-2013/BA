@@ -1,4 +1,3 @@
-/* global $ */
 var View = require('./roomiesView')
 	, _ = require('underscore');
 
@@ -10,7 +9,7 @@ module.exports = View.extend({
 	}
 
 	, onClickMenuItem: function onClickMenuItem(evt) {
-		var $el = $(evt.currentTarget)
+		var $el = this.$(evt.currentTarget)
 			, href = $el.attr('href');
 		this.options.router.navigate(href, {trigger: true});
 		return false;

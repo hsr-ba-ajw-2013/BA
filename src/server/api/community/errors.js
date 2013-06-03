@@ -1,5 +1,5 @@
 /** Class: Api.Community.Errors
- *
+ * Community-specific HTTP-Errors
  */
 var Barefoot = require('node-barefoot')()
 	, errors = Barefoot.errors

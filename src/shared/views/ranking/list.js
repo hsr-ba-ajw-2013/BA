@@ -9,7 +9,7 @@ module.exports = View.extend({
 	}
 
 	, onClickResident: function onClickResident(evt) {
-		var $el = $(evt.currentTarget)
+		var $el = this.$(evt.currentTarget)
 			, href = $el.attr('href');
 		this.options.router.navigate(href, {trigger: true});
 		return false;

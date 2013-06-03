@@ -1,5 +1,5 @@
 /** Class: Api.Ranking.Errors
- *
+ * Ranking-specific errors
  */
 var Barefoot = require('node-barefoot')()
 	, errors = Barefoot.errors

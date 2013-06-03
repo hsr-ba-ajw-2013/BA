@@ -4,7 +4,10 @@
 
 var _ = require('underscore')
 	, debug = require('debug')('roomies:api:flash-messages:controller')
-	, eventsMap = {
+	/** PrivateVariable: _eventsMap
+	 * Map for event types <-> message types & texts
+	 */
+	, _eventsMap = {
 		"task:created": {
 			type: "success"
 			, text: "Task created successfully"
@@ -33,11 +36,21 @@ var _ = require('underscore')
 			type: "error"
 		}
 	}
+	/** PrivateVariable: _messages
+	 * Flash messages temporary store
+	 */
 	, _messages = {};
 
+/** PrivateFunction: _mapEvents
+ * Maps given events to their messages & message types
+ *
+ * Parameters:
+ *   (Event) event - Event from the EventEmitter
+ *   (Object) eventData - Data
+ */
 function _mapEvents(evt, eventData) {
 	debug('got event `%s`', evt);
-	var msg = eventsMap[evt]
+	var msg = _eventsMap[evt]
 		, text = msg.text;
 	if(eventData && !msg.text) {
 		text = eventData;
@@ -71,11 +84,14 @@ function getFlashMessages(success) {
 	success(msgs);
 }
 
+/** Function: setupObservers
+ * Sets listeners for every event in the <_eventsMap>.
+ */
 function setupObservers(app) {
 	var eventBus = app.get('eventbus');
 
-	for(var evt in eventsMap) {
-		if(eventsMap.hasOwnProperty(evt)) {
+	for(var evt in _eventsMap) {
+		if(_eventsMap.hasOwnProperty(evt)) {
 			eventBus.on(evt, _mapEvents.bind(this, evt));
 		}
 	}
