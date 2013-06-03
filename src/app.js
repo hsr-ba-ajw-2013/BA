@@ -12,6 +12,12 @@ var Barefoot = require('node-barefoot')()
 	, Router = require('./shared/router')
 	, barefootStartOptions = {};
 
+if(Barefoot.isRunningOnServer()) {
+	var debug = require('debug')('roomies:app');
+} else {
+	var debug = function() {};
+}
+
 /** Function: setupRequestContext
  * Called by barefoot to set up the context when processing a route on the
  * server or initialising the router on the client.
@@ -19,6 +25,8 @@ var Barefoot = require('node-barefoot')()
  * This function works with the scope of the router!
  */
 function setupRequestContext() {
+	debug('setup request context');
+
 	this.dataStore.registerCollection(
 		'TasksCollection', TasksCollection, TaskModel);
 	this.dataStore.registerCollection(
@@ -38,6 +46,7 @@ function setupRequestContext() {
  * This function simply invokes the barefoot start function.
  */
 var start = function start() {
+	debug('start barefoot');
 	Barefoot.start(Router, barefootStartOptions);
 };
 

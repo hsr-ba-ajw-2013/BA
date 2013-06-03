@@ -12,6 +12,18 @@ var Barefoot = require('node-barefoot')()
 	, Profile = require('../views/resident/profile')
 	, _ = require('underscore');
 
+if(Barefoot.isRunningOnServer()) {
+	var debug = require('debug')('roomies:shared:router');
+} else {
+	if(console.info) {
+		var debug = function(str) {
+			console.info(str);
+		};
+	} else {
+		var debug = function() {};
+	}
+}
+
 module.exports = Router.extend({
 	routes: {
 		'': 'home'
@@ -36,6 +48,7 @@ module.exports = Router.extend({
 	}
 
 	, home: function home() {
+		debug('home');
 		if(!this.isAuthorized()) {
 			this.render(this.createView(HomeView));
 		} else {
@@ -50,12 +63,14 @@ module.exports = Router.extend({
 	}
 
 	, createCommunity: function createCommunity() {
+		debug('create community');
 		if(!this.redirectIfNotAuthorized()) {
 			this.render(this.createView(CreateCommunityView));
 		}
 	}
 
 	, inviteCommunity: function inviteCommunity() {
+		debug('invite community');
 		if(!this.redirectIfNotAuthorized() &&
 			!this.redirectIfInValidCommunity()) {
 			this.render(this.createView(InviteCommunityView));
@@ -63,6 +78,7 @@ module.exports = Router.extend({
 	}
 
 	, joinCommunity: function joinCommunity(shareLink) {
+		debug('join community');
 		if(!this.redirectIfNotAuthorized()) {
 			var CommunityModel = require('../models/community')
 				, community = new CommunityModel();
@@ -73,6 +89,7 @@ module.exports = Router.extend({
 	}
 
 	, listTasks: function listTasks(communitySlug) {
+		debug('list tasks');
 		if(!this.redirectIfNotAuthorized() &&
 			!this.redirectIfInValidCommunity()) {
 			var tasks = this.dataStore.get('tasks')
@@ -93,6 +110,7 @@ module.exports = Router.extend({
 	}
 
 	, createTask: function createTask() {
+		debug('create task');
 		if(!this.redirectIfNotAuthorized() &&
 			!this.redirectIfInValidCommunity()) {
 			this.render(this.createView(TaskFormView));
@@ -100,6 +118,7 @@ module.exports = Router.extend({
 	}
 
 	, editTask: function editTask(communitySlug, taskId) {
+		debug('edit task with id: ' + taskId);
 		if(!this.redirectIfNotAuthorized() &&
 			!this.redirectIfInValidCommunity()) {
 
@@ -117,6 +136,7 @@ module.exports = Router.extend({
 	}
 
 	, listRanking: function listRanking(communitySlug) {
+		debug('list ranking');
 		if(!this.redirectIfNotAuthorized() &&
 			!this.redirectIfInValidCommunity()) {
 			var RankingCollection = require('../collections/rankings')
@@ -129,6 +149,7 @@ module.exports = Router.extend({
 	}
 
 	, profile: function profile(facebookId) {
+		debug('resident profile');
 		if(!this.redirectIfNotAuthorized() &&
 			!this.redirectIfInValidCommunity()) {
 			var ResidentProfileModel = require('../models/residentprofile')
@@ -143,10 +164,12 @@ module.exports = Router.extend({
 	}
 
 	, notFound: function notFound() {
+		debug('page not found');
 		this.render(this.createView(NotFoundView));
 	}
 
 	, logout: function logout() {
+		debug('logout');
 		this.navigate('/logout', {trigger: true});
 		/* global window */
 		window.location.reload();
@@ -154,6 +177,7 @@ module.exports = Router.extend({
 
 
 	, isAuthorized: function isAuthorized() {
+		debug('is authorized');
 		var currentUser = this.dataStore.get('currentUser')
 			, authorized = false;
 
@@ -226,6 +250,7 @@ module.exports = Router.extend({
 			, eventAggregator: this.eventAggregator
 			, router: this
 		});
+		debug('create view `%s`', view.toString());
 
 		return view;
 	}
@@ -249,6 +274,7 @@ module.exports = Router.extend({
 	 *     (<MainView>)
 	 */
 	, mainView: function mainView() {
+		debug('setup main view');
 		var locale = this.getLocale();
 		if(_.isUndefined(this._mainView)) {
 			this._mainView = new MainView({
@@ -280,6 +306,7 @@ module.exports = Router.extend({
 	 *     (<RoomiesView>) view - The view which should be rendered.
 	 */
 	, render: function render(view) {
+		debug('render');
 
 		this.trigger('render');
 
