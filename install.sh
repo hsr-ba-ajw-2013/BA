@@ -73,14 +73,11 @@ module.exports = {
 	}
 
 	, http: {
-		port: 3000
+		protocol: 'http'
+		, port: 3000
 		, hostname: '0.0.0.0'
-		// in case you listen on 0.0.0.0, you'd like to use a different
-		// hostname to be displayed for absolute urls.
 		, displayedHostname: 'localhost'
-		// the same here for the port, e.g. when you use NAT.
 		, displayedPort: 9001
-		, protocol: 'http'
 	}
 
 	, connectTimeout: {

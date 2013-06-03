@@ -46,15 +46,18 @@ module.exports = {
 	// Roomies will use these settings to set up its express.js HTTP server.
 	// Choose https as protocol if you like it more secure (but do not ask us
 	// how to configure certificates ;) )
+	//
+	// You may wish to use another hostname for generating links (i.e. when you
+	// use 0.0.0.0 to listen on all interfaces of your machine).
+	// Use displayedHostname in this case. If you need a specific port too, use
+	// displayedPort for this. (If you don't need these values, set them to
+	// blank, dont delete them)
 	, http: {
-		port: 3000
+		protocol: 'http'
+		, port: 80
 		, hostname: '0.0.0.0'
-		// in case you listen on 0.0.0.0, you'd like to use a different
-		// hostname to be displayed for absolute urls.
 		, displayedHostname: 'localhost'
-		// the same here for the port, e.g. when you use NAT.
-		, displayedPort: 9001
-		, protocol: 'http'
+		, displayedPort: ''
 	}
 
 	/* HTTP Timout: */

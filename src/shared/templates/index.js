@@ -105,15 +105,17 @@ function formatDateHelper(context, block) {
  */
 function urlHelper(path, config, urlEncode) {
 	var urlData = {
-		protocol: config.protocol
-		, hostname: config.hostname
-		, port: config.port
-		, pathname: path
-	};
-	var formattedUrl = url.format(urlData);
+			protocol: config.protocol
+			, hostname: config.hostname
+			, port: config.port
+			, pathname: path
+		}
+		, formattedUrl = url.format(urlData);
+
 	if(urlEncode === true) {
 		return querystring.stringify({u: formattedUrl}).substr(2);
 	}
+
 	return formattedUrl;
 }
 

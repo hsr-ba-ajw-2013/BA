@@ -1,15 +1,5 @@
 
 module.exports = {
-	/*db: {
-		database: 'roomies'
-		, username: 'roomies'
-		, password: '12345'
-		, options: {
-			host: 'localhost'
-			, port: 5432
-			, dialect: 'postgres'
-		}
-	}*/
 	db: {
 		database: 'roomies_test'
 		, options: {
@@ -38,8 +28,6 @@ module.exports = {
 	, http: {
 		port: 3000
 		, hostname: '0.0.0.0'
-		// in case you listen on 0.0.0.0, you'd like to use a different
-		// hostname to be displayed for absolute urls.
 		, displayedHostname: 'localhost'
 		, protocol: 'http'
 	}
