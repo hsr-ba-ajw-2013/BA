@@ -1,9 +1,5 @@
 /** Module: Api.Utils.Test
  * Test utilities for mocking API.
- *
- * Exports:
- *   - req
- *   - app
  */
 var _ = require('underscore')
 	, join = require('path').join
@@ -103,7 +99,7 @@ function createTask(taskDao, resident, community, done) {
 	}).error(errorHandler);
 }
 
-/** PrivateFunction: createAndAssignCommunity
+/** Function: createAndAssignCommunity
  * Creates a community and assigns the resident to it.
  *
  * Parameters:
