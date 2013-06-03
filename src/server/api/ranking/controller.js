@@ -86,9 +86,8 @@ function getRankingListForCommunity(success, error) {
 				, include: [{ model: taskDao, as: 'fulfilledTasks'}]
 				, group: ['Residents.id']
 				, order: '"points" DESC'
-				//, where: {'CommunityId': community.id}
-				, where: ['"fulfilledTasks"."CommunityId" = ' + community.id +
-					'AND "fulfilledTasks"."fulfilledAt" >= ?', lastWeek]
+				, where: ['"fulfilledTasks"."CommunityId" = \'' + community.id +
+					'\' AND "fulfilledTasks"."fulfilledAt" >= ?', lastWeek]
 			}, { raw: true })
 			.success(function(rankings) {
 				return success(rankings);
