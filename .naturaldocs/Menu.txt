@@ -43,7 +43,7 @@ Don't Index: Variables, Classes
 # --------------------------------------------------------------------------
 
 
-File: app.js  (app.js)
+File: App  (app.js)
 
 Group: Server  {
 
@@ -177,17 +177,45 @@ Group: Shared  {
    File: Router  (shared/router/router.js)
    File: Templates  (shared/templates/index.js)
    File: EventAggregator  (shared/eventAggregator.js)
-   File: forms.js  (shared/forms.js)
+   File: Forms  (shared/forms.js)
    File: Locales  (shared/locales/index.js)
 
    Group: Views  {
 
+      Group: Community  {
+
+         File: CreateView  (no auto-title, shared/views/community/create.js)
+         File: InviteView  (no auto-title, shared/views/community/invite.js)
+         File: JoinView  (no auto-title, shared/views/community/join.js)
+         }  # Group: Community
+
+      Group: Error  {
+
+         File: NotFoundView  (no auto-title, shared/views/error/not-found.js)
+         }  # Group: Error
+
+      Group: Ranking  {
+
+         File: ListView  (no auto-title, shared/views/ranking/list.js)
+         }  # Group: Ranking
+
+      Group: Resident  {
+
+         File: ProfileView  (no auto-title, shared/views/resident/profile.js)
+         }  # Group: Resident
+
+      Group: Task  {
+
+         File: ListView  (shared/views/task/list.js)
+         File: FormView  (no auto-title, shared/views/task/form.js)
+         }  # Group: Task
+
+      File: FlashMessagesView  (no auto-title, shared/views/flashMessages.js)
+      File: FooterView  (no auto-title, shared/views/footer.js)
+      File: HomeView  (no auto-title, shared/views/home.js)
+      File: MainView  (no auto-title, shared/views/main.js)
+      File: MenuView  (no auto-title, shared/views/menu.js)
       File: RoomiesView  (shared/views/roomiesView.js)
-      File: CreateView  (no auto-title, shared/views/community/create.js)
-      File: InviteView  (no auto-title, shared/views/community/invite.js)
-      File: JoinView  (no auto-title, shared/views/community/join.js)
-      File: NotFoundView  (no auto-title, shared/views/error/not-found.js)
-      File: ListView  (no auto-title, shared/views/ranking/list.js)
       }  # Group: Views
 
    }  # Group: Shared

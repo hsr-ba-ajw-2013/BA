@@ -1,7 +1,7 @@
 var View = require('../roomiesView');
 
 /** Class: Views.Error.NotFoundView
- * Inherits from <RomiesView> and is responsible for not found display.
+ * Inherits from <RoomiesView> and is responsible for not found display.
  */
 module.exports = View.extend({
 	el: '#main'

@@ -1,3 +1,7 @@
+/** File: App
+ * Roomies app initialization.
+ */
+
 var Barefoot = require('node-barefoot')()
 	, EventAggregator = require('./shared/eventAggregator')
 	, ResidentModel = require('./shared/models/resident')

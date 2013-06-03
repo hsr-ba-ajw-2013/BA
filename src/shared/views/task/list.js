@@ -1,6 +1,9 @@
 var View = require('../roomiesView')
 	, _ = require('underscore');
 
+/** Class: Views.Task.ListView
+ * Inherits from <RoomiesView> and is responsible for task list view rendering.
+ */
 module.exports = View.extend({
 	el: '#main'
 
@@ -10,11 +13,17 @@ module.exports = View.extend({
 		, 'submit .check form': 'onSubmitMarkTaskDone'
 	}
 
+	/** Function: initialize
+	 * Initializes the task list view.
+	 */
 	, initialize: function initialize() {
 		this.tasks = this.getDataStore().get('tasks');
 		this.tasks.on('sync', this.renderTasks.bind(this));
 	}
 
+	/** Function: onSubmitMarkTaskDone
+	 * Handles mark as done clicks.
+	 */
 	, onSubmitMarkTaskDone: function onSubmitMarkTaskDone(evt) {
 		var self = this
 			, $el = this.$(evt.currentTarget)
@@ -42,6 +51,9 @@ module.exports = View.extend({
 		return false;
 	}
 
+	/** Function: onClickCreateTasks
+	 * Handles create task button clicks.
+	 */
 	, onClickCreateTask: function onClickCreateTask(evt) {
 		var $el = this.$(evt.currentTarget)
 			, href = $el.attr('href');
@@ -51,6 +63,9 @@ module.exports = View.extend({
 		return false;
 	}
 
+	/** Function: onClickEditTask
+	 * Handles edit task clicks.
+	 */
 	, onClickEditTask: function onClickEditTask(evt) {
 		var $el = this.$(evt.currentTarget)
 			, href = $el.attr('href');
@@ -59,6 +74,13 @@ module.exports = View.extend({
 		return false;
 	}
 
+	/** Function: beforeRender
+	 * Before render fetches the tasks if not yet fetched.
+	 *
+	 * Parameters:
+	 *   (Promise.resolve) resolve - After successfully doing work, resolve
+	 *                               the promise.
+	 */
 	, beforeRender: function beforeRender(resolve) {
 		if(this.tasks.models.length === 0) {
 			this.tasks.fetch({
@@ -74,6 +96,9 @@ module.exports = View.extend({
 		}
 	}
 
+	/** Function: renderView
+	 * Renders the view
+	 */
 	, renderView: function renderView() {
 		var community = this.getDataStore().get('community');
 		this.$el.html(this.templates.task.list({
@@ -82,6 +107,9 @@ module.exports = View.extend({
 		this.renderTasks();
 	}
 
+	/** Function: renderTasks
+	 * Renders tasks.
+	 */
 	, renderTasks: function renderTasks() {
 		var self = this
 			, tasks = this.getDataStore().get('tasks')
@@ -105,12 +133,21 @@ module.exports = View.extend({
 		}
 	}
 
+	/** Function: afterRender
+	 * Sets the document title
+	 *
+	 * Parameters:
+	 *   (Promise.resolve) resolve - After successfully doing work, resolve
+	 *                               the promise.
+	 */
 	, afterRender: function afterRender(resolve) {
 		this.setDocumentTitle(this.translate('Tasks'));
 		resolve();
 	}
 
-
+	/** Function: toString
+	 * Returns a string representation of this class.
+	 */
 	, toString: function toString() {
 		return 'Task.ListView';
 	}

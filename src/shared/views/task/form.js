@@ -1,6 +1,9 @@
 var View = require('../roomiesView')
 	, formSync = require('../../forms');
 
+/** Class: Views.Task.FormView
+ * Inherits from <RoomiesView> and is responsible for Task Form rendering.
+ */
 module.exports = View.extend({
 	el: '#main'
 
@@ -8,6 +11,9 @@ module.exports = View.extend({
 		'submit .task-form': 'onSubmitTask'
 	}
 
+	/** Function: initialize
+	 * Initializes the view.
+	 */
 	, initialize: function initialize() {
 		var task = this.options.dataStore.get('task');
 
@@ -22,6 +28,9 @@ module.exports = View.extend({
 		}
 	}
 
+	/** Function: onSubmitTask
+	 * Submit handler for the task form.
+	 */
 	, onSubmitTask: function onSubmitTask() {
 		var $form = this.$('.task-form')
 			, $loader = $form.find('.loader')
@@ -52,6 +61,13 @@ module.exports = View.extend({
 		return false;
 	}
 
+	/** Function: beforeRender
+	 * Fetches the task if not yet fetched.
+	 *
+	 * Parameters:
+	 *   (Promise.resolve) resolve - After successfully doing work, resolve
+	 *                               the promise.
+	 */
 	, beforeRender: function beforeRender(resolve) {
 		if(this.task) {
 			this.task.fetch({
@@ -67,6 +83,9 @@ module.exports = View.extend({
 		}
 	}
 
+	/** Function: renderView
+	 * Renders the task form.
+	 */
 	, renderView: function renderView() {
 		var community = this.getDataStore().get('community')
 			, action = '/community/' + community.get('slug') + '/tasks'
@@ -84,6 +103,14 @@ module.exports = View.extend({
 		}));
 	}
 
+	/** Function: afterRender
+	 * Sets the document title and adds the id as a hidden value
+	 * if it's an edit task action.
+	 *
+	 * Parameters:
+	 *   (Promise.resolve) resolve - After successfully doing work, resolve
+	 *                               the promise.
+	 */
 	, afterRender: function afterRender(resolve) {
 		this.setDocumentTitle(this.translate(this.title));
 
@@ -96,6 +123,9 @@ module.exports = View.extend({
 		resolve();
 	}
 
+	/** Function: toString
+	 * Returns a string representation of this class.
+	 */
 	, toString: function toString() {
 		return 'Task.FormView';
 	}

@@ -1,20 +1,23 @@
+/** File: Forms
+ * Form utilities for Backbone syncing.
+ */
 var models = require('./models')
 	, API_PREFIX = '/api';
 
-/** Function: displayValidationErrors
+/** PrivateFunction: _displayValidationErrors
  * Displays validation errors returned by the API.
  *
  * Parameters:
  *   (Object) response - AJAX response
  */
-function displayValidationErrors(response) {
+function _displayValidationErrors(response) {
 	var messages = response.responseText.split(',');
 	this.options.eventAggregator.trigger('view:flashmessage', {
 		error: messages
 	});
 }
 
-/** Function: formSyncModel
+/** PrivateFunction: _formSyncModel
  * Syncs a model with the API.
  *
  * Parameters:
@@ -25,7 +28,7 @@ function displayValidationErrors(response) {
  *   (Function) successCb - Callback in case of a successful sync
  *   (Function) errorCb - Callback in case of a errored sync
  */
-function formSyncModel(collection, model, data, url, successCb, errorCb) {
+function _formSyncModel(collection, model, data, url, successCb, errorCb) {
 	var Model = models[model]
 		, self = this;
 	if(!Model) {
@@ -44,13 +47,13 @@ function formSyncModel(collection, model, data, url, successCb, errorCb) {
 			successCb.apply(self, arguments);
 		}
 		, error: function error(model, response) {
-			displayValidationErrors.call(self, response);
+			_displayValidationErrors.call(self, response);
 			errorCb.apply(self, arguments);
 		}
 	});
 }
 
-/** Function: formSyncModelInCollection
+/** PrivateFunction: _formSyncModelInCollection
  * Creates a new model on the API side using <Backbone.Model.sync at
  * http://backbonejs.org/#Model-sync>.
  *
@@ -61,7 +64,7 @@ function formSyncModel(collection, model, data, url, successCb, errorCb) {
  *   (Function) successCb - Callback in case of a successful sync
  *   (Function) errorCb - Callback in case of a errored sync
  */
-function formSyncModelInCollection(id, collection, data, successCb, errorCb) {
+function _formSyncModelInCollection(id, collection, data, successCb, errorCb) {
 	if(!collection) {
 		throw new Error('Invalid or not existing collection assigned to' +
 			' the form.');
@@ -78,13 +81,13 @@ function formSyncModelInCollection(id, collection, data, successCb, errorCb) {
 			successCb.apply(self, arguments);
 		}
 		, error: function error(model, response) {
-			displayValidationErrors.call(self, response);
+			_displayValidationErrors.call(self, response);
 			errorCb.apply(self, arguments);
 		}
 	});
 }
 
-/** Function: serializeFormToObject
+/** PrivateFunction: _serializeFormToObject
  * Takes a form and uses <jQuery.serializeArray() at
  * http://api.jquery.com/serializeArray/> in order to transfer it
  * to an object.
@@ -95,7 +98,7 @@ function formSyncModelInCollection(id, collection, data, successCb, errorCb) {
  * Returns:
  *   (Object) - Form fields serialized
  */
-function serializeFormToObject($form) {
+function _serializeFormToObject($form) {
 	var dataArray = $form.serializeArray()
 		, data = {};
 	for(var i = 0, l = dataArray.length; i < l; i++) {
@@ -130,12 +133,12 @@ function formSync($form, success, error) {
 	}
 	collection = this.getDataStore().get(collection);
 
-	var data = serializeFormToObject($form);
+	var data = _serializeFormToObject($form);
 
 	if(model) {
-		formSyncModel.call(this, collection, model, data, url, success, error);
+		_formSyncModel.call(this, collection, model, data, url, success, error);
 	} else {
-		formSyncModelInCollection.call(this, id, collection, data, success
+		_formSyncModelInCollection.call(this, id, collection, data, success
 			, error);
 	}
 }

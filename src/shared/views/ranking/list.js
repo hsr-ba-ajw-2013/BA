@@ -2,7 +2,7 @@ var View = require('../roomiesView')
 	, _ = require('underscore');
 
 /** Class: Views.Ranking.ListView
- * Inherits from <RomiesView> and is responsible for the ranking list view.
+ * Inherits from <RoomiesView> and is responsible for the ranking list view.
  */
 module.exports = View.extend({
 	el: '#main'

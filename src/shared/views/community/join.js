@@ -1,7 +1,7 @@
 var View = require('../roomiesView');
 
 /** Class: Views.Community.JoinView
- * Inherits from <RomiesView> and is responsible for join a community
+ * Inherits from <RoomiesView> and is responsible for join a community
  * rendering & handling.
  */
 module.exports = View.extend({

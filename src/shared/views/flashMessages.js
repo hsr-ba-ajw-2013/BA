@@ -1,9 +1,15 @@
 var View = require('./roomiesView');
 
+/** Class: Views.FlashMessagesView
+ * Inherits from <RoomiesView> and is responsible for flash messages rendering.
+ */
 module.exports = View.extend({
 	el: '#flash-messages'
 
-	, initialize: function() {
+	/** Function: initialize
+	 * Initializes various event handlers.
+	 */
+	, initialize: function initialize() {
 		this.messages = this.options.dataStore.get('FlashModel');
 		var self = this;
 		this.messages.on('sync', this.syncView.bind(this));
@@ -17,10 +23,20 @@ module.exports = View.extend({
 			, this.fetchMessages.bind(this));
 	}
 
+	/** Function: fetchMessages
+	 * Fetches the messages.
+	 */
 	, fetchMessages: function fetchMessages() {
 		this.messages.fetch();
 	}
 
+	/** Function: beforeRender
+	 * Fetches messages if there aren't any messages.
+	 *
+	 * Parameters:
+	 *   (Promise.resolve) resolve - After successfully doing work, resolve
+	 *                               the promise.
+	 */
 	, beforeRender: function beforeRender(resolve) {
 		if(!this.messages.hasMessages()) {
 			this.messages.fetch({
@@ -33,6 +49,9 @@ module.exports = View.extend({
 		}
 	}
 
+	/** Function: renderView
+	 * Renders the flash messages
+	 */
 	, renderView: function renderView() {
 		var flashModel = this.messages;
 
@@ -44,14 +63,23 @@ module.exports = View.extend({
 		}
 	}
 
+	/** Function: clearMessages
+	 * Clears the flash messages element
+	 */
 	, clearMessages: function clearMessages() {
 		this.$el.children('ul').remove();
 	}
 
+	/** Function: syncView
+	 * Syncs the view with the model.
+	 */
 	, syncView: function syncView(model) {
 		this.renderMessages(model.toJSON());
 	}
 
+	/** Function: renderMessages
+	 * Renders the messages into the template.
+	 */
 	, renderMessages: function renderMessages(messages) {
 		var ul = this.$el.children('ul')
 			, html = this.templates.flashMessages({
@@ -64,6 +92,9 @@ module.exports = View.extend({
 		}
 	}
 
+	/** Function: toString
+	 * Returns a string represenation of this class.
+	 */
 	, toString: function toString() {
 		return 'FlashMessagesView';
 	}
