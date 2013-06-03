@@ -1,4 +1,3 @@
-/* global $ */
 var View = require('../roomiesView')
 	, _ = require('underscore');
 
@@ -6,17 +5,17 @@ module.exports = View.extend({
 	el: '#main'
 
 	, events: {
-		'click .create-task': "createTaskClick"
-		, 'click .edit-task': "editTaskClick"
-		, 'submit .check form': 'markTaskDoneSubmit'
+		'click .create-task': 'onClickCreateTask'
+		, 'click .edit-task': 'onClickEditTask'
+		, 'submit .check form': 'onSubmitMarkTaskDone'
 	}
 
-	, initialize: function() {
+	, initialize: function initialize() {
 		this.tasks = this.getDataStore().get('tasks');
 		this.tasks.on('sync', this.renderTasks.bind(this));
 	}
 
-	, markTaskDoneSubmit: function markTaskDoneSubmit(evt) {
+	, onSubmitMarkTaskDone: function onSubmitMarkTaskDone(evt) {
 		var self = this
 			, $el = this.$(evt.currentTarget)
 			, taskId = $el.data('task-id')
@@ -43,8 +42,8 @@ module.exports = View.extend({
 		return false;
 	}
 
-	, createTaskClick: function(evt) {
-		var $el = $(evt.currentTarget)
+	, onClickCreateTask: function onClickCreateTask(evt) {
+		var $el = this.$(evt.currentTarget)
 			, href = $el.attr('href');
 
 		this.options.dataStore.set('task', undefined);
@@ -52,15 +51,15 @@ module.exports = View.extend({
 		return false;
 	}
 
-	, editTaskClick: function(evt) {
-		var $el = $(evt.currentTarget)
+	, onClickEditTask: function onClickEditTask(evt) {
+		var $el = this.$(evt.currentTarget)
 			, href = $el.attr('href');
 
 		this.options.router.navigate(href, {trigger: true});
 		return false;
 	}
 
-	, beforeRender: function(resolve) {
+	, beforeRender: function beforeRender(resolve) {
 		if(this.tasks.models.length === 0) {
 			this.tasks.fetch({
 				success: function() {
@@ -75,7 +74,7 @@ module.exports = View.extend({
 		}
 	}
 
-	, renderView: function() {
+	, renderView: function renderView() {
 		var community = this.getDataStore().get('community');
 		this.$el.html(this.templates.task.list({
 			community: community.toJSON()
@@ -83,7 +82,7 @@ module.exports = View.extend({
 		this.renderTasks();
 	}
 
-	, renderTasks: function() {
+	, renderTasks: function renderTasks() {
 		var self = this
 			, tasks = this.getDataStore().get('tasks')
 			, $tableBody = this.$('table.tasks tbody', this.$el)
@@ -106,7 +105,7 @@ module.exports = View.extend({
 		}
 	}
 
-	, afterRender: function(resolve) {
+	, afterRender: function afterRender(resolve) {
 		this.setDocumentTitle(this.translate('Tasks'));
 		resolve();
 	}
