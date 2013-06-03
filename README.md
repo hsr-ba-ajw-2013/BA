@@ -16,3 +16,5 @@ This script will automatically install all dependencies, create tables & run mig
 
 ## Testing
 `npm test` or `make test`
+
+[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/971c206fb037a6539314d1471f01de06 "githalytics.com")](http://githalytics.com/hsr-ba-ajw-2013/BA)
