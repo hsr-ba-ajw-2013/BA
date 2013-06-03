@@ -72,10 +72,8 @@ clean:
 	@-rm -Rf ./node_modules
 	@echo "Cleaning npm cache"
 	@npm cache clean
-	@echo "Cleaning test-coverage"
-	@-rm -Rf ./test-cov
-	@-rm unit-coverage.html
-	@-rm functional-coverage.html
+	@echo "Cleaning coverage"
+	@-rm -Rf ./src-cov
 	@echo "Cleaning npm debug log"
 	@-rm npm-debug.log
 	@echo "Cleaning docs"
