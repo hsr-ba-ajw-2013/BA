@@ -74,4 +74,6 @@ module.exports = {
 	, "Community created successfully": "WG erfolgreich erstellt"
 	, "Community has been deleted": "WG erfolgreich gelöscht"
 	, "Community has been joined": "WG erfolgreich beigetreten"
+	, "Do you want to join the community?": "Möchtest Du dieser WG auf Roomies beitreten?"
+	, "Join Community": "WG beitreten"
 };
