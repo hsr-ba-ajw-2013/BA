@@ -7,42 +7,30 @@
 		"test": "make test"
 	}
 	, "dependencies": {
-		"express": "~3.1.0"
-
-		, "debug": "~0.7.2"
-
+		"debug": "~0.7.2"
+		, "express": "~3.1.0"
+		, "sqlite3": "~2.1.7"
+		, "pg": "~0.15.1"
+		, "sequelize": "git://github.com/mweibel/sequelize.git#mekanics-mweibel-fix"
 		, "node-barefoot": "~0.0.11"
 		, "handlebars": "1.0.10"
 		, "sprintf": "~0.1.0"
 		, "q": "~0.9.3"
-
 		, "underscore": "~1.4.4"
-
 		, "locale": "~0.0.9"
-
 		, "connect-session-sequelize": "~0.0.3"
 		, "connect-timeout": "~0.0.1"
-
 		, "connect-domain": "~0.5.0"
-
 		, "validator": "~1.1.1"
-
-		, "sequelize": "git://github.com/mweibel/sequelize.git#mekanics-mweibel-fix"
-		, "pg": "~0.15.1"
-
 		, "passport": "~0.1.16"
 		, "passport-facebook": "~0.1.5"
-
 		, "winston": "~0.6.2"
 		, "express-winston": "~0.2.0"
-
 		, "uslug": "~1.0.3"
 		, "moment": "~1.7.2"
 	}
-
 	, "devDependencies": {
-		"sqlite3": "~2.1.7"
-		, "mocha": "~1.8.2"
+		"mocha": "~1.8.2"
 		, "mocha-lcov-reporter": "~0.0.1"
 		, "chai": "~1.5.0"
 		, "jscoverage": "git://github.com/mweibel/jscoverage.git#fix-exclude-regexp"
@@ -50,11 +38,9 @@
 		, "coveralls": "~2.0.7"
 		, "lcov-result-merger": "~0.0.1"
 	}
-
 	, "engines": {
 		"node": ">=0.8 <0.10"
 	}
-
 	,"contributors": [
 		{
 			"name": "Manuel Alabor",
@@ -69,7 +55,6 @@
 			"email": "mweibel@hsr.ch"
 		}
 	]
-
 	, "repository": "http://github.com/hsr-ba-ajw-2013/BA"
 	, "license": "MIT"
 }
