@@ -69,17 +69,19 @@ module.exports = View.extend({
 	 *                               the promise.
 	 */
 	, beforeRender: function beforeRender(resolve) {
+		/* jshint camelcase:false */
+		var _super = this.constructor.__super__.beforeRender.bind(this)
+			, resolver = function resolver() {
+				_super(resolve);
+			};
+
 		if(this.task) {
 			this.task.fetch({
-				success: function() {
-					resolve();
-				}
-				, error: function fetchError() {
-					resolve();
-				}
+				success: resolver
+				, error: resolver
 			});
 		} else {
-			resolve();
+			resolver();
 		}
 	}
 
@@ -112,6 +114,9 @@ module.exports = View.extend({
 	 *                               the promise.
 	 */
 	, afterRender: function afterRender(resolve) {
+		/* jshint camelcase:false */
+		var _super = this.constructor.__super__.afterRender.bind(this);
+
 		this.setDocumentTitle(this.translate(this.title));
 
 		if(this.task) {
@@ -120,7 +125,7 @@ module.exports = View.extend({
 				this.task.id + '">');
 		}
 
-		resolve();
+		_super(resolve);
 	}
 
 	/** Function: toString

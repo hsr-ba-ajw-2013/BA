@@ -21,8 +21,11 @@ module.exports = View.extend({
 	 *                               the promise.
 	 */
 	, afterRender: function afterRender(resolve) {
+		/* jshint camelcase:false */
+		var _super = this.constructor.__super__.afterRender.bind(this);
+
 		this.setDocumentTitle(this.translate('Not Found'));
-		resolve();
+		_super(resolve);
 	}
 
 	/** Function: toString

@@ -38,14 +38,17 @@ module.exports = View.extend({
 	 *                               the promise.
 	 */
 	, beforeRender: function beforeRender(resolve) {
+		/* jshint camelcase:false */
+		var _super = this.constructor.__super__.beforeRender.bind(this);
+
 		if(!this.messages.hasMessages()) {
 			this.messages.fetch({
 				success: function successFetch() {
-					resolve();
+					_super(resolve);
 				}
 			});
 		} else {
-			resolve();
+			_super(resolve);
 		}
 	}
 

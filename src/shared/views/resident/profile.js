@@ -1,9 +1,9 @@
+/** Class: Views.Resident.ProfileView
+ * Inherits from <RoomiesView> and is responsible for resident profile
+ * rendering.
+ */
 var View = require('../roomiesView');
 
-/** Class: Views.Resident.ProfileView
- * Inherits from <RoomiesView> and is responsible for resident
- * profile rendering.
- */
 module.exports = View.extend({
 	el: '#main'
 
@@ -24,12 +24,15 @@ module.exports = View.extend({
 	 *                               the promise.
 	 */
 	, beforeRender: function beforeRender(resolve) {
+		/* jshint camelcase:false */
+		var _super = this.constructor.__super__.beforeRender.bind(this);
+
 		if(!this.residentProfile.model) {
-			this.residentProfile.fetch({success: function() {
-				resolve();
+			this.residentProfile.fetch({ success: function() {
+				_super(resolve);
 			}});
 		} else {
-			resolve();
+			_super(resolve);
 		}
 	}
 
@@ -50,8 +53,11 @@ module.exports = View.extend({
 	 *                               the promise.
 	 */
 	, afterRender: function afterRender(resolve) {
+		/* jshint camelcase:false */
+		var _super = this.constructor.__super__.afterRender.bind(this);
+
 		this.setDocumentTitle(this.translate('Profile'));
-		resolve();
+		_super(resolve);
 	}
 
 	/** Function: toString

@@ -54,12 +54,18 @@ module.exports = View.extend({
 	 *                               the promise.
 	 */
 	, beforeRender: function beforeRender(resolve) {
-		var community = this.getDataStore().get('community');
+		/* jshint camelcase:false */
+		var community = this.getDataStore().get('community')
+			, _super = this.constructor.__super__.beforeRender.bind(this);
+
 		if(community) {
-			this.options.router.navigate('/community/' + community.get('slug') +
-				'/tasks', {trigger: true});
+			this.options.router.navigate(
+				'/community/' + community.get('slug') + '/tasks'
+				, { trigger: true }
+			);
 		}
-		resolve();
+
+		_super(resolve);
 	}
 
 	/** Function: renderView
@@ -67,10 +73,10 @@ module.exports = View.extend({
 	 */
 	, renderView: function renderView() {
 		var user = this.getDataStore().get('currentUser');
+
 		if(!_.isUndefined(user)) {
 			user = user.toJSON();
 		}
-
 		this.$el.html(this.templates.community.create({ user: user }));
 	}
 
@@ -82,8 +88,11 @@ module.exports = View.extend({
 	 *                               the promise.
 	 */
 	, afterRender: function afterRender(resolve) {
+		/* jshint camelcase:false */
+		var _super = this.constructor.__super__.afterRender.bind(this);
+
 		this.setDocumentTitle(this.translate('Create Community'));
-		resolve();
+		_super(resolve);
 	}
 
 	/** Function: toString

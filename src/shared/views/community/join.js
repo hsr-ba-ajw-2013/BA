@@ -23,17 +23,19 @@ module.exports = View.extend({
 	 *                               the promise.
 	 */
 	, beforeRender: function beforeRender(resolve) {
+		/* jshint camelcase:false */
+		var _super = this.constructor.__super__.beforeRender.bind(this)
+			, resolver = function resolver() {
+				_super(resolve);
+			};
+
 		if(!this.community.has('name')) {
 			this.community.fetch({
-				success: function success() {
-					resolve();
-				}
-				, error: function fetchError() {
-					resolve();
-				}
+				success: resolver
+				, error: resolver
 			});
 		} else {
-			resolve();
+			resolver();
 		}
 	}
 
@@ -59,8 +61,11 @@ module.exports = View.extend({
 	 *                               the promise.
 	 */
 	, afterRender: function afterRender(resolve) {
+		/* jshint camelcase:false */
+		var _super = this.constructor.__super__.afterRender.bind(this);
+
 		this.setDocumentTitle(this.translate('Join Community'));
-		resolve();
+		_super(resolve);
 	}
 
 	/** Function: toString

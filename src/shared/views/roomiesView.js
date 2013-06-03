@@ -1,5 +1,3 @@
-/* global $ */
-
 /** Class: RoomiesView
  * Extends the plain <Barefoot.View at
  * http://swissmanu.github.io/barefoot/docs/files/lib/view-js.html>
@@ -16,6 +14,10 @@ var Barefoot = require('node-barefoot')()
  * The beforeRender hook is called before the rendering of a view takes place.
  * This implementation ensures that the locale available of this view is
  * inherited down to any available subviews.
+ *
+ * Parameters:
+ *     (Function) resolve - After calling this promise callback, the rendering
+ *                          will proceed.
  */
 function beforeRender(resolve) {
 	if(_.has(this.options, 'locale')) {
@@ -31,6 +33,17 @@ function beforeRender(resolve) {
 	}
 }
 
+/** Function: afterRender
+ * This is an implementaion of afterRender for convenience. Views extending the
+ * <RoomiesView> can make super calls on this.
+ *
+ * Parameters:
+ *     (Function) resolve - After calling this promise callback, the rendering
+ *                          will proceed.
+ */
+function afterRender(resolve) {
+	resolve();
+}
 
 /** Function: setDocumentTitle
  * Takes the given title string, adds " * Roomies" to it and sets it as the
@@ -59,6 +72,7 @@ function setDocumentTitle(title) {
  * * <setDocumentTitle>
  */
 function setPlainDocumentTitle(title) {
+	/* global $ */
 	var $title = $('head title');
 
 	if($title.length === 0) {
@@ -103,6 +117,7 @@ function translate() {
 
 _.extend(RoomiesView.prototype, {
 	beforeRender: beforeRender
+	, afterRender: afterRender
 	, setDocumentTitle: setDocumentTitle
 	, setPlainDocumentTitle: setPlainDocumentTitle
 	, getDataStore: getDataStore

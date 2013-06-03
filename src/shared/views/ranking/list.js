@@ -38,12 +38,15 @@ module.exports = View.extend({
 	 *                               the promise.
 	 */
 	, beforeRender: function beforeRender(resolve) {
+		/* jshint camelcase:false */
+		var _super = this.constructor.__super__.beforeRender.bind(this);
+
 		if(this.rankings.models.length === 0) {
 			this.rankings.fetch({success: function() {
-				resolve();
+				_super(resolve);
 			}});
 		} else {
-			resolve();
+			_super(resolve);
 		}
 	}
 
@@ -78,8 +81,11 @@ module.exports = View.extend({
 	 *                               the promise.
 	 */
 	, afterRender: function afterRender(resolve) {
+		/* jshint camelcase:false */
+		var _super = this.constructor.__super__.afterRender.bind(this);
+
 		this.setDocumentTitle(this.translate('Ranking'));
-		resolve();
+		_super(resolve);
 	}
 
 	/** Function: toString
