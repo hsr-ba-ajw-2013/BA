@@ -12,6 +12,6 @@ var connectTimeout = require('connect-timeout');
  * Parameters:
  *   (Express) app - Initialized express application
  */
-module.exports = function connectTimeoutInit(app) {
-	app.use(connectTimeout());
+module.exports = function connectTimeoutInit(app, config) {
+	app.use(connectTimeout( config.connectTimeout ));
 };

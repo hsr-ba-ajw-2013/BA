@@ -70,13 +70,27 @@ module.exports = {
 
 	, http: {
 		port: 3000
+		, hostname: 'localhost'
+		, protocol: 'http'
 	}
+
+	, connectTimeout: {
+		time: 16000
+	}
+
+	, enableClustering: true
 
 	, logging: {
 		errorLogLevel: "info"
 		, requestLogLevel: "info"
 		, disableErrorLog: false
 		, disableRequestLog: true
+	}
+
+	, clientsideJavaScriptOptimizations: {
+		debug: false
+		, gzip: true
+		, minify: true
 	}
 
 	, livereload: {
@@ -113,8 +127,8 @@ db() {
 	, "test": {
 		"username": "roomies"
 		, "password": "12345"
-		,"database": "roomies_test"
-		,"host": "localhost"
+		, "database": "roomies_test"
+		, "host": "localhost"
 		, "dialect": "postgres"
 		, "port": 5432
 	}

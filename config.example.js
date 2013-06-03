@@ -9,6 +9,7 @@ module.exports = {
 			host: 'localhost'
 			, port: 5432
 			, dialect: 'postgres'
+			, logging: false
 		}
 	}*/
 	db: {
@@ -33,6 +34,10 @@ module.exports = {
 		port: 3000
 		, hostname: 'localhost'
 		, protocol: 'http'
+	}
+
+	, connectTimeout: {
+		time: 16000
 	}
 
 	, enableClustering: true
