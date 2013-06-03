@@ -37,6 +37,11 @@ module.exports = {
 
 	, http: {
 		port: 3000
+		, hostname: '0.0.0.0'
+		// in case you listen on 0.0.0.0, you'd like to use a different
+		// hostname to be displayed for absolute urls.
+		, displayedHostname: 'localhost'
+		, protocol: 'http'
 	}
 
 	, sessionSecret: "mega_ultra$ecret-imfall_dev"

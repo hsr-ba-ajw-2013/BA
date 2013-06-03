@@ -12,7 +12,7 @@
 module.exports = function clientConfigInit(app, config) {
 	app.locals.config = {
 		port: config.http.port
-		, hostname: config.http.hostname
+		, hostname: config.http.displayedHostname
 		, protocol: config.http.protocol
 	};
 };

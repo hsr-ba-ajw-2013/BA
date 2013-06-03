@@ -32,7 +32,10 @@ module.exports = {
 
 	, http: {
 		port: 3000
-		, hostname: 'localhost'
+		, hostname: '0.0.0.0'
+		// in case you listen on 0.0.0.0, you'd like to use a different
+		// hostname to be displayed for absolute urls.
+		, displayedHostname: 'localhost'
 		, protocol: 'http'
 	}
 
