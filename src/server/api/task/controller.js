@@ -93,23 +93,26 @@ function getTasksForCommunityWithSlug(success, error, slug) {
 					return error(
 						new errors.ForbiddenError('Invalid Community'));
 				}
-				community.getTasks({ order: 'id DESC' })
-					.success(function findTasks(tasks) {
-						if(!_.isNull(tasks) && tasks.length > 0) {
-							for(var i in tasks) {
-								tasks[i] = tasks[i].dataValues;
-							}
-
-							success(tasks);
-						} else {
-							error(new errors.NoTasksFoundError(
-								'No tasks found for community with slug `' +
-								slug + '`.'));
+				community.getTasks({
+					// is NULL is not supported by sequelize by default.
+					where: '"fulfillorId" IS NULL AND "CommunityId" = ' +
+								community.id
+					, order: 'dueDate DESC'
+				}).success(function findTasks(tasks) {
+					if(!_.isNull(tasks) && tasks.length > 0) {
+						for(var i in tasks) {
+							tasks[i] = tasks[i].dataValues;
 						}
-					})
-					.error(function daoError(err) {
-						error(err);
-					});
+
+						success(tasks);
+					} else {
+						error(new errors.NoTasksFoundError(
+							'No tasks found for community with slug `' +
+							slug + '`.'));
+					}
+				}).error(function daoError(err) {
+					error(err);
+				});
 			} else {
 				error(new errors.NotFoundError('Community with slug ' + slug +
 					'does not exist.'));
