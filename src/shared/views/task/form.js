@@ -22,9 +22,11 @@ module.exports = View.extend({
 			task.on('sync', this.renderView.bind(this));
 
 			this.title = 'Edit Task';
+			this.method = 'put';
 		} else {
 			this.title = 'Create Task';
 			this.task = undefined;
+			this.method = 'post';
 		}
 	}
 
@@ -102,6 +104,7 @@ module.exports = View.extend({
 			action: action
 			, title: this.translate(this.title)
 			, task: task
+			, method: this.method
 		}));
 	}
 

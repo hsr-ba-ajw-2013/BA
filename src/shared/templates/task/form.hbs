@@ -1,4 +1,5 @@
 <form class="task-form large-12 columns" action="{{action}}" method="post" data-collection="tasks"{{#if task}} data-id="{{task.id}}"{{else}} data-model="task"{{/if}}>
+	<input type="hidden" name="_method" value="{{method}}"/>
 	<div class="row">
 		<div class="large-12 columns">
 			<h2>{{trans title}}</h2>
