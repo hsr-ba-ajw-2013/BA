@@ -66,4 +66,11 @@ module.exports = {
 	, "You're in the community named: %s": "Du bist in der WG mit dem Namen: %s"
 	, "Delete the community": "WG löschen"
 	, "Note": "Notiz"
+
+	, "Task created successfully": "Aufgabe efolgreich erstellt"
+	, "Task marked as done successfully": "Aufgabe erfolgreich als erledigt markiert"
+	, "Task updated successfully": "Aufgabe erfolgreich aktualisiert"
+	, "Community created successfully": "WG erfolgreich erstellt"
+	, "Community has been deleted": "WG erfolgreich gelöscht"
+	, "Community has been joined": "WG erfolgreich beigetreten"
 };
