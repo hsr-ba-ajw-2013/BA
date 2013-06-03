@@ -174,7 +174,6 @@ Group: Shared  {
       File: Task  (no auto-title, shared/models/task.js)
       }  # Group: Models
 
-   File: Router  (shared/router/router.js)
    File: Templates  (shared/templates/index.js)
    File: EventAggregator  (shared/eventAggregator.js)
    File: Forms  (shared/forms.js)
@@ -218,6 +217,7 @@ Group: Shared  {
       File: RoomiesView  (shared/views/roomiesView.js)
       }  # Group: Views
 
+   File: Router  (shared/router.js)
    }  # Group: Shared
 
 Group: Index  {
