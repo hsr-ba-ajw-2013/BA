@@ -5,8 +5,8 @@
  * API Routes
  *		GET resident/:facebookid - Return the resident with the
  *									named url parameters
- *		GET resident/:facebookid - Return the profile of the resident with
- *									the named url parameters
+ *		GET resident/:facebookid/profile - Return the profile of the resident
+ *                                         with the named url parameters
  */
 var controller = require('./controller')
 	, basicAuthentication = require('../policy/basicAuthentication')

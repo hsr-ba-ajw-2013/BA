@@ -142,30 +142,62 @@ function createTask(success, error, communitySlug, task) {
 		, community = self.req.community
 		, taskDao = getTaskDao.call(self);
 
-	taskDao.create(task)
-		.success(function createResult(task) {
-			task.setCommunity(community)
-				.success(function ok() {
-					task.setCreator(currentUser)
-						.success(function ok(createdTask) {
-							var createdTaskData = createdTask.dataValues;
+	/** PrivateFunction: forwardError
+	 * Convenience function to send an error
+	 *
+	 * Parameters:
+	 *   (Object) err - Error
+	 */
+	function forwardError(err) {
+		debug('forward error');
+		return error(err);
+	}
 
-							self.app.get('eventbus').emit(
-								'task:created'
-								, createdTaskData);
-							success(createdTaskData);
-						})
-						.error(function nok(err) {
-							error(err);
-						});
-				})
-				.error(function nok(err) {
-					error(err);
-				});
-		}).error(function nok(err) {
-			error(err);
-		}
-	);
+	/** PrivateFunction: reportSuccessfulTaskCreation
+	 * Emits task:created & calls success callback
+	 *
+	 * Parameters:
+	 *   (Task) task - Task
+	 */
+	function reportSuccessfulTaskCreation(task) {
+		debug('after set creator');
+		var createdTaskData = task.dataValues;
+
+		self.app.get('eventbus').emit(
+			'task:created'
+			, createdTaskData);
+		success(createdTaskData);
+	}
+
+	/** PrivateFunction: setCreator
+	 * Sets the creator of the task
+	 *
+	 * Parameters:
+	 *   (Task) task - Task
+	 */
+	function setCreator(task) {
+		debug('after set community');
+		task.setCreator(currentUser)
+			.success(reportSuccessfulTaskCreation)
+			.error(forwardError);
+	}
+
+	/** PrivateFunction: setCommunity
+	 * Sets the community of the task
+	 *
+	 * Parameters:
+	 *   (Task) task - Task
+	 */
+	function setCommunity(task) {
+		debug('after create task');
+		task.setCommunity(community)
+			.success(setCreator)
+			.error(forwardError);
+	}
+
+	taskDao.create(task)
+		.success(setCommunity)
+		.error(forwardError);
 }
 
 /** Function: updateTask

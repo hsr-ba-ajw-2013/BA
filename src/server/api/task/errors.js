@@ -1,5 +1,5 @@
 /** Class: Api.Task.Errors
- *
+ * Task-specific errors
  */
 var Barefoot = require('node-barefoot')()
 	, errors = Barefoot.errors

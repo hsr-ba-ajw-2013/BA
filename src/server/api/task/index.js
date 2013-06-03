@@ -1,5 +1,19 @@
 /** Component: Api.Task
- * Task API Component
+ * The Task API Component sets up the APIAdapter to interact with task
+ * related domain objects.
+ *
+ * Prefix for all Routes:
+ *   community/:slug/tasks
+ *
+ * API Routes:
+ *     GET /:id - Get tasks with id
+ *     GET / - Get tasks for community
+ *     POST / - Create task
+ *     PUT /:id - Update task
+ *
+ * Form Routes:
+ *     POST / - Create task
+ *     PUT /:id - Update task
  */
 
 var controller = require('./controller')
@@ -57,7 +71,7 @@ module.exports = function initTaskApi(api, apiPrefix) {
 	));
 
 	// POST /community/:slug/task
-	// This makes the createTask API function accessible for old-scool form
+	// This makes the updateTask API function accessible for old-scool form
 	// submits
 	api.app.put(modulePrefix + '/:id', utils.buildFormRoute(
 		function success(task, redirect) {
@@ -70,26 +84,4 @@ module.exports = function initTaskApi(api, apiPrefix) {
 		, api
 		, updateTaskCallbacks
 	));
-
-	// POST /community/:slug/tasks/:id
-	// This makes the createTask API function accessible for old-scool form
-	// submits
-	api.app.post(modulePrefix + '/:id', utils.buildFormRoute(
-		function success(task, redirect) {
-			redirect('/community/' + this.req.param('slug') + '/tasks');
-		}
-		, function error(err, redirect) {
-			api.app.get('eventbus').emit('validation:error', err.message);
-			redirect('/community/' + this.req.param('slug') +
-				'/tasks/' + this.req.param('id'));
-		}
-		, api
-		, [
-			basicAuthentication
-			, authorizedForCommunity
-			, taskValidators.createTask
-			, controller.updateTask
-		]
-	));
-
 };

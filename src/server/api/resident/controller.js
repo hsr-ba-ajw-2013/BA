@@ -70,7 +70,7 @@ function getProfileWithFacebookId(success, error, facebookId) {
 		, residentDao = db.daoFactoryManager.getDAO('Resident')
 		, user = this.req.user;
 
-	/** AnonymousFunction: forwardError
+	/** PrivateFunction: forwardError
 	 * Convenience function to send an error
 	 *
 	 * Parameters:
@@ -81,7 +81,7 @@ function getProfileWithFacebookId(success, error, facebookId) {
 		return error(err);
 	}
 
-	/** AnonymousFunction: afterFoundPointsSum
+	/** PrivateFunction: afterFoundPointsSum
 	 * Calls the success callback with the accumulated results of the functions.
 	 *
 	 * Parameters:
@@ -104,7 +104,7 @@ function getProfileWithFacebookId(success, error, facebookId) {
 		});
 	}
 
-	/** AnonymousFunction: afterFoundAchievements
+	/** PrivateFunction: afterFoundAchievements
 	 * Gets fulfilled tasks point sum by calling
 	 * <getFulfilledTasksPointSum()> & after successfully doing that,
 	 * <afterFoundPointsSum()>.
@@ -121,7 +121,7 @@ function getProfileWithFacebookId(success, error, facebookId) {
 		}, forwardError);
 	}
 
-	/** AnonymousFunction: afterFoundCommunity
+	/** PrivateFunction: afterFoundCommunity
 	 * Fetches achievements of the resident & calls <afterFoundAchievements()>.
 	 *
 	 * Parameters:
@@ -135,7 +135,7 @@ function getProfileWithFacebookId(success, error, facebookId) {
 		}, forwardError);
 	}
 
-	/** AnonymousFunction: afterFoundResident
+	/** PrivateFunction: afterFoundResident
 	 * Fetches the community of the resident & calls <afterFoundCommunty()>.
 	 *
 	 * Parameters:
