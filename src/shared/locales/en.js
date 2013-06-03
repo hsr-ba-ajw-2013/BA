@@ -34,4 +34,6 @@ module.exports = {
 	, "first-task": "First task done"
 	, "ten-tasks": "Ten tasks done"
 	, "twenty-points": "Twenty points received"
+
+	, "2/22/2014": "2013-06-14"
 };

@@ -30,7 +30,7 @@ module.exports = {
 	, "Reward": "Belohnung"
 	, "to go shopping": "Einkaufszentrum besuchen"
 	, "1 to 5 points": "1 bis 5 Punkte"
-	, "2/22/2014": "14.06.2013"
+	, "2/22/2014": "2013-06-14"
 	, "Don't forget the steaks!": "Steaks fürs BBQ nicht vergessen!"
 	, "Give a brief description of the task.": "Kurzbeschreibung der Aufgabe."
 	, "How many points should the roommate receive, who completed the task?": "Wieviele Punkte sollen zur Belohnung vergeben werden?"

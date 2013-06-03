@@ -10,6 +10,14 @@ var translations = {
 	, languages = _.keys(translations)
 	, vsprintf = require('sprintf').vsprintf;
 
+// These two lines ensures that we have the moment.js locale files present on
+// the client. Since moment.js loads them dynamically, the browserified app
+// code would not contain them.
+require('moment');
+require('moment/lang/en-gb');
+require('moment/lang/de');
+
+
 /** Function: translate
  * Translates a text using the available translations to the given
  * language/locale.
@@ -36,7 +44,7 @@ function translate(locale, text) {
 		}
 	}
 
-	// If there are more than the usual arguments, try applying them using 
+	// If there are more than the usual arguments, try applying them using
 	// sprintf by replacing eventual placeholders:
 	if (arguments.length > 2) {
 		result = vsprintf(result, Array.prototype.slice.call(arguments, 2));

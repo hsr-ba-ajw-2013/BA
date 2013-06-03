@@ -87,6 +87,8 @@ function formatDateHelper(context, block) {
 	if(!context) {
 		return 'INVALID DATE';
 	}
+
+	moment.lang(locale);
 	return moment(context).format(f);
 }
 
