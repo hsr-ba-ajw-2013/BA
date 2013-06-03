@@ -15,13 +15,7 @@ var Barefoot = require('node-barefoot')()
 if(Barefoot.isRunningOnServer()) {
 	var debug = require('debug')('roomies:shared:router');
 } else {
-	if(console.info) {
-		var debug = function(str) {
-			console.info(str);
-		};
-	} else {
-		var debug = function() {};
-	}
+	var debug = function() {};
 }
 
 module.exports = Router.extend({
