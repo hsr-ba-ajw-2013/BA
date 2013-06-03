@@ -133,36 +133,51 @@ function setCommunityDisabled(community, done) {
 
 	community.save()
 		.success(function saveSuccess() {
-			done();
+			done(null, community);
 		})
 		.error(function saveError() {
 			done(new Error('Could not save community.'));
 		});
 }
 
-/** PrivateFunction: removeResidentFromCommunity
+/** PrivateFunction: removeResidentsFromCommunity
  * Set the property 'isAdmin' of a given resident to false and resets the
  * communityId property to 0.
  *
  * Parameters:
- *   (Object) resident - The resident to remove from its community
+ *   (Object) community - The community which has been disabled
  *   (Function) done - Callback for continuing the job.
  *                     On error, the first argument contains
  *                     the error object.
  */
-function removeResidentFromCommunity(resident, done) {
-	debug('remove resident from community');
+function removeResidentsFromCommunity(community, done) {
+	debug('remove residents from community');
 
-	resident.isAdmin = false;
-	resident.CommunityId = 0;
-
-	resident.save()
-		.success(function saveSuccess() {
-			done();
-		})
-		.error(function saveError() {
+	community.getResidents().success(function(residents) {
+		var residentCount = residents.length,
+			residentsRemoved = 0;
+		function doneIfAllSuccessful() {
+			if(residentCount === residentsRemoved) {
+				done();
+			}
+		}
+		function success() {
+			++residentsRemoved;
+			doneIfAllSuccessful();
+		}
+		function error() {
 			done(new Error('Could not save resident.'));
-		});
+		}
+		for(var i = 0; i < residentCount; i++) {
+			var resident = residents[i];
+			resident.isAdmin = false;
+			resident.CommunityId = 0;
+			resident.save().success(success)
+			.error(error);
+		}
+	}).error(function getError() {
+		done(new Error('Could not fetch residents'));
+	});
 }
 
 /** Function: createCommunity
@@ -387,16 +402,16 @@ function deleteCommunity(success, error, data) {
 		 * be deleted.
 		 */
 		, afterSettingCommunityDisabled =
-			function afterSettingCommunityDisabled(err) {
+			function afterSettingCommunityDisabled(err, community) {
 				debug('after setting community disabled');
 
 				if(err) {
 					return forwardError(err);
 				}
 
-				removeResidentFromCommunity(
-					resident
-					, afterRemoveResidentFromCommunity
+				removeResidentsFromCommunity(
+					community
+					, afterRemoveResidentsFromCommunity
 				);
 		}
 
@@ -404,8 +419,8 @@ function deleteCommunity(success, error, data) {
 		 * If no error occured, this function emits a "community:deleted" event
 		 * on the event bus and calls the success callback argument.
 		 */
-		, afterRemoveResidentFromCommunity =
-			function afterRemoveResidentFromCommunity(err) {
+		, afterRemoveResidentsFromCommunity =
+			function afterRemoveResidentsFromCommunity(err) {
 				debug('after remove residents from community');
 
 				if(err) {

@@ -352,9 +352,13 @@ describe('Community', function() {
 						community.reload()
 							.success(function reloadSuccess() {
 								community.enabled.should.equal(false);
-								resident.isAdmin.should.equal(false);
-								resident.CommunityId.should.equal(0);
-								done();
+								resident.reload().success(function() {
+									resident.isAdmin.should.equal(false);
+									resident.CommunityId.should.equal(0);
+									done();
+								}).error(function(err) {
+									done(err);
+								});
 							})
 							.error(function reloadError(err) {
 								return done(err);
