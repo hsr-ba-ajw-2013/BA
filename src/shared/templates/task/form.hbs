@@ -35,7 +35,7 @@
 			<label for="dueDate" class="inline">{{trans "Due date"}}</label>
 		</div>
 		<div class="small-9 large-7 columns">
-			<input type="date" name="dueDate" id="dueDate" placeholder="{{trans "2/22/2014"}}"{{#if task}} value="{{formatDate task.dueDate}}"{{/if}} />
+			<input type="date" name="dueDate" id="dueDate" placeholder="{{trans "2013-1-22"}}"{{#if task}} value="{{formatDate task.dueDate format="YYYY-MM-DD"}}"{{/if}} />
 		</div>
 		<div class="large-3 columns hide-for-small hint">
 			{{trans "Is this task due on a specific day?"}}
