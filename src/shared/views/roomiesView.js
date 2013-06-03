@@ -1,3 +1,5 @@
+/* global $ */
+
 /** Class: RoomiesView
  * Extends the plain Barefoot.View with Roomies specific functionalities.
  */
@@ -55,7 +57,13 @@ function setDocumentTitle(title) {
  * * <setDocumentTitle>
  */
 function setPlainDocumentTitle(title) {
-	this.$('head title').html(title);
+	var $title = $('head title');
+
+	if($title.length === 0) {
+		$title = this.$('head title');
+	}
+
+	$title.html(title);
 
 	if(!_.isUndefined(this.eventAggregator)) {
 		this.eventAggregator.trigger('change:documenttitle', title);
