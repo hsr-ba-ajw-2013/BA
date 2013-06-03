@@ -4,16 +4,16 @@
 
 var Barefoot = require('node-barefoot')()
 	, Router = Barefoot.Router
-	, MainView = require('../views/main')
-	, HomeView = require('../views/home')
-	, CreateCommunityView = require('../views/community/create')
-	, InviteCommunityView = require('../views/community/invite')
-	, JoinCommunityView = require('../views/community/join')
-	, ListTasksView = require('../views/task/list')
-	, TaskFormView = require('../views/task/form')
-	, ListRankingView = require('../views/ranking/list')
-	, NotFoundView = require('../views/error/not-found')
-	, Profile = require('../views/resident/profile')
+	, MainView = require('./views/main')
+	, HomeView = require('./views/home')
+	, CreateCommunityView = require('./views/community/create')
+	, InviteCommunityView = require('./views/community/invite')
+	, JoinCommunityView = require('./views/community/join')
+	, ListTasksView = require('./views/task/list')
+	, TaskFormView = require('./views/task/form')
+	, ListRankingView = require('./views/ranking/list')
+	, NotFoundView = require('./views/error/not-found')
+	, Profile = require('./views/resident/profile')
 	, _ = require('underscore');
 
 if(Barefoot.isRunningOnServer()) {
@@ -91,7 +91,7 @@ module.exports = Router.extend({
 	, joinCommunity: function joinCommunity(shareLink) {
 		debug('join community');
 		if(!this.redirectIfNotAuthorized()) {
-			var CommunityModel = require('../models/community')
+			var CommunityModel = require('./models/community')
 				, community = new CommunityModel();
 			community.url = '/api/join/community/' + shareLink;
 			this.dataStore.set('community', community);
@@ -112,7 +112,7 @@ module.exports = Router.extend({
 			if(tasks) {
 				tasks.url = url;
 			} else {
-				var TasksCollection = require('../collections/tasks');
+				var TasksCollection = require('./collections/tasks');
 				tasks = new TasksCollection();
 				tasks.url = url;
 				this.dataStore.set('tasks', tasks);
@@ -142,7 +142,7 @@ module.exports = Router.extend({
 		if(!this.redirectIfNotAuthorized() &&
 			!this.redirectIfInValidCommunity()) {
 
-			var TaskModel = require('../models/task')
+			var TaskModel = require('./models/task')
 				, task = new TaskModel();
 
 			task.url = '/api/community/' + communitySlug + '/tasks/' + taskId;
@@ -162,7 +162,7 @@ module.exports = Router.extend({
 		debug('list ranking');
 		if(!this.redirectIfNotAuthorized() &&
 			!this.redirectIfInValidCommunity()) {
-			var RankingCollection = require('../collections/rankings')
+			var RankingCollection = require('./collections/rankings')
 				, rankings = new RankingCollection();
 			rankings.url = '/api/community/' + communitySlug + '/rankings';
 			this.dataStore.set('rankings', rankings);
@@ -178,7 +178,7 @@ module.exports = Router.extend({
 		debug('resident profile');
 		if(!this.redirectIfNotAuthorized() &&
 			!this.redirectIfInValidCommunity()) {
-			var ResidentProfileModel = require('../models/residentprofile')
+			var ResidentProfileModel = require('./models/residentprofile')
 				, residentProfile = new ResidentProfileModel();
 
 			residentProfile.url = '/api/resident/' + facebookId + '/profile';
