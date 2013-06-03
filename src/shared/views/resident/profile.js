@@ -1,7 +1,8 @@
 var View = require('../roomiesView');
 
 /** Class: Views.Resident.ProfileView
- * Inherits from <RoomiesView> and is responsible for resident profile rendering.
+ * Inherits from <RoomiesView> and is responsible for resident
+ * profile rendering.
  */
 module.exports = View.extend({
 	el: '#main'
