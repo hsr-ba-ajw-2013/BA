@@ -74,7 +74,9 @@ function getRankingListForCommunity(success, error) {
 			}
 
 			var taskDao = getTaskDao.call(self)
-				, residentDao = getResidentDao.call(self);
+				, residentDao = getResidentDao.call(self)
+				, today = new Date()
+				, lastWeek = new Date(today.getTime()-1000*60*60*24*7);
 
 			residentDao.findAll({
 				attributes: [['COALESCE(SUM("fulfilledTasks"."reward"),0)'
@@ -84,7 +86,9 @@ function getRankingListForCommunity(success, error) {
 				, include: [{ model: taskDao, as: 'fulfilledTasks'}]
 				, group: ['Residents.id']
 				, order: '"points" DESC'
-				, where: {'CommunityId': community.id}
+				//, where: {'CommunityId': community.id}
+				, where: ['"fulfilledTasks"."CommunityId" = ' + community.id +
+					'AND "fulfilledTasks"."fulfilledAt" >= ?', lastWeek]
 			}, { raw: true })
 			.success(function(rankings) {
 				return success(rankings);
