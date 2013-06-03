@@ -1,3 +1,7 @@
+/** Class: Router
+ * Sets up routes for client & server and renders the associated views.
+ */
+
 var Barefoot = require('node-barefoot')()
 	, Router = Barefoot.Router
 	, MainView = require('../views/main')
@@ -41,6 +45,10 @@ module.exports = Router.extend({
 		, '*path': 'notFound'
 	}
 
+	/** Function: home
+	 * Home page which renders the login button if not authorized.
+	 * Otherwise it redirects to community/create or community/:slug/tasks.
+	 */
 	, home: function home() {
 		debug('home');
 		if(!this.isAuthorized()) {
@@ -56,6 +64,9 @@ module.exports = Router.extend({
 		}
 	}
 
+	/** Function: createCommunity
+	 * Create community view
+	 */
 	, createCommunity: function createCommunity() {
 		debug('create community');
 		if(!this.redirectIfNotAuthorized()) {
@@ -63,6 +74,9 @@ module.exports = Router.extend({
 		}
 	}
 
+	/** Function: inviteCommunity
+	 * Invite community view
+	 */
 	, inviteCommunity: function inviteCommunity() {
 		debug('invite community');
 		if(!this.redirectIfNotAuthorized() &&
@@ -71,6 +85,9 @@ module.exports = Router.extend({
 		}
 	}
 
+	/** Function: joinCommunity
+	 * Join community view
+	 */
 	, joinCommunity: function joinCommunity(shareLink) {
 		debug('join community');
 		if(!this.redirectIfNotAuthorized()) {
@@ -82,6 +99,9 @@ module.exports = Router.extend({
 		}
 	}
 
+	/** Function: listTasks
+	 * List tasks view
+	 */
 	, listTasks: function listTasks(communitySlug) {
 		debug('list tasks');
 		if(!this.redirectIfNotAuthorized() &&
@@ -103,6 +123,9 @@ module.exports = Router.extend({
 		}
 	}
 
+	/** Function: createTask
+	 * Create task view
+	 */
 	, createTask: function createTask() {
 		debug('create task');
 		if(!this.redirectIfNotAuthorized() &&
@@ -111,6 +134,9 @@ module.exports = Router.extend({
 		}
 	}
 
+	/** Function: editTask
+	 * Edit task view
+	 */
 	, editTask: function editTask(communitySlug, taskId) {
 		debug('edit task with id: ' + taskId);
 		if(!this.redirectIfNotAuthorized() &&
@@ -129,6 +155,9 @@ module.exports = Router.extend({
 		}
 	}
 
+	/** Function: listRanking
+	 * List ranking view
+	 */
 	, listRanking: function listRanking(communitySlug) {
 		debug('list ranking');
 		if(!this.redirectIfNotAuthorized() &&
@@ -142,6 +171,9 @@ module.exports = Router.extend({
 		}
 	}
 
+	/** Function: profile
+	 * Profile view
+	 */
 	, profile: function profile(facebookId) {
 		debug('resident profile');
 		if(!this.redirectIfNotAuthorized() &&
@@ -157,11 +189,17 @@ module.exports = Router.extend({
 		}
 	}
 
+	/** Function: notFound
+	 * In case a page couldn't be found.
+	 */
 	, notFound: function notFound() {
 		debug('page not found');
 		this.render(this.createView(NotFoundView));
 	}
 
+	/** Function: logout
+	 * Logout view
+	 */
 	, logout: function logout() {
 		debug('logout');
 		this.navigate('/logout', {trigger: true});
@@ -169,7 +207,9 @@ module.exports = Router.extend({
 		window.location.reload();
 	}
 
-
+	/** Function: isAuthorized
+	 * Checks if the current user is authorized
+	 */
 	, isAuthorized: function isAuthorized() {
 		debug('is authorized');
 		var currentUser = this.dataStore.get('currentUser')

@@ -167,18 +167,17 @@ describe('Gamification', function() {
 				eventBus.on('achievement:added:twenty-points', function() {
 					resident.getAchievements({
 						where: '`type` = "twenty-points"'
+					}).success(function(achievements) {
+						if(!achievements.length) {
+							return done(
+								new Error('No achievements found'));
+						}
+						eventBus.removeAllListeners('achievement:added');
+						done();
 					})
-						.success(function(achievements) {
-							if(!achievements.length) {
-								return done(
-									new Error('No achievements found'));
-							}
-							eventBus.removeAllListeners('achievement:added');
-							done();
-						})
-						.error(function(err) {
-							done(err);
-						});
+					.error(function(err) {
+						done(err);
+					});
 				});
 				giveFulfilledTask(eventBus, resident, 5);
 		});

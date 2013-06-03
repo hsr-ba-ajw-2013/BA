@@ -156,12 +156,40 @@ Group: Server  {
 
 Group: Shared  {
 
+   Group: Collections  {
+
+      File: Rankings  (no auto-title, shared/collections/rankings.js)
+      File: Tasks  (no auto-title, shared/collections/tasks.js)
+      }  # Group: Collections
+
+   Group: Models  {
+
+      File: Models  (shared/models/index.js)
+      File: AppContext  (no auto-title, shared/models/appContext.js)
+      File: Community  (no auto-title, shared/models/community.js)
+      File: Flash  (no auto-title, shared/models/flash.js)
+      File: Ranking  (no auto-title, shared/models/ranking.js)
+      File: Resident  (no auto-title, shared/models/resident.js)
+      File: ResidentProfile  (no auto-title, shared/models/residentprofile.js)
+      File: Task  (no auto-title, shared/models/task.js)
+      }  # Group: Models
+
+   File: Router  (shared/router/router.js)
+   File: Templates  (shared/templates/index.js)
    File: EventAggregator  (shared/eventAggregator.js)
    File: forms.js  (shared/forms.js)
    File: Locales  (shared/locales/index.js)
-   File: RoomiesView  (shared/views/roomiesView.js)
-   File: router/router.js  (shared/router/router.js)
-   File: Templates  (shared/templates/index.js)
+
+   Group: Views  {
+
+      File: RoomiesView  (shared/views/roomiesView.js)
+      File: CreateView  (no auto-title, shared/views/community/create.js)
+      File: InviteView  (no auto-title, shared/views/community/invite.js)
+      File: JoinView  (no auto-title, shared/views/community/join.js)
+      File: NotFoundView  (no auto-title, shared/views/error/not-found.js)
+      File: ListView  (no auto-title, shared/views/ranking/list.js)
+      }  # Group: Views
+
    }  # Group: Shared
 
 Group: Index  {

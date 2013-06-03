@@ -1,3 +1,6 @@
+/** Module: Models
+ * Helper module for including all Models. Used by <Forms>.
+ */
 module.exports = {
 	'appContext': require('./appContext')
 	, 'community': require('./community')

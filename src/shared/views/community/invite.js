@@ -1,9 +1,16 @@
 var View = require('../roomiesView');
 
+/** Class: Views.Community.InviteView
+ * Inherits from <RomiesView> and is responsible for invite to community
+ * rendering & handling.
+ */
 module.exports = View.extend({
 	el: '#main'
 
-	, renderView: function() {
+	/** Function: renderView
+	 * Renders the invite template.
+	 */
+	, renderView: function renderView() {
 		var community = this.getDataStore().get('community').toJSON()
 			, config = this.getDataStore().get('AppContextModel').get('config')
 			, shareLink = '/join/' + community.shareLink;
@@ -13,13 +20,25 @@ module.exports = View.extend({
 			, config: config
 		}));
 	}
-	, afterRender: function(resolve) {
+
+	/** Function: afterRender
+	 * Renders the document title.
+	 *
+	 * Parameters:
+	 *   (Promise.resolve) resolve - After successfully doing work, resolve
+	 *                               the promise.
+	 */
+	, afterRender: function afterRender(resolve) {
 		this.setDocumentTitle(this.translate('Invite'));
 		this.twitter();
 		resolve();
 	}
 
-	, twitter: function() {
+	/** Function: twitter
+	 * Inserts the twitter javascript for rendering & handling the twitter
+	 * share button.
+	 */
+	, twitter: function twitter() {
 		/* global $ */
 		var self = this;
 		// copied & adapted from the twitter dev help
@@ -34,6 +53,9 @@ module.exports = View.extend({
 		}("script", "twitter-wjs");
 	}
 
+	/** Function: toString
+	 * Returns the string representation of this class
+	 */
 	, toString: function toString() {
 		return 'Community.InviteView';
 	}

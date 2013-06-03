@@ -33,6 +33,8 @@ var Handlebars = require('handlebars')
 
 
 /** PrivateFunction: safeStringHelper
+ * Marks a text as `safe` which means that there might be HTML in it and
+ * this HTML is safe.
  */
 function safeStringHelper(text) {
 	return new Handlebars.SafeString(text);
