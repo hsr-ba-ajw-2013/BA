@@ -1,6 +1,5 @@
 var View = require('../roomiesView')
-	, API_PREFIX = '/api'
-	, TaskModel = require('../../models/task');
+	, formSync = require('../../forms');
 
 module.exports = View.extend({
 	el: '#main'
@@ -23,62 +22,31 @@ module.exports = View.extend({
 		'submit .task-form': 'submitTask'
 	}
 
-	, submitTask: function() {
-		/* global $ */
-		var $form = $('.task-form')
-			, action = $form.attr('action')
-			, self = this
+	, submitTask: function submitTask() {
+		var $form = this.$('.task-form')
 			, $loader = $form.find('.loader')
-			, $submitButton = $form.find('.button.success');
+			, $submitButton = $form.find('.button.success')
+			, self = this;
 
 		$loader.show();
 		$submitButton.addClass('disabled').attr('disabled', true);
 
-		var doneFnc = function(task) {
-			var community = self.getDataStore().get('community')
-				, tasks = self.getDataStore().get('tasks');
-			if(tasks) {
-				tasks.add(new TaskModel(task), {
-					at: 0
-				});
-			}
-			self.options.router.navigate('/community/' + community.get('slug') +
-				'/tasks', {trigger: true});
-		}
-
-		, failFnc = function(response) {
-			var messages = response.responseText.split(',');
-			self.options.eventAggregator.trigger('view:flashmessage', {
-				error: messages
-			});
-		}
-
-		,alwaysFnc = function() {
+		function hideLoader() {
 			$loader.hide();
 			$submitButton.removeClass('disabled').attr('disabled', false);
-		};
-
-		if (this.task) {
-			$.put(API_PREFIX + action, $form.serialize())
-				.done(doneFnc)
-				.fail(failFnc)
-				.always(alwaysFnc);
-		} else {
-			$.post(API_PREFIX + action, $form.serialize())
-				.done(doneFnc)
-				.fail(failFnc)
-				.always(alwaysFnc);
+		}
+		function success() {
+			var community = self.getDataStore().get('community');
+			self.options.router.navigate('/community/' + community.get('slug') +
+				'/tasks', {trigger: true});
+			hideLoader();
+		}
+		function error() {
+			hideLoader();
 		}
 
+		formSync.call(this, $form, success, error);
 		return false;
-	}
-
-	, submitCreateTask: function() {
-		this.submitTask.bind(this);
-	}
-
-	, submitEditTask: function() {
-		this.submitTask.bind(this);
 	}
 
 	, beforeRender: function(resolve) {
@@ -118,7 +86,7 @@ module.exports = View.extend({
 		this.setDocumentTitle(this.translate(this.title));
 
 		if(this.task) {
-			var $form = $('.task-form');
+			var $form = this.$('.task-form');
 			$form.append('<input type="hidden" name="id" value="' +
 				this.task.id + '">');
 		}
