@@ -100,6 +100,6 @@ lint:
 
 docs:
 	-mkdir ./docs
-	@NaturalDocs -i ./src -o HTML ./docs -p ./.naturaldocs -xi ./src/public/javascripts/lib/ -s Default style
+	@NaturalDocs -i ./src -o HTML ./docs -p ./.naturaldocs -xi ./src/server/public -s Default style
 
 .PHONY: test test-unit test-unit-live test-coveralls precompile-templates parse-code-coverage setup clean precompile-sass-live lint deps config docs
