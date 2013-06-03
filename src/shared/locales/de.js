@@ -22,6 +22,7 @@ module.exports = {
 	, "WG Name": "z.B. \"Partybude\" oder \"Schlaubergers\""
 
 	, "Add a new task": "Neue Aufgabe..."
+	, "Edit Task": "Aufgabe bearbeiten"
 	, "Task": "Aufgabe"
 	, "Create Task": "Aufgabe hinzufügen"
 	, "Description": "Beschreibung"

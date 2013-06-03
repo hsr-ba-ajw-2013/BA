@@ -4,25 +4,25 @@ var View = require('../roomiesView')
 module.exports = View.extend({
 	el: '#main'
 
-	, initialize: function() {
+	, events: {
+		'submit .task-form': 'onSubmitTask'
+	}
+
+	, initialize: function initialize() {
 		var task = this.options.dataStore.get('task');
 
-		this.title = 'Create Task';
-		this.task = undefined;
-
-		if (task) {
+		if(task) {
 			this.task = task;
 			task.on('sync', this.renderView.bind(this));
 
 			this.title = 'Edit Task';
+		} else {
+			this.title = 'Create Task';
+			this.task = undefined;
 		}
 	}
 
-	, events: {
-		'submit .task-form': 'submitTask'
-	}
-
-	, submitTask: function submitTask() {
+	, onSubmitTask: function onSubmitTask() {
 		var $form = this.$('.task-form')
 			, $loader = $form.find('.loader')
 			, $submitButton = $form.find('.button.success')
@@ -35,21 +35,24 @@ module.exports = View.extend({
 			$loader.hide();
 			$submitButton.removeClass('disabled').attr('disabled', false);
 		}
+
 		function success() {
 			var community = self.getDataStore().get('community');
 			self.options.router.navigate('/community/' + community.get('slug') +
 				'/tasks', {trigger: true});
 			hideLoader();
 		}
+
 		function error() {
 			hideLoader();
 		}
 
 		formSync.call(this, $form, success, error);
+
 		return false;
 	}
 
-	, beforeRender: function(resolve) {
+	, beforeRender: function beforeRender(resolve) {
 		if(this.task) {
 			this.task.fetch({
 				success: function() {
@@ -64,10 +67,9 @@ module.exports = View.extend({
 		}
 	}
 
-	, renderView: function() {
+	, renderView: function renderView() {
 		var community = this.getDataStore().get('community')
-			, action = '/community/' + community.get('slug') +
-				'/tasks'
+			, action = '/community/' + community.get('slug') + '/tasks'
 			, task;
 
 		if (this.task) {
@@ -82,7 +84,7 @@ module.exports = View.extend({
 		}));
 	}
 
-	, afterRender: function(resolve) {
+	, afterRender: function afterRender(resolve) {
 		this.setDocumentTitle(this.translate(this.title));
 
 		if(this.task) {
@@ -93,7 +95,6 @@ module.exports = View.extend({
 
 		resolve();
 	}
-
 
 	, toString: function toString() {
 		return 'Task.FormView';
