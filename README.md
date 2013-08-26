@@ -14,6 +14,12 @@ This script will automatically install all dependencies, create tables & run mig
 ## Start
 `npm start`
 
+## Debug logging
+In order to enable [debug](https://npmjs.org/package/debug) logging, start with
+`DEBUG="roomies:*" npm start`. This will print all logging from roomies.
+You can also enable debug logging of e.g. *barefoot* or *express.js* if you add it to
+the debug string. In order to debug everything, set the DEBUG env variable to `*`.
+
 ## Testing
 `npm test` or `make test`
 
